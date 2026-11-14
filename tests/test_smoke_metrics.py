@@ -1,13 +1,12 @@
 import pytest
 from ollama import ChatResponse, Message
 
+from audit_agent.numbers import extract_numbers, parse_number
 from audit_agent.smoke.metrics import (
     ToolCallingSummary,
     ToolCallResult,
     cosine_similarity,
-    extract_numbers,
     is_prefix_reused,
-    parse_number,
     speed_from_response,
     tokens_per_second,
     tool_call_is_correct,

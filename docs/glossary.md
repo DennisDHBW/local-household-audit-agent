@@ -34,6 +34,11 @@
 | Überschriften-Stapel | `heading_stack` | Liste der aktiven Überschriften über einem Chunk | |
 | Hierarchie-Prefix | – | `[Sparte \| Dokumenttyp \| Datei \| Kapitel]` vor dem Embedding | |
 | Enrichment | `enrichment` | Anreicherung durch Modelle (Tabellen-Summary, Bild-Caption) | |
+| Bild-Caption | `ImageCaptioner` | Vom Vision-Modell erzeugte Beschreibung eines Diagramms mit Zahlenwerten; ersetzt den Platzhalter im `image`-Chunk | |
+| Tabellen-Summary | `TableSummarizer`, `table_summary` | Kurze Zusammenfassung einer ganzen Tabelle als eigener Chunk, zusätzlich zu den Zeilen | |
+| Enrichment-Cache | `EnrichmentCache` | Festplatten-Cache (`.cache/enrichment/`) für Modellantworten, Schlüssel ist ein SHA-256 | |
+| Cache-Schlüssel | `make_cache_key` | Hash über Aufgabe, Modell, Prompt, Optionen und Bild; ändert sich einer davon, wird neu berechnet | |
+| Unbelegte Zahl | `unsupported_numbers` | Zahl in einer Summary, die nicht im Tabellentext steht (Hinweis auf Fehler) | |
 | Embedding | `EmbeddingProvider` | Vektor-Darstellung eines Textes | |
 | Vektor-Store | `VectorStore` | Datenbank für Vektoren + Metadaten (ChromaDB) | |
 | base_score | `base_score` | 1 − Kosinus-Distanz | |

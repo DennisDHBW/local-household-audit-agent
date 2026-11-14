@@ -24,6 +24,47 @@
 
 ## Einträge
 
+### ISS-024 – Summaries am Token-Limit abgeschnitten, Prompt-Vorgaben missachtet
+- **Datum / Meilenstein:** 2026-11-14 / M3
+- **Kategorie:** enrichment
+- **Status:** gelöst (RUN-003: 0 abgeschnittene Antworten)
+- **Symptom:** In RUN-002 endeten 21 von 65 Summaries mitten im Satz („… im Jahr 202“). Statt zwei bis drei Sätzen kamen oft Aufzählungen, einmal mit Wortlaut aus dem Prompt als Einleitung.
+- **Ursache:** `num_predict=160` war zu knapp für die Aufzählungen, und die Abschneidung blieb unbemerkt, weil ich `done_reason` nicht ausgewertet habe (eigener Fehler: Ich hatte nur die Zahlenprüfung eingebaut und keinen Test für das Antwortende).
+- **Lösung / Workaround:** Limit auf 256, Prompt auf „höchstens drei Sätze, Fließtext, keine Differenzen“, `CachedAnswer.is_truncated` aus `done_reason == "length"`, Report und Log melden abgeschnittene Antworten.
+- **Gelernt:** Bei Modellaufrufen immer prüfen, ob die Antwort vollständig ist, nicht nur, ob sie Text enthält.
+- **Relevant für Ausarbeitung?** ja → Enrichment, Fehleranalyse
+
+### ISS-023 – Caption erfindet Werte bei Diagramm ohne Beschriftung
+- **Datum / Meilenstein:** 2026-11-14 / M3
+- **Kategorie:** enrichment
+- **Status:** akzeptiert (Zahlen nicht mehr erfunden, Verlaufsbeschreibung bleibt unzuverlässig, RUN-003)
+- **Symptom:** Das Diagramm „Monatlicher Heizgasbedarf & Witterungsverlauf“ (Dok. 10, zweites Bild) hat keine Zahlen an den Säulen. `gemma3:4b` nannte trotzdem Werte pro Monat, die im Sommer um das Zehnfache zu hoch sind, und beschrieb das Doppelachsen-Diagramm als zwei Diagramme.
+- **Ursache:** Das Modell schätzt Säulenhöhen aus Pixeln und füllt Lücken mit plausibel klingenden Werten, wenn der Prompt „jeden Zahlenwert“ verlangt. Dazu kam das Token-Limit (400) mitten in der Aufzählung.
+- **Lösung / Workaround:** Prompt: nur beschriftete Werte nennen, sonst den Verlauf in Worten, keine geschätzten Zahlen; Limit 600. Ergebnis RUN-003: keine erfundenen Zahlen mehr, aber der Verlauf in Worten ist falsch (Sommer als Höchstwert). Grundsätzlich bleibt: Captions sind Vision-Modell-Ausgabe und werden vom Agenten gegen die Tabellenzeilen geprüft (concept.md, Abschnitt 7), nie allein als Beleg genutzt.
+- **Gelernt:** Eine Anweisung wie „nenne jeden Wert“ erzeugt bei fehlenden Werten Halluzinationen; der Prompt muss den Ausweg („nicht beschriftet“) ausdrücklich erlauben.
+- **Relevant für Ausarbeitung?** ja → Enrichment, Grenzen lokaler Vision-Modelle
+
+### ISS-022 – Zahlenprüfung der Summaries ist nur ein Teilcheck
+- **Datum / Meilenstein:** 2026-11-14 / M3
+- **Kategorie:** enrichment
+- **Status:** akzeptiert
+- **Symptom:** Ein 3B-Modell (`llama3.2`) kann in Tabellen-Summaries Zahlen verfälschen oder falsch zuordnen. Die automatische Prüfung findet davon nur einen Teil.
+- **Ursache:** `unsupported_numbers` prüft nur, ob jede Zahl der Summary irgendwo im Tabellentext vorkommt. Ausgenommen sind Datumsangaben und ganze Zahlen bis 12 (Anzahlen, Monate). Eine echte Zahl am falschen Platz („Arbeitspreis 14.200 kWh“) fällt nicht auf; gerundete Zahlen erzeugen Fehlalarme.
+- **Konkretes Beispiel (RUN-003):** Dok. 14 schreibt „Trinkwasserpreis von 2,30 auf 2,26 EUR/m³ gesenkt“; beide Zahlen stehen in der Tabelle (alt brutto, neu netto), die Aussage ist falsch (neu brutto: 2,42 EUR). Die Prüfung meldet das nicht.
+- **Lösung / Workaround:** Treffer landen im Report und werden von Hand angesehen. Die Einzelzeilen bleiben im Index, die Summary ersetzt sie nie. Der Agent rechnet in M5 nur mit Zeilen und Captions, nicht mit Summaries.
+- **Gelernt:** Eine Prüfung, die nur Vorkommen vergleicht, ist ein Frühwarnsystem und kein Beweis.
+- **Relevant für Ausarbeitung?** ja → Enrichment, Grenzen
+
+### ISS-021 – Ingestion überschreibt das Enrichment
+- **Datum / Meilenstein:** 2026-11-14 / M3
+- **Kategorie:** enrichment
+- **Status:** akzeptiert
+- **Symptom:** `python -m audit_agent.ingestion` schreibt alle `*_chunks.json` neu. Captions und Summaries sind danach weg.
+- **Ursache:** Die Ingestion kennt das Enrichment nicht (Trennung der Schichten, ADR-0008). Die JSON-Dateien sind für beide Schritte dieselbe Datei.
+- **Lösung / Workaround:** Reihenfolge Ingestion → Enrichment einhalten. Ist der Cache gefüllt, dauert der zweite Schritt Sekunden (Test `test_rerun_after_ingestion_restores_enrichment_from_cache`). Ändert sich allerdings ein Chunk-Text einer Tabelle, wird nur diese Summary neu berechnet.
+- **Gelernt:** Zwei Schritte auf derselben Datei brauchen eine feste Reihenfolge; der Cache macht sie billig.
+- **Relevant für Ausarbeitung?** nein
+
 ### ISS-020 – Datenmodell zunächst `Chunk` statt `DocumentChunk` (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-14 / M2
 - **Kategorie:** ki-assistent
@@ -80,6 +121,7 @@
 - **Status:** akzeptiert
 - **Symptom:** In den NeckarEnergie-Dokumenten (08, 10, 29) ist der Briefkopf aus Absender, Anschrift und Kundendaten ein rahmenloses Raster, das `find_tables()` als Tabelle liefert. Ergebnis: Zeilen wie „Herrn | Datum: 28.01.2026“ mischen Anschrift und Metadaten.
 - **Ursache:** Layouttabelle und Datentabelle sehen für `find_tables()` gleich aus.
+- **Folge in M3:** Das Enrichment fasst auch diese Tabellen zusammen und das 3B-Modell erfindet dabei Verbrauchsangaben und Rechnungsnummern (RUN-003, Dok. 08, 10, 29 `tab01`). Die Zahlenprüfung meldet diese Fälle.
 - **Lösung / Workaround:** Inhalt ist vollständig und durchsuchbar, nur ungünstig geschnitten. Nicht behoben; Bewertung nach M4.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Reflexion

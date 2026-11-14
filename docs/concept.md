@@ -122,9 +122,9 @@ Die Dokumente 29 und 30 stammen aus `scripts/generate_error_documents.py`. Alle 
 ### 5.1 Pipeline (angelehnt an den Referenzprototyp)
 1. **Parsing (PyMuPDF):** zuerst Tabellen erkennen (`find_tables()`) und ihre Flächen aus dem Fließtext ausschließen; Überschriften per Font-Heuristik (`font_size`, `is_bold`) in den `heading_stack`; Absätze aggregieren (`min_chars = 20`, `max_block_chars = 1500`); Bilder extrahieren.
 2. **Enrichment:**
-   - Tabellen: zeilenweise Serialisierung mit Spaltenköpfen in jeder Zeile + Tabellen-Summary (lokales LLM)
+   - Tabellen: zeilenweise Serialisierung mit Spaltenköpfen in jeder Zeile + Tabellen-Summary (lokales LLM, `llama3.2`; eigener Chunk vor der ersten Zeile, Zahlen werden gegen den Tabellentext geprüft)
    - Bilder: Caption durch `gemma3:4b` (z. B. „Balkendiagramm Stromverbrauch 2023: 2.950 kWh, 2024: 2.710 kWh“)
-   - Ergebnisse im DiskCache (SHA-256), damit die langsame Anreicherung auf dem Laptop nur einmal läuft
+   - Ergebnisse im DiskCache (`.cache/enrichment/`, SHA-256 über Aufgabe, Modell, Prompt, Optionen und Bild), damit die langsame Anreicherung auf dem Laptop nur einmal läuft (ADR-0008)
 3. **Typisiertes Chunking:** `text`, `heading`, `table_row`, `table_summary`, `image`
 4. **Hierarchie-Prefix vor dem Embedding:** `[Sparte | Dokumenttyp | Datei | Kapitel]`. `nomic-embed-text` erwartet zusätzlich Aufgaben-Präfixe: `search_document: [Strom | Abrechnung | …] <Text>` beim Indexieren und `search_query: <Anfrage>` bei der Suche. Sein Kontext ist auf 2.048 Tokens begrenzt; Chunks mit max. 1.500 Zeichen passen gut hinein.
 5. **Speicherung:** JSON-Zwischenformat (`data/processed/`), ChromaDB (`data/vectors/`)

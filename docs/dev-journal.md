@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-14 – M3: Enrichment & Cache
+**Ziel der Sitzung:** Die fünf Diagramme beschreiben (Caption) und jede der 65 Tabellen zusammenfassen (`table_summary`), mit einem Cache, damit die langsame Anreicherung nur einmal läuft.
+**Was wurde gemacht:**
+- Plan mit Prompts, Cache-Schlüssel und Phasenreihenfolge vorgelegt und bestätigt
+- Paket `audit_agent.enrichment`: Cache, Captioner, Summarizer, Zahlenprüfung, Pipeline, CLI; `numbers.py` aus dem Smoke-Test herausgelöst; Chunk-Typ `table_summary` und `EnrichmentSettings`
+- RUN-002 (erster Lauf, 26 min) gegen die PNGs und Tabellen geprüft: ein Diagramm mit erfundenen Zahlen, 21 abgeschnittene und mehrere inhaltlich falsche Summaries
+- Prompts und Limits angepasst, Abschneiden im Report markiert, Zahlenprüfung um Datumsteile erweitert; RUN-003 (26 min): nichts mehr abgeschnitten, keine erfundenen Caption-Zahlen, aber weiter Fehler bei Preistabellen und Briefkopf-Tabellen
+- 24 Tests mit Ollama-Fake, Reverse-Engineering-Notiz M3 (Abschnitte 1–4)
+**Gelieferte Dateien / Funktionen:** `src/audit_agent/enrichment/{cache,llm,prompts,captioner,summarizer,checks,pipeline,__main__,__init__}.py`, `src/audit_agent/numbers.py`, `config.py` (`EnrichmentSettings`), `ingestion/models.py` (`TABLE_SUMMARY`), `tests/test_enrichment.py`, `docs/adr/0008-enrichment-and-cache.md`, `docs/reverse-engineering/m3-enrichment.md`, `data/eval/run-002/`, `data/eval/run-003/`
+**Entscheidungen:** ADR-0008 (Enrichment als eigener Schritt, Prompt-Text im Cache-Schlüssel, Summaries nur als Suchhilfe)
+**Probleme / Überraschungen:** ISS-021 (Ingestion überschreibt Enrichment), ISS-022 (Zahlenprüfung nur Teilcheck), ISS-023 (Caption erfindet Werte ohne Beschriftung), ISS-024 (abgeschnittene Summaries, eigener Fehler: `done_reason` nicht ausgewertet); der erste Lauf hat erst durch die Sichtprüfung gezeigt, dass die Ergebnisse schlechter waren, als der Report vermuten ließ
+**Offen / unklar:** Wirkung der Summaries und Briefkopf-Chunks aufs Retrieval (M4); Reverse-Engineering zu M0 bis M3 unbeantwortet
+**O-Ton (von mir):** (ausstehend, wird nachgetragen; heute keine Zeit)
+**Zeitaufwand:** ca. 1,3 h (davon 2 × 26 min Ollama-Lauf, parallel zur Doku) · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `refactor(numbers)`, `feat(ingestion)`, `feat(enrichment)`, `fix(enrichment)`, `docs: …` ×3, `docs(reverse-engineering)`
+
 ### 2026-11-14 – M2: Parser & JSON-Zwischenformat
 **Ziel der Sitzung:** Alle 30 PDFs in typisierte Chunks mit Metadaten umwandeln und als JSON-Zwischenformat unter `data/processed/` speichern.
 **Was wurde gemacht:**

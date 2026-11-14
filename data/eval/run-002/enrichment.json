@@ -1,0 +1,660 @@
+{
+  "is_dry_run": false,
+  "items": [
+    {
+      "kind": "images",
+      "item_id": "04_Strom_Jahresabrechnung_2024_SuedVolt_p2_img01",
+      "model": "gemma3:4b",
+      "is_cache_hit": false,
+      "seconds": 72.71848398200382,
+      "text": "Das Diagramm ist ein Säulendiagramm.\n\nDie x-Achse stellt die Jahre 2022, 2023 und 2024 dar.\nDie y-Achse stellt den Energieverbrauch in kWh/Jahr dar.\n\nDie Säulen zeigen den Energieverbrauch für verschiedene Haushaltstypen:\n\n*   **Vorjahr 2 (2022):** 3.480 kWh/Jahr\n*   **Vorjahr 1 (2023):** 3.390 kWh/Jahr\n*   **Abrechnungsjahr 2024:** 3.250 kWh/Jahr\n*   **Single-Haushalt:** 1.900 kWh/Jahr\n*   **2-Personen-Haushalt:** 3.000 kWh/Jahr\n*   **3-Personen-Haushalt:** 3.900 kWh/Jahr",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "images",
+      "item_id": "06_Strom_Jahresabrechnung_2025_SuedVolt_p2_img01",
+      "model": "gemma3:4b",
+      "is_cache_hit": false,
+      "seconds": 69.73122368199984,
+      "text": "Das Diagramm stellt einen Säulendiagramm dar.\n\nDie x-Achse (horizontal) zeigt die Monate von Januar bis Dezember.\n\nDie y-Achse (vertikal) zeigt den monatlichen Stromverbrauch in kWh.\n\nDie Werte im Diagramm sind wie folgt:\n\n*   Jan: 320 kWh\n*   Feb: 295 kWh\n*   Mär: 270 kWh\n*   Apr: 240 kWh\n*   Mai: 215 kWh\n*   Jun: 195 kWh\n*   Jul: 200 kWh\n*   Aug: 210 kWh\n*   Sep: 235 kWh\n*   Okt: 275 kWh\n*   Nov: 305 kWh\n*   Dez: 340 kWh",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "images",
+      "item_id": "10_Gas_Jahresabrechnung_2025_NeckarEnergie_p2_img01",
+      "model": "gemma3:4b",
+      "is_cache_hit": false,
+      "seconds": 71.07914960900234,
+      "text": "Das Diagramm ist ein Säulendiagramm.\n\nDie horizontale Achse (x-Achse) stellt Jahre dar: 2024, 2025 und die Vergleichswerte.\nDie vertikale Achse (y-Achse) stellt den Erdgasverbrauch in kWh/Jahr dar.\n\nDie Säulen zeigen den Erdgasverbrauch für verschiedene Szenarien:\n\n*   **Abrechnungjahr 2024:** 13.538 kWh/Jahr\n*   **Abrechnungjahr 2025:** 12.791 kWh/Jahr\n*   **Vergleichswert 78 m² (sparm):** 9.360 kWh/Jahr\n*   **Vergleichswert 78 m² (mittel):** 12.480 kWh/Jahr\n*   **Vergleichswert 78 m² (hoch):** 16.380 kWh/Jahr",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "images",
+      "item_id": "10_Gas_Jahresabrechnung_2025_NeckarEnergie_p2_img02",
+      "model": "gemma3:4b",
+      "is_cache_hit": false,
+      "seconds": 92.89625163500023,
+      "text": "Das Diagramm ist ein Liniendiagramm und ein Säulendiagramm, die zusammen dargestellt werden.\n\n**Säulendiagramm (links):**\n\n*   **X-Achse:** Monate (Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober, November, Dezember)\n*   **Y-Achse:** Erdgasbedarf (kWh) – Werte reichen von 0 bis 2500 kWh.\n\n**Liniendiagramm (rechts):**\n\n*   **X-Achse:** Monate (Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober, November, Dezember)\n*   **Y-Achse:** Temperatur (°C) – Werte reichen von 0 bis 25 °C.\n\n**Werte im Diagramm:**\n\n*   **Januar:** Erdgasbedarf: 2300 kWh, Temperatur: 5 °C\n*   **Februar:** Erdgasbedarf: 2000 kWh, Temperatur: 2 °C\n*   **März:** Erdgasbedarf: 700 kWh, Temperatur: 3 °C\n*   **April:** Erdgasbedarf: 800 kWh, Temperatur: 8 °C\n*   **Mai:** Erdgasbedarf: 600 kWh, Temperatur: 12 °C\n*   **Juni:** Erdgasbedarf: 1800 kWh, Temperatur: 17 °C\n*   **Juli:** Erdgasbedarf: 2300 kWh, Temperatur: 22 °C\n*   **August:** Erdgasbedarf: 2500 kWh, Temperatur: 23 °C\n*   **September:** Erdgasbedarf: 1800 kWh, Temperatur: 16 °C\n*   **Ok",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "images",
+      "item_id": "15_Wasser_Jahresbescheid_2025_SWM_p2_img01",
+      "model": "gemma3:4b",
+      "is_cache_hit": false,
+      "seconds": 63.293754189995525,
+      "text": "Das Diagramm ist ein Säulendiagramm.\n\n**Achsen:**\n\n*   **Y-Achse:** Trinkwasserverbrauch (m³ / Jahr)\n*   **X-Achse:** Jahr (2023, 2024, 2025)\n\n**Beschriftungen und Werte:**\n\n*   2023: 81 m³\n*   2024: 78 m³\n*   2025: 74 m³\n*   Bundesdurchschnitt (2-Pers.-Haushalt): 91 m³",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "01_Strom_Vertragsbestaetigung_SuedVolt_2024_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 20.578548614001193,
+      "text": "Die Tabelle handelt von einer Vertragsbestätigung für die Stromlieferung zwischen der SüdVolt Energie GmbH und einem Kunden namens Lukas Weber. Die Lieferung beginnt am 01.01.2024 und wird an die Adresse Hauptstraße 42, 74821 Mosbach, geliefert. Der Kunden wird eine Vertragskonto-Nummer (SV-2024-99104) und eine Kundennummer (KD-884120) zugeordnet.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "01_Strom_Vertragsbestaetigung_SuedVolt_2024_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 18.570744638003816,
+      "text": "Die Tabelle enthält die vereinbarten Tarifkonditionen für den Stromverbrauch von SüdVolt Energie. Die wichtigsten Werte sind:\n\n- Grundpreis: 9,66 EUR/Monat (Netto)\n- Jahresäquivalent: 115,97 EUR/Jahr (Netto)\n- Arbeitspreis: 29,24 ct/kWh (Netto)\n- Einmaliger Neukundenbonus: 67,23 EUR (Netto)\n\nDiese Werte gelten für den Stromverbrauch und enthalten eine Umsatzsteuer von 19 %.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "01_Strom_Vertragsbestaetigung_SuedVolt_2024_p1_tab03_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 19.55917985400447,
+      "text": "Die Tabelle beschreibt die Bedingungen eines Vertrags zwischen SüdVolt Energie und dem Kunden. Der Vertragslaufzeit beträgt 12 Monate, beginnend am 01.01.2024. Der Kündigungsfrist beträgt 1 Monat, nach der die Kündigung in Textform erfolgen muss. Die Preisgarantie ist bis 31.12.2024 gültig, mit Ausnahme von Änderungen in Umsatz- und Stromsteuer sowie gesetzlichen Umlagen. Der prognostizierte Jahresverbrauch liegt bei 3.300 kWh pro Jahr für einen 2-Personen-Haushalt.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "02_Strom_Begruessung_Abschlagsplan_2024_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 17.966712596993602,
+      "text": "Die Tabelle enthält Informationen über eine Stromabrechnung für den Kunden Lukas Weber. Die wichtigsten Werte sind:\n\n- Die Stromabrechnung für das Jahr 2024 der SüdVolt Energie GmbH, die an den Kunden Lukas Weber abgerechnet wird.\n- Die Kundennummer ist KD-884120.\n- Die Lieferstelle ist Hauptstraße 42 in Mosbach.\n- Die Zählernummer ist 1EMH0012345678.\n- Die Marktlokations-ID ist 50123456789.\n- Der SEPA-Mandat ist SV-MND-884120.\n\nInsgesamt handelt es sich um eine Abrechnung für den Stromverbrauch des Kunden Lukas Weber im Jahr 202",
+      "unsupported_numbers": [
+        202.0
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "02_Strom_Begruessung_Abschlagsplan_2024_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 36.45621813100297,
+      "text": "Die Tabelle enthält einen Abschlagsplan für das Lieferjahr 2024 und eine SEPA-Lastschriftankündigung. Es handelt sich um eine monatliche Abrechnung, bei der der Nettobetrag 88,24 EUR beträgt, der mit 19 % USt. belastet wird und somit einen Bruttobetrag von 105,00 EUR ergibt. Die Fälligkeit liegt bei 15.02.2024 bis 15.12.2024. Die Summe der geplanten Abschlagszahlungen 2024 beträgt 970,59 EUR.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "03_Strom_Preisanpassung_SuedVolt_2025_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 11.053403259000333,
+      "text": "Die Tabelle handelt von einer Preisänderung für die SüdVolt Energie GmbH, die am 01.01.2025 in Kraft treten soll. Der Kunden Lukas Weber wird eine neue Preiseinheit erhalten, die nicht explizit angegeben wird. Die Lieferstelle ist Hauptstraße 42 in Mosbach.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "03_Strom_Preisanpassung_SuedVolt_2025_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 18.577057246999175,
+      "text": "Die Tabelle zeigt die Anpassung der Strompreise zum 01.01.2025. Der Grundpreis für den Monat und das Jahr wird um 10,84 EUR bzw. 130,08 EUR erhöht, der Arbeitspreis pro kWh wird um 2,86 ct bzw. 5,20 ct erhöht. Die neuen Preise sind inklusive 19% USt.",
+      "unsupported_numbers": [
+        2.86,
+        5.2
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "04_Strom_Jahresabrechnung_2024_SuedVolt_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 13.655716235996806,
+      "text": "Die Tabelle zeigt die Stromrechnung für das Jahr 2024. Der Rechnungsbetrag für die Stromlieferung beträgt 1.189,00 EUR, einschließlich Umsatzsteuer und Neukundenbonus. Es gibt jedoch eine Abzüglichung von 1.155,00 EUR für geleistete Abschlagszahlungen, was zu einem Nachzahlungsbetrag von 34,00 EUR führt, der am 03.02.2025 fällig ist.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "04_Strom_Jahresabrechnung_2024_SuedVolt_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 12.228791636000096,
+      "text": "Die Tabelle zeigt den Stromverbrauch eines Haushalts für den Zeitraum von 01.01.2024 bis 31.12.2024. Der Stromverbrauch wurde am 31.12.2024 abgelesen und betrug 3.250 kWh. Der Stromverbrauch für den gesamten Zeitraum beträgt 3.250 kWh.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "04_Strom_Jahresabrechnung_2024_SuedVolt_p1_tab03_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 27.36267615199904,
+      "text": "Die Tabelle zeigt die Stromabrechnung für den Zeitraum 01.01.2024 bis 31.12.2024. Es handelt sich um die Energiekosten für den Verbrauch von 3.250 kWh Strom unter Verwendung des Tarifs SüdVolt ÖkoStrom Klassik 12. Die wichtigsten Werte sind:\n\n- Netto- und Brutto-Preis pro kWh: 29,24 ct/kWh und 34,80 ct/kWh\n- Gesamtbetrag für den Stromverbrauch: 950,42 EUR (Netto) bzw. 1.131,00 EUR (Brutto)\n- Grundpreis für 12 Monate: 9,66 EUR/Mon",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "05_Strom_Zwischenablesung_Info_2025_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 13.95751453700359,
+      "text": "Die Tabelle enthält eine Abrechnung für die SüdVolt Energie GmbH, die den Verbrauch von Herrn Lukas Weber für das Jahr 2025 abrechnet. Der Verbrauch wurde an der Adresse Hauptstraße 42 in Mosbach gemessen und beträgt 1.234.567,89 kWh. Die Abrechnung basiert auf den Regeln des Energiewirtschaftsgesetzes (EnWG) und wurde am 4. Juli 2025 an Herrn Lukas Weber ausgestellt.",
+      "unsupported_numbers": [
+        2025.0,
+        1234567.89
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "05_Strom_Zwischenablesung_Info_2025_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 23.8608838250002,
+      "text": "Die Tabelle zeigt die Verbrauchsinformationen für den Strom im 1. Halbjahr 2025. Es handelt sich um die Anfangszählerstand, den Zwischenzählerstand, den Stromverbrauch im 1. Halbjahr 2025, den Vergleichbarer Vorjahreszeitraum und den Hochgerechneten Jahresverbrauch 2025.\n\nDie wichtigsten Werte sind:\n\n- Anfangszählerstand: 17.450 kWh\n- Zwischenzählerstand: 18.920 kWh\n- Stromverbrauch im 1. Halbjahr 2025: 1.470 kWh\n- Vergleichbarer Vorjahreszeitraum: 1.560",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "06_Strom_Jahresabrechnung_2025_SuedVolt_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 14.268075096995744,
+      "text": "Die Tabelle zeigt die Stromrechnung für den Zeitraum 01.01.2025 bis 31.12.2025. Der Rechnungsbetrag für die Stromlieferung beträgt 1.379,30 EUR, einschließlich 19% USt. Es gibt eine Abzüglich von geleisteten Abschlagszahlungen in Höhe von 1.265,00 EUR, was zu einem Nachzahlungsbetrag von 114,30 EUR führt, der am 05.02.2026 fällig ist.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "06_Strom_Jahresabrechnung_2025_SuedVolt_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 11.851376165999682,
+      "text": "Die Tabelle zeigt den Stromverbrauch eines Haushalts für den Zeitraum von 01.01.2025 bis 31.12.2025. Der Stromverbrauch beträgt 3.100 kWh. Der Zählerstand am Anfang des Jahres war 17.450 kWh und am Ende des Jahres 20.550 kWh.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "06_Strom_Jahresabrechnung_2025_SuedVolt_p1_tab03_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 22.557334076998814,
+      "text": "Die Tabelle zeigt die Stromabrechnung für den Zeitraum 01.01.2025 bis 31.12.2025. Es handelt sich um die Energiekosten, die unter der Abrechnungsposition \"Arbeitspreis ÖkoStrom\" und \"Grundpreis (12 Monate)\" aufgeführt sind. Die wichtigsten Werte sind:\n\n- Die Strommenge: 3.100 kWh\n- Der Preis Netto: 33,19 ct/kWh\n- Der Preis Brutto: 39,50 ct/kWh\n- Der Grundpreis: 10,84 EUR/Monat\n- Die Umsatzsteuer: 19 %",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "07_Gas_Liefervertrag_NeckarEnergie_2024_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 13.27764765900065,
+      "text": "Die Tabelle handelt von einer Vertragsbestätigung für den Erwerb von Erdgas durch die NeckarEnergie Versorgung AG. Die wichtigsten Details sind:\n\n- Der Verbrauch wird an die Adresse Hauptstraße 42, 74821 Mosbach geliefert.\n- Die Lieferung beginnt am 01.01.2024.\n- Die Kundennummer ist NE-440219 und die Vertragsnummer ist GV-2024-7731.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "07_Gas_Liefervertrag_NeckarEnergie_2024_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 19.981097812997177,
+      "text": "Die Tabelle enthält die Vertragsbestätigung für die Erdgaslieferung unter dem Tarif \"NeckarGas Komfort 24\". Die wichtigsten Werte sind:\n\n- Grundpreis Erdgas: 12,18 EUR/Monat (Netto)\n- Jahresäquivalent: 146,22 EUR/Jahr (Netto)\n- Arbeitspreis Erdgas: 9,08 ct/kWh (Netto)\n- Monatlicher Abschlag: 109,24 EUR/Monat (Netto)\n\nDiese Werte gelten für die Zeit vom 01.01.2024 bis 31.12.2025.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "07_Gas_Liefervertrag_NeckarEnergie_2024_p1_tab03_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 20.840186084002198,
+      "text": "Die Tabelle beschreibt die Vertragsbestätigung für die Lieferung von Erdgas unter der Tarife \"NeckarGas Komfort 24\". Die Laufzeit des Vertrags beträgt 24 Monate, von 01.01.2024 bis 31.12.2025. Die Kündigungsfrist beträgt 6 Wochen in Textform, danach ist die Kündigung unbefristet mit einer Kündigungsfrist von 1 Monat. Die Preisgarantie ist für 24 Monate eingeschränkt, bis 31.12.2025, mit Ausnahme von Änderungen an Umsatzsteuer, Energiesteuer und gesetzlichen U",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 12.445166186997085,
+      "text": "Die Tabelle enthält eine Jahresrechnung für Erdgas der NeckarEnergie Versorgung AG für den Kunden Lukas Weber. Die Rechnung umfasst den Verbrauch von Erdgas von 01.01.2024 bis 31.12.2024 und zeigt den Verbrauch in Kubikmetern (m³) an. Die Rechnungsnummer lautet GAS-2025-4109.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 16.74596663500415,
+      "text": "Die Tabelle enthält die Jahresrechnung für die Erdgaslieferung von 01.01.2024 bis 31.12.2024. Der Rechnungsbetrag für die Erdgaslieferung beträgt 1.636,10 EUR, einschließlich 19% USt. Es gibt jedoch eine Abzüglichung von 1.430,00 EUR, da 11 Abschlagszahlungen von 130,00 EUR für den Zeitraum Februar bis Dezember 2024 geleistet wurden. Der Nachzahlungsbetrag beträgt 206,10 EUR und ist fällig am 10.02.2025.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab03_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 19.60168901200086,
+      "text": "Die Tabelle zeigt die Erdgas-Jahresrechnung für den Zeitraum 01.01.2024 bis 31.12.2024. Die wichtigsten Werte sind:\n\n- Die Gesamtvolumen von Erdgas, das von 6.850 m³ am 01.01.2024 auf 8.120 m³ am 31.12.2024 gestiegen ist.\n- Die z- Zahl, die den Brennwert des Erdgases darstellt, beträgt 0,9560.\n- Die Energiemenge, die durch die Verwendung des Erdgases erzeugt wurde, beträgt 13.538 kWh.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab04_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 20.45836801000405,
+      "text": "Die Tabelle zeigt die Jahresrechnung für den Erdgas-Verbrauch von 01.01.2024 bis 31.12.2024. Es handelt sich um die Entgeltberechnung nach dem NeckarGas-Komfort-Tarif. Die wichtigsten Werte sind:\n\n- Arbeitspreis Erdgas: 9,08 ct/kWh (Netto) bzw. 10,80 ct/kWh (Brutto)\n- Grundpreis Erdgas: 12,18 EUR/Monat (Netto) bzw. 14,50 EUR/Monat (Brutto)\n- Rechnungsbetrag inkl. 19% Umsatzsteuer: 261,23 EUR (USt.)",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "09_Gas_Preisanpassung_NeckarEnergie_2026_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 13.824452084001678,
+      "text": "Die Tabelle enthält eine Tarifinformation für Erdgas von der NeckarEnergie Versorgung AG für den Kunden Lukas Weber. Die Vertragsnummer GV-2024-7731 beginnt am 01.01.2026 und endet am 31.12.2026. Der Verbrauchsstelle Hauptstraße 42, 74821 Mosbach, wird eine Gaszählernummer 7GAS99887766 zugeordnet.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "09_Gas_Preisanpassung_NeckarEnergie_2026_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 19.529088016002788,
+      "text": "Die Tabelle enthält die Änderungen im Gas-Preis ab 01.01.2026. Es gibt eine Senkung des Arbeitspreises für Erdgas von 10,80 ct auf 8,36 ct pro kWh. Der Grundpreis Erdgas wird von 14,50 EUR auf 13,45 EUR pro Monat gesenkt. Zudem gibt es eine Senkung des monatlichen Abschlags von 130,00 EUR auf 105,04 EUR.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 11.975628565996885,
+      "text": "Die Tabelle enthält eine Jahresrechnung für Erdgas der NeckarEnergie Versorgung AG für den Kunden Lukas Weber. Die Rechnung umfasst den Verbrauch von Erdgas von 01.01.2025 bis 31.12.2025 und zeigt den Verbrauch in Kubikmetern (m³) an. Die Rechnungsnummer ist GAS-2026-5581.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 16.893070234000334,
+      "text": "Die Tabelle enthält die Jahresrechnung für die Erdgaslieferung von 2025. Der Rechnungsbetrag für die Erdgaslieferung beträgt 1.555,43 EUR, einschließlich 19% USt. Es gibt jedoch eine Abzüglichung von 1.430,00 EUR, da 11 Abschlagszahlungen von 130,00 EUR für den Zeitraum Februar bis Dezember 2025 geleistet wurden. Der Nachzahlungsbetrag beträgt 125,43 EUR und ist fällig am 12. Februar 2026.",
+      "unsupported_numbers": [
+        2026.0
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab03_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 17.381587736002984,
+      "text": "Die Tabelle zeigt die Erdgas-Jahresrechnung für den Zeitraum 01.01.2025 bis 31.12.2025. Die wichtigsten Werte sind:\n\n- Die Gesamtvolumen von Erdgas, das von 8.120 m³ am 01.01.2025 auf 9.320 m³ am 31.12.2025 gestiegen ist.\n- Die z- Zahl, die den Brennwert des Erdgases darstellt, beträgt 0,9560 kWh/m³.\n- Die Energiemenge, die durch die Verwendung des Erdgases erzeugt wurde, beträgt 12.791 kWh.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab04_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 21.935510663999594,
+      "text": "Die Tabelle zeigt die Jahresrechnung für den Erdgas-Konsum von 2025. Es handelt sich um die Abrechnung für den Zeitraum von 01.01.2025 bis 31.12.2025. Die wichtigsten Werte sind:\n\n- Der Arbeitspreis für Erdgas beträgt 9,08 ct/kWh (Netto) bzw. 10,80 ct/kWh (Brutto).\n- Der Grundpreis für Erdgas beträgt 12,18 EUR/Monat (Netto) bzw. 14,50 EUR/Monat (Brutto).\n- Der Rechnungsbetrag inklusive 19% Umsatzsteuer beträgt 1.307,08 EUR",
+      "unsupported_numbers": [
+        2025.0
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "11_Gas_Abschlagsplan_2026_NeckarEnergie_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 11.739817282999866,
+      "text": "Die Tabelle enthält einen Abschlagsplan für Erdgas von der NeckarEnergie Versorgung AG für den Kunden Lukas Weber. Der Abschlagsplan ist gültig für den Zeitraum Februar bis Dezember 2026 und bezieht sich auf die Verbrauchsstelle Hauptstraße 42 in Mosbach. Der wichtigste Wert ist der Abschlag, der 2026 Euro beträgt.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "11_Gas_Abschlagsplan_2026_NeckarEnergie_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 16.585452817998885,
+      "text": "Die Tabelle beschreibt einen Abschlagsplan für Erdgas für das Lieferjahr 2026. Es handelt sich um 11 monatliche Abschläge, die jeweils am 15. des jeweiligen Monats fällig sind. Der Nettobetrag pro Abschlag beträgt 105,04 EUR, der Bruttobetrag beträgt 125,00 EUR. Die Summe der geplanten Abschlagszahlungen für das gesamte Jahr 2026 beträgt 1.375,00 EUR.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "12_Wasser_Anmeldebestaetigung_SWM_2024_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 13.29920670100546,
+      "text": "Die Tabelle aus einer Abrechnung oder einem Vertrag zeigt, dass die Stadtwerke Mosbach GmbH Lukas Weber mit einer Versorgungsbestätigung für Wasser ab 01.01.2024 versorgt. Der Verbrauch wird an der Hauptstraße 42 (2. OG re.) gemessen und wird durch den Wasserzähler 8WAS445566 (WE03) überwacht.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "12_Wasser_Anmeldebestaetigung_SWM_2024_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 16.324680114004877,
+      "text": "Die Tabelle enthält die gültigen Entgelte und kommunalen Gebühren für das Trinkwasser und Schmutzwasser ab dem 01.01.2024. Die wichtigsten Werte sind:\n\n- Trinkwasser-Verbrauchspreis: 2,15 EUR/m³\n- Trinkwasser-Grundpreis: 6,07 EUR/Monat\n- Schmutzwassergebühr: 2,85 EUR/m³",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "13_Wasser_Jahresbescheid_2024_SWM_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 13.259690325998235,
+      "text": "Die Tabelle enthält einen Jahresbescheid für die Wasserabrechnung der Stadtwerke Mosbach GmbH für das Jahr 2024. Der Wert des Wasserverbrauchs für die Wohnung Hauptstraße 42 (2. OG re.) beträgt 0 Liter, während der Wert des Wasserzählers 8WAS445566 (WE03) lautet. Der Zeitraum der Abrechnung reicht von 01.01.2024 bis 31.12.2024.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "13_Wasser_Jahresbescheid_2024_SWM_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 15.93107192699972,
+      "text": "Die Tabelle zeigt die Verbrauchsabrechnung für das Trinkwasser und die Gebührenbescheid für das Schmutzwasser im Jahr 2024. Die wichtigsten Werte sind:\n\n- Der Zählerstand beträgt am 01.01.2024 234 m³ und am 31.12.2024 312 m³.\n- Der Verbrauch von Trinkwasser beträgt 78 m³ von Dezember 2024 bis Dezember 2024.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "13_Wasser_Jahresbescheid_2024_SWM_p1_tab03_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 24.302041532995645,
+      "text": "Die Tabelle zeigt die Abrechnung für das Trinkwasser und die Schmutzwassergebühr für das Jahr 2024. Die wichtigsten Werte sind:\n\n- Der Trinkwasser-Verbrauchspreis beträgt 2,30 EUR/m³.\n- Die Schmutzwassergebühr beträgt 2,85 EUR/m³.\n- Die Gesamtkosten für Trinkwasser und Schmutzwasser belaufen sich auf 479,70 EUR.\n- Es gibt einen Guthaben von -0,30 EUR, der auf eine Verrechnung mit Abschlag im Q1/2025 zurückzuführen ist.\n\nDie wichtigsten Menge-Werte sind:\n\n- 78 m³ Tr",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "14_Wasser_Gebuehrenanpassung_2026_SWM_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 14.122862554002495,
+      "text": "Die Tabelle enthält eine Preis- und Gebührenmitteilung für die Stadtwerke Mosbach GmbH, die für die Wohnungswasserzählerin Lukas Weber an der Adresse Hauptstraße 42 in Mosbach gilt. Die Gebühren sind ab dem 01.01.2026 gültig und betragen 0 Euro.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "14_Wasser_Gebuehrenanpassung_2026_SWM_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 21.660839898999257,
+      "text": "Die Tabelle beschreibt Änderungen in den Preisen für Trinkwasser und Schmutzwasser, die ab 01.01.2026 in Kraft treten. Der Trinkwasser-Verbrauchspreis wird um 0,04 EUR/m³ geringer, der Grundpreis für Trinkwasser um 0,14 EUR/Monat geringer. Die Schmutzwassergebühr bleibt bei 2,98 EUR/m³ und die Vierteljährliche Vorauszahlung für Schmutzwasser erhöht sich um 5 EUR.",
+      "unsupported_numbers": [
+        0.04,
+        0.14
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "15_Wasser_Jahresbescheid_2025_SWM_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 13.770520575999399,
+      "text": "Die Tabelle enthält einen Jahresbescheid für die Wasserabrechnung der Stadtwerke Mosbach GmbH für das Jahr 2025. Der Bescheid wurde am 02.02.2026 an Lukas Weber ausgestellt und beinhaltet den Verbrauch an Wasser für die Wohnung Hauptstraße 42 (2. OG re.) in Mosbach. Der Wasserzähler ist mit der Nummer 8WAS445566 (WE03) gekennzeichnet.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "15_Wasser_Jahresbescheid_2025_SWM_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 11.416858937001962,
+      "text": "Die Tabelle zeigt die Abrechnung für Trinkwasser und Schmutzwasser für das Jahr 2025. Die Gesamtkosten belaufen sich auf 459,10 EUR. Es gibt jedoch eine Vorauszahlung von 480,00 EUR, die abgezogen wurde, und ein Guthaben von 20,90 EUR, das am 16.02.2026 erstattet wird.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "15_Wasser_Jahresbescheid_2025_SWM_p1_tab03_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 12.364566724994802,
+      "text": "Die Tabelle zeigt die Abrechnung für das Trinkwasser und die Gebühren für das Schmutzwasser im Jahr 2025. Der Zählerstand wurde am 01.01.2025 auf 312 m³ und am 31.12.2025 auf 386 m³ gemessen. Der Verbrauch für das Jahr 2025 beträgt 74 m³.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "15_Wasser_Jahresbescheid_2025_SWM_p1_tab04_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 18.832229300001927,
+      "text": "Die Tabelle zeigt die Abrechnung für Trinkwasser und Schmutzwasser für das Jahr 2025. Die wichtigsten Kosten sind der Trinkwasser-Verbrauchspreis von 2,30 EUR/m³ und die Schmutzwassergebühr von 2,85 EUR/m³. Die Gesamtkosten für Trinkwasser und Schmutzwasser belaufen sich auf 442,87 EUR Netto und 459,10 EUR Brutto.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "16_Mietvertrag_Hauptstrasse42_2023_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 18.006805356002587,
+      "text": "Die Tabelle beschreibt die Mietverhältnisse für den Wohnraum. Es gibt drei Mietbestandteile:\n\n- Die Nettokaltmiete beträgt monatlich 780,00 EUR und jährlich 9.360,00 EUR.\n- Die Vorauszahlung auf kalte Betriebskosten beträgt monatlich 160,00 EUR und jährlich 1.920,00 EUR.\n- Die Gesamtmiete, die bis zum 3. Werktag eines Monats gezahlt werden muss, beträgt monatlich 940,00 EUR und jährlich 11.280,00 EUR.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "17_Uebergabeprotokoll_Wohnung_2023_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 15.294548550002219,
+      "text": "Die Tabelle enthält die Ablesungen der Zählerstände bei der Schlüsselübergabe in der Wohnung. Es werden die Zählerstände für Strom, Erdgas und Kaltwasser abgelesen und notiert. Die wichtigsten Werte sind:\n\n- Strom: 14.200 kWh\n- Erdgas: 6.850 m³\n- Kaltwasser: 234 m³",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "18_Nebenkostenabrechnung_2024_Hausverwaltung_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 34.951580234002904,
+      "text": "Die Tabelle zeigt die Abrechnung der Betriebskosten für das Jahr 2024. Es handelt sich um die Kosten, die für die Nutzung des Wohnobjekts durch die Mieter getragen werden müssen. Die Kosten werden nach verschiedenen Kategorien wie Niederschlagswasser, Müllabfuhr, Straßenreinigung und Grundsteuer aufgeteilt.\n\nDie wichtigsten Werte sind:\n\n- Gesamtkosten Objekt: 7.480,00 EUR\n- Ihr Anteil (25,00 %): 1.870,00 EUR\n\nDiese Werte zeigen, dass die Gesamtkosten für das Jahr 2024 7.480,00 EUR betragen und dass der Mieter 25%",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "18_Nebenkostenabrechnung_2024_Hausverwaltung_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 22.988026879000245,
+      "text": "Die Tabelle enthält eine Abrechnung für die Betriebskosten des Hauses im Jahr 2024. Es handelt sich um eine Bescheinigung nach § 35a EStG, die die Kosten für verschiedene Leistungen wie Hausmeistertätigkeit, Treppenhausreinigung, Gartenpflege und Winterdienst sowie steuerlich relevante Aufwendungen enthält.\n\nDie wichtigsten Werte sind:\n\n* Leistungsart: Hausmeistertätigkeit & Treppenhausreinigung: 1.200,00 EUR (Gesamter Lohnanteil), 300,00 EUR (Anteil Mieter)\n* Leistungsart: Gartenpflege und Winterdienst:",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "19_Nebenkostenabrechnung_2025_Hausverwaltung_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 36.025878874002956,
+      "text": "Die Tabelle zeigt die Abrechnung für die Betriebskosten des Hauses für das Jahr 2025. Es handelt sich um die Kosten, die für die verschiedenen Dienstleistungen und Leistungen des Hauses gezahlt werden müssen, wie z.B. Müllabfuhr, Straßenreinigung, Grundsteuer, Hausmeisterdienst und Gartenpflege. Die Kosten werden auf Basis der Wohnfläche berechnet und teilen sich in Anteile auf, die jeweils 25% betragen.\n\nDie wichtigsten Werte sind:\n\n* Gesamtkosten Objekt: 7.320,00 EUR\n* Ihr Anteil (25,00 %): 1.830,00 EUR",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "19_Nebenkostenabrechnung_2025_Hausverwaltung_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 21.35867106099613,
+      "text": "Die Tabelle enthält eine Abrechnung für die Betriebskosten des Hauses im Jahr 2025. Es handelt sich um eine Bescheinigung nach § 35a EStG, die die Kosten für verschiedene Leistungen wie Hausmeistertätigkeit, Treppenhausreinigung, Gartenpflege und Winterdienst sowie steuerlich relevante Aufwendungen enthält.\n\nDie wichtigsten Werte sind:\n\n* Leistungsart: Hausmeistertätigkeit & Treppenhausreinigung: 1.280,00 EUR (Gesamter Lohnanteil), 320,00 EUR (Anteil Mieter)\n* Leistungsart: Gartenpflege und Winterdienst:",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "20_Handwerkerrechnung_Heizungswartung_2024_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 10.917080442995939,
+      "text": "Die Tabelle aus einer Abrechnung oder einem Vertrag zeigt eine Rechnung für die Sanitär- und Heizungstechnik von KRAICHGAU GMBH für den Kunden mit der Kundennummer K-7104. Die Rechnung wurde am 16. Oktober 2024 erstellt und bezieht sich auf die Leistung, die am 11. Oktober 2024 erbracht wurde.",
+      "unsupported_numbers": [
+        16.0
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "20_Handwerkerrechnung_Heizungswartung_2024_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 26.21986739899876,
+      "text": "Die Tabelle enthält eine Rechnung für die jährliche Wartung einer Gas-Brennwerttherme Vaillant ecoTEC plus. Die wichtigsten Leistungen sind:\n\n- Die jährliche Wartung der Gas-Brennwerttherme mit einer Abgasmessung von 2,0 Stunden.\n- Die Anfahrtspauschale für den Kundendienstfahrzeug Mosbach.\n- Der Wartungs-Dichtungssatz und der Kondensat-Siphon.\n\nDie wichtigsten Beträge sind:\n\n- Netto: 165,00 EUR (Wartung der Gas-Brennwerttherme)\n- Netto: 45,00 EUR (Anfahrtspausch",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "21_Handwerkerrechnung_Heizungswartung_2025_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 9.374004970995884,
+      "text": "Die Tabelle aus einer Abrechnung oder einem Vertrag zeigt eine Rechnung für die Sanitär- und Heizungstechnik von KRAICHGAU GMBH für den Kunden mit der Kundennummer K-7104. Die Rechnung wurde am 14. Oktober 2025 erstellt und bezieht sich auf die Leistung, die am 10. Oktober 2025 erbracht wurde.",
+      "unsupported_numbers": [
+        14.0
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "21_Handwerkerrechnung_Heizungswartung_2025_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 21.143708939001954,
+      "text": "Die Tabelle zeigt die Abrechnung für die jährliche Wartung einer Gas-Brennwerttherme, einschließlich Abgasmessung und Austausch des Thermostatventils im Bad, sowie für die Anfahrtspauschale für den Kundendienstfahrzeug Mosbach und für den Ersatz von Dichtung, Zündelektrode und Thermostatkopf Danfoss. Die Gesamtrechnung beträgt 362,95 EUR brutto.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "23_Internet_Monatsrechnung_Dez2025_GlasfaserPlus_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 23.097153423004784,
+      "text": "Die Tabelle zeigt die Monatsrechnung für die Telekommunikationsleistungen des Kunden für den Zeitraum Dezember 2025 bis Dezember 2025. Die wichtigsten Werte sind:\n\n- Basispreis für den Tarif \"Fiber Home 250\": 37,81 EUR (Netto), 44,99 EUR (Brutto)\n- Endgeräte-Servicepaket FRITZ!Box 5590 Fiber: 4,19 EUR (Netto), 4,99 EUR (Brutto)\n- Verbindungsentgelte (Festnetz-Flatrate inklusive): 0,00 EUR (Netto), 0,00 EUR (Brutto)\n- Rechnungsgesamtbetrag",
+      "unsupported_numbers": [
+        2025.0
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "24_Mobilfunk_Vertrag_MobilPlus_2025_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 21.2148631079981,
+      "text": "Die Tabelle beschreibt einen Mobilfunkvertrag namens \"Allnet Flat 5G 40 GB\" von MobilPlus AG. Der Vertrag umfasst eine Telefon- und SMS-Flatrate in allen deutschen und EU-Netzen, sowie 40 GB 5G-Internet mit einer Geschwindigkeit von bis zu 300 Mbit/s. Der monatliche Gesamtpreis beträgt 29,99 EUR, wobei 24,99 EUR für die Mobilfunktarife und 5,00 EUR für die zusätzliche eSIM-Karte für ein Tablet oder Smartwatch gezahlt werden.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "25_Mobilfunk_Monatsrechnung_Dez2025_MobilPlus_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 22.014032872997632,
+      "text": "Die Tabelle zeigt die Mobilfunkrechnung für den Zeitraum 01.12.2025 - 31.12.2025 von MobilPlus AG. Die wichtigsten Werte sind:\n\n- Basispreis für den Mobilfunkdienst: 21,00 EUR (Netto) + 3,99 EUR (19 % USt.) = 24,99 EUR (Brutto)\n- Option für MultiSIM (eSIM): 4,20 EUR (Netto) + 0,80 EUR (19 % USt.) = 5,00 EUR (Brutto)\n- Verbindungen und Datennutzung: 0,00 EUR (Netto) + 0,00 EUR (19 % USt.) =",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "26_Hausrat_Versicherungsschein_AlpenSchutz_2024_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 14.960240487002011,
+      "text": "Hier ist eine Zusammenfassung der Tabelle in drei Sätzen:\n\nHerr Lukas Weber hat eine Hausratversicherung mit dem Namen \"AlpenSchutz Komfort\" abgeschlossen. Die Versicherung beginnt am 01.02.2024 und hat eine Laufzeit von einem Jahr. Die Kündigungsfrist beträgt 3 Monate, wobei die Hauptfälligkeit am 01.02. jedes Jahres fällt.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "26_Hausrat_Versicherungsschein_AlpenSchutz_2024_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 22.330523334996542,
+      "text": "Die Tabelle beschreibt die Details der Hausratversicherung \"AlpenSchutz Komfort\". Es handelt sich um eine Grundversicherung, die verschiedene Deckungsbaustiene abdeckt, wie z.B. Feuer, Leitungswasser, Sturm/Hagel und Einbruchdiebstahl. Darüber hinaus gibt es auch eine Erweiterte Elementarschadendeckung für Überschwemmungen und Starkregen sowie eine spezielle Deckung für Fahrraddiebstahl. Der Jahresbeitrag beträgt insgesamt 118,40 EUR für die Grundversicherung und 34,60 EUR für die Erweiterte Elementarschadendeckung, wobei es eine Selbst",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "27_Hausrat_Beitragsrechnung_2026_AlpenSchutz_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 16.579649792001874,
+      "text": "Die Tabelle zeigt die Beitragsrechnung für die Hausratversicherung \"AlpenSchutz Komfort\" für den Zeitraum vom 01.02.2026 bis 01.02.2027. Der Nettobeitrag für die Hausratversicherung beträgt 146,22 EUR, der Jahresbeitrag für das Jahr 2026 beträgt 174,00 EUR.",
+      "unsupported_numbers": [
+        2026.0
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "28_KFZ_Versicherungsschein_Beitrag2025_AlpenSchutz_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 16.84483522800292,
+      "text": "Hier ist eine Zusammenfassung der Tabelle in drei Sätzen:\n\nHerr Lukas Weber ist der Versicherungsnehmer und Fahrzeughalter eines VW Golf VIII 1.5 TSI mit Amtliches Kennzeichen MOS-LW 2024. Die Kfz-Versicherungsschein und Beitragsrechnung 2025 betragen jährlich 12.000 km Fahrleistung und sind ab 01.01.2025 bis 01.01.2026 gültig. Die Kündigungsfrist für den Vertrag ist 1 Monat bis 31.12.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "28_KFZ_Versicherungsschein_Beitrag2025_AlpenSchutz_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 21.42727409899817,
+      "text": "Die Tabelle enthält die Details der Kfz-Versicherungsschein und Beitragsrechnung für das Jahr 2025. Es handelt sich um drei verschiedene Versicherungssparten: Kfz-Haftpflichtversicherung, Vollkaskoversicherung und Gesamtjahresbeitrag. Die wichtigsten Werte sind:\n\n- Kfz-Haftpflichtversicherung: 238,40 EUR (Jahresbeitrag Brutto)\n- Vollkaskoversicherung: 309,80 EUR (Jahresbeitrag Brutto)\n- Gesamtjahresbeitrag 2025: 548,20 EUR (inkl. 87,53 EUR Versicherungssteuer)\n\nInsgesamt",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 12.62403708200145,
+      "text": "Die Tabelle handelt von einer Rechnung für den Gasverbrauch von Lukas Weber, der von der NeckarEnergie Versorgung AG abgerechnet wird. Die Rechnung umfasst den Zeitraum vom 01.01.2026 bis 31.12.2026 und beinhaltet eine Gesamtrechnungsbetrag von 1204 Euro.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 16.004051420000906,
+      "text": "Die Tabelle zeigt die Jahresrechnung für die Erdgaslieferung von 01.01.2026 bis 31.12.2026. Der Rechnungsbetrag beträgt 1.367,99 EUR, einschließlich 19% USt. Es gibt jedoch eine Abzugspflicht für geleistete Abschlagszahlungen, die 11-mal 125,00 EUR betragen, was insgesamt -1.375,00 EUR ergibt. Nach Abzug der Abschlagszahlungen und einer Guthabe von -7,01 EUR bleibt ein Guthaben zu Ihren Gunsten.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab03_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 16.63513254999998,
+      "text": "Die Tabelle zeigt die Erdgas-Jahresrechnung für den Zeitraum 01.01.2026 bis 31.12.2026. Die wichtigsten Werte sind:\n\n- Die Gesamtvolumen von Erdgas, das von 9.320 m³ am 01.01.2026 auf 10.380 m³ am 31.12.2026 gestiegen ist.\n- Die Energiemenge, die durch die Verbrennung des Erdgases erzeugt wurde, beträgt 11.819 kWh.",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab04_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 21.151859589001106,
+      "text": "Die Tabelle zeigt die Jahresrechnung für den Erdgas-Konsum von 2026. Es handelt sich um zwei Teile: den Arbeitspreis für den Erdgas-Konsum und den Grundpreis für den Erdgas-Konsum. Der Arbeitspreis beträgt 8,36 ct/kWh und 9,95 ct/kWh, wobei der Bruttobetrag 1.175,99 EUR und der Netto-Betrag 988,23 EUR beträgt. Der Grundpreis beträgt 13,45 EUR/Monat und 16,00 EUR/Monat, wobei der Bruttobetrag 192,00 EUR und der Netto-Betrag 161,34 EUR",
+      "unsupported_numbers": [
+        2026.0
+      ]
+    },
+    {
+      "kind": "tables",
+      "item_id": "30_Nebenkostenabrechnung_2026_Hausverwaltung_p1_tab01_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 37.24558046700258,
+      "text": "Die Tabelle aus der Abrechnung oder dem Vertrag zeigt die umlagefähigen Betriebskosten für das Jahr 2026 für ein Wohnobjekt. Die Kosten werden nach verschiedenen Kategorien wie Niederschlagswasser und Allgemeinwasser, Müllabfuhr und Straßenreinigung, Wohngebäude- und Haus- & Grundbesitzerhaftpflicht, Grundsteuer B und Hausmeisterdienst und Treppenhausreinigung aufgeteilt.\n\nDie wichtigsten Werte sind:\n\n- Gesamtkosten Objekt: 7.470,00 EUR\n- Ihr Anteil (26,28 %): 1.963,28 EUR\n- Abzüglich geleist",
+      "unsupported_numbers": []
+    },
+    {
+      "kind": "tables",
+      "item_id": "30_Nebenkostenabrechnung_2026_Hausverwaltung_p1_tab02_sum",
+      "model": "llama3.2",
+      "is_cache_hit": false,
+      "seconds": 22.913978355005383,
+      "text": "Die Tabelle enthält eine Abrechnung für die Betriebskosten des Hauses im Jahr 2026. Es handelt sich um eine Bescheinigung nach § 35a EStG, die die Kosten für verschiedene Leistungen wie Hausmeistertätigkeit, Treppenhausreinigung, Gartenpflege und Winterdienst aufzeigt. Die wichtigsten Werte sind:\n\n- Gesamter Lohnanteil für Hausmeistertätigkeit: 1.300,00 EUR\n- Anteil Mieter für Hausmeistertätigkeit: 341,67 EUR\n- Gesamter Lohnanteil für Gartenpflege und Winterdienst: 740,00 EUR\n- Anteil Mieter für Garten",
+      "unsupported_numbers": []
+    }
+  ]
+}
