@@ -1,0 +1,19 @@
+03_Strom_Preisanpassung_SuedVolt_2025.pdf  (Score 1.068)
+  Anpassung Ihrer Strompreise zum 01.01.2025 > Preisgegenüberstellung im Detail (ab 01.01.2025)
+    S.1 KI-Zusammenfassung, kein Beleg [KI]  0.712 × 1.5 = 1.068  Pfadtreffer: stromvertrag
+      Die Tabelle zeigt die Anpassung der Strompreise zum 01.01.2025. Der Grundpreis für den Monats- und Jahresverbrauch wird um 10,84 Euro (Monat) bzw. 15,08 Euro (…
+  Anpassung Ihrer Strompreise zum 01.01.2025
+    S.1 Text  0.673 × 1.5 = 1.009  Pfadtreffer: stromvertrag
+      Ihre eingeschränkte Preisgarantie im Tarif SüdVolt ÖkoStrom Klassik 12 endet planmäßig zum 31.12.2024. Aufgrund gestiegener Beschaffungskosten für zertifiziert…
+01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf  (Score 1.035)
+  Herzlich willkommen bei SüdVolt Energie – Ihre Vertragsbestätigung > Ihre vereinbarten Tarifkonditionen: SüdVolt ÖkoStrom Klassik 12
+    S.1 KI-Zusammenfassung, kein Beleg [KI]  0.690 × 1.5 = 1.035  Pfadtreffer: stromvertrag
+      Die Tabelle enthält die vereinbarten Tarifkonditionen für den ÖkoStrom Klassik 12-Vertrag von SüdVolt Energie. Der Grundpreis beträgt 9,66 EUR pro Monat, währe…
+06_Strom_Jahresabrechnung_2025_SuedVolt.pdf  (Score 1.002)
+  Ihre Jahresrechnung Strom für den Zeitraum 01.01.2025 bis 31.12.2025 > 2. Detailberechnung der Energiekosten (Tarif: SüdVolt ÖkoStrom Klassik 12)
+    S.1 KI-Zusammenfassung, kein Beleg [KI]  0.668 × 1.5 = 1.002  Pfadtreffer: stromvertrag
+      Die Tabelle zeigt die Stromabrechnung für den Zeitraum 01.01.2025 bis 31.12.2025. Es handelt sich um die Energiekosten, die aufgrund des Tarifs SüdVolt ÖkoStro…
+04_Strom_Jahresabrechnung_2024_SuedVolt.pdf  (Score 0.990)
+  Ihre Jahresrechnung Strom für den Zeitraum 01.01.2024 bis 31.12.2024
+    S.1 Tabellenzeile  0.660 × 1.5 = 0.990  Pfadtreffer: stromvertrag
+      Nachzahlungsbetrag (fällig am 03.02.2025): 34,00 EUR

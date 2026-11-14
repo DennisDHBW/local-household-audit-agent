@@ -143,3 +143,31 @@
 - **Meine Deutung (eigene Worte):**
 - **Konsequenz / nächster Schritt:** Die Anpassung der Prompts hat Abschneiden (21 → 0) und erfundene Caption-Zahlen beseitigt, aber nicht die inhaltlichen Fehler bei Preistabellen. Summaries gelten deshalb nur als Suchhilfe (thematisches Finden), nie als Beleg: Der Agent zitiert und rechnet mit `table_row`-Chunks. In M4 zeigt die Evidence-UI den Typ „KI-Zusammenfassung“, und es wird gemessen, ob die Summaries das Retrieval verbessern oder Distraktoren erzeugen. Kein dritter Lauf: Ein 3B-Modell wird durch weitere Prompt-Arbeit nicht zuverlässig.
 
+### RUN-004 – Retrieval M4: Filter, Boost und Chunk-Auswahl (12 Fragen, 6 Konfigurationen)
+- **Datum / Commit:** 2026-11-14 · Branch `feat/m4-retrieval`, Stand `docs: document retrieval commands, prefix format and glossary terms for M4`
+- **Varianten:** P1-Retrieval allein (ohne Agent und ohne Synthese); sechs Konfigurationen derselben Suche
+- **Konfiguration:** `nomic-embed-text` (768 Dimensionen), Cosinus, 547 Chunks (178 Text, 299 Tabellenzeilen, 65 Summaries, 5 Bilder; 82 Überschriften nicht eingebettet), 20 Kandidaten, Top-5, Boost 1.5; Fragen S1 bis Z3 aus `ground_truth.yaml` (10 beantwortbar, 2 negativ); Filter je Frage von Hand gesetzt (`QUESTION_FILTERS`, ISS-028); Befehl `uv run python -m audit_agent.retrieval index` und `… compare --run-id run-004`
+- **Dauer:** Index 86,1 s; der gesamte Befehl (Index, Vergleich, drei Beispielsuchen) lief nach den Dateizeitstempeln unter 2 Minuten
+- **Rohdaten:** `data/eval/run-004/` (`retrieval.json`, `retrieval.md`, `index.log`, `compare.log`, `search-s2-*.txt`)
+
+| Konfiguration | Datei gefunden | Seite gefunden | MRR (Datei) | Ablenker-Treffer | leere Ergebnisse |
+|---|---|---|---|---|---|
+| plain (kein Filter, kein Boost) | 9/10 | 9/10 | 0,683 | 4/60 | 0 |
+| nur Boost | 9/10 | 9/10 | 0,683 | 3/60 | 0 |
+| nur Filter | 9/10 | 9/10 | 0,733 | 0/55 | 1 |
+| Filter + Boost | 9/10 | 9/10 | 0,733 | 0/55 | 1 |
+| Filter + Boost, ohne Summaries | 8/10 | 8/10 | 0,633 | 0/55 | 1 |
+| Filter + Boost, ohne Text ohne Kapitel | 9/10 | 9/10 | 0,733 | 0/55 | 1 |
+
+- **Filter:** Ablenker-Treffer (Internet-Dokumente 22/23) sinken von 4 auf 0, die MRR steigt von 0,683 auf 0,733 (G1: Rang 2 → 1). N2 (Fernwärme) liefert mit Filter kein Ergebnis, was richtig ist, denn es gibt keine Fernwärme-Dokumente; ohne Filter kommen dort zwei Internet-Dokumente zurück.
+- **Boost:** Ränge unverändert, Ablenker nur 4 → 3. Der Boost wirkte bei 55 von 60 Treffern (ohne Filter) und bei allen 55 (mit Filter), also fast gleichmäßig: Begriffe wie „Kündigungsfrist“ oder „Arbeitspreis“ stehen in den Überschriften vieler Dokumente (S2: „arbeits“ trifft die Gas-Preisanpassung, S1: „Kündigungsfrist“ trifft die Internet-Zusammenfassung). Ein gleichmäßiger Faktor ändert die Reihenfolge nicht (ISS-027).
+- **Summaries:** Ohne sie sinkt die Trefferquote auf 8/10 und die MRR auf 0,633 (S2: erwartetes Dokument fällt aus den Top-5, G1: Rang 1 → 2). Sie helfen dem Retrieval, sind aber kein Beleg (ADR-0008).
+- **Chunks ohne Kapitel (Briefkopf, Anschrift):** Ausschalten ändert kein Ergebnis dieser 12 Fragen; sie stören nicht messbar und bleiben im Index.
+- **Auffällige Einzelfälle:**
+  - S4 (Verbrauch 2022/2023 nur im Diagramm): in keiner Konfiguration in den Top-5, der Bild-Chunk der Abrechnung 2024 verliert gegen Chunks zu Verbrauch 2025 (ISS-029).
+  - S2: Rang 2. Platz 1 ist die Summary der Preisanpassung 2025 (0,712 × 1,5 = 1,068), danach der Vertrag; für die Frage „laut Stromvertrag“ ist der Filter `doc_type=contract` die Aufgabe des Agenten.
+  - N1 (Stromrechnung 2023): die Suche liefert Rechnungen 2024 und 2025; dass es 2023 keine gibt, muss der Agent über `list_documents` erkennen.
+  - „Seite gefunden“ ist gleich „Datei gefunden“, weil bis auf S4 alle erwarteten Quellen auf Seite 1 stehen; die Seitenmetrik trennt hier nichts.
+- **Grenzen der Messung:** 10 beantwortbare Fragen, nach dem Pipeline-Bau bekannt; Filter von Hand statt vom Agenten gewählt (ISS-028); eine Messung je Konfiguration; von jeder Suche nur die Top-5 gespeichert, daher ist der Rang außerhalb der Top-5 unbekannt; keine Messung der Antwortqualität.
+- **Meine Deutung (eigene Worte):**
+- **Konsequenz / nächster Schritt:** Der Filter trägt den Nutzen (ADR-0002 akzeptiert), der Boost bleibt als Vorlesungsbaustein, sein Nutzen ist nicht belegt (ISS-027). Summaries und Chunks ohne Kapitel bleiben im Index. M5: Tool `search_images` mit `chunk_types={image}` für S4; Tool-Beschreibungen sagen, wann welcher Filter zu setzen ist (ISS-025).

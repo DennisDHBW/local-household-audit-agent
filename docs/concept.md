@@ -126,7 +126,7 @@ Die Dokumente 29 und 30 stammen aus `scripts/generate_error_documents.py`. Alle 
    - Bilder: Caption durch `gemma3:4b` (z. B. „Balkendiagramm Stromverbrauch 2023: 2.950 kWh, 2024: 2.710 kWh“)
    - Ergebnisse im DiskCache (`.cache/enrichment/`, SHA-256 über Aufgabe, Modell, Prompt, Optionen und Bild), damit die langsame Anreicherung auf dem Laptop nur einmal läuft (ADR-0008)
 3. **Typisiertes Chunking:** `text`, `heading`, `table_row`, `table_summary`, `image`
-4. **Hierarchie-Prefix vor dem Embedding:** `[Sparte | Dokumenttyp | Datei | Kapitel]`. `nomic-embed-text` erwartet zusätzlich Aufgaben-Präfixe: `search_document: [Strom | Abrechnung | …] <Text>` beim Indexieren und `search_query: <Anfrage>` bei der Suche. Sein Kontext ist auf 2.048 Tokens begrenzt; Chunks mit max. 1.500 Zeichen passen gut hinein.
+4. **Hierarchie-Prefix vor dem Embedding:** `[Ordner | Datei | Kapitel > Unterkapitel]` (Umsetzung M4, ADR-0009; Sparte und Dokumenttyp stehen als Metadaten und werden gefiltert). `nomic-embed-text` erwartet zusätzlich Aufgaben-Präfixe: `search_document: [01_electricity_suedvolt | 04_Strom_Jahresabrechnung_2024 | …] <Text>` beim Indexieren und `search_query: <Anfrage>` bei der Suche. Sein Kontext ist auf 2.048 Tokens begrenzt; Chunks mit max. 1.500 Zeichen passen gut hinein.
 5. **Speicherung:** JSON-Zwischenformat (`data/processed/`), ChromaDB (`data/vectors/`)
 
 ### 5.2 Domänenspezifische Ergänzung: Dokument-Metadaten
@@ -187,6 +187,8 @@ Die Tools können `utility_type`, `doc_type` und Zeitraum als ChromaDB-`where`-F
 **Messbare Frage für die Ausarbeitung:** Wie oft landen Ablenkungsdokumente in den Top-k, (a) ohne Filter und Boost, (b) nur mit Boost, (c) mit Filter und Boost? Daraus lässt sich der Nutzen der Erweiterung direkt belegen (→ Testmodul, Metrik „Distractor Rate“).
 
 **Evidence-First-UI (Streamlit):** Vor der finalen Antwort werden die gefundenen Belege hierarchisch angezeigt (Dokument → Kapitel → Text/Tabellenzeile/Grafik-Caption mit Seite und Score).
+
+**Umsetzung in M4 (Stand 2026-11-14):** Paket `audit_agent.retrieval` (ADR-0009). Der Index enthält alle Chunks außer Überschriften; die Suche holt 20 Kandidaten, multipliziert bei einem Pfadtreffer mit 1.5 und liefert die 5 besten mit `base_score`, `boost` und `final_score`. Der Metadatenfilter (Sparte, Dokumenttyp, Vertragsnummer, Zeitraum) wirkt als `where`-Bedingung; der Zeitraumfilter schließt Dokumente ohne Abrechnungszeitraum aus (ISS-025). Ein Rewriting-Modell gibt es in P1 nicht. Die Evidenz erscheint in M4 als Text in der CLI (`python -m audit_agent.retrieval search`), die Streamlit-Oberfläche folgt in M5.
 
 ---
 

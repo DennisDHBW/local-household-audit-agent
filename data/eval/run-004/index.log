@@ -1,0 +1,52 @@
+   Building local-household-audit-agent @ file:///home/usr0/PycharmProjects/local-household-audit-agent
+Downloading hf-xet (4.1MiB)
+Downloading tokenizers (3.2MiB)
+Downloading kubernetes (7.2MiB)
+Downloading grpcio (7.0MiB)
+Downloading aiohttp (1.8MiB)
+ Downloaded aiohttp
+ Downloaded tokenizers
+ Downloaded hf-xet
+      Built local-household-audit-agent @ file:///home/usr0/PycharmProjects/local-household-audit-agent
+ Downloaded grpcio
+ Downloaded kubernetes
+Uninstalled 1 package in 1ms
+Installed 67 packages in 41ms
+indexed 16/547 chunks
+indexed 32/547 chunks
+indexed 48/547 chunks
+indexed 64/547 chunks
+indexed 80/547 chunks
+indexed 96/547 chunks
+indexed 112/547 chunks
+indexed 128/547 chunks
+indexed 144/547 chunks
+indexed 160/547 chunks
+indexed 176/547 chunks
+indexed 192/547 chunks
+indexed 208/547 chunks
+indexed 224/547 chunks
+indexed 240/547 chunks
+indexed 256/547 chunks
+indexed 272/547 chunks
+indexed 288/547 chunks
+indexed 304/547 chunks
+indexed 320/547 chunks
+indexed 336/547 chunks
+indexed 352/547 chunks
+indexed 368/547 chunks
+indexed 384/547 chunks
+indexed 400/547 chunks
+indexed 416/547 chunks
+indexed 432/547 chunks
+indexed 448/547 chunks
+indexed 464/547 chunks
+indexed 480/547 chunks
+indexed 496/547 chunks
+indexed 512/547 chunks
+indexed 528/547 chunks
+indexed 544/547 chunks
+indexed 547/547 chunks
+547 chunks from 30 documents indexed
+by type: {'text': 178, 'table_summary': 65, 'table_row': 299, 'image': 5}, headings skipped: 82
+nomic-embed-text, 768 dimensions, 86.1 s

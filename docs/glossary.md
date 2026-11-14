@@ -81,3 +81,22 @@
 | Tool-Calling (nativ) | `tools=[...]` | Das Modell antwortet mit einem strukturierten Werkzeugaufruf statt Freitext | |
 | Einstellungen | `Settings` | Zentrale Konfiguration (Pfade, Modelle, Limits), überschreibbar per `AUDIT_*`-Variablen | |
 | Präfix-Wiederverwendung | `is_prefix_reused` | Ollama behält den gleichen Prompt-Anfang im Cache und spart Prefill-Zeit | |
+
+## Retrieval (M4)
+
+| Begriff | Code (EN) | Kurzdefinition | In meinen Worten |
+|---|---|---|---|
+| Index | `build_index` | ChromaDB-Collection `chunks` mit Embeddings und Metadaten aller Chunks außer Überschriften; wird bei jedem Lauf neu gebaut | |
+| Aufgaben-Präfix | `document_task_prefix`, `query_task_prefix` | `search_document: ` vor indexierten Texten, `search_query: ` vor Anfragen (verlangt `nomic-embed-text`) | |
+| Hierarchie-Präfix | `hierarchy_prefix` | `[Ordner \| Datei \| Kapitel > Unterkapitel]` vor dem Chunk-Inhalt, damit der Pfad Teil des Vektors wird | |
+| Metadatenfilter | `MetadataFilter`, `build_where` | Harte Einschränkung auf Sparte, Dokumenttyp, Vertragsnummer oder Zeitraum als ChromaDB-`where` | |
+| Kandidaten | `candidate_count` | Die 20 ähnlichsten Chunks der Vektorsuche, bevor der Boost sie neu ordnet | |
+| Basis-Score | `base_score` | `1 − Cosinus-Abstand` zwischen Anfrage und Chunk | |
+| Hierarchie-Boost | `boost`, `hierarchy_boost` | Faktor 1.5, wenn ein Anfrageterm im Dateinamen, Ordner oder in den Überschriften steht, sonst 1.0 | |
+| Finaler Score | `final_score` | `base_score × boost`; danach wird sortiert | |
+| Pfadtreffer | `matched_terms`, `path_matches` | Die Anfrageterme, die den Boost ausgelöst haben | |
+| Retriever | `Retriever` | Klasse, die Anfrage einbettet, ChromaDB abfragt und die Treffer neu ordnet | |
+| Treffer | `SearchHit` | Ein Suchergebnis mit Inhalt, Pfad, Seite und allen drei Score-Zahlen | |
+| Evidenz | `build_evidence` | Treffer, gruppiert nach Dokument und Kapitel, mit Typ-Kennzeichnung (KI-Texte sind kein Beleg) | |
+| Vergleichslauf | `run_comparison` | Die 12 Fragen unter sechs Konfigurationen (Filter, Boost, Chunk-Auswahl), bewertet gegen die erwarteten Quellen | |
+| MRR | `mean_reciprocal_rank` | Mittelwert von 1/Rang der ersten richtigen Quelle; 1.0 heißt immer auf Platz 1 | |

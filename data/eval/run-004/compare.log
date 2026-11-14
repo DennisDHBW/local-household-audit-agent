@@ -1,0 +1,13 @@
+# Retrieval-Vergleich (Top-5)
+
+| Konfiguration | Datei gefunden | Seite gefunden | MRR (Datei) | Ablenker-Treffer | leere Ergebnisse |
+|---|---|---|---|---|---|
+| plain | 9/10 | 9/10 | 0.683 | 4/60 | 0 |
+| boost | 9/10 | 9/10 | 0.683 | 3/60 | 0 |
+| filter | 9/10 | 9/10 | 0.733 | 0/55 | 1 |
+| filter+boost | 9/10 | 9/10 | 0.733 | 0/55 | 1 |
+| filter+boost, no summaries | 8/10 | 8/10 | 0.633 | 0/55 | 1 |
+| filter+boost, no headless text | 9/10 | 9/10 | 0.733 | 0/55 | 1 |
+
+
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-004/retrieval.md (generated 2026-11-14)

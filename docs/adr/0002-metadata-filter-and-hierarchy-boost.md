@@ -1,6 +1,6 @@
 # ADR-0002: Metadatenfilter zusätzlich zum Hierarchie-Boost
 
-- **Status:** vorgeschlagen
+- **Status:** akzeptiert (Filter belegt, Boost ohne belegten Nutzen)
 - **Datum:** 2026-11-14
 - **Meilenstein:** M4
 
@@ -23,4 +23,8 @@ Jeder Chunk erhält Metadaten (`utility_type`, `doc_type`, `contract_id`, `billi
 - Zu testen: Distractor Rate ohne Filter / nur Boost / Filter + Boost (Evaluation)
 
 ## Belege
-Konzept Abschnitt 6; folgt nach RUN-xxx.
+Konzept Abschnitt 6; RUN-004 in `evaluation-log.md` (12 Fragen, Top-5, handgesetzte Filter):
+- Ablenker-Treffer: 4/60 ohne Filter, 3/60 nur mit Boost, 0/55 mit Filter (mit und ohne Boost).
+- MRR der erwarteten Datei: 0,683 (ohne Filter, mit und ohne Boost), 0,733 mit Filter.
+- Der Boost wirkte bei 55 von 60 Treffern und änderte keinen Rang, weil die Anfrageterme in den Überschriften fast aller Dokumente stehen (ISS-027). Er bleibt als Baustein aus der Vorlesung bestehen, weil er nichts verschlechtert hat; ein Nutzen ist nicht belegt.
+- Grenzen: ISS-025 (Zeitraumfilter), ISS-028 (Filter von Hand gesetzt). Umsetzung: ADR-0009.
