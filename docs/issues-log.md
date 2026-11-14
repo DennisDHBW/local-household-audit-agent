@@ -24,6 +24,56 @@
 
 ## Einträge
 
+### ISS-034 – Eigene Fehler beim Bau von M5 (von den Tests gefunden)
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** (1) `list_documents` mit Jahr 2023 listete den Stromvertrag, obwohl er erst ab 2024 gilt. (2) Der Rechner fing nur `DivisionByZero` und `InvalidOperation`, aber nicht `Overflow`.
+- **Ursache:** (1) Meine erste Jahreslogik nahm bei Dokumenten ohne Zeitraum auch das Schreibdatum (Dezember 2023) als Treffer; die Ausgabe zeigte aber nur „gültig ab 2024“, der Treffer war nicht erklärbar. (2) Zu enge Ausnahmeliste.
+- **Lösung / Workaround:** (1) Reihenfolge Abrechnungszeitraum, dann `valid_from`, dann Schreibdatum; sie entspricht der ausgegebenen Zeile. (2) `ArithmeticError` fangen. Beides hat ein Test aufgedeckt (`test_list_documents_says_so_when_nothing_exists`, Rechner-Angriffsliste).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-033 – `list_documents` kennt die Laufzeit eines Vertrags nicht
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** tools
+- **Status:** akzeptiert
+- **Symptom:** Ein Vertrag mit `valid_from` 2024 erscheint bei `year=2025` nicht, obwohl er 2025 noch läuft.
+- **Ursache:** Die Metadaten haben kein Vertragsende; nur Abrechnungszeitraum und `valid_from` sind gepflegt.
+- **Lösung / Workaround:** Der Jahresfilter von `list_documents` meint „Dokument gehört zu diesem Jahr“, nicht „Vertrag gilt in diesem Jahr“. Für Verträge fragt der Agent ohne Jahr; die Tool-Beschreibung sagt, dass die Liste mit Filtern aufzurufen ist. Ein Feld `valid_until` wäre ein Eingriff in `documents.yaml` und wird nur gemacht, wenn M6 den Fall zeigt.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-032 – Filterregeln im Code sind Heuristiken
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** (a) Ein Jahresfilter ohne `bill`/`notice`/`payment_plan` wird verworfen, auch wenn das Modell ihn für ein Dokument mit `valid_from` meint (Preisanpassung 2025). (b) Die automatische Wiederholung ohne Filter kann Treffer liefern, die zur Frage nicht mehr passen; das Modell muss den Hinweistext lesen.
+- **Ursache:** Der Index hat keinen Filter auf `valid_from` (ISS-025, YAGNI); kleine Modelle lesen Hinweise in Beobachtungen nicht zuverlässig.
+- **Lösung / Workaround:** Die Hinweise stehen als erste Zeilen der Beobachtung. In RUN-005 und M6 messen: Wie oft wird ein Filter verworfen oder wiederholt, und führt das zu falschen Antworten?
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Agent / Tools (Regeln im Code statt im Prompt)
+
+### ISS-031 – Kürzung der Treffertexte kann die gesuchte Stelle abschneiden
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** Das Modell sieht von jedem Treffer höchstens 600 Zeichen; Text-Chunks sind bis 1.500 Zeichen lang. Eine Kündigungsfrist am Ende eines langen Absatzes könnte fehlen.
+- **Ursache:** Abwägung gegen die Prefill-Zeit (ca. 18 Token/s): 5 volle Treffer wären rund 110 s je Suche.
+- **Lösung / Workaround:** Die Evidenz in der Oberfläche zeigt den vollen Text. In RUN-005 prüfen, ob eine erwartete Zahl in der gekürzten Beobachtung fehlt; sonst `max_hit_chars` erhöhen oder Treffer am Satzende kürzen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Agent / Grenzen
+
+### ISS-030 – Der Prompt ist groß, bevor die erste Frage kommt
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** hardware
+- **Status:** offen
+- **Symptom:** Die sechs Tool-Schemas sind ca. 6.000 Zeichen lang (die Aufzählungen von Sparte und Dokumenttyp stehen in vier Tools), dazu kommt der System-Prompt (ca. 1.300 Zeichen). Geschätzt 1.500 bis 2.500 Token, bei 18 Token/s ein Prefill von 80 bis 140 s vor dem ersten Schritt. `list_documents` ohne Filter liefert 30 Zeilen (ca. 3.300 Zeichen).
+- **Ursache:** Kleine Modelle brauchen ausführliche Beschreibungen, die Schemas wiederholen die Filterbeschreibungen.
+- **Lösung / Workaround:** Erst messen (RUN-005 protokolliert `prompt_tokens` und `prefill_seconds` je Aufruf), dann kürzen. Wenn die Präfix-Wiederverwendung greift (ISS-005), zahlt sich der Anfang nur einmal aus; ein letzter Aufruf ohne Tools bricht sie und kostet einen vollen Prefill.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Hardware-Grenzen / Agent
+
 ### ISS-029 – Frage S4 (Verbrauch 2022/2023 aus dem Diagramm) wird nicht gefunden
 - **Datum / Meilenstein:** 2026-11-14 / M4
 - **Kategorie:** retrieval

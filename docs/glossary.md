@@ -100,3 +100,16 @@
 | Evidenz | `build_evidence` | Treffer, gruppiert nach Dokument und Kapitel, mit Typ-Kennzeichnung (KI-Texte sind kein Beleg) | |
 | Vergleichslauf | `run_comparison` | Die 12 Fragen unter sechs Konfigurationen (Filter, Boost, Chunk-Auswahl), bewertet gegen die erwarteten Quellen | |
 | MRR | `mean_reciprocal_rank` | Mittelwert von 1/Rang der ersten richtigen Quelle; 1.0 heißt immer auf Platz 1 | |
+| Agentenschleife | `AgentLoop` | Ruft das Modell, führt dessen Tool-Aufrufe aus, gibt die Beobachtungen zurück und wiederholt das bis zur Antwort oder zum Limit | |
+| Werkzeug (Agent) | `AgentTool` | Name, Beschreibung, Argumentmodell und Funktion eines Tools; erzeugt auch das JSON-Schema für Ollama | |
+| Werkzeugkasten | `ToolBox` | Baut die sechs Tools aus Einstellungen, Suche und Dokumentkatalog | |
+| Beobachtung | `observation` | Text, den ein Tool an das Modell zurückgibt (Treffer, Liste, Rechenergebnis oder `FEHLER:`) | |
+| Belegnummer | `EvidenceBook` | Laufende Nummer `[n]` je gefundenem Chunk in einem Lauf; das Modell zitiert sie, die Oberfläche zeigt sie | |
+| Schritt | `ModelCallStep`, `ToolCallStep` | Ein Modellaufruf (mit Token und Zeiten) oder ein Tool-Aufruf (mit Argumenten und Beobachtung) im Log | |
+| Lauf | `AgentRun` | Frage, Antwort, Endgrund, alle Schritte und die nummerierten Quellen einer Frage | |
+| Endgrund | `stop_reason` | `answer`, `tool_limit`, `context_limit` oder `empty_answer` | |
+| Werkzeuglimit | `max_tool_calls` | Höchstens 6 Tool-Aufrufe je Frage, gültige und ungültige | |
+| Kontextwächter | `context_reserve_tokens` | Beendet die Suche, wenn Prompt und Beobachtungen den Platz für die Antwort aufbrauchen würden | |
+| Rechner | `calculate` | Rechnet Ausdrücke über den Syntaxbaum (`ast`) mit `Decimal`, ohne `eval` | |
+| Jahresfilter-Regel | `YEAR_FILTER_DOC_TYPES` | Der Jahresfilter gilt nur für Dokumente mit Abrechnungszeitraum (Rechnung, Hinweis, Abschlagsplan) | |
+| Laufprotokoll | `RunLog` | Schreibt jeden Schritt sofort als JSON-Zeile nach `data/eval/<run>/` | |

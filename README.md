@@ -26,10 +26,8 @@ local-household-audit-agent/
 │   ├── ingestion/             # PDF-Parser, Chunk-Modelle, Pipeline
 │   ├── enrichment/            # Bild-Captions, Tabellen-Summaries, Cache (braucht Ollama)
 │   ├── retrieval/             # Index (ChromaDB), Suche mit Filter und Hierarchie-Boost, Evidenz, Vergleichslauf (braucht Ollama)
-│   ├── tools/                 # (geplant) deterministische Agent-Tools
-│   ├── agent/                 # (geplant) ReAct-Schleife, Prompts
+│   ├── agent/                 # ReAct-Schleife mit 6 Tools, Rechner, Protokoll, Report, CLI, Streamlit-Oberfläche (braucht Ollama)
 │   ├── evaluation/            # (geplant) Testmodul, Metriken, RAGAS
-│   └── ui/                    # (geplant) Streamlit / CLI
 ├── tests/                     # pytest (unit / integration / slow)
 ├── paper/                     # Ausarbeitung (LaTeX, DHBW-Vorlage)
 └── docs/                      # Projektdokumentation (siehe unten)
@@ -81,9 +79,12 @@ uv run python -m audit_agent.enrichment   # Captions + Summaries, braucht Ollama
 uv run python -m audit_agent.retrieval index    # baut den ChromaDB-Index in data/vectors/, braucht Ollama (nomic-embed-text)
 uv run python -m audit_agent.retrieval search "Arbeitspreis Stromvertrag" --utility-type electricity   # Evidenz in der CLI
 uv run python -m audit_agent.retrieval compare --run-id run-004   # 12 Fragen x 6 Konfigurationen, Report unter data/eval/run-004/
+uv run python -m audit_agent.agent ask "Welchen Arbeitspreis nennt der Stromvertrag?"   # eine Frage, braucht Ollama (mehrere Minuten)
+uv run python -m audit_agent.agent run-set --run-id run-005   # Fragen S2, G1, N1, S4 (--ids ... oder --all), Report unter data/eval/run-005/agent.md
+uv run streamlit run src/audit_agent/agent/app.py   # Oberfläche mit Belegen vor der Antwort, braucht Ollama
 ```
 
-Der Smoke-Test schreibt `data/eval/<run-id>/smoke.json` und `smoke.md`. Einstellungen lassen sich per Umgebungsvariable ändern, z. B. `AUDIT_OLLAMA_HOST`, `AUDIT_NUM_CTX`, `AUDIT_MODEL_AGENT`. Die Ingestion schreibt je PDF eine Datei `data/processed/<datei>_chunks.json` und die Diagramme nach `data/processed/images/`. Das Enrichment ergänzt diese Dateien um Bild-Captions und `table_summary`-Chunks; es muss nach jeder neuen Ingestion erneut laufen (aus dem Cache in Sekunden). Mit `--dry-run` zählt es die offenen Jobs ohne Ollama, mit `--limit 1` macht es einen Probelauf, mit `--run-id <id>` landet der Report unter `data/eval/<id>/enrichment.json`. Der Index (`retrieval index`) muss nach jeder neuen Ingestion und jedem Enrichment neu gebaut werden. `retrieval search` akzeptiert `--utility-type`, `--doc-type`, `--contract-id`, `--year`, `--no-boost`, `--types`, `--require-heading` und `--top-k`. Agent und Evaluation folgen mit M5 und M6.
+Der Smoke-Test schreibt `data/eval/<run-id>/smoke.json` und `smoke.md`. Einstellungen lassen sich per Umgebungsvariable ändern, z. B. `AUDIT_OLLAMA_HOST`, `AUDIT_NUM_CTX`, `AUDIT_MODEL_AGENT`. Die Ingestion schreibt je PDF eine Datei `data/processed/<datei>_chunks.json` und die Diagramme nach `data/processed/images/`. Das Enrichment ergänzt diese Dateien um Bild-Captions und `table_summary`-Chunks; es muss nach jeder neuen Ingestion erneut laufen (aus dem Cache in Sekunden). Mit `--dry-run` zählt es die offenen Jobs ohne Ollama, mit `--limit 1` macht es einen Probelauf, mit `--run-id <id>` landet der Report unter `data/eval/<id>/enrichment.json`. Der Index (`retrieval index`) muss nach jeder neuen Ingestion und jedem Enrichment neu gebaut werden. `retrieval search` akzeptiert `--utility-type`, `--doc-type`, `--contract-id`, `--year`, `--no-boost`, `--types`, `--require-heading` und `--top-k`. Der Agent schreibt je Frage `data/eval/<run-id>/agent-<id>.jsonl` (jeder Schritt eine Zeile) und bei `run-set` zusätzlich `agent.md` und `agent.json`; die Modellwahl geht mit `--model` oder `AUDIT_MODEL_AGENT`. Der Index muss vorher gebaut sein. Die Evaluation folgt mit M6.
 
 ## Ausarbeitung bauen
 
