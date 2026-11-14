@@ -43,7 +43,7 @@ Die Dateien unter `docs/` werden **während der Umsetzung** laufend gepflegt. Si
 | `docs/reverse-engineering/` | Verständnisnotizen je Meilenstein | nach jedem Meilenstein | Nachweis des Verständnisses |
 | `docs/evaluation-log.md` | Testläufe, Konfiguration, Ergebnisse, Deutung | nach jedem Testlauf | Kapitel Testmodul & Evaluation |
 | `docs/glossary.md` | Fachbegriffe DE ↔ Bezeichner EN, Erklärung in eigenen Worten | wenn ein neuer Begriff auftaucht | eigene Sprache, einheitliche Begriffe |
-| `docs/sources.md` | Literatur mit Kernaussage in eigenen Worten | beim Lesen | Literaturbezug (10 %) |
+| `docs/sources.md` | Hintergrund-Literatur (nicht Teil der Ausarbeitung) | optional | – |
 | `docs/requirements.md` | Alle Anforderungen (Folien + Professor) | stabil | Abgleich vor der Abgabe |
 | `docs/concept.md` | Projektkonzept | bei Konzeptänderungen | Gliederung, Architektur |
 | `docs/ai-workflow.md` | Arbeitsweise mit Claude, Projektanweisungen, Modellwahl | bei Bedarf | – |

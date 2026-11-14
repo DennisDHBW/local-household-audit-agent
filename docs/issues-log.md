@@ -30,7 +30,7 @@
 - **Status:** offen
 - **Symptom:** Beim Nachrechnen aller 28 Dokumente fiel nur eine Unstimmigkeit auf (Stromrechnung 2025: 39,50 statt 38,20 ct/kWh).
 - **Ursache:** Korpus wurde ohne Fehlerliste erzeugt.
-- **Lösung / Workaround:** offen: 1–2 weitere fehlerhafte Varianten ergänzen oder die Fehlererkennungsrate in der Ausarbeitung als eingeschränkt aussagekräftig benennen.
+- **Lösung / Workaround:** In M1 werden zwei weitere fehlerhafte Dokumente im gleichen Stil ergänzt.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Testmodul, Grenzen der Evaluation
 

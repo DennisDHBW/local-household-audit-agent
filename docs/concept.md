@@ -104,7 +104,7 @@ Der Korpus liegt vollständig synthetisch unter `dataset/` (28 PDFs, erzeugt mit
 - **Diagramme mit Zusatzinformation:** Die Seiten 2 von 04, 06, 10 und 15 enthalten Rasterdiagramme (Vorjahresvergleich, Monatsverlauf, Vergleichsgruppen). Teilweise stehen Werte nur im Bild (z. B. Stromverbrauch 2022: 3.480 kWh, 2023: 3.390 kWh). Damit ist `search_images` nicht nur Dekoration.
 - **Querbezüge:** Anfangszählerstände im Übergabeprotokoll (17) = Startwerte der ersten Abrechnungen; Wohnfläche und Vorauszahlung im Mietvertrag (16) ↔ Betriebskostenabrechnungen (18/19); Abschläge aus Preisanpassungen ↔ Jahresrechnungen.
 - **Fallen für den Agenten:** Gas-„Preissenkung“ 2026 senkt den Arbeitspreis, erhöht aber den Grundpreis (14,50 → 16,00 EUR/Monat); mehrere Abschlagshöhen über die Jahre (Strom 105 → 115 → 120 EUR); „Grundpreis“ und „Kündigungsfrist“ auch in Internet- und Mobilfunkverträgen.
-- **Bewertung:** Der Korpus ist gut geeignet und wird beibehalten. Schwäche: nur ein eingebauter Fehler. Die Fehlererkennungsrate ist damit wenig aussagekräftig; die Fehlalarmrate lässt sich an den vielen korrekten Abrechnungen gut messen. Optional können 1–2 weitere fehlerhafte Varianten ergänzt werden (offene Entscheidung).
+- **Bewertung:** Der Korpus ist gut geeignet und wird beibehalten. Schwäche: nur ein eingebauter Fehler. Die Fehlererkennungsrate ist damit wenig aussagekräftig; die Fehlalarmrate lässt sich an den vielen korrekten Abrechnungen gut messen. In M1 werden zwei weitere fehlerhafte Varianten im gleichen Stil ergänzt (Entscheidung 2026-11-14).
 - **Fehlt noch (M1):** `dataset/documents.yaml` (Metadaten je Dokument) und `dataset/ground_truth.yaml` (Fakten und erwartete Antworten zum Testkatalog).
 
 ## 5. Vorverarbeitung & Datenstrukturen
@@ -411,7 +411,7 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 | 3. Architektur | Gesamtbild, P1 vs. P2, Tools, ReAct-Beispiel, Modellwahl & Hardware | 25 % |
 | 4. RAG- & Retrieval-Konzept | Hierarchie-Prefix, Score-Formel, Metadatenfilter, Evidence-First, GraphRAG-Entscheidung | 20 % |
 | 5. Testmodul & Evaluation | 12-Fragen-Katalog (5/2/2 + 3), RAGAS + eigene Metriken, Baselines, Ergebnisse, Fehleranalyse | 15 % |
-| 6. Literaturbezug & Reflexion | ReAct, RAG, Modular RAG Survey, Self-RAG, Toolformer + aktuelle Paper; Grenzen, Lessons Learned, Ausblick | 10 % |
+| 6. Reflexion und Ausblick | Grenzen, Erkenntnisse aus Tests und Issues, Ausblick (ohne Literatur) | 10 % |
 
 ---
 
@@ -420,7 +420,8 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 - [x] Herkunft der Dokumente: vollständig synthetisch, Korpus mit 28 PDFs liegt vor und wurde geprüft (Abschnitt 4)
 - [x] Sparten-Scope: alle vier Sparten im Korpus; Kern der Prüffragen Strom, Gas und Betriebskosten
 - [x] Python-Umgebung: `uv`, Python 3.13 (laut `pyproject.toml`)
-- [ ] Weitere eingebaute Fehler ergänzen (derzeit nur einer, Abschnitt 4.2)?
+- [x] Zwei weitere eingebaute Fehler in M1 ergänzen (Abschnitt 4.2)
+- [x] Keine Literatur in der Ausarbeitung
 - [ ] Agent-Modell: `qwen2.5:7b` vs. `llama3.1:8b` (Smoke-Test in M0)
 - [ ] Tool-Calling: natives Ollama-Tool-Calling oder ReAct per Text-Prompt mit eigenem Parser?
 - [ ] Referenzprototyp als Basis oder eigener Aufbau? (Code liegt nicht im Repo)

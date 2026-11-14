@@ -1,6 +1,6 @@
 # Literatur & Quellen
 
-> Pflicht laut Vorlesung: mindestens 3 Grundlagen- und 3 aktuelle Paper sichten. Literaturbezug zählt 10 %.
+> Nur Hintergrund für das eigene Verständnis. In der Ausarbeitung wird keine Literatur verwendet (Entscheidung 2026-11-14).
 > Nicht das ganze Paper lesen müssen: Abstract, Einleitung, Abbildungen, Fazit reichen meist. Die Spalte „Kernaussage“ kann Claude (z. B. mit dem Skill deep-research) vorbereiten; die Spalte „Bezug zu meinem Projekt“ ist das, was in der Ausarbeitung zählt.
 > arXiv-Nummern vor dem Zitieren auf arxiv.org prüfen. BibTeX direkt in `references.bib` übernehmen (für LaTeX).
 

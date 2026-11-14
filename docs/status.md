@@ -28,9 +28,9 @@
 ## Nächste Schritte
 1. Nutzer: Projektanweisungen ersetzen, pushen, Ollama-Modelle laden (`preparation-checklist.md`)
 2. M0 starten
+3. M1: zwei zusätzliche fehlerhafte Dokumente erzeugen, `documents.yaml`, `ground_truth.yaml`
 
 ## Offene Entscheidungen / Fragen
-- Weitere eingebaute Fehler im Korpus ergänzen?
 - Agent-Modell: `qwen2.5:7b` vs. `llama3.1:8b` (Smoke-Test in M0)
 - Tool-Calling: natives Ollama-Tool-Calling oder Text-ReAct?
 - Titelblatt-Angaben für `paper/` (Name, Matrikelnummer, Kurs, Dozent)
@@ -42,4 +42,5 @@
 
 ## Hinweise für die nächste Sitzung
 - Git: Branch pro Arbeitspaket, `merge --no-ff` in main, keine Claude-Hinweise in Commits
+- Entschieden: Nutzer pusht selbst; zwei weitere Fehler-Dokumente in M1; keine Literatur in der Ausarbeitung
 - Shell-Python ist 3.10; Projekt braucht 3.13 → `uv python install 3.13` bzw. `uv sync` in M0 prüfen

@@ -9,7 +9,7 @@
 
 - Umfang: 5–8 Seiten Fließtext ohne Titelblatt, Verzeichnisse und Anhang
 - LaTeX-Vorlage unter `paper/` (DHBW-Template). Aktiv: Titelblatt, Inhaltsverzeichnis, Kapitel (`paper/content/chapter/NN-name/main.tex`). Auskommentiert: Sperrvermerk, Erklärung, KI- und Gender-Hinweis, Abstract, Verzeichnisse, Literaturverzeichnis, Glossar. Ein Anhang kann bei Bedarf wieder aktiviert werden.
-- Kein Literaturverzeichnis gefordert. Konzepte aus der Vorlesung (ReAct, Modular RAG, Self-RAG, RAGAS) werden trotzdem namentlich aufgegriffen, weil „Literaturbezug & Reflexion“ 10 % der Bewertung ausmacht.
+- Keine Literatur: kein Literaturverzeichnis, keine Zitate, keine Verweise auf Paper (Entscheidung vom 2026-11-14). Fachbegriffe wie ReAct oder RAG dürfen als Begriffe vorkommen. Der Reflexionsteil stützt sich auf eigene Ergebnisse.
 - **Keine Ich-Form** (auch kein „wir“). Stattdessen: der Prototyp, der Agent, das System, diese Arbeit, unpersönliche Konstruktionen. Passiv nur dosiert, sonst wird der Text hölzern. Bevorzugt Sätze mit dem System als Subjekt: „Der Parser erkennt Tabellen zuerst …“, „Im ersten Testlauf zeigte sich …“.
 - Gliederung und Gewichtung: siehe `concept.md`, Abschnitt 14, und `requirements.md`, Abschnitt 3
 - Begriffe genau wie in `glossary.md`
@@ -39,7 +39,6 @@ Schritt 7 ist kurz, macht aber viel aus: Eigene Formulierungen und Antworten aus
 - **Entscheidungen begründen** (aus ADRs), inklusive verworfener Alternativen.
 - **Grenzen offen benennen**, ohne sich kleinzureden.
 - **O-Ton nutzen:** Gedanken und Beobachtungen aus den O-Ton-Feldern des Journals inhaltlich aufgreifen und sinngemäß in die unpersönliche Form übertragen („Überraschend war, dass …“, „Aufwendiger als erwartet war …“).
-- **Literatur** dort zitieren, wo sie eine Entscheidung stützt, nicht als Pflichtübung am Satzende.
 
 ### 3.2 Sprache
 - Sachlicher, klarer Ton auf studentischem Niveau. Fachbegriffe korrekt, aber nicht gestelzt.
