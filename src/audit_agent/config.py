@@ -36,6 +36,27 @@ class ModelNames(BaseModel):
         return tuple(dict.fromkeys(ordered))
 
 
+class ParserSettings(BaseModel):
+    """Tunable parameters of the PDF parser (concept.md, section 5.1)."""
+
+    model_config = ConfigDict(frozen=True)
+
+    min_chars: int = Field(default=20, ge=1)
+    """Paragraphs shorter than this are merged into the following paragraph."""
+    max_block_chars: int = Field(default=1500, ge=100)
+    """Upper bound per text chunk; ``nomic-embed-text`` handles about 2.048 tokens."""
+    header_zone_ratio: float = Field(default=0.04, ge=0, lt=0.5)
+    """Top share of a page that holds running headers (page number) and is skipped."""
+    footer_zone_ratio: float = Field(default=0.06, ge=0, lt=0.5)
+    """Bottom share of a page that holds letter footers (bank, register) and is skipped."""
+    heading_size_factor: float = Field(default=1.0, ge=1)
+    """A bold line counts as heading if its font is this much larger than the body font."""
+    cell_gap_pt: float = Field(default=5.0, ge=0)
+    """Horizontal gap (points) that separates two table cells within one row."""
+    min_image_width_pt: float = Field(default=50.0, ge=0)
+    """Images narrower than this are decoration and not extracted."""
+
+
 class Settings(BaseModel):
     """Runtime settings of the application."""
 
@@ -48,6 +69,7 @@ class Settings(BaseModel):
     memory_limit_gb: float = Field(default=MAX_OLLAMA_MEMORY_GB, gt=0)
     max_loaded_models: int = Field(default=MAX_LOADED_MODELS, ge=1)
     models: ModelNames = Field(default_factory=ModelNames)
+    parser: ParserSettings = Field(default_factory=ParserSettings)
 
     @property
     def dataset_dir(self) -> Path:
@@ -76,6 +98,10 @@ class Settings(BaseModel):
     @property
     def eval_dir(self) -> Path:
         return self.data_dir / "eval"
+
+    @property
+    def images_dir(self) -> Path:
+        return self.processed_dir / "images"
 
     @property
     def cache_dir(self) -> Path:

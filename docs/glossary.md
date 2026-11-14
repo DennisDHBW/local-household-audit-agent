@@ -50,6 +50,17 @@
 | Erwartete Tatsache | `ExpectedFact` | Prüfbarer Wert einer erwarteten Antwort mit Einheit und Toleranz | |
 | Ablenkungsdokument | `is_noise_document` | PDF mit ähnlichem Vokabular, aber ohne Bezug zur Frage (Internet, Mobilfunk, Versicherung) | |
 | Korpus-Fehler | `CorpusError` | Fehler beim Laden oder Validieren von `documents.yaml` bzw. `ground_truth.yaml` | |
+| Parser | `DocumentParser` | Liest ein PDF und erzeugt typisierte Chunks (Tabellen, Überschriften, Text, Bilder) | |
+| Zwischenformat | `ParsedDocument` | Alle Chunks eines PDFs als JSON unter `data/processed/<datei>_chunks.json` | |
+| Chunk-Metadaten | `ChunkMetadata` | Dokument-Metadaten plus `table_id`, `columns`, `image_path` je Chunk | |
+| Span | `_Span` | Zusammenhängendes Textstück mit gleicher Schrift (kleinste Einheit aus PyMuPDF) | |
+| Tabellenregion | `_TableRegion` | Fläche und Zeilenbänder einer erkannten Tabelle | |
+| Abschnittszeile | – | Fette, größere Einzelzelle innerhalb einer Tabelle; trennt zwei Tabellen und wird zur Überschrift | |
+| Lesereihenfolge | `_reading_order` | Von oben nach unten, bei vertikaler Überlappung spaltenweise | |
+| Kopf-/Fußzone | `header_zone_ratio`, `footer_zone_ratio` | Seitenränder, deren Text verworfen wird (Seitenzahl, Bank, Register) | |
+| Parser-Einstellungen | `ParserSettings` | Schwellwerte des Parsers (`min_chars`, `max_block_chars`, `cell_gap_pt` …) | |
+| Ingestion | `run_ingestion` | Pipeline von `documents.yaml` und PDFs zu den JSON-Dateien; idempotent | |
+| Parse-Fehler | `ParseError` | PDF fehlt, ist nicht lesbar oder enthält keinen Inhalt | |
 | Halluzination | – | Plausible, aber nicht belegte Aussage | |
 
 ## Betrieb & Messung

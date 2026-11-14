@@ -22,7 +22,7 @@ local-household-audit-agent/
 │   ├── preflight.py           # Fail-fast-Prüfung der Ollama-Modelle
 │   ├── smoke/                 # Smoke-Test (Geschwindigkeit, Tool-Calling, Embedding, Vision)
 │   ├── corpus/                # Modelle und Loader für documents.yaml und ground_truth.yaml
-│   ├── ingestion/             # (geplant) Parsing, Chunking, Enrichment
+│   ├── ingestion/             # PDF-Parser, Chunk-Modelle, Pipeline (Enrichment folgt in M3)
 │   ├── retrieval/             # (geplant) Suche, Scoring, Filter
 │   ├── tools/                 # (geplant) deterministische Agent-Tools
 │   ├── agent/                 # (geplant) ReAct-Schleife, Prompts
@@ -74,9 +74,10 @@ ollama pull qwen2.5:7b && ollama pull llama3.1:8b && ollama pull gemma3:4b && ol
 uv sync                                   # installiert Python 3.13 und alle Abhängigkeiten
 ./scripts/check.sh                        # Quality Gate (ruff, pytest ohne LLM)
 uv run python -m audit_agent.smoke        # Smoke-Test, braucht laufendes Ollama (ca. 15-30 Min.)
+uv run python -m audit_agent.ingestion    # parst alle PDFs nach data/processed/ (ca. 30 s, ohne Ollama)
 ```
 
-Der Smoke-Test schreibt `data/eval/<run-id>/smoke.json` und `smoke.md`. Einstellungen lassen sich per Umgebungsvariable ändern, z. B. `AUDIT_OLLAMA_HOST`, `AUDIT_NUM_CTX`, `AUDIT_MODEL_AGENT`. Ingest, Abfrage und Evaluation folgen ab M1.
+Der Smoke-Test schreibt `data/eval/<run-id>/smoke.json` und `smoke.md`. Einstellungen lassen sich per Umgebungsvariable ändern, z. B. `AUDIT_OLLAMA_HOST`, `AUDIT_NUM_CTX`, `AUDIT_MODEL_AGENT`. Die Ingestion schreibt je PDF eine Datei `data/processed/<datei>_chunks.json` und die Diagramme nach `data/processed/images/`. Enrichment, Abfrage und Evaluation folgen mit M3 bis M6.
 
 ## Ausarbeitung bauen
 
