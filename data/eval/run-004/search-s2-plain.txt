@@ -1,0 +1,18 @@
+03_Strom_Preisanpassung_SuedVolt_2025.pdf  (Score 0.712)
+  Anpassung Ihrer Strompreise zum 01.01.2025 > Preisgegenüberstellung im Detail (ab 01.01.2025)
+    S.1 KI-Zusammenfassung, kein Beleg [KI]  0.712 × 1.0 = 0.712
+      Die Tabelle zeigt die Anpassung der Strompreise zum 01.01.2025. Der Grundpreis für den Monats- und Jahresverbrauch wird um 10,84 Euro (Monat) bzw. 15,08 Euro (…
+01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf  (Score 0.690)
+  Herzlich willkommen bei SüdVolt Energie – Ihre Vertragsbestätigung > Ihre vereinbarten Tarifkonditionen: SüdVolt ÖkoStrom Klassik 12
+    S.1 KI-Zusammenfassung, kein Beleg [KI]  0.690 × 1.0 = 0.690
+      Die Tabelle enthält die vereinbarten Tarifkonditionen für den ÖkoStrom Klassik 12-Vertrag von SüdVolt Energie. Der Grundpreis beträgt 9,66 EUR pro Monat, währe…
+09_Gas_Preisanpassung_NeckarEnergie_2026.pdf  (Score 0.686)
+  Gute Nachrichten: Senkung Ihres Gas-Arbeitspreises zum 01.01.2026
+    S.1 KI-Zusammenfassung, kein Beleg [KI]  0.686 × 1.0 = 0.686
+      Die Tabelle enthält die neuen Tarife für Erdgas ab 01.01.2026. Der Arbeitspreis für Erdgas beträgt 8,36 ct pro kWh, der Grundpreis für Erdgas beträgt 13,45 EUR…
+    S.1 Text  0.675 × 1.0 = 0.675
+      zum 31.12.2025 endet die 24-monatige Erstvertragslaufzeit Ihres Tarifs NeckarGas Komfort 24 . Dank gesunkener Beschaffungspreise an den europäischen Erdgashand…
+07_Gas_Liefervertrag_NeckarEnergie_2024.pdf  (Score 0.678)
+  Vertragsbestätigung Erdgaslieferung: Tarif „NeckarGas Komfort 24“ > Ihre Tarifkonditionen (gültig vom 01.01.2024 bis 31.12.2025)
+    S.1 KI-Zusammenfassung, kein Beleg [KI]  0.678 × 1.0 = 0.678
+      Die Tabelle enthält die Vertragsbestätigung für die Lieferung von Erdgas unter dem Tarif "NeckarGas Komfort 24". Die wichtigsten Preise sind der Grundpreis für…

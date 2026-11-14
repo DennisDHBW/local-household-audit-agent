@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-029 – Frage S4 (Verbrauch 2022/2023 aus dem Diagramm) wird nicht gefunden
+- **Datum / Meilenstein:** 2026-11-14 / M4
+- **Kategorie:** retrieval
+- **Status:** offen
+- **Symptom:** Die Frage nach dem Stromverbrauch 2022 und 2023 liefert in keiner der sechs Konfigurationen die erwartete Quelle (Bild-Chunk der Abrechnung 2024, Seite 2) in den Top-5. Vorn stehen Chunks zu Verbrauch 2025 (Zwischenablesung, Abrechnung 2025).
+- **Ursache:** Nicht belegt. Vermutung: Die Caption steht gegen viele Text- und Tabellen-Chunks mit dem Wort „Stromverbrauch“. Es wurden nur die Top-5 gespeichert, der tatsächliche Rang ist unbekannt.
+- **Lösung / Workaround:** Die Ground Truth erwartet das Tool `search_images`. Mit `chunk_types={image}` gibt es nur 5 Bild-Chunks im Index, die Suche ist dort eindeutig. In M5 als eigenes Tool umsetzen und in M6 prüfen, ob der Agent es wählt (ISS-006).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Retrieval-Konzept (typgetrennte Suche statt eines Topfes)
+
 ### ISS-028 – Vergleichslauf nutzt handgesetzte Filter und nur 12 Fragen
 - **Datum / Meilenstein:** 2026-11-14 / M4
 - **Kategorie:** evaluation
@@ -34,13 +44,13 @@
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen der Messung)
 
-### ISS-027 – Pfadregel des Hierarchie-Boosts ist eine Heuristik
+### ISS-027 – Hierarchie-Boost greift fast überall und ändert kaum etwas
 - **Datum / Meilenstein:** 2026-11-14 / M4
 - **Kategorie:** retrieval
 - **Status:** offen
-- **Symptom:** Der Boost greift, wenn ein Anfrageterm im Pfad steht oder ein Pfadwort der Anfang des Terms ist. Kurze Pfadwörter wie „gas“ treffen jedes Kompositum, das so beginnt („Gasvertrag“, aber auch „Gaststätte“). Der Boost gilt außerdem für alle Chunks eines Dokuments gleich, auch für die unwichtigen (Briefkopf, Summaries). Mit Fake-Embedder zeigt der Test, dass die Regel greift, nicht ob sie mit echten Embeddings hilft.
+- **Symptom:** Der Boost greift, wenn ein Anfrageterm im Pfad steht oder ein Pfadwort der Anfang des Terms ist. Kurze Pfadwörter wie „gas“ treffen jedes Kompositum, das so beginnt („Gasvertrag“, aber auch „Gaststätte“). Der Boost gilt außerdem für alle Chunks eines Dokuments gleich, auch für die unwichtigen (Briefkopf, Summaries). RUN-004 mit echten Embeddings: Der Boost greift bei 55 von 60 Treffern (ohne Filter) und bei allen 55 (mit Filter), weil Begriffe wie „Kündigungsfrist“ oder „Arbeitspreis“ in den Überschriften fast aller Dokumente stehen („arbeits“ trifft sogar die Gas-Preisanpassung bei einer Stromfrage). Die Rangfolge ändert sich dadurch nicht.
 - **Ursache:** Konzept sieht „Suchbegriffe im Pfad“ vor, ohne Wortbildung zu regeln; deutsche Komposita brauchen mehr als einen Teilstring-Vergleich.
-- **Lösung / Workaround:** Regel in ADR-0009 dokumentiert und mit Tests belegt; Wirkung mit echten Embeddings in RUN-004 messen. Bei schlechten Ergebnissen Mindestlänge der Pfadwörter erhöhen oder den Boost auf Chunks mit Kapitel beschränken.
+- **Lösung / Workaround:** Regel in ADR-0009 dokumentiert und mit Tests belegt; Wirkung in RUN-004 gemessen (kein Nutzen). Mögliche Verbesserungen, falls der Boost in M5/M6 gebraucht wird: nur Begriffe boosten, die in wenigen Dokumenten vorkommen (IDF-artig), Sparte und Jahr aus dem Pfad höher gewichten als Fachbegriffe, oder den Boost streichen. Bis dahin bleibt er als Vorlesungsbaustein im Code.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Retrieval-Konzept (Grenzen des Boosts)
 
