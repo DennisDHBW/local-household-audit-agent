@@ -31,7 +31,7 @@ Das Enrichment ist ein eigener Schritt `python -m audit_agent.enrichment` (Paket
 
 ## Konsequenzen
 - Positiv: Das langsame Enrichment läuft einmal; Parser, Cache und Modellaufruf sind einzeln mit einem Fake-Client getestet (20 Tests ohne Ollama).
-- Negativ: Die Ingestion überschreibt angereicherte Dateien; die Reihenfolge Ingestion → Enrichment muss eingehalten werden (ISS-021). Die Zahlenprüfung deckt nur Zahlen ab, keine inhaltlichen Fehler (ISS-022). Ein 3B-Modell kann Tabellen falsch zusammenfassen, deshalb stehen bei Tabellen immer auch die Einzelzeilen im Index.
+- Negativ: Die Ingestion überschreibt angereicherte Dateien; die Reihenfolge Ingestion → Enrichment muss eingehalten werden (ISS-021). Die Zahlenprüfung deckt nur Zahlen ab, keine inhaltlichen Fehler (ISS-022). Ein 3B-Modell fasst Tabellen mit mehreren Preisspalten falsch zusammen und erfindet Angaben zu Briefkopf-Tabellen (RUN-003, ISS-015); die Zahlenprüfung erkennt davon nur einen Teil. Deshalb gilt: Summaries sind Suchhilfe und kein Beleg. Die Einzelzeilen bleiben im Index, der Agent zitiert und rechnet nur mit ihnen, und die UI kennzeichnet Summaries als KI-Zusammenfassung.
 - Zu testen: Ob die Summaries das Retrieval in M4 verbessern oder Distraktor-Treffer erzeugen; ob die Captions beim Abgleich mit der Tabelle in M5 abweichen (Vision-Fehler).
 
 ## Belege

@@ -115,3 +115,31 @@
 - **Meine Deutung (eigene Worte):**
 - **Konsequenz / nächster Schritt:** Prompts und Limits anpassen (Caption: keine Zahlen schätzen, 600 Tokens; Summary: höchstens drei Sätze, keine Differenzen, 256 Tokens), Abschneiden im Report markieren, zweiter Lauf als RUN-003. Die abgeschnittenen und fehlerhaften Summaries aus RUN-002 sind der Grund, den Lauf zu wiederholen.
 
+### RUN-003 – Enrichment M3, zweiter Lauf mit angepassten Prompts
+- **Datum / Commit:** 2026-11-14 · Branch `feat/m3-enrichment`, Stand `fix(enrichment): flag truncated answers, tighten prompts …`
+- **Varianten:** keine (kein Retrieval)
+- **Konfiguration:** wie RUN-002, aber Caption-Prompt „keine Zahlen schätzen“ mit `num_predict=600`, Summary-Prompt „höchstens drei Sätze, keine Differenzen“ mit `num_predict=256`; Cache der Prompts neu, alle 70 Jobs berechnet; Befehl `uv run python -m audit_agent.enrichment --run-id run-003`
+- **Dauer:** 26,6 Minuten Modellzeit; Captions 65–79 s (Ø 73 s), Summaries Ø 18,9 s (max. 38 s)
+- **Rohdaten:** `data/eval/run-003/` (`enrichment.json`, `console.log`)
+
+| Messung | RUN-002 | RUN-003 |
+|---|---|---|
+| Captions mit richtigen Beschriftungswerten (gegen PNG) | 4 von 5 | 4 von 5 |
+| Caption mit erfundenen Zahlen | 1 | 0 |
+| am Token-Limit abgeschnitten (Captions / Summaries) | 1 / 21 | 0 / 0 |
+| Summaries mit Zahl, die nicht in der Tabelle steht | 11 (alte Prüfung), 4 (neue Prüfung) | 6 |
+| Summaries mit Aufzählung / Einleitung „Die Tabelle aus …“ | viele | 5 / 8 |
+| Summary-Länge Ø / max (Zeichen) | 370 / 542 | 363 / 697 |
+
+- **Captions:** Die vier Diagramme mit beschrifteten Werten sind weiterhin vollständig richtig (04, 06, 10 Balken, 15). Das Heizgas-Diagramm ohne Zahlenbeschriftung (Dok. 10, zweites Bild) enthält keine erfundenen Zahlen mehr, aber der beschriebene Verlauf stimmt nicht: Das Modell schreibt „im Juli und August ist der Erdgasbedarf am höchsten“, tatsächlich ist er im Sommer am niedrigsten, und die Beschreibung ist für die Suche nahezu wertlos (ISS-023).
+- **Summaries, 6 Meldungen der Zahlenprüfung:**
+  - Briefkopf-Tabellen (Dok. 08, 10, 29, jeweils `tab01`): erfundene Verbrauchsangaben („7.500 Kubikmeter“, „7.000 MWh“) und falsche Rechnungsnummer, weil die Tabelle nur Anschrift und Kundendaten enthält (ISS-015).
+  - Dok. 03: selbst gerechnete Differenzen (2,86 ct; 15,08 EUR), teils falsch.
+  - Dok. 27: Summe „320,22 Euro“ aus zwei Tabellenwerten gebildet.
+  - Dok. 28: „31“ aus dem Datum, Prüfung zu streng.
+- **Fehler, die die Prüfung nicht findet:** Dok. 14 (Wassergebühren): „Trinkwasser-Verbrauchspreis von 2,30 auf 2,26 EUR/m³ gesenkt“. Beide Zahlen stehen in der Tabelle, aber 2,30 ist der alte Brutto-, 2,26 der neue Nettopreis; der neue Bruttopreis ist 2,42 EUR. Außerdem „Vorauszahlung wird eingeführt“ statt „von 120 auf 125 EUR erhöht“. Die Zahlenprüfung kann solche Fehler grundsätzlich nicht erkennen (ISS-022).
+- **Auffällige Einzelfälle:** Einfache Tabellen (Dok. 04 tab01–03, 05 tab02) sind sauber und vollständig zusammengefasst. Probleme treten bei Tabellen mit mehreren Preisspalten (netto/brutto, bisher/neu) und bei Briefkopf-Tabellen auf.
+- **Grenzen der Messung:** Von Hand geprüft wurden die 5 Captions, die 6 gemeldeten und 4 weitere Summaries; die übrigen 55 sind nur automatisch auf Zahlen und Abschneiden geprüft. Eine Messung pro Konfiguration, kein Vergleich mehrerer Modelle.
+- **Meine Deutung (eigene Worte):**
+- **Konsequenz / nächster Schritt:** Die Anpassung der Prompts hat Abschneiden (21 → 0) und erfundene Caption-Zahlen beseitigt, aber nicht die inhaltlichen Fehler bei Preistabellen. Summaries gelten deshalb nur als Suchhilfe (thematisches Finden), nie als Beleg: Der Agent zitiert und rechnet mit `table_row`-Chunks. In M4 zeigt die Evidence-UI den Typ „KI-Zusammenfassung“, und es wird gemessen, ob die Summaries das Retrieval verbessern oder Distraktoren erzeugen. Kein dritter Lauf: Ein 3B-Modell wird durch weitere Prompt-Arbeit nicht zuverlässig.
+
