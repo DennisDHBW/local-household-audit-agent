@@ -21,6 +21,8 @@ class CachedAnswer(BaseModel):
     model: str
     seconds: float
     """Wall-clock time of the original model call (not of a cache hit)."""
+    is_truncated: bool = False
+    """The model hit the token limit, so the text may end in the middle of a sentence."""
 
 
 def digest_bytes(data: bytes) -> str:

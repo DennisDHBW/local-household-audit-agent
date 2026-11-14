@@ -45,6 +45,7 @@ def main() -> int:
     seconds = sum(item.seconds or 0 for item in report.items if not item.is_cache_hit)
     print(f"model time of this run: {seconds / 60:.1f} min")
     print(f"summaries with numbers not found in the table: {len(report.flagged_summaries)}")
+    print(f"answers cut off by the token limit: {len(report.truncated)}")
     out_dir = settings.eval_dir / args.run_id
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "enrichment.json").write_text(report.model_dump_json(indent=2), encoding="utf-8")

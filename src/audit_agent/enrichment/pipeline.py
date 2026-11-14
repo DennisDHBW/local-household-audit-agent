@@ -57,6 +57,7 @@ class EnrichedItem(BaseModel):
     is_cache_hit: bool
     seconds: float | None = None
     text: str | None = None
+    is_truncated: bool = False
     unsupported_numbers: list[float] = []
 
 
@@ -73,6 +74,10 @@ class EnrichmentReport(BaseModel):
     @property
     def cache_misses(self) -> int:
         return len(self.items) - self.cache_hits
+
+    @property
+    def truncated(self) -> list[EnrichedItem]:
+        return [item for item in self.items if item.is_truncated]
 
     @property
     def flagged_summaries(self) -> list[EnrichedItem]:
@@ -171,9 +176,12 @@ def _enrich_images(
                 is_cache_hit=is_hit,
                 seconds=answer.seconds,
                 text=answer.text,
+                is_truncated=answer.is_truncated,
             )
         )
         _log_progress("image", number, len(jobs), chunk.chunk_id, is_hit, answer.seconds)
+        if answer.is_truncated:
+            logger.warning("  answer hit the token limit and may be cut off")
     if captions:
         _apply_to_documents(documents, lambda chunks, path: _with_captions(chunks, path, captions))
         _write_documents(documents)
@@ -245,12 +253,15 @@ def _enrich_tables(
                 is_cache_hit=is_hit,
                 seconds=answer.seconds,
                 text=answer.text,
+                is_truncated=answer.is_truncated,
                 unsupported_numbers=unsupported,
             )
         )
         _log_progress("table", number, len(jobs), summary_id, is_hit, answer.seconds)
         if unsupported:
             logger.warning("  numbers not found in the table: %s", unsupported)
+        if answer.is_truncated:
+            logger.warning("  answer hit the token limit and may be cut off")
     if summaries:
         _apply_to_documents(
             documents, lambda chunks, path: _with_summaries(chunks, path, summaries)

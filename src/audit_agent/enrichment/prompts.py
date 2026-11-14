@@ -9,18 +9,21 @@ CAPTION_PROMPT = (
     "Abschnitt des Dokuments: {context}\n"
     "Beschreibe das Diagramm sachlich auf Deutsch: Art des Diagramms, Achsen mit Einheit und "
     "jede Beschriftung (Jahr oder Monat) mit ihrem Zahlenwert und der Einheit, zum Beispiel "
-    "'2022: 1.000 kWh'. Nenne nur Werte, die im Bild stehen. Rechne nichts aus."
+    "'2022: 1.000 kWh'. Nenne nur Zahlenwerte, die als Beschriftung im Bild stehen. Sind an den "
+    "Säulen oder Punkten keine Werte beschriftet, beschreibe den Verlauf nur in Worten (zum "
+    "Beispiel 'im Winter hoch, im Sommer niedrig') und schätze keine Zahlen. Ein Diagramm mit "
+    "zwei Achsen bleibt ein einziges Diagramm. Rechne nichts aus."
 )
 
 SUMMARY_PROMPT = (
-    "Fasse die folgende Tabelle aus einer Abrechnung oder einem Vertrag in zwei bis drei "
-    "Sätzen auf Deutsch zusammen.\n"
+    "Fasse die folgende Tabelle aus einer Abrechnung oder einem Vertrag in höchstens drei "
+    "Sätzen auf Deutsch zusammen, als Fließtext ohne Aufzählung.\n"
     "Abschnitt des Dokuments: {context}\n"
     "Spalten: {columns}\n"
     "Zeilen:\n{rows}\n"
     "Regeln: Nenne, worum es in der Tabelle geht, und die wichtigsten Werte mit Einheit. "
-    "Übernimm Zahlen exakt so, wie sie in den Zeilen stehen. Rechne nichts aus und erfinde "
-    "nichts dazu."
+    "Übernimm Zahlen exakt so, wie sie in den Zeilen stehen. Vergleiche keine Spalten, bilde "
+    "keine Differenzen und rechne nichts aus. Erfinde nichts dazu."
 )
 
 

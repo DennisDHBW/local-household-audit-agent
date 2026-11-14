@@ -62,10 +62,10 @@ class EnrichmentSettings(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    caption_max_tokens: int = Field(default=400, ge=16)
+    caption_max_tokens: int = Field(default=600, ge=16)
     """Generation limit for one image caption."""
-    summary_max_tokens: int = Field(default=160, ge=16)
-    """Generation limit for one table summary (two to three sentences)."""
+    summary_max_tokens: int = Field(default=256, ge=16)
+    """Generation limit for one table summary (at most three sentences)."""
     keep_alive: str = "10m"
     """How long Ollama keeps a model loaded between two enrichment calls."""
 

@@ -44,10 +44,12 @@ class FakeEnrichmentOllama:
         installed: tuple[str, ...] = ("gemma3:4b", "llama3.2:latest"),
         summary: str = SUMMARY,
         caption: str = CAPTION,
+        done_reason: str = "stop",
     ):
         self.installed = installed
         self.summary = summary
         self.caption = caption
+        self.done_reason = done_reason
         self.chat_calls: list[dict] = []
         self.unloaded: list[str] = []
 
@@ -65,7 +67,7 @@ class FakeEnrichmentOllama:
         self.chat_calls.append(kwargs)
         message = kwargs["messages"][-1]
         text = self.caption if "images" in message else self.summary
-        return SimpleNamespace(message=SimpleNamespace(content=text))
+        return SimpleNamespace(message=SimpleNamespace(content=text), done_reason=self.done_reason)
 
 
 def _metadata(table_id: str | None = None, image_path: str | None = None) -> ChunkMetadata:
@@ -200,6 +202,14 @@ def test_numbers_from_the_table_are_supported():
     source = "Zählerstand: 14.200 kWh | Betrag: 1.189,00 EUR"
 
     assert unsupported_numbers("Es sind 14.200 kWh und 1.189 EUR.", source) == []
+
+
+def test_date_written_in_words_is_not_reported():
+    source = "Datum: 16.10.2024 | Leistung am 11.10.2024 | Zeitraum 01.2025"
+
+    assert (
+        unsupported_numbers("Erstellt am 16. Oktober 2024, Leistung im Januar 2025.", source) == []
+    )
 
 
 def test_invented_numbers_are_reported_and_small_counts_ignored():
@@ -364,3 +374,29 @@ def test_caption_call_sends_the_image_and_deterministic_options(settings: Settin
     assert call["options"]["temperature"] == 0
     assert call["options"]["num_ctx"] == settings.num_ctx
     assert len(call["messages"][0]["images"]) == 1
+
+
+def test_answer_cut_off_by_the_token_limit_is_flagged(settings: Settings):
+    _write_processed(settings)
+    client = FakeEnrichmentOllama(done_reason="length")
+
+    report = run_enrichment(settings, client)
+
+    assert len(report.truncated) == 2
+    assert all(item.is_truncated for item in report.truncated)
+
+
+def test_complete_answers_are_not_flagged_as_truncated(settings: Settings):
+    _write_processed(settings)
+
+    report = run_enrichment(settings, FakeEnrichmentOllama())
+
+    assert report.truncated == []
+
+
+def test_prompts_forbid_guessing_numbers_and_comparing_columns():
+    caption_prompt = build_caption_prompt(())
+    summary_prompt = build_summary_prompt((), (), ("x",))
+
+    assert "schätze keine Zahlen" in caption_prompt
+    assert "keine Differenzen" in summary_prompt

@@ -1,0 +1,92 @@
+warning: Ignoring existing virtual environment linked to non-existent Python interpreter: .venv/bin/python -> /sessions/rcw-01eajgmkalb3enywgltozwrg/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13
+Using CPython 3.13.15
+Removed virtual environment at: .venv
+Creating virtual environment at: .venv
+   Building local-household-audit-agent @ file:///home/usr0/PycharmProjects/local-household-audit-agent
+      Built local-household-audit-agent @ file:///home/usr0/PycharmProjects/local-household-audit-agent
+Installed 31 packages in 37ms
+[image 1/5] 04_Strom_Jahresabrechnung_2024_SuedVolt_p2_img01 (73 s)
+[image 2/5] 06_Strom_Jahresabrechnung_2025_SuedVolt_p2_img01 (70 s)
+[image 3/5] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p2_img01 (71 s)
+[image 4/5] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p2_img02 (93 s)
+[image 5/5] 15_Wasser_Jahresbescheid_2025_SWM_p2_img01 (63 s)
+[table 1/65] 01_Strom_Vertragsbestaetigung_SuedVolt_2024_p1_tab01_sum (21 s)
+[table 2/65] 01_Strom_Vertragsbestaetigung_SuedVolt_2024_p1_tab02_sum (19 s)
+[table 3/65] 01_Strom_Vertragsbestaetigung_SuedVolt_2024_p1_tab03_sum (20 s)
+[table 4/65] 02_Strom_Begruessung_Abschlagsplan_2024_p1_tab01_sum (18 s)
+  numbers not found in the table: [202.0]
+[table 5/65] 02_Strom_Begruessung_Abschlagsplan_2024_p1_tab02_sum (36 s)
+[table 6/65] 03_Strom_Preisanpassung_SuedVolt_2025_p1_tab01_sum (11 s)
+[table 7/65] 03_Strom_Preisanpassung_SuedVolt_2025_p1_tab02_sum (19 s)
+  numbers not found in the table: [2.86, 5.2]
+[table 8/65] 04_Strom_Jahresabrechnung_2024_SuedVolt_p1_tab01_sum (14 s)
+[table 9/65] 04_Strom_Jahresabrechnung_2024_SuedVolt_p1_tab02_sum (12 s)
+[table 10/65] 04_Strom_Jahresabrechnung_2024_SuedVolt_p1_tab03_sum (27 s)
+[table 11/65] 05_Strom_Zwischenablesung_Info_2025_p1_tab01_sum (14 s)
+  numbers not found in the table: [2025.0, 1234567.89]
+[table 12/65] 05_Strom_Zwischenablesung_Info_2025_p1_tab02_sum (24 s)
+[table 13/65] 06_Strom_Jahresabrechnung_2025_SuedVolt_p1_tab01_sum (14 s)
+[table 14/65] 06_Strom_Jahresabrechnung_2025_SuedVolt_p1_tab02_sum (12 s)
+[table 15/65] 06_Strom_Jahresabrechnung_2025_SuedVolt_p1_tab03_sum (23 s)
+[table 16/65] 07_Gas_Liefervertrag_NeckarEnergie_2024_p1_tab01_sum (13 s)
+[table 17/65] 07_Gas_Liefervertrag_NeckarEnergie_2024_p1_tab02_sum (20 s)
+[table 18/65] 07_Gas_Liefervertrag_NeckarEnergie_2024_p1_tab03_sum (21 s)
+[table 19/65] 08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab01_sum (12 s)
+[table 20/65] 08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab02_sum (17 s)
+[table 21/65] 08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab03_sum (20 s)
+[table 22/65] 08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab04_sum (20 s)
+[table 23/65] 09_Gas_Preisanpassung_NeckarEnergie_2026_p1_tab01_sum (14 s)
+[table 24/65] 09_Gas_Preisanpassung_NeckarEnergie_2026_p1_tab02_sum (20 s)
+[table 25/65] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab01_sum (12 s)
+[table 26/65] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab02_sum (17 s)
+  numbers not found in the table: [2026.0]
+[table 27/65] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab03_sum (17 s)
+[table 28/65] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab04_sum (22 s)
+  numbers not found in the table: [2025.0]
+[table 29/65] 11_Gas_Abschlagsplan_2026_NeckarEnergie_p1_tab01_sum (12 s)
+[table 30/65] 11_Gas_Abschlagsplan_2026_NeckarEnergie_p1_tab02_sum (17 s)
+[table 31/65] 12_Wasser_Anmeldebestaetigung_SWM_2024_p1_tab01_sum (13 s)
+[table 32/65] 12_Wasser_Anmeldebestaetigung_SWM_2024_p1_tab02_sum (16 s)
+[table 33/65] 13_Wasser_Jahresbescheid_2024_SWM_p1_tab01_sum (13 s)
+[table 34/65] 13_Wasser_Jahresbescheid_2024_SWM_p1_tab02_sum (16 s)
+[table 35/65] 13_Wasser_Jahresbescheid_2024_SWM_p1_tab03_sum (24 s)
+[table 36/65] 14_Wasser_Gebuehrenanpassung_2026_SWM_p1_tab01_sum (14 s)
+[table 37/65] 14_Wasser_Gebuehrenanpassung_2026_SWM_p1_tab02_sum (22 s)
+  numbers not found in the table: [0.04, 0.14]
+[table 38/65] 15_Wasser_Jahresbescheid_2025_SWM_p1_tab01_sum (14 s)
+[table 39/65] 15_Wasser_Jahresbescheid_2025_SWM_p1_tab02_sum (11 s)
+[table 40/65] 15_Wasser_Jahresbescheid_2025_SWM_p1_tab03_sum (12 s)
+[table 41/65] 15_Wasser_Jahresbescheid_2025_SWM_p1_tab04_sum (19 s)
+[table 42/65] 16_Mietvertrag_Hauptstrasse42_2023_p1_tab01_sum (18 s)
+[table 43/65] 17_Uebergabeprotokoll_Wohnung_2023_p1_tab01_sum (15 s)
+[table 44/65] 18_Nebenkostenabrechnung_2024_Hausverwaltung_p1_tab01_sum (35 s)
+[table 45/65] 18_Nebenkostenabrechnung_2024_Hausverwaltung_p1_tab02_sum (23 s)
+[table 46/65] 19_Nebenkostenabrechnung_2025_Hausverwaltung_p1_tab01_sum (36 s)
+[table 47/65] 19_Nebenkostenabrechnung_2025_Hausverwaltung_p1_tab02_sum (21 s)
+[table 48/65] 20_Handwerkerrechnung_Heizungswartung_2024_p1_tab01_sum (11 s)
+  numbers not found in the table: [16.0]
+[table 49/65] 20_Handwerkerrechnung_Heizungswartung_2024_p1_tab02_sum (26 s)
+[table 50/65] 21_Handwerkerrechnung_Heizungswartung_2025_p1_tab01_sum (9 s)
+  numbers not found in the table: [14.0]
+[table 51/65] 21_Handwerkerrechnung_Heizungswartung_2025_p1_tab02_sum (21 s)
+[table 52/65] 23_Internet_Monatsrechnung_Dez2025_GlasfaserPlus_p1_tab01_sum (23 s)
+  numbers not found in the table: [2025.0]
+[table 53/65] 24_Mobilfunk_Vertrag_MobilPlus_2025_p1_tab01_sum (21 s)
+[table 54/65] 25_Mobilfunk_Monatsrechnung_Dez2025_MobilPlus_p1_tab01_sum (22 s)
+[table 55/65] 26_Hausrat_Versicherungsschein_AlpenSchutz_2024_p1_tab01_sum (15 s)
+[table 56/65] 26_Hausrat_Versicherungsschein_AlpenSchutz_2024_p1_tab02_sum (22 s)
+[table 57/65] 27_Hausrat_Beitragsrechnung_2026_AlpenSchutz_p1_tab01_sum (17 s)
+  numbers not found in the table: [2026.0]
+[table 58/65] 28_KFZ_Versicherungsschein_Beitrag2025_AlpenSchutz_p1_tab01_sum (17 s)
+[table 59/65] 28_KFZ_Versicherungsschein_Beitrag2025_AlpenSchutz_p1_tab02_sum (21 s)
+[table 60/65] 29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab01_sum (13 s)
+[table 61/65] 29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab02_sum (16 s)
+[table 62/65] 29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab03_sum (17 s)
+[table 63/65] 29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab04_sum (21 s)
+  numbers not found in the table: [2026.0]
+[table 64/65] 30_Nebenkostenabrechnung_2026_Hausverwaltung_p1_tab01_sum (37 s)
+[table 65/65] 30_Nebenkostenabrechnung_2026_Hausverwaltung_p1_tab02_sum (23 s)
+70 jobs: 0 from cache, 70 computed
+model time of this run: 26.4 min
+summaries with numbers not found in the table: 11
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-002/enrichment.json

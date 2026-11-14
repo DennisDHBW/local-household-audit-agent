@@ -16,7 +16,7 @@ Das Enrichment ist ein eigener Schritt `python -m audit_agent.enrichment` (Paket
 4. **Speicherbudget:** Die Phasen laufen nacheinander (erst alle Bilder, dann alle Tabellen). Vor dem Start werden alle geladenen Modelle entladen, nach jeder Phase das Modell der Phase. Es ist nie mehr als ein Modell geladen (ADR-0004).
 5. **Fail fast, aber fortsetzbar:** Fehlende Modelle, fehlende Dateien und leere Modellantworten brechen den Lauf ab. Die JSON-Dateien werden nach jeder Phase geschrieben; bereits berechnete Antworten stehen im Cache, ein erneuter Start macht dort weiter.
 6. **Idempotenz:** Mit gefülltem Cache macht ein Lauf keinen Modellaufruf und schreibt dasselbe Ergebnis. Läuft die Ingestion neu und überschreibt die JSONs, stellt ein Enrichment-Lauf den angereicherten Stand in Sekunden aus dem Cache wieder her.
-7. **Zahlenprüfung:** Jede Summary wird gegen den Tabellentext geprüft: Zahlen, die dort nicht vorkommen, stehen im Report (`unsupported_numbers`). Die Prüfung markiert nur, sie verwirft nichts.
+7. **Prüfungen im Report:** Jede Summary wird gegen den Tabellentext geprüft: Zahlen, die dort nicht vorkommen, stehen im Report (`unsupported_numbers`); Tag, Monat und Jahr aus Datumsangaben der Tabelle gelten als vorhanden. Antworten, die am Token-Limit endeten (`done_reason == "length"`), sind mit `is_truncated` markiert. Beide Prüfungen markieren nur, sie verwerfen nichts. Die Prompts verbieten Rechnen, Vergleichen von Spalten und geschätzte Zahlen (RUN-002, ISS-023, ISS-024).
 8. **Bedienung:** `--only images|tables`, `--limit N` für einen Probelauf, `--dry-run` zählt offene Jobs ohne Ollama, `--run-id` bestimmt den Ordner unter `data/eval/` für den Report.
 
 ## Verworfene Alternativen
@@ -35,4 +35,4 @@ Das Enrichment ist ein eigener Schritt `python -m audit_agent.enrichment` (Paket
 - Zu testen: Ob die Summaries das Retrieval in M4 verbessern oder Distraktor-Treffer erzeugen; ob die Captions beim Abgleich mit der Tabelle in M5 abweichen (Vision-Fehler).
 
 ## Belege
-RUN-002 in `evaluation-log.md`, `tests/test_enrichment.py`, ISS-021, ISS-022.
+RUN-002 in `evaluation-log.md`, `tests/test_enrichment.py`, ISS-021 bis ISS-024.

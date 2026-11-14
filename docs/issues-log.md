@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-024 – Summaries am Token-Limit abgeschnitten, Prompt-Vorgaben missachtet
+- **Datum / Meilenstein:** 2026-11-14 / M3
+- **Kategorie:** enrichment
+- **Status:** gelöst (Wirkung zeigt RUN-003)
+- **Symptom:** In RUN-002 endeten 21 von 65 Summaries mitten im Satz („… im Jahr 202“). Statt zwei bis drei Sätzen kamen oft Aufzählungen, einmal mit Wortlaut aus dem Prompt als Einleitung.
+- **Ursache:** `num_predict=160` war zu knapp für die Aufzählungen, und die Abschneidung blieb unbemerkt, weil ich `done_reason` nicht ausgewertet habe (eigener Fehler: Ich hatte nur die Zahlenprüfung eingebaut und keinen Test für das Antwortende).
+- **Lösung / Workaround:** Limit auf 256, Prompt auf „höchstens drei Sätze, Fließtext, keine Differenzen“, `CachedAnswer.is_truncated` aus `done_reason == "length"`, Report und Log melden abgeschnittene Antworten.
+- **Gelernt:** Bei Modellaufrufen immer prüfen, ob die Antwort vollständig ist, nicht nur, ob sie Text enthält.
+- **Relevant für Ausarbeitung?** ja → Enrichment, Fehleranalyse
+
+### ISS-023 – Caption erfindet Werte bei Diagramm ohne Beschriftung
+- **Datum / Meilenstein:** 2026-11-14 / M3
+- **Kategorie:** enrichment
+- **Status:** offen (Prompt geändert, Wirkung zeigt RUN-003)
+- **Symptom:** Das Diagramm „Monatlicher Heizgasbedarf & Witterungsverlauf“ (Dok. 10, zweites Bild) hat keine Zahlen an den Säulen. `gemma3:4b` nannte trotzdem Werte pro Monat, die im Sommer um das Zehnfache zu hoch sind, und beschrieb das Doppelachsen-Diagramm als zwei Diagramme.
+- **Ursache:** Das Modell schätzt Säulenhöhen aus Pixeln und füllt Lücken mit plausibel klingenden Werten, wenn der Prompt „jeden Zahlenwert“ verlangt. Dazu kam das Token-Limit (400) mitten in der Aufzählung.
+- **Lösung / Workaround:** Prompt: nur beschriftete Werte nennen, sonst den Verlauf in Worten, keine geschätzten Zahlen; Limit 600. Grundsätzlich bleibt: Captions sind Vision-Modell-Ausgabe und werden vom Agenten gegen die Tabellenzeilen geprüft (concept.md, Abschnitt 7), nie allein als Beleg genutzt.
+- **Gelernt:** Eine Anweisung wie „nenne jeden Wert“ erzeugt bei fehlenden Werten Halluzinationen; der Prompt muss den Ausweg („nicht beschriftet“) ausdrücklich erlauben.
+- **Relevant für Ausarbeitung?** ja → Enrichment, Grenzen lokaler Vision-Modelle
+
 ### ISS-022 – Zahlenprüfung der Summaries ist nur ein Teilcheck
 - **Datum / Meilenstein:** 2026-11-14 / M3
 - **Kategorie:** enrichment

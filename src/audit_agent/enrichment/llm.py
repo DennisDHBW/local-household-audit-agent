@@ -48,7 +48,8 @@ def ask_model(
     text = (response.message.content or "").strip()
     if not text:
         raise EnrichmentError(f"{model} returned an empty answer")
-    return CachedAnswer(text=text, model=model, seconds=seconds)
+    is_truncated = getattr(response, "done_reason", None) == "length"
+    return CachedAnswer(text=text, model=model, seconds=seconds, is_truncated=is_truncated)
 
 
 def unload_model(client: ChatClient, model: str) -> None:
