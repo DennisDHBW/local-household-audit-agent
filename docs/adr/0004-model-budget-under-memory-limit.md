@@ -1,6 +1,6 @@
 # ADR-0004: Modellauswahl und Speicherbudget unter `MemoryMax=9G`
 
-- **Status:** vorgeschlagen (Agent-Modell wird nach Smoke-Test in M0 festgelegt)
+- **Status:** akzeptiert (Agent-Modell vorläufig `llama3.1:8b`, Endentscheidung im Testmodul M6)
 - **Datum:** 2026-11-14
 - **Meilenstein:** M0
 
@@ -23,6 +23,12 @@ Folgerungen:
 - `num_ctx` explizit setzen (z. B. 8192) statt Standardwert; KV-Cache wächst mit dem Kontext.
 - `qwen3` nur mit abgeschaltetem Thinking-Modus testen (Denk-Tokens bei 5 Tokens/s zu langsam).
 
+## Ergebnis des Smoke-Tests (RUN-000, 2026-11-14)
+- Speicher passt: `qwen2.5:7b` belegt 5,46 GB, `llama3.1:8b` 6,25 GB, `llama3.2` 3,12 GB (gemessen mit `ollama ps`, `num_ctx=8192`). Agent-Modell plus `nomic-embed-text` bleibt unter 9 GB.
+- Geschwindigkeit (CPU): Prefill 18,9 / 20,1 / 45,9 Tokens/s, Generierung 5,0 / 5,9 / 12,5 Tokens/s für `qwen2.5:7b` / `llama3.1:8b` / `llama3.2`. Das bestätigt die Annahmen aus ISS-001.
+- Tool-Calling: beide Agent-Kandidaten erreichen 4 von 5 Aufgaben (gleiche Fehlentscheidung, siehe ISS-006). Das Ergebnis trennt die Modelle nicht.
+- **Vorläufige Wahl `llama3.1:8b`:** gleichauf bei der Trefferquote, aber rund 18 % schnellere Generierung und etwas schnelleres Prefill; der höhere Speicherbedarf (+0,8 GB) passt noch ins Budget. `qwen2.5:7b` bleibt Kandidat und lässt sich per `AUDIT_MODEL_AGENT` testen. Belastbar wird der Vergleich erst mit dem 12-Fragen-Katalog (M6).
+
 ## Verworfene Alternativen
 | Alternative | Warum nicht? |
 |---|---|
@@ -32,7 +38,7 @@ Folgerungen:
 ## Konsequenzen
 - Positiv: stabiler Betrieb ohne Swapping, klare Trennung Ingest/Query
 - Negativ: lange Antwortzeiten; Evaluation dauert Stunden
-- Zu testen (M0): Tool-Calling-Zuverlässigkeit und Geschwindigkeit von `qwen2.5:7b` vs. `llama3.1:8b` mit 5 einfachen Tool-Aufgaben
+- Noch zu testen (M5/M6): Mehrschritt-Agentenläufe und der Vergleich beider Kandidaten auf dem 12-Fragen-Katalog
 
 ## Belege
-Hardware-Spezifikation; Smoke-Test-Ergebnis folgt (RUN-000).
+Hardware-Spezifikation; RUN-000 (`data/eval/run-000/smoke.md`); ISS-001, ISS-005, ISS-006.

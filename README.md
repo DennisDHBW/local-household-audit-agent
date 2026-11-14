@@ -7,22 +7,26 @@ Hochschulprojekt im Kurs „Agentensysteme: Local Agentic AI“ (DHBW). Phase 1:
 
 ---
 
-## Projektstruktur (geplant)
+## Projektstruktur (M0 umgesetzt, Rest geplant)
 
 ```
 local-household-audit-agent/
 ├── README.md
 ├── CODING_STANDARDS.md        # verbindliche Engineering-Regeln
-├── config/                    # zentrale Konfiguration (Pfade, Modelle, Limits)
-├── dataset/                   # synthetischer Testkorpus (28 PDFs) + documents.yaml + ground_truth.yaml
+├── pyproject.toml, uv.lock    # Abhängigkeiten (uv), ruff- und pytest-Konfiguration
+├── scripts/check.sh           # Quality Gate (ruff check, ruff format --check, pytest)
+├── dataset/                   # synthetischer Testkorpus (28 PDFs) + später documents.yaml, ground_truth.yaml
 ├── data/                      # erzeugt: processed/ (JSON-Chunks), vectors/ (ChromaDB), eval/ (versioniert)
-├── src/
-│   ├── ingestion/             # Parsing, Chunking, Enrichment (schreibende Seite)
-│   ├── retrieval/             # Suche, Scoring, Filter (lesende Seite)
-│   ├── tools/                 # deterministische Agent-Tools (Suche, calculate, ...)
-│   ├── agent/                 # ReAct-Schleife, Prompts
-│   ├── evaluation/            # Testmodul, Metriken, RAGAS
-│   └── ui/                    # Streamlit / CLI
+├── src/audit_agent/
+│   ├── config.py              # zentrale Konfiguration (Pfade, Modelle, Limits, AUDIT_*-Variablen)
+│   ├── preflight.py           # Fail-fast-Prüfung der Ollama-Modelle
+│   ├── smoke/                 # Smoke-Test (Geschwindigkeit, Tool-Calling, Embedding, Vision)
+│   ├── ingestion/             # (geplant) Parsing, Chunking, Enrichment
+│   ├── retrieval/             # (geplant) Suche, Scoring, Filter
+│   ├── tools/                 # (geplant) deterministische Agent-Tools
+│   ├── agent/                 # (geplant) ReAct-Schleife, Prompts
+│   ├── evaluation/            # (geplant) Testmodul, Metriken, RAGAS
+│   └── ui/                    # (geplant) Streamlit / CLI
 ├── tests/                     # pytest (unit / integration / slow)
 ├── paper/                     # Ausarbeitung (LaTeX, DHBW-Vorlage)
 └── docs/                      # Projektdokumentation (siehe unten)
@@ -60,13 +64,18 @@ Claude arbeitet direkt im Projektordner (Dateien, `uv`, `ruff`, `pytest`, `git`)
 
 ---
 
-## Schnellstart (wird mit dem Code ergänzt)
+## Schnellstart
 
 ```bash
-# Voraussetzungen: Python 3.13, uv, Ollama als Dienst
+# Voraussetzungen: uv, Ollama als Dienst
 ollama pull qwen2.5:7b && ollama pull llama3.1:8b && ollama pull gemma3:4b && ollama pull llama3.2 && ollama pull nomic-embed-text
-# Installation, Ingest, Abfrage und Evaluation folgen ab M0
+
+uv sync                                   # installiert Python 3.13 und alle Abhängigkeiten
+./scripts/check.sh                        # Quality Gate (ruff, pytest ohne LLM)
+uv run python -m audit_agent.smoke        # Smoke-Test, braucht laufendes Ollama (ca. 15-30 Min.)
 ```
+
+Der Smoke-Test schreibt `data/eval/<run-id>/smoke.json` und `smoke.md`. Einstellungen lassen sich per Umgebungsvariable ändern, z. B. `AUDIT_OLLAMA_HOST`, `AUDIT_NUM_CTX`, `AUDIT_MODEL_AGENT`. Ingest, Abfrage und Evaluation folgen ab M1.
 
 ## Ausarbeitung bauen
 

@@ -264,7 +264,7 @@ Modelle aus den Folien wie `phi3:medium` (14B) oder `qwen2.5:32b` scheiden aus.
 | Embeddings | `nomic-embed-text` | < 0,5 GB | 768 Dimensionen, Standard der Vorlesung; Präfixe `search_document:` / `search_query:` |
 | Bild-Captions (Ingest) | `gemma3:4b` | 4,0 GB | multimodal, ca. 8–9 Tokens/s |
 | Tabellen-Summaries (Ingest) | `llama3.2` (3B) | 3,1 GB | schnell, einfache Zusammenfassungsaufgabe |
-| Agent, Tool-Calling, Antwort (Query) | `qwen2.5:7b` **oder** `llama3.1:8b` | 5,5 bzw. 6,3 GB | beide gut bei strukturierter Ausgabe/Tool-Calling; Entscheidung per Smoke-Test in M0 und Vergleich im Testmodul |
+| Agent, Tool-Calling, Antwort (Query) | `qwen2.5:7b` **oder** `llama3.1:8b` | 5,5 bzw. 6,3 GB | beide gut bei strukturierter Ausgabe/Tool-Calling; in RUN-000 gleichauf; vorläufig `llama3.1:8b`, Endentscheidung im Testmodul (ADR-0004) |
 
 `qwen3` (bis 8B) höchstens mit abgeschaltetem Thinking-Modus testen: Denk-Tokens kosten bei 5 Tokens/s zu viel Zeit.
 
@@ -283,7 +283,7 @@ Daraus folgt: keine Bildanalyse zur Abfragezeit (nur gecachte Captions) und kein
 - Ingest und Abfrage strikt getrennt ausführen (`ingest` vs. `query`/UI)
 - `num_ctx` explizit setzen (z. B. 8192 für den Agenten), nicht dem Standardwert überlassen; der KV-Cache wächst mit dem Kontext
 - **Prompts kurz halten:** knapper System-Prompt, kurze Tool-Beschreibungen, `top_k` klein (3–5), Tool-Ergebnisse kompakt (nur Inhalt + Quelle). Jeder Token im Prompt kostet ca. 55 ms.
-- Grobe Abschätzung für eine Agentenfrage mit 3 Tool-Schritten: 1–4 Minuten. In M0 messen; prüfen, ob Ollama den Prompt-Präfix zwischen den Schritten wiederverwendet.
+- Grobe Abschätzung für eine Agentenfrage mit 3 Tool-Schritten: 1–4 Minuten. In M0 gemessen (RUN-000): Prefill 18,9–20,1 Tokens/s, Generierung 5,0–5,9 Tokens/s. Ob Ollama den Prompt-Präfix wiederverwendet, ist wahrscheinlich, aber noch nicht belegt (ISS-005); Prüfung beim ersten Mehrschritt-Lauf in M5.
 - Antwortzeiten im Testmodul mitmessen. Latenz auf Standard-Hardware ist eine ehrliche Kennzahl für die Reflexion.
 
 ---
@@ -422,7 +422,7 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 - [x] Python-Umgebung: `uv`, Python 3.13 (laut `pyproject.toml`)
 - [x] Zwei weitere eingebaute Fehler in M1 ergänzen (Abschnitt 4.2)
 - [x] Keine Literatur in der Ausarbeitung
-- [ ] Agent-Modell: `qwen2.5:7b` vs. `llama3.1:8b` (Smoke-Test in M0)
-- [ ] Tool-Calling: natives Ollama-Tool-Calling oder ReAct per Text-Prompt mit eigenem Parser?
+- [x] Agent-Modell: vorläufig `llama3.1:8b` (RUN-000: gleiche Trefferquote wie `qwen2.5:7b`, ca. 18 % schnellere Generierung); Endentscheidung im Testmodul M6 (ADR-0004)
+- [x] Tool-Calling: natives Ollama-Tool-Calling (ADR-0006), Bestätigung in M5
 - [ ] Referenzprototyp als Basis oder eigener Aufbau? (Code liegt nicht im Repo)
 - [ ] UI: Streamlit (Evidence-First wie Referenz) + CLI für Tests (Empfehlung)
