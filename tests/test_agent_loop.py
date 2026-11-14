@@ -25,9 +25,10 @@ from audit_agent.agent.prompts import (
     is_gap_answer,
     system_prompt,
 )
-from audit_agent.agent.report import evaluate_run, is_fact_in_answer, render_markdown
+from audit_agent.agent.report import evaluate_run, render_markdown
 from audit_agent.config import AgentSettings, Settings
 from audit_agent.corpus import ExpectedFact, Question, QuestionCategory, SourceRef
+from audit_agent.evaluation.metrics import is_fact_in_answer
 from audit_agent.ingestion import ChunkType
 from audit_agent.retrieval import RetrievalError
 from tests.agent_fakes import (
