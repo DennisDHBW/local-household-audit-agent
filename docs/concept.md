@@ -324,11 +324,12 @@ Daraus folgt: keine Bildanalyse zur Abfragezeit (nur gecachte Captions) und kein
 ## 11. Test- & Evaluationskonzept (Testmodul)
 
 ### 11.1 Aufbau des Testmoduls
-- `tests/testset.yaml`: Fragen, erwartete Antwort, erwartete Quellen (Datei + Seite), erwartete Tools, Kategorie
-- `eval/run_eval.py`: führt alle Fragen gegen **drei Varianten** aus und schreibt die Ergebnisse als CSV/JSON:
-  - **B0 – Volltext-Baseline:** so viel Dokumenttext wie ins Kontextfenster passt, direkt im Prompt
-  - **P1 – Modulare Pipeline**
-  - **P2 – Agentic RAG**
+- Testset: die Fragen aus `dataset/ground_truth.yaml` (erwartete Antwort, Fakten, Quellen mit Datei + Seite, erwartete Tools, Kategorie); ein eigenes `testset.yaml` entfällt (M6a, ADR-0011)
+- `python -m audit_agent.evaluation generate` führt die Fragen gegen **drei Varianten** aus und schreibt je Variante eine JSON-Zeile pro Antwort; `score` bewertet die gespeicherten Antworten ohne Ollama (`scores.json`, `report.md`):
+  - **B0 – Volltext-Baseline:** Seitentext in Katalogreihenfolge, bis das Kontextfenster voll ist (bei `num_ctx` 8192 die Dateien 01–08, ISS-039), direkt im Prompt
+  - **P1 – Modulare Pipeline:** eine Suche (Top-5, ohne Filter, mit Boost), danach ein Modellaufruf mit nummerierten Treffern
+  - **P2 – Agentic RAG:** der Agent aus M5
+  - Alle drei mit demselben Modell, denselben Chat-Optionen und demselben Belegformat `[n]`
 - Whitebox-Unit-Tests (`pytest`) für Parser, Chunker, Serialisierung, Score-Berechnung und `calculate`
 
 Der Vergleich mit B0 und P1 belegt messbar, ob RAG und Agentik hier nötig sind. Damit wird der Einwand „ein einfacher Volltext-Prompt reicht“ mit Daten beantwortet.
@@ -375,6 +376,8 @@ Weitere mögliche Fragen (Reserve): Gas-„Preissenkung“ 2026 (Arbeitspreis si
 | Tool-Wahl-Korrektheit | erwartete Tools aufgerufen (aus dem ReAct-Log) |
 | Negativ-Erkennung | N-Fragen korrekt als „nicht vorhanden“ beantwortet |
 | Latenz | Sekunden pro Frage je Variante (B0/P1/P2) |
+
+Umsetzung (M6a): Zahlen gelten als gefunden, wenn sie irgendwo in der Antwort stehen (Belegnummern ausgenommen); Quellen werden über die zitierten `[n]` auf Datei + Seite geprüft; Tool- und Filterwahl nur für P2; Fehlererkennung und Fehlalarm über das Ja/Nein-Urteil der Prüffragen S5, G1, G2, Z1. Das sind bewusst einfache Heuristiken (ISS-038); der Bericht zeigt jede Antwort zur Kontrolle. Die Fehlererkennung deckt bisher nur E1 ab (ISS-040).
 
 **Laufzeit der Evaluation realistisch planen:** 12 Fragen × 3 Varianten bei 1–7 Minuten pro Antwort (B0 mit langem Volltext-Prompt am langsamsten) ergeben grob 1–3 Stunden. RAGAS braucht pro Frage mehrere zusätzliche LLM-Aufrufe für die Bewertung. Deshalb:
 - Antworten erzeugen und bewerten in **getrennten Schritten**; Antworten als JSON speichern, damit die Bewertung wiederholt werden kann, ohne neu zu generieren

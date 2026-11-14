@@ -24,10 +24,40 @@
 
 ## Einträge
 
+### ISS-040 – Fehlererkennung misst nur einen der drei eingebauten Fehler
+- **Datum / Meilenstein:** 2026-11-14 / M6a
+- **Kategorie:** evaluation
+- **Status:** offen
+- **Symptom:** Die Metriken „Fehler erkannt“ und „Fehlalarm“ zählen Fragen, deren erwartete Antwort mit „Ja“ oder „Nein“ beginnt (S5, G1, G2, Z1). Nur G1 enthält einen eingebauten Fehler (E1). E2 (z-Zahl Gas 2026) und E3 (Wohnfläche Nebenkosten 2026) kommen in keiner Frage vor; `audit_checks` mit 10 Abrechnungen wird nicht genutzt.
+- **Ursache:** Der 12-Fragen-Katalog ist aus M1 übernommen; die Prüffragen zu den Abrechnungen 29 und 30 wurden nie formuliert.
+- **Lösung / Workaround:** In M6b entweder zwei Reservefragen zu E2/E3 ergänzen oder einen eigenen Prüflauf „Prüfe die Abrechnung X“ über `audit_checks` bauen. Bis dahin die Rate als „1 von 1“ und nicht als Prozentwert berichten.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen)
+
+### ISS-039 – B0 sieht nur 8 von 30 Dokumenten
+- **Datum / Meilenstein:** 2026-11-14 / M6a
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** Bei `num_ctx` 8192 passen nach Prompt, Antwort und Reserve ca. 7.000 geschätzte Token Seitentext in B0, das sind die Dateien 01–08 (Strom komplett, Gasvertrag, Gasrechnung 2024). Fragen zu Wasser (S3), Nebenkosten (G2), Gas 2025 (Z1) und Preisanpassung Gas (S1, Datei 09) kann B0 daher nicht beantworten.
+- **Ursache:** Der Korpus hat ca. 60.000 Zeichen Seitentext; Entscheidung für Variante A (Katalogreihenfolge, gleicher Kontext für alle Fragen), ADR-0011.
+- **Lösung / Workaround:** Bewusst so gelassen: Genau das ist die Aussage von B0 („Volltext passt auf dieser Hardware nicht“). Im Bericht steht, welche Dateien im Kontext waren (`manifest.json`). Die Schätzung Zeichen/3 ist vorsichtig; real ist der Prompt kürzer.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Varianten, Grenzen)
+
+### ISS-038 – Fakten- und Urteilsprüfung der eigenen Metriken sind Heuristiken
+- **Datum / Meilenstein:** 2026-11-14 / M6a
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** (1) Eine erwartete Zahl gilt als gefunden, wenn sie irgendwo in der Antwort steht, auch in einem falschen Zusammenhang. (2) Textfakten werden als ganzes Wort gesucht; „31. Dezember 2025“ trifft „31.12.2025“ nicht. (3) Das Urteil ja/nein wird aus dem ersten Satz gelesen (führendes Ja/Nein, sonst Signalwörter wie „nicht“, „abweich“, „stimmt“); Sätze wie „weicht nicht ab“ werden falsch eingeordnet. (4) Vorher zählte ein Textfakt „ja“ als gefunden, sobald „Jahresabrechnung“ in der Antwort stand, und eine Belegnummer `[25]` als Zahl 25; beides ist behoben.
+- **Ursache:** Deterministische Prüfung ohne LLM-Bewerter (ADR-0011).
+- **Lösung / Workaround:** `report.md` zeigt jede Antwort mit erkanntem Urteil und fehlenden Fakten, Fehlurteile werden beim Auswerten von Hand korrigiert und hier notiert. RAGAS (M6b) als zweite Sicht.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Metriken, Grenzen)
+
 ### ISS-037 – P1 hat noch keine Antwortsynthese, B0 fehlt
 - **Datum / Meilenstein:** 2026-11-14 / M5 (aufgefallen beim Planen von M6)
 - **Kategorie:** konzept
-- **Status:** offen
+- **Status:** gelöst (M6a, ADR-0011)
 - **Symptom:** `concept.md` 7.1 und 11.1 vergleichen drei Varianten (B0 Volltext, P1 Pipeline mit LLM-Synthese, P2 Agent). Gebaut sind bisher nur das Retrieval von P1 (M4) und der Agent P2 (M5). Es gibt weder eine Synthese-Funktion, die aus den Top-5 eine Antwort erzeugt, noch den Volltext-Prompt von B0.
 - **Ursache:** Meilensteintabelle und Konzept führten „P1“ unter M4 als Retrieval, die Synthese wurde in keinem Paket eingeplant.
 - **Lösung / Workaround:** M6 beginnt mit P1-Synthese (ein Modellaufruf mit Evidenz, Belegnummern wie im Agenten) und B0 (so viel Text wie in 8.192 Token passt), beide über denselben `ChatClient` und dieselben Protokollsätze; erst danach die Evaluation. Das ist mehr Arbeit als im Konzept sichtbar; M6 kann in zwei Pakete geteilt werden.
