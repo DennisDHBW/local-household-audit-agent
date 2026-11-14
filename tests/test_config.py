@@ -54,3 +54,13 @@ def test_required_models_are_distinct_and_ordered():
 
     # Assert
     assert required == ("qwen2.5:7b", "llama3.1:8b", "gemma3:4b", "nomic-embed-text")
+
+
+def test_agent_settings_defaults_match_the_concept():
+    # Arrange / Act
+    agent = Settings().agent
+
+    # Assert
+    assert agent.max_tool_calls == 6
+    assert agent.temperature == 0
+    assert agent.max_hit_chars >= 100
