@@ -56,7 +56,15 @@ class ToolCallStep(_Frozen):
     hit_numbers: tuple[int, ...] = ()
 
 
-AgentStep = ModelCallStep | ToolCallStep
+class NudgeStep(_Frozen):
+    """The loop questioned a "not in the documents" answer that rested on too few searches."""
+
+    kind: Literal["nudge"] = "nudge"
+    index: int
+    message: str
+
+
+AgentStep = ModelCallStep | ToolCallStep | NudgeStep
 
 
 class NumberedHit(_Frozen):

@@ -13,7 +13,7 @@ from ollama import Client
 
 from audit_agent.agent.evidence_view import evidence_sections
 from audit_agent.agent.factory import create_agent
-from audit_agent.agent.models import AgentStep, EvidenceBook, ModelCallStep, ToolCallStep
+from audit_agent.agent.models import AgentStep, EvidenceBook, NudgeStep, ToolCallStep
 from audit_agent.config import Settings
 from audit_agent.corpus import CorpusError
 from audit_agent.preflight import MissingModelError, ensure_models_available
@@ -24,7 +24,8 @@ def _step_line(step: AgentStep) -> str:
     if isinstance(step, ToolCallStep):
         state = "ok" if step.is_valid else "FEHLER"
         return f"- Werkzeug `{step.tool}` {step.arguments} → {state} ({step.seconds} s)"
-    assert isinstance(step, ModelCallStep)
+    if isinstance(step, NudgeStep):
+        return "- Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen"
     calls = ", ".join(call.name for call in step.tool_calls) or "Antwort"
     return f"- Modell ({step.seconds} s, {step.prompt_tokens} Prompt-Token) → {calls}"
 

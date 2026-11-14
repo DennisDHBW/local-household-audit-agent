@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from audit_agent.retrieval.search import fold
+
 SYSTEM_PROMPT = """\
 Du prüfst Haushaltsdokumente eines Nutzers (Verträge, Rechnungen, Abrechnungen, \
 Preisschreiben) und beantwortest Fragen ausschließlich anhand dieser Unterlagen.
@@ -14,7 +16,9 @@ Vertrag oder Preisschreiben und die Rechnung.
 
 Regeln:
 - Preise, Verbräuche, Zählerstände und Beträge stehen in Tabellen: search_tables. \
-Klauseln, Fristen und Laufzeiten: search_documents. Diagramme: search_images.
+Klauseln, Fristen und Laufzeiten: search_documents. Diagramme: search_images; \
+Verbräuche früherer Jahre stehen oft nur im Vergleichsdiagramm der Rechnung.
+- Nenne Preise brutto (inkl. USt.), außer die Frage verlangt netto.
 - Setze Filter nur, wenn die Frage Sparte, Dokumentart oder Jahr eindeutig nennt. \
 Im Zweifel weglassen.
 - Ist unklar, ob es ein Dokument gibt (Jahr, Sparte), prüfe es mit list_documents. \
@@ -25,9 +29,25 @@ Belege für Zahlen sind Texte und Tabellenzeilen.
 
 Antwort: Deutsch, kurz. Belege jede Zahl mit der Nummer des Treffers, z. B. [2]; \
 Rechenergebnisse stammen aus calculate. Findest du die Information nicht, schreibe \
-"Dazu liegen in den Unterlagen keine Angaben vor." und rate nicht. \
+"{gap_answer}" und rate nicht. \
 Nenne Abweichungen mit beiden Werten und dem Unterschied.\
 """
+
+GAP_ANSWER = "Dazu liegen in den Unterlagen keine Angaben vor."
+GAP_PHRASES = (
+    "keine angaben",
+    "liegt nicht vor",
+    "liegen nicht vor",
+    "nicht in den unterlagen",
+    "nicht gefunden",
+)
+"""Phrases of an honest "not in the documents" answer (checked on the folded answer)."""
+
+RETRY_BEFORE_GAP_MESSAGE = (
+    "Bevor du sagst, dass Angaben fehlen: Suche noch einmal, ohne Filter oder mit einem "
+    "anderen Werkzeug (search_documents, search_tables, search_images), und prüfe mit "
+    "list_documents, welche Unterlagen es gibt."
+)
 
 FORCED_ANSWER_MESSAGE = (
     "Du hast keine Werkzeugaufrufe mehr. Antworte jetzt auf Deutsch mit den vorhandenen "
@@ -35,6 +55,12 @@ FORCED_ANSWER_MESSAGE = (
 )
 
 
+def is_gap_answer(answer: str) -> bool:
+    """True if the answer says that the information is not in the documents."""
+    folded = fold(answer)
+    return any(phrase in folded for phrase in GAP_PHRASES)
+
+
 def system_prompt(max_tool_calls: int) -> str:
     """The system prompt with the tool limit of the settings."""
-    return SYSTEM_PROMPT.format(max_tool_calls=max_tool_calls)
+    return SYSTEM_PROMPT.format(max_tool_calls=max_tool_calls, gap_answer=GAP_ANSWER)

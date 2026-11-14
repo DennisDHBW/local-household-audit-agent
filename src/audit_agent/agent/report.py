@@ -11,19 +11,12 @@ from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict
 
-from audit_agent.agent.models import AgentRun, ModelCallStep, ToolCallStep
+from audit_agent.agent.models import AgentRun, ModelCallStep, NudgeStep, ToolCallStep
+from audit_agent.agent.prompts import is_gap_answer
 from audit_agent.corpus import ExpectedFact, Question
 from audit_agent.numbers import extract_numbers
 from audit_agent.retrieval.search import fold
 
-GAP_PHRASES = (
-    "keine angaben",
-    "liegt nicht vor",
-    "liegen nicht vor",
-    "nicht in den unterlagen",
-    "nicht gefunden",
-)
-"""Phrases of an honest "not in the documents" answer (checked on the folded answer)."""
 UNIT_FACTORS = (Decimal(1), Decimal(100), Decimal("0.01"))
 """A fact may be written as EUR or ct, 0.348 or 34,8."""
 
@@ -70,9 +63,7 @@ def evaluate_run(question: Question, run: AgentRun) -> RunCheck:
         missing_facts=tuple(
             fact.label for fact in question.facts if not is_fact_in_answer(fact, run.answer)
         ),
-        admits_gap=None
-        if question.is_answerable
-        else any(phrase in fold(run.answer) for phrase in GAP_PHRASES),
+        admits_gap=None if question.is_answerable else is_gap_answer(run.answer),
     )
 
 
@@ -137,6 +128,8 @@ def render_markdown(model: str, results: list[tuple[Question, AgentRun]]) -> str
                     f"- {step.tool}({step.arguments}) → {state}, "
                     f"Treffer {list(step.hit_numbers)}, {step.seconds} s"
                 )
+            elif isinstance(step, NudgeStep):
+                lines.append("- Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen")
         lines += [
             "",
             "| Modellaufruf | Prompt-Token | Prefill s | Token/s | Erzeugt | Gesamt s |",

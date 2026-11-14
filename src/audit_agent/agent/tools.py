@@ -116,6 +116,13 @@ class AgentTool:
     arguments: type[BaseModel]
     run: Callable[[Any, EvidenceBook], ToolResult]
 
+    def usage(self) -> str:
+        """Call shape such as ``search_tables(query*, doc_type, year)``; ``*`` marks required."""
+        parameters = tool_parameters(self.arguments)
+        required = set(parameters.get("required", []))
+        names = [f"{name}*" if name in required else name for name in parameters["properties"]]
+        return f"{self.name}({', '.join(names)})"
+
     def spec(self) -> dict[str, Any]:
         """The tool as Ollama's ``tools=[...]`` entry."""
         return {
@@ -308,8 +315,10 @@ class ToolBox:
         return self._search(args, book, frozenset({ChunkType.TEXT}))
 
     def _search_tables(self, args: SearchArguments, book: EvidenceBook) -> ToolResult:
-        types = frozenset({ChunkType.TABLE_ROW, ChunkType.TABLE_SUMMARY})
-        return self._search(args, book, types)
+        types = {ChunkType.TABLE_ROW}
+        if self._settings.agent.include_table_summaries:
+            types.add(ChunkType.TABLE_SUMMARY)
+        return self._search(args, book, frozenset(types))
 
     def _search_images(self, args: SearchArguments, book: EvidenceBook) -> ToolResult:
         return self._search(args, book, frozenset({ChunkType.IMAGE}))

@@ -119,6 +119,10 @@ class AgentSettings(BaseModel):
     temperature: float = Field(default=0.0, ge=0)
     keep_alive: str = "10m"
     """How long Ollama keeps the agent model loaded between two calls."""
+    include_table_summaries: bool = False
+    """Show ``table_summary`` hits to the model; off since RUN-005 (it quoted one as evidence)."""
+    min_searches_before_gap: int = Field(default=2, ge=0)
+    """Fewer tool calls than this and a "not in the documents" answer is questioned once."""
 
 
 class Settings(BaseModel):

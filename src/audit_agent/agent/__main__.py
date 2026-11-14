@@ -12,7 +12,7 @@ from ollama import Client, ResponseError
 
 from audit_agent.agent.factory import create_agent
 from audit_agent.agent.log import RunLog
-from audit_agent.agent.models import AgentRun, AgentStep, EvidenceBook, ToolCallStep
+from audit_agent.agent.models import AgentRun, AgentStep, EvidenceBook, NudgeStep, ToolCallStep
 from audit_agent.agent.report import render_markdown
 from audit_agent.config import Settings
 from audit_agent.corpus import CorpusError, Question, load_ground_truth
@@ -47,6 +47,8 @@ def _print_step(step: AgentStep, book: EvidenceBook) -> None:
     if isinstance(step, ToolCallStep):
         state = "ok" if step.is_valid else "FEHLER"
         print(f"  Tool {step.tool} {step.arguments} -> {state} ({step.seconds} s)", file=sys.stderr)
+    elif isinstance(step, NudgeStep):
+        print("  Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen", file=sys.stderr)
     else:
         calls = ", ".join(call.name for call in step.tool_calls) or "Antwort"
         print(

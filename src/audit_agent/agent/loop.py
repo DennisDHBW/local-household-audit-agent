@@ -7,6 +7,7 @@ context window; at the bound the model has to answer with what it has.
 
 from __future__ import annotations
 
+import json
 import time
 from collections.abc import Mapping
 from typing import Any, Protocol
@@ -18,12 +19,18 @@ from audit_agent.agent.models import (
     AgentStep,
     EvidenceBook,
     ModelCallStep,
+    NudgeStep,
     StepCallback,
     StopReason,
     ToolCallStep,
     ToolInvocation,
 )
-from audit_agent.agent.prompts import FORCED_ANSWER_MESSAGE, system_prompt
+from audit_agent.agent.prompts import (
+    FORCED_ANSWER_MESSAGE,
+    RETRY_BEFORE_GAP_MESSAGE,
+    is_gap_answer,
+    system_prompt,
+)
 from audit_agent.agent.tools import AgentTool, ToolError, clean_arguments
 from audit_agent.config import Settings
 
@@ -54,6 +61,13 @@ def _invocations(message: Any) -> list[Any]:
     return list(message.tool_calls or [])
 
 
+def _message_text(message: Any) -> str:
+    """Content of a dict or ``Message`` plus the arguments of its tool calls."""
+    content = message.get("content") if isinstance(message, dict) else message.content
+    calls = "" if isinstance(message, dict) else str([c.function for c in _invocations(message)])
+    return f"{content or ''}{calls}"
+
+
 def _validation_summary(error: ValidationError) -> str:
     parts = []
     for item in error.errors():
@@ -70,6 +84,7 @@ class AgentLoop:
         self._client = client
         self._tools = dict(tools)
         self._specs = [tool.spec() for tool in tools.values()]
+        self._spec_tokens = estimate_tokens(json.dumps(self._specs, ensure_ascii=False))
 
     def run(
         self, question: str, model: str | None = None, on_step: StepCallback | None = None
@@ -92,7 +107,7 @@ class AgentLoop:
 
         tool_call_count = 0
         forced: StopReason | None = None
-        used_tokens = 0
+        is_gap_questioned = False
         answer = ""
         stop_reason: StopReason = "answer"
         while True:
@@ -106,11 +121,20 @@ class AgentLoop:
             calls = [] if forced is not None else _invocations(message)
             if not calls:
                 answer = (message.content or "").strip()
+                if (
+                    forced is None
+                    and not is_gap_questioned
+                    and tool_call_count < agent.min_searches_before_gap
+                    and is_gap_answer(answer)
+                ):
+                    is_gap_questioned = True
+                    messages += [message, {"role": "user", "content": RETRY_BEFORE_GAP_MESSAGE}]
+                    emit(NudgeStep(index=len(steps), message=RETRY_BEFORE_GAP_MESSAGE))
+                    continue
                 stop_reason = forced or ("answer" if answer else "empty_answer")
                 break
 
             messages.append(message)
-            used_tokens = (model_step.prompt_tokens or 0) + (model_step.generated_tokens or 0)
             for call in calls:
                 if tool_call_count >= agent.max_tool_calls:
                     observation = LIMIT_OBSERVATION
@@ -124,10 +148,9 @@ class AgentLoop:
                 messages.append(
                     {"role": "tool", "tool_name": tool_step.tool, "content": tool_step.observation}
                 )
-                used_tokens += estimate_tokens(tool_step.observation)
             if tool_call_count >= agent.max_tool_calls:
                 forced = "tool_limit"
-            elif self._is_context_full(used_tokens):
+            elif self._is_context_full(messages):
                 forced = "context_limit"
 
         return AgentRun(
@@ -141,11 +164,16 @@ class AgentLoop:
             sources=book.numbered_hits,
         )
 
-    def _is_context_full(self, used_tokens: int) -> bool:
-        """True if one more observation and the answer would not fit into the context."""
+    def _is_context_full(self, messages: list[Any]) -> bool:
+        """True if one more observation and the answer would not fit into the context.
+
+        The size is estimated from the text itself: Ollama's ``prompt_eval_count`` leaves out
+        tokens that came from its prompt cache, so it cannot tell how full the window is.
+        """
         agent = self._settings.agent
+        used = self._spec_tokens + sum(estimate_tokens(_message_text(m)) for m in messages)
         free = self._settings.num_ctx - agent.num_predict - agent.context_reserve_tokens
-        return used_tokens > free
+        return used > free
 
     def _call_model(
         self, model: str, messages: list[Any], index: int, offer_tools: bool
@@ -206,7 +234,7 @@ class AgentLoop:
                 is_valid = False
                 observation = (
                     f"FEHLER: Ungültige Argumente für {name}: {_validation_summary(error)}. "
-                    "Rufe das Werkzeug mit korrekten Argumenten erneut auf."
+                    f"Richtiger Aufruf: {tool.usage()} (* = Pflicht)."
                 )
             else:
                 try:
