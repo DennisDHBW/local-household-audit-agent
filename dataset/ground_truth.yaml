@@ -1,0 +1,192 @@
+# Ground Truth: 12-Fragen-Katalog (concept.md, Abschnitt 11.2), eingebaute Fehler und erwartete Prüfurteile.
+# Struktur siehe audit_agent.corpus.models. Beträge in EUR brutto, Preise in ct/kWh, falls nicht anders angegeben.
+# Dateipfade relativ zu dataset/, Seiten ab 1.
+
+questions:
+  - id: S1
+    category: standard
+    question: Welche Kündigungsfrist gilt für den Gasvertrag und bis wann läuft die Erstlaufzeit?
+    expected_answer: 6 Wochen zum Ende der Erstlaufzeit am 31.12.2025, danach 1 Monat Frist (unbefristet).
+    facts:
+      - { label: Kündigungsfrist in der Erstlaufzeit, value: "6 Wochen" }
+      - { label: Ende der Erstlaufzeit, value: "31.12.2025" }
+      - { label: Kündigungsfrist danach, value: "1 Monat" }
+    sources:
+      - { file: 02_gas_neckarenergie/07_Gas_Liefervertrag_NeckarEnergie_2024.pdf, page: 1 }
+      - { file: 02_gas_neckarenergie/09_Gas_Preisanpassung_NeckarEnergie_2026.pdf, page: 1 }
+    expected_tools: [search_documents]
+    tests: Text-Retrieval, Hierarchie-Boost
+
+  - id: S2
+    category: standard
+    question: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+    expected_answer: Arbeitspreis 34,80 ct/kWh und Grundpreis 11,50 EUR/Monat (jeweils brutto).
+    facts:
+      - { label: Arbeitspreis brutto, value: 34.80, unit: ct/kWh }
+      - { label: Grundpreis brutto, value: 11.50, unit: EUR/Monat }
+    sources:
+      - { file: 01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, page: 1 }
+    expected_tools: [search_tables]
+    tests: search_tables, Metadatenfilter
+
+  - id: S3
+    category: standard
+    question: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
+    expected_answer: 74 m³ (Zählerstand 386 m³ am Jahresende minus 312 m³ am Jahresanfang).
+    facts:
+      - { label: Wasserverbrauch 2025, value: 74, unit: m³, tolerance: 0 }
+    sources:
+      - { file: 03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf, page: 1 }
+    expected_tools: [search_tables]
+    tests: Tabellenzeilen, richtiges Jahr
+
+  - id: S4
+    category: standard
+    question: Wie hoch war der Stromverbrauch 2022 und 2023?
+    expected_answer: 3.480 kWh (2022) und 3.390 kWh (2023); die Werte stehen nur im Diagramm.
+    facts:
+      - { label: Stromverbrauch 2022, value: 3480, unit: kWh, tolerance: 0 }
+      - { label: Stromverbrauch 2023, value: 3390, unit: kWh, tolerance: 0 }
+    sources:
+      - { file: 01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, page: 2 }
+    expected_tools: [search_images]
+    tests: search_images, Vision-Caption
+
+  - id: S5
+    category: standard
+    question: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
+    expected_answer: Ja, der Rechnungsbetrag von 1.189,00 EUR ist mit den Vertragspreisen und dem Neukundenbonus konsistent.
+    facts:
+      - { label: Rechnungsbetrag 2024, value: 1189.00, unit: EUR }
+      - { label: Abrechnung korrekt, value: "ja" }
+    sources:
+      - { file: 01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, page: 1 }
+      - { file: 01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, page: 1 }
+    expected_tools: [search_tables, calculate]
+    tests: ReAct, calculate, keine Fehlalarme
+
+  - id: G1
+    category: edge_case
+    question: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+    expected_answer: Nein. Angekündigt waren 38,20 ct/kWh, abgerechnet wurden 39,50 ct/kWh; bei 3.100 kWh sind das 40,30 EUR zu viel.
+    facts:
+      - { label: Angekündigter Arbeitspreis, value: 38.20, unit: ct/kWh }
+      - { label: Abgerechneter Arbeitspreis, value: 39.50, unit: ct/kWh }
+      - { label: Zu viel berechnet, value: 40.30, unit: EUR }
+    sources:
+      - { file: 01_electricity_suedvolt/03_Strom_Preisanpassung_SuedVolt_2025.pdf, page: 1 }
+      - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
+    expected_tools: [search_tables, calculate]
+    tests: Multi-Hop über zwei Dokumente, Fehlererkennung
+
+  - id: G2
+    category: edge_case
+    question: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
+    expected_answer: Ja. 78 m² von 312 m² sind 25 %, 25 % von 7.320,00 EUR sind 1.830,00 EUR; abzüglich 1.920,00 EUR Vorauszahlungen ergibt sich ein Guthaben von 90,00 EUR.
+    facts:
+      - { label: Wohnflächenanteil, value: 25, unit: "%", tolerance: 0 }
+      - { label: Anteil Betriebskosten 2025, value: 1830.00, unit: EUR }
+      - { label: Guthaben, value: 90.00, unit: EUR }
+    sources:
+      - { file: 04_housing_utilities_contractors/16_Mietvertrag_Hauptstrasse42_2023.pdf, page: 1 }
+      - { file: 04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf, page: 1 }
+    expected_tools: [search_tables, calculate]
+    tests: Mietvertrag gegen Abrechnung, keine Fehlalarme
+
+  - id: N1
+    category: negative
+    question: Wie hoch war meine Stromrechnung 2023?
+    expected_answer: Liegt nicht vor, da die Belieferung erst am 01.01.2024 begann; nur der Verbrauch 2023 (3.390 kWh) ist aus dem Diagramm bekannt.
+    is_answerable: false
+    expected_tools: [list_documents]
+    tests: keine erfundene Zahl
+
+  - id: N2
+    category: negative
+    question: Welchen Grundpreis zahle ich für Fernwärme?
+    expected_answer: Es gibt keinen Fernwärmevertrag; die Wohnung wird mit einer Gasetagenheizung beheizt.
+    is_answerable: false
+    expected_tools: [list_documents]
+    tests: Ablenker nicht verwechseln
+
+  - id: Z1
+    category: additional
+    question: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+    expected_answer: Ja. 9.320 − 8.120 = 1.200 m³; 1.200 m³ × 0,9560 × 11,150 kWh/m³ ergeben 12.791 kWh.
+    facts:
+      - { label: Volumen, value: 1200, unit: m³, tolerance: 0 }
+      - { label: z-Zahl, value: 0.9560, tolerance: 0 }
+      - { label: Energiemenge, value: 12791, unit: kWh, tolerance: 1 }
+    sources:
+      - { file: 02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf, page: 1 }
+    expected_tools: [search_tables, calculate]
+    tests: Rechnen mit Umrechnungsfaktoren
+
+  - id: Z2
+    category: additional
+    question: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+    expected_answer: 120,00 EUR ab 15.02.2026, nicht die früheren 105,00 oder 115,00 EUR.
+    facts:
+      - { label: Aktueller Abschlag, value: 120.00, unit: EUR/Monat }
+    sources:
+      - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
+    expected_tools: [list_documents, search_documents]
+    tests: neuestes Dokument wählen
+
+  - id: Z3
+    category: additional
+    question: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+    expected_answer: Nach der Erstlaufzeit (bis 31.12.2024) jederzeit mit 1 Monat Frist; die Fristen von Internet- und Mobilfunkvertrag gehören nicht dazu.
+    facts:
+      - { label: Kündigungsfrist Strom, value: "1 Monat" }
+    sources:
+      - { file: 01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, page: 1 }
+    expected_tools: [search_documents]
+    tests: Ablenker (Distractor Rate)
+
+planted_errors:
+  - id: E1
+    file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf
+    related_files: [01_electricity_suedvolt/03_Strom_Preisanpassung_SuedVolt_2025.pdf]
+    description: Arbeitspreis 39,50 statt der angekündigten 38,20 ct/kWh brutto.
+    facts:
+      - { label: Korrekter Arbeitspreis, value: 38.20, unit: ct/kWh }
+      - { label: Abgerechneter Arbeitspreis, value: 39.50, unit: ct/kWh }
+      - { label: Korrekter Rechnungsbetrag, value: 1339.00, unit: EUR }
+      - { label: Abgerechneter Rechnungsbetrag, value: 1379.30, unit: EUR }
+      - { label: Zu viel berechnet, value: 40.30, unit: EUR }
+  - id: E2
+    file: 02_gas_neckarenergie/29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf
+    related_files:
+      - 02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf
+      - 02_gas_neckarenergie/09_Gas_Preisanpassung_NeckarEnergie_2026.pdf
+    description: z-Zahl 1,0000 statt 0,9560 (wie in den Abrechnungen 2024 und 2025); die Energiemenge ist dadurch um 520 kWh zu hoch.
+    facts:
+      - { label: Korrekte z-Zahl, value: 0.9560, tolerance: 0 }
+      - { label: Korrekte Energiemenge, value: 11299, unit: kWh, tolerance: 1 }
+      - { label: Abgerechnete Energiemenge, value: 11819, unit: kWh, tolerance: 1 }
+      - { label: Korrekter Rechnungsbetrag, value: 1316.25, unit: EUR }
+      - { label: Abgerechneter Rechnungsbetrag, value: 1367.99, unit: EUR }
+      - { label: Zu viel berechnet, value: 51.74, unit: EUR }
+  - id: E3
+    file: 04_housing_utilities_contractors/30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf
+    related_files: [04_housing_utilities_contractors/16_Mietvertrag_Hauptstrasse42_2023.pdf]
+    description: Wohnfläche 82 m² (26,28 %) statt der im Mietvertrag vereinbarten 78 m² (25 %); der Anteil ist dadurch zu hoch.
+    facts:
+      - { label: Korrekte Wohnfläche, value: 78, unit: m², tolerance: 0 }
+      - { label: Korrekter Anteil, value: 1867.50, unit: EUR }
+      - { label: Abgerechneter Anteil, value: 1963.28, unit: EUR }
+      - { label: Korrektes Guthaben, value: 52.50, unit: EUR }
+      - { label: Abgerechnete Nachzahlung, value: 43.28, unit: EUR }
+
+audit_checks:
+  - { file: 01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, is_correct: true }
+  - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, is_correct: false, planted_error_id: E1 }
+  - { file: 02_gas_neckarenergie/08_Gas_Jahresabrechnung_2024_NeckarEnergie.pdf, is_correct: true }
+  - { file: 02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf, is_correct: true }
+  - { file: 02_gas_neckarenergie/29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf, is_correct: false, planted_error_id: E2 }
+  - { file: 03_water_stadtwerke_mosbach/13_Wasser_Jahresbescheid_2024_SWM.pdf, is_correct: true }
+  - { file: 03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf, is_correct: true }
+  - { file: 04_housing_utilities_contractors/18_Nebenkostenabrechnung_2024_Hausverwaltung.pdf, is_correct: true }
+  - { file: 04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf, is_correct: true }
+  - { file: 04_housing_utilities_contractors/30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf, is_correct: false, planted_error_id: E3 }
