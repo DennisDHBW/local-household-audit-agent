@@ -14,7 +14,6 @@ from audit_agent.agent.tools import (
     clean_arguments,
     describe_filter,
     matches_year,
-    shorten,
     tool_parameters,
 )
 from audit_agent.config import AgentSettings, Settings
@@ -27,6 +26,7 @@ from audit_agent.ingestion import (
     chunks_path,
 )
 from audit_agent.retrieval import MetadataFilter
+from audit_agent.retrieval.evidence import shorten
 from tests.agent_fakes import (
     BILL_FILE,
     CONTRACT_FILE,

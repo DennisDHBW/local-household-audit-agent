@@ -68,6 +68,43 @@ def _message_text(message: Any) -> str:
     return f"{content or ''}{calls}"
 
 
+def chat_arguments(settings: Settings, model: str, messages: list[Any]) -> dict[str, Any]:
+    """Arguments of one chat call; the agent and the evaluation variants use the same ones."""
+    agent = settings.agent
+    return {
+        "model": model,
+        "messages": messages,
+        "options": {
+            "num_ctx": settings.num_ctx,
+            "num_predict": agent.num_predict,
+            "temperature": agent.temperature,
+        },
+        "keep_alive": agent.keep_alive,
+    }
+
+
+def model_call_step(
+    response: Any, index: int, offered_tools: bool, message_count: int, seconds: float
+) -> ModelCallStep:
+    """Log record of one chat response (token counts and durations as Ollama reports them)."""
+    message = response.message
+    return ModelCallStep(
+        index=index,
+        offered_tools=offered_tools,
+        message_count=message_count,
+        prompt_tokens=getattr(response, "prompt_eval_count", None),
+        prefill_seconds=_seconds(getattr(response, "prompt_eval_duration", None)),
+        generated_tokens=getattr(response, "eval_count", None),
+        decode_seconds=_seconds(getattr(response, "eval_duration", None)),
+        seconds=round(seconds, 2),
+        content=(message.content or "").strip(),
+        tool_calls=tuple(
+            ToolInvocation(name=call.function.name, arguments=dict(call.function.arguments or {}))
+            for call in _invocations(message)
+        ),
+    )
+
+
 def _validation_summary(error: ValidationError) -> str:
     parts = []
     for item in error.errors():
@@ -178,39 +215,17 @@ class AgentLoop:
     def _call_model(
         self, model: str, messages: list[Any], index: int, offer_tools: bool
     ) -> tuple[Any, ModelCallStep]:
-        agent = self._settings.agent
-        arguments: dict[str, Any] = {
-            "model": model,
-            "messages": messages,
-            "options": {
-                "num_ctx": self._settings.num_ctx,
-                "num_predict": agent.num_predict,
-                "temperature": agent.temperature,
-            },
-            "keep_alive": agent.keep_alive,
-        }
+        arguments = chat_arguments(self._settings, model, messages)
         if offer_tools:
             arguments["tools"] = self._specs
         started = time.perf_counter()
         response = self._client.chat(**arguments)
-        seconds = time.perf_counter() - started
-        message = response.message
-        step = ModelCallStep(
+        step = model_call_step(
+            response,
             index=index,
             offered_tools=offer_tools,
             message_count=len(messages),
-            prompt_tokens=getattr(response, "prompt_eval_count", None),
-            prefill_seconds=_seconds(getattr(response, "prompt_eval_duration", None)),
-            generated_tokens=getattr(response, "eval_count", None),
-            decode_seconds=_seconds(getattr(response, "eval_duration", None)),
-            seconds=round(seconds, 2),
-            content=(message.content or "").strip(),
-            tool_calls=tuple(
-                ToolInvocation(
-                    name=call.function.name, arguments=dict(call.function.arguments or {})
-                )
-                for call in _invocations(message)
-            ),
+            seconds=time.perf_counter() - started,
         )
         return response, step
 

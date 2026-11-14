@@ -72,9 +72,24 @@ def build_evidence(hits: Iterable[SearchHit]) -> list[EvidenceDocument]:
     return documents
 
 
-def _shorten(text: str, limit: int) -> str:
+def shorten(text: str, limit: int) -> str:
+    """One line of at most ``limit`` characters."""
     flat = " ".join(text.split())
     return flat if len(flat) <= limit else flat[: limit - 1] + "…"
+
+
+def render_numbered_hit(number: int, hit: SearchHit, max_chars: int) -> str:
+    """Hit as the models see it: ``[3] file.pdf, S. 1, Tabellenzeile``, chapter, content.
+
+    The agent tools (P2) and the pipeline variant (P1) share this format, so both cite alike.
+    """
+    head = f"[{number}] {PurePosixPath(hit.filename).name}, S. {hit.page_number}, "
+    head += TYPE_LABELS[hit.chunk_type]
+    lines = [head]
+    if hit.heading_stack:
+        lines.append("Kapitel: " + " > ".join(hit.heading_stack))
+    lines.append(shorten(hit.content, max_chars))
+    return "\n".join(lines)
 
 
 def render_evidence_text(documents: Iterable[EvidenceDocument], content_chars: int = 160) -> str:
@@ -95,5 +110,5 @@ def render_evidence_text(documents: Iterable[EvidenceDocument], content_chars: i
                         else ""
                     )
                 )
-                lines.append(f"      {_shorten(hit.content, content_chars)}")
+                lines.append(f"      {shorten(hit.content, content_chars)}")
     return "\n".join(lines)
