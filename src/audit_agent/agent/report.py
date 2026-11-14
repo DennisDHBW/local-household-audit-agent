@@ -1,24 +1,19 @@
 """Quick checks and a Markdown report for a set of agent runs (RUN-005, evaluation-log).
 
 These checks are deliberately simple (tool choice, found sources, numbers in the answer).
-The full metrics and RAGAS belong to the test module of M6.
+The full metrics live in ``audit_agent.evaluation`` (M6).
 """
 
 from __future__ import annotations
 
 from datetime import date
-from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict
 
 from audit_agent.agent.models import AgentRun, ModelCallStep, NudgeStep, ToolCallStep
 from audit_agent.agent.prompts import is_gap_answer
-from audit_agent.corpus import ExpectedFact, Question
-from audit_agent.numbers import extract_numbers
-from audit_agent.retrieval.search import fold
-
-UNIT_FACTORS = (Decimal(1), Decimal(100), Decimal("0.01"))
-"""A fact may be written as EUR or ct, 0.348 or 34,8."""
+from audit_agent.corpus import Question
+from audit_agent.evaluation.metrics import is_fact_in_answer
 
 
 class RunCheck(BaseModel):
@@ -34,18 +29,6 @@ class RunCheck(BaseModel):
     missing_facts: tuple[str, ...]
     admits_gap: bool | None
     """For unanswerable questions: does the answer say that the information is missing?"""
-
-
-def is_fact_in_answer(fact: ExpectedFact, answer: str) -> bool:
-    """Numbers match any number of the answer (also in ct); text facts match as substring."""
-    if isinstance(fact.value, str):
-        return fold(fact.value) in fold(answer)
-    numbers = extract_numbers(answer)
-    return any(
-        abs(Decimal(str(number)) - fact.value * factor) <= fact.tolerance * max(factor, 1)
-        for number in numbers
-        for factor in UNIT_FACTORS
-    )
 
 
 def evaluate_run(question: Question, run: AgentRun) -> RunCheck:

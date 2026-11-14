@@ -17,6 +17,7 @@ from audit_agent.agent.report import render_markdown
 from audit_agent.config import Settings
 from audit_agent.corpus import CorpusError, Question, load_ground_truth
 from audit_agent.enrichment.llm import installed_models
+from audit_agent.evaluation.testset import select_questions
 from audit_agent.preflight import MissingModelError, ensure_models_available
 from audit_agent.retrieval import RetrievalError
 
@@ -77,16 +78,6 @@ def _print_run(run: AgentRun) -> None:
         print(f"  [{source.number}] {Path(hit.filename).name}, S. {hit.page_number}")
 
 
-def _questions(args: argparse.Namespace, settings: Settings) -> list[Question]:
-    truth = load_ground_truth(settings.ground_truth_file)
-    by_id = {question.id: question for question in truth.questions}
-    ids = list(by_id) if args.all else args.ids
-    unknown = [i for i in ids if i not in by_id]
-    if unknown:
-        raise CorpusError(f"unknown question ids: {unknown}; known: {sorted(by_id)}")
-    return [by_id[i] for i in ids]
-
-
 def _run(args: argparse.Namespace, settings: Settings, client: Client) -> int:
     model = args.model or settings.models.agent
     ensure_models_available(installed_models(client), [model, settings.models.embedding])
@@ -100,7 +91,8 @@ def _run(args: argparse.Namespace, settings: Settings, client: Client) -> int:
         return 0
 
     results: list[tuple[Question, AgentRun]] = []
-    for question in _questions(args, settings):
+    truth = load_ground_truth(settings.ground_truth_file)
+    for question in select_questions(truth, None if args.all else args.ids):
         print(f"\n== {question.id}: {question.question}", file=sys.stderr)
         run = _answer(agent, question.question, model, out_dir / f"agent-{question.id}.jsonl")
         _print_run(run)
