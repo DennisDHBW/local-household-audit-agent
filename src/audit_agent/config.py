@@ -101,6 +101,26 @@ class RetrievalSettings(BaseModel):
         return self
 
 
+class AgentSettings(BaseModel):
+    """Parameters of the agent loop (concept.md, section 7.4; ADR-0010)."""
+
+    model_config = ConfigDict(frozen=True)
+
+    max_tool_calls: int = Field(default=6, ge=1)
+    """Tool calls per question (valid or invalid); protects against endless loops on slow CPUs."""
+    max_hit_chars: int = Field(default=600, ge=100)
+    """Characters of one hit shown to the model; the evidence view keeps the full text."""
+    max_list_rows: int = Field(default=40, ge=1)
+    """Rows of one ``list_documents`` answer."""
+    num_predict: int = Field(default=600, ge=64)
+    """Generation limit per model call (tool call or final answer)."""
+    context_reserve_tokens: int = Field(default=1200, ge=0)
+    """Free context kept for the next observation and the answer; below it the loop stops."""
+    temperature: float = Field(default=0.0, ge=0)
+    keep_alive: str = "10m"
+    """How long Ollama keeps the agent model loaded between two calls."""
+
+
 class Settings(BaseModel):
     """Runtime settings of the application."""
 
@@ -116,6 +136,7 @@ class Settings(BaseModel):
     parser: ParserSettings = Field(default_factory=ParserSettings)
     enrichment: EnrichmentSettings = Field(default_factory=EnrichmentSettings)
     retrieval: RetrievalSettings = Field(default_factory=RetrievalSettings)
+    agent: AgentSettings = Field(default_factory=AgentSettings)
 
     @property
     def dataset_dir(self) -> Path:
