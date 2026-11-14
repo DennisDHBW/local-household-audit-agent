@@ -34,7 +34,7 @@
 **Entscheidungen:** ADR-0009 (Aufbau von Index und Suche), ADR-0002 akzeptiert (Filter belegt, Boost ohne belegten Nutzen)
 **Probleme / Überraschungen:** ISS-025 (Zeitraumfilter schließt Dokumente ohne Zeitraum aus), ISS-026 (eigener Fehler: Regex-Wortzeichen), ISS-027 (Boost greift fast überall), ISS-028 (Vergleich mit handgesetzten Filtern), ISS-029 (S4 nicht gefunden); im Plan stand 542 statt 547 Chunks, ein Rechenfehler von mir; überrascht hat, dass der Boost keinen Rang ändert, obwohl er fast jeden Treffer erreicht
 **Offen / unklar:** Ob der Boost bleibt (ISS-027); wie oft der Agent falsche Filter setzt (ISS-028); Rang des S4-Bild-Chunks außerhalb der Top-5 unbekannt; Reverse-Engineering zu M2, M3 und M4 unbeantwortet
-**O-Ton (von mir):** (ausstehend)
+**O-Ton (von mir):** (ausstehend, wird nachgetragen; heute keine Zeit)
 **Zeitaufwand:** ca. 1,2 h (Ollama-Lauf unter 2 min) · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `build`, `feat(config)`, `feat(retrieval)`, `test(retrieval)`, `docs(adr)`, `docs` ×3, `docs: close M4 session`
 
 ### 2026-11-14 – M3: Enrichment & Cache
