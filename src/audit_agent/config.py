@@ -27,7 +27,7 @@ class ModelNames(BaseModel):
     embedding: str = "nomic-embed-text"
     vision: str = "gemma3:4b"
     summary: str = "llama3.2"
-    agent: str = "qwen2.5:7b"
+    agent: str = "llama3.1:8b"
     agent_candidates: tuple[str, ...] = ("qwen2.5:7b", "llama3.1:8b")
 
     def required_for_smoke_test(self) -> tuple[str, ...]:
