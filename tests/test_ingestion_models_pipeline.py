@@ -11,9 +11,9 @@ from pydantic import ValidationError
 from audit_agent.config import Settings
 from audit_agent.corpus import CorpusError, DocType, UtilityType, load_document_catalog
 from audit_agent.ingestion import (
-    Chunk,
     ChunkMetadata,
     ChunkType,
+    DocumentChunk,
     ParsedDocument,
     chunks_path,
     load_parsed_document,
@@ -35,7 +35,7 @@ def _metadata(**overrides) -> ChunkMetadata:
     return ChunkMetadata(**(values | overrides))
 
 
-def _chunk(chunk_id="c1", chunk_type=ChunkType.TEXT, **overrides) -> Chunk:
+def _chunk(chunk_id="c1", chunk_type=ChunkType.TEXT, **overrides) -> DocumentChunk:
     values = {
         "chunk_id": chunk_id,
         "chunk_type": chunk_type,
@@ -43,7 +43,7 @@ def _chunk(chunk_id="c1", chunk_type=ChunkType.TEXT, **overrides) -> Chunk:
         "page_number": 1,
         "metadata": _metadata(),
     }
-    return Chunk(**(values | overrides))
+    return DocumentChunk(**(values | overrides))
 
 
 def test_table_row_without_table_id_is_rejected():

@@ -62,7 +62,7 @@ class ChunkMetadata(_Frozen):
         )
 
 
-class Chunk(_Frozen):
+class DocumentChunk(_Frozen):
     """One typed piece of a document with its place in the heading hierarchy."""
 
     chunk_id: str
@@ -86,7 +86,7 @@ class ParsedDocument(_Frozen):
 
     file: str
     page_count: int = Field(ge=1)
-    chunks: tuple[Chunk, ...]
+    chunks: tuple[DocumentChunk, ...]
 
     @model_validator(mode="after")
     def _check_unique_ids(self) -> Self:

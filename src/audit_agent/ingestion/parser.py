@@ -23,7 +23,7 @@ import pymupdf
 
 from audit_agent.config import ParserSettings
 from audit_agent.corpus import DocumentMeta
-from audit_agent.ingestion.models import Chunk, ChunkMetadata, ChunkType, ParsedDocument
+from audit_agent.ingestion.models import ChunkMetadata, ChunkType, DocumentChunk, ParsedDocument
 
 BBox = tuple[float, float, float, float]
 
@@ -110,7 +110,7 @@ class _Cursor:
     body_size: float
     stack: list[tuple[int, str]] = field(default_factory=list)
     counters: Counter[str] = field(default_factory=Counter)
-    chunks: list[Chunk] = field(default_factory=list)
+    chunks: list[DocumentChunk] = field(default_factory=list)
     pending_text: str = ""
     pending_page: int = 0
     pending_stack: tuple[str, ...] = ()
@@ -422,7 +422,7 @@ class DocumentParser:
             cur.stack.pop()
         cur.stack.append((level, block.text))
         cur.chunks.append(
-            Chunk(
+            DocumentChunk(
                 chunk_id=self._next_id(cur, page, "h"),
                 chunk_type=ChunkType.HEADING,
                 content=block.text,
@@ -447,7 +447,7 @@ class DocumentParser:
             return  # leftover noise such as a lone place name; short facts with digits stay
         for part in self._split_long(text):
             cur.chunks.append(
-                Chunk(
+                DocumentChunk(
                     chunk_id=self._next_id(cur, cur.pending_page, "t"),
                     chunk_type=ChunkType.TEXT,
                     content=part,
@@ -504,7 +504,7 @@ class DocumentParser:
             if not text:
                 continue
             cur.chunks.append(
-                Chunk(
+                DocumentChunk(
                     chunk_id=f"{cur.stem}_{table_id}_r{row_number:02d}",
                     chunk_type=ChunkType.TABLE_ROW,
                     content=text,
@@ -587,7 +587,7 @@ class DocumentParser:
         (self._images_dir / file_name).write_bytes(extracted["image"])
         meta = cur.meta.model_copy(update={"image_path": f"{self._images_dir.name}/{file_name}"})
         cur.chunks.append(
-            Chunk(
+            DocumentChunk(
                 chunk_id=chunk_id,
                 chunk_type=ChunkType.IMAGE,
                 content=f"Abbildung auf Seite {page} (Beschreibung folgt im Enrichment)",

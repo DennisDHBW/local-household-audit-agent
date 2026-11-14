@@ -1,6 +1,6 @@
 """PDF ingestion: parser and JSON intermediate format."""
 
-from audit_agent.ingestion.models import Chunk, ChunkMetadata, ChunkType, ParsedDocument
+from audit_agent.ingestion.models import ChunkMetadata, ChunkType, DocumentChunk, ParsedDocument
 from audit_agent.ingestion.parser import DocumentParser, ParseError
 from audit_agent.ingestion.pipeline import (
     IngestionReport,
@@ -10,7 +10,7 @@ from audit_agent.ingestion.pipeline import (
 )
 
 __all__ = [
-    "Chunk",
+    "DocumentChunk",
     "ChunkMetadata",
     "ChunkType",
     "DocumentParser",
