@@ -54,6 +54,14 @@ class Settings(BaseModel):
         return self.project_root / "dataset"
 
     @property
+    def documents_file(self) -> Path:
+        return self.dataset_dir / "documents.yaml"
+
+    @property
+    def ground_truth_file(self) -> Path:
+        return self.dataset_dir / "ground_truth.yaml"
+
+    @property
     def data_dir(self) -> Path:
         return self.project_root / "data"
 

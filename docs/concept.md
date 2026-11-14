@@ -88,14 +88,14 @@ Ein Standard-RAG holt in einem Durchgang die Top-k Chunks zur Frage. Er kann nic
 ## 4. Dokumentenkorpus
 
 ### 4.1 Überblick
-Der Korpus liegt vollständig synthetisch unter `dataset/` (28 PDFs, erzeugt mit WeasyPrint, mit Textebene). Fiktiver Haushalt: Lukas Weber, Hauptstraße 42, 74821 Mosbach, 3-Zimmer-Wohnung mit 78 m² (Anteil 25 % an 312 m²), Gasetagenheizung, Zeitraum 2023–2026.
+Der Korpus liegt vollständig synthetisch unter `dataset/` (30 PDFs, erzeugt mit WeasyPrint, mit Textebene; 28 Ausgangsdokumente plus die Fehlervarianten 29 und 30). Fiktiver Haushalt: Lukas Weber, Hauptstraße 42, 74821 Mosbach, 3-Zimmer-Wohnung mit 78 m² (Anteil 25 % an 312 m²), Gasetagenheizung, Zeitraum 2023–2027 (die Jahresabrechnungen 2026 tragen Daten im Januar bis März 2027).
 
 | Ordner | Dokumente | Anbieter (fiktiv) | Rolle im Test |
 |---|---|---|---|
 | `01_electricity_suedvolt` | 01 Vertragsbestätigung, 02 Abschlagsplan 2024, 03 Preisanpassung 2025, 04 Jahresrechnung 2024, 05 Zwischenablesung 2025, 06 Jahresrechnung 2025 | SüdVolt Energie GmbH | Kern: Preise, Zähler, Abschläge, Diagramme |
-| `02_gas_neckarenergie` | 07 Liefervertrag, 08 Jahresrechnung 2024, 09 Preisanpassung 2026, 10 Jahresrechnung 2025, 11 Abschlagsplan 2026 | NeckarEnergie Versorgung AG | Kern: m³→kWh-Umrechnung, Diagramme |
+| `02_gas_neckarenergie` | 07 Liefervertrag, 08 Jahresrechnung 2024, 09 Preisanpassung 2026, 10 Jahresrechnung 2025, 11 Abschlagsplan 2026, **29 Jahresrechnung 2026 (fehlerhaft)** | NeckarEnergie Versorgung AG | Kern: m³→kWh-Umrechnung, Diagramme |
 | `03_water_stadtwerke_mosbach` | 12 Anmeldebestätigung, 13 Jahresbescheid 2024, 14 Gebührenanpassung 2026, 15 Jahresbescheid 2025 | Stadtwerke Mosbach | Zusatz: Gebührentabellen, Diagramm |
-| `04_housing_utilities_contractors` | 16 Mietvertrag, 17 Übergabeprotokoll, 18/19 Betriebskostenabrechnung 2024/2025, 20/21 Handwerkerrechnung Heizungswartung 2024/2025 | Hausverwaltung Kraichgau & Neckar, SHK Kraichgau | Kern: Umlageschlüssel; teils relevant (Anfangszählerstände, § 35a) |
+| `04_housing_utilities_contractors` | 16 Mietvertrag, 17 Übergabeprotokoll, 18/19 Betriebskostenabrechnung 2024/2025, **30 Betriebskostenabrechnung 2026 (fehlerhaft)**, 20/21 Handwerkerrechnung Heizungswartung 2024/2025 | Hausverwaltung Kraichgau & Neckar, SHK Kraichgau | Kern: Umlageschlüssel; teils relevant (Anfangszählerstände, § 35a) |
 | `05_telecom_insurance` | 22/23 Internet, 24/25 Mobilfunk, 26/27 Hausrat, 28 Kfz | GlasfaserPlus, MobilPlus, AlpenSchutz | Ablenker (ähnliches Vokabular: Grundpreis, Laufzeit, Kündigungsfrist) |
 
 ### 4.2 Prüfung des Korpus (2026-11-14)
@@ -104,8 +104,18 @@ Der Korpus liegt vollständig synthetisch unter `dataset/` (28 PDFs, erzeugt mit
 - **Diagramme mit Zusatzinformation:** Die Seiten 2 von 04, 06, 10 und 15 enthalten Rasterdiagramme (Vorjahresvergleich, Monatsverlauf, Vergleichsgruppen). Teilweise stehen Werte nur im Bild (z. B. Stromverbrauch 2022: 3.480 kWh, 2023: 3.390 kWh). Damit ist `search_images` nicht nur Dekoration.
 - **Querbezüge:** Anfangszählerstände im Übergabeprotokoll (17) = Startwerte der ersten Abrechnungen; Wohnfläche und Vorauszahlung im Mietvertrag (16) ↔ Betriebskostenabrechnungen (18/19); Abschläge aus Preisanpassungen ↔ Jahresrechnungen.
 - **Fallen für den Agenten:** Gas-„Preissenkung“ 2026 senkt den Arbeitspreis, erhöht aber den Grundpreis (14,50 → 16,00 EUR/Monat); mehrere Abschlagshöhen über die Jahre (Strom 105 → 115 → 120 EUR); „Grundpreis“ und „Kündigungsfrist“ auch in Internet- und Mobilfunkverträgen.
-- **Bewertung:** Der Korpus ist gut geeignet und wird beibehalten. Schwäche: nur ein eingebauter Fehler. Die Fehlererkennungsrate ist damit wenig aussagekräftig; die Fehlalarmrate lässt sich an den vielen korrekten Abrechnungen gut messen. In M1 werden zwei weitere fehlerhafte Varianten im gleichen Stil ergänzt (Entscheidung 2026-11-14).
-- **Fehlt noch (M1):** `dataset/documents.yaml` (Metadaten je Dokument) und `dataset/ground_truth.yaml` (Fakten und erwartete Antworten zum Testkatalog).
+- **Bewertung:** Der Korpus ist gut geeignet und wird beibehalten. Ursprünglich gab es nur einen eingebauten Fehler; deshalb wurden in M1 zwei weitere ergänzt (siehe 4.3).
+
+### 4.3 Eingebaute Fehler und Ground Truth (M1)
+| ID | Dokument | Fehler | Richtig wäre | Erkennbar durch |
+|---|---|---|---|---|
+| E1 | 06 Stromrechnung 2025 | Arbeitspreis 39,50 statt 38,20 ct/kWh | Rechnungsbetrag 1.339,00 statt 1.379,30 EUR (40,30 EUR zu viel) | Vergleich mit 03 (Preisanpassung) |
+| E2 | 29 Gasrechnung 2026 | z-Zahl 1,0000 statt 0,9560, dadurch 11.819 statt 11.299 kWh | Rechnungsbetrag 1.316,25 statt 1.367,99 EUR (51,74 EUR zu viel) | Vergleich mit 08/10 (z-Zahl) und eigene Rechnung 1.060 m³ × 0,9560 × 11,150 |
+| E3 | 30 Betriebskostenabrechnung 2026 | Wohnfläche 82 m² (26,28 %) statt 78 m² (25 %) | Anteil 1.867,50 statt 1.963,28 EUR (Guthaben 52,50 EUR statt Nachzahlung 43,28 EUR) | Vergleich mit 16 (Mietvertrag) |
+
+Die Dokumente 29 und 30 stammen aus `scripts/generate_error_documents.py`. Alle Beträge dort werden berechnet, sodass nur der eingebaute Fehler stimmt, nicht aber Summen oder Rundung. Der Generator läuft mit WeasyPrint in einer eigenen Umgebung (keine Projektabhängigkeit). Layout und Datenmodell: einseitig ohne Diagramm, im Stil von 10 bzw. 19 nachgebaut.
+
+`dataset/documents.yaml` enthält die Metadaten aller 30 PDFs, `dataset/ground_truth.yaml` den 12-Fragen-Katalog, die drei eingebauten Fehler sowie `audit_checks`, die erwarteten Urteile zu den zehn Abrechnungen (7 korrekt, 3 fehlerhaft) für Fehlererkennungs- und Fehlalarmrate. Beide Dateien werden von `audit_agent.corpus` validiert.
 
 ## 5. Vorverarbeitung & Datenstrukturen
 
@@ -126,12 +136,13 @@ Damit der Agent gezielt filtern kann, bekommt jedes Dokument (und damit jeder Ch
 
 | Feld | Beispielwerte | Zweck |
 |---|---|---|
-| `utility_type` | electricity, gas, district_heating, water, service_charges, rent, other | Filter nach Sparte |
-| `doc_type` | contract, terms, price_adjustment, bill, notice, policy | Filter nach Dokumentart |
+| `utility_type` | electricity, gas, district_heating, water, service_charges, rent, telecom, insurance, other | Filter nach Sparte |
+| `doc_type` | contract, payment_plan, price_adjustment, bill, notice, handover_protocol, policy | Filter nach Dokumentart |
 | `provider` | z. B. „Stadtwerke Musterstadt“ (fiktiv) | Zuordnung Vertrag ↔ Rechnung |
 | `contract_id` | z. B. „ELEC-001“ | verknüpft Vertrag, Preisänderung und Rechnungen |
 | `billing_period_start` / `billing_period_end` | 2024-01-01 / 2024-12-31 | richtigen Abrechnungszeitraum finden |
 | `valid_from` | 2024-07-01 | Gültigkeit von Preisen |
+| `document_date` | 2025-01-18 | Schreibdatum, um das neueste Dokument zu wählen |
 | `is_noise_document` | true / false | Ablenkungsdokumente kennzeichnen (nur für die Auswertung, **nicht** für den Agenten sichtbar) |
 
 ### 5.3 JSON-Zwischenformat (Beispiel)
@@ -318,7 +329,7 @@ Der Vergleich mit B0 und P1 belegt messbar, ob RAG und Agentik hier nötig sind.
 
 ### 11.2 Verbindlicher 12-Fragen-Katalog
 
-Mindestens 5 Standardfragen, 2 komplexe Grenzfälle und 2 Negativfragen (Vorlesung) plus 3 Zusatzfragen (CODING_STANDARDS.md: 12-Fragen-Katalog). Die erwarteten Antworten stammen aus dem Korpus und werden in M1 in `dataset/ground_truth.yaml` übernommen.
+Mindestens 5 Standardfragen, 2 komplexe Grenzfälle und 2 Negativfragen (Vorlesung) plus 3 Zusatzfragen (CODING_STANDARDS.md: 12-Fragen-Katalog). Die erwarteten Antworten stammen aus dem Korpus und stehen in `dataset/ground_truth.yaml` (Stand M1).
 
 | ID | Kategorie | Testfrage | Erwartete Antwort (Quelle) | Prüft vor allem |
 |---|---|---|---|---|
@@ -392,7 +403,7 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 | # | Meilenstein | Ergebnis | Reverse-Engineering-Checkpoint |
 |---|---|---|---|
 | M0 | Setup | Repo, ruff/pytest, Ollama-Modelle, Smoke-Test (Geschwindigkeit, Tool-Calling) | Wie spricht Python mit Ollama (HTTP-API)? Was messe ich im Smoke-Test und warum? |
-| M1 | Metadaten & Ground Truth | Korpus geprüft (28 PDFs vorhanden), `documents.yaml`, `ground_truth.yaml` | Warum ist welches Dokument im Korpus? Welche Frage testet welches Dokument? |
+| M1 | Metadaten & Ground Truth | Korpus geprüft (30 PDFs vorhanden), `documents.yaml`, `ground_truth.yaml` | Warum ist welches Dokument im Korpus? Welche Frage testet welches Dokument? |
 | M2 | Parser & JSON-Zwischenformat | `data/processed/*_chunks.json` | Wie erkennt `find_tables` Tabellen? Wie entsteht der `heading_stack`? Ein Dokument von Hand mit dem JSON vergleichen |
 | M3 | Enrichment & Cache | Captions, Tabellen-Summaries, `.cache/` | Welcher Prompt geht an `gemma3:4b`? Wie funktioniert der SHA-256-Cache-Schlüssel? |
 | M4 | Embedding & Retrieval (P1) | ChromaDB-Index, Score mit Boost + Filter, Evidence-UI | Score für einen Treffer von Hand nachrechnen; Wirkung von Filter und Boost an einem Beispiel zeigen |
@@ -417,10 +428,10 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 
 ## 15. Offene Entscheidungen
 
-- [x] Herkunft der Dokumente: vollständig synthetisch, Korpus mit 28 PDFs liegt vor und wurde geprüft (Abschnitt 4)
+- [x] Herkunft der Dokumente: vollständig synthetisch, Korpus mit 30 PDFs liegt vor und wurde geprüft (Abschnitt 4)
 - [x] Sparten-Scope: alle vier Sparten im Korpus; Kern der Prüffragen Strom, Gas und Betriebskosten
 - [x] Python-Umgebung: `uv`, Python 3.13 (laut `pyproject.toml`)
-- [x] Zwei weitere eingebaute Fehler in M1 ergänzen (Abschnitt 4.2)
+- [x] Zwei weitere eingebaute Fehler in M1 ergänzt (Abschnitt 4.3)
 - [x] Keine Literatur in der Ausarbeitung
 - [x] Agent-Modell: vorläufig `llama3.1:8b` (RUN-000: gleiche Trefferquote wie `qwen2.5:7b`, ca. 18 % schnellere Generierung); Endentscheidung im Testmodul M6 (ADR-0004)
 - [x] Tool-Calling: natives Ollama-Tool-Calling (ADR-0006), Bestätigung in M5

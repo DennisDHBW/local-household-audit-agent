@@ -7,6 +7,7 @@ dependencies = [
     "ollama>=0.4",
     "pydantic>=2.8",
     "pymupdf>=1.24",
+    "pyyaml>=6.0.3",
 ]
 
 [dependency-groups]
@@ -29,6 +30,10 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "N"]
+
+[tool.ruff.lint.per-file-ignores]
+# HTML templates with long lines
+"scripts/generate_error_documents.py" = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

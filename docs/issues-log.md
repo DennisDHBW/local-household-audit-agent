@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-011 – Löschrecht für git zu spät angefragt (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-14 / M1
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Der erste Commit hinterließ `.git/HEAD.lock` und temporäre Objektdateien, weil die Shell nichts löschen durfte.
+- **Ursache:** Die Löschberechtigung wurde nicht wie im Projektablauf vorgesehen vor dem ersten Commit angefragt.
+- **Lösung / Workaround:** Berechtigung angefragt, die eigenen Lock- und Temp-Dateien entfernt (kein git-Prozess lief), `git fsck` sauber. Künftig zu Sitzungsbeginn anfragen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-010 – Zusatzdokumente 29/30: andere Zeitachse, Layout und wenige Fehler
+- **Datum / Meilenstein:** 2026-11-14 / M1
+- **Kategorie:** daten
+- **Status:** akzeptiert
+- **Symptom:** Die Fehlerdokumente sind Rechnungen für 2026 (Datum Januar/März 2027) und damit später als alle Originale. Sie sind einseitig und nachgebaut, nicht aus derselben Vorlage erzeugt wie 01–28. Mit nur drei Fehlern verändert ein einzelner Treffer die Fehlererkennungsrate um 33 Prozentpunkte.
+- **Ursache:** Für 2024/2025 existieren bereits Abrechnungen; eine zweite Fassung desselben Jahres hätte den Korpus widersprüchlich gemacht. Die Original-HTML-Vorlagen liegen nicht im Repo.
+- **Lösung / Workaround:** Neue Jahre statt Duplikate, Layout per Bildvergleich angenähert. Der Agent muss bei „aktuell“-Fragen das neueste Dokument wählen (Z2 betrifft nur Strom, daher ohne Konflikt). Die Evaluation weist die geringe Fehleranzahl als Einschränkung aus.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Testmodul, Grenzen der Evaluation
+
 ### ISS-009 – Gemeinsames `.venv` von Laptop-`uv` und Claudes VM-`uv`
 - **Datum / Meilenstein:** 2026-11-14 / M0
 - **Kategorie:** ki-assistent
@@ -77,10 +97,10 @@
 ### ISS-004 – Nur ein eingebauter Fehler im Testkorpus
 - **Datum / Meilenstein:** 2026-11-14 / M1 (Vorbereitung)
 - **Kategorie:** daten
-- **Status:** offen
+- **Status:** gelöst (M1)
 - **Symptom:** Beim Nachrechnen aller 28 Dokumente fiel nur eine Unstimmigkeit auf (Stromrechnung 2025: 39,50 statt 38,20 ct/kWh).
 - **Ursache:** Korpus wurde ohne Fehlerliste erzeugt.
-- **Lösung / Workaround:** In M1 werden zwei weitere fehlerhafte Dokumente im gleichen Stil ergänzt.
+- **Lösung / Workaround:** In M1 zwei weitere fehlerhafte Dokumente ergänzt (29 Gas 2026: falsche z-Zahl, 30 Betriebskosten 2026: falsche Wohnfläche), Fehlerliste in `ground_truth.yaml`. Mit 3 Fehlern bleibt die Fehlererkennungsrate grob (Schritte von 33 %), siehe ISS-010.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Testmodul, Grenzen der Evaluation
 

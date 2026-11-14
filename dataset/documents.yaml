@@ -1,0 +1,237 @@
+# Metadaten je PDF (concept.md, Abschnitt 5.2). Von Hand gepflegt; Struktur siehe audit_agent.corpus.models.
+# billing_period_*: abgerechneter Zeitraum, valid_from: ab wann der Inhalt gilt, document_date: Schreibdatum.
+# is_noise_document dient nur der Auswertung und ist für den Agenten nicht sichtbar.
+documents:
+  - file: 01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf
+    utility_type: electricity
+    doc_type: contract
+    provider: "SüdVolt Energie GmbH"
+    contract_id: "SV-2024-99104"
+    document_date: 2023-12-12
+    valid_from: 2024-01-01
+  - file: 01_electricity_suedvolt/02_Strom_Begruessung_Abschlagsplan_2024.pdf
+    utility_type: electricity
+    doc_type: payment_plan
+    provider: "SüdVolt Energie GmbH"
+    contract_id: "SV-2024-99104"
+    document_date: 2023-12-21
+    billing_period_start: 2024-01-01
+    billing_period_end: 2024-12-31
+    valid_from: 2024-02-15
+  - file: 01_electricity_suedvolt/03_Strom_Preisanpassung_SuedVolt_2025.pdf
+    utility_type: electricity
+    doc_type: price_adjustment
+    provider: "SüdVolt Energie GmbH"
+    contract_id: "SV-2024-99104"
+    document_date: 2024-11-15
+    valid_from: 2025-01-01
+  - file: 01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf
+    utility_type: electricity
+    doc_type: bill
+    provider: "SüdVolt Energie GmbH"
+    contract_id: "SV-2024-99104"
+    document_date: 2025-01-18
+    billing_period_start: 2024-01-01
+    billing_period_end: 2024-12-31
+  - file: 01_electricity_suedvolt/05_Strom_Zwischenablesung_Info_2025.pdf
+    utility_type: electricity
+    doc_type: notice
+    provider: "SüdVolt Energie GmbH"
+    contract_id: "SV-2024-99104"
+    document_date: 2025-07-04
+    billing_period_start: 2025-01-01
+    billing_period_end: 2025-06-30
+  - file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf
+    utility_type: electricity
+    doc_type: bill
+    provider: "SüdVolt Energie GmbH"
+    contract_id: "SV-2024-99104"
+    document_date: 2026-01-20
+    billing_period_start: 2025-01-01
+    billing_period_end: 2025-12-31
+  - file: 02_gas_neckarenergie/07_Gas_Liefervertrag_NeckarEnergie_2024.pdf
+    utility_type: gas
+    doc_type: contract
+    provider: "NeckarEnergie Versorgung AG"
+    contract_id: "GV-2024-7731"
+    document_date: 2023-12-15
+    valid_from: 2024-01-01
+  - file: 02_gas_neckarenergie/08_Gas_Jahresabrechnung_2024_NeckarEnergie.pdf
+    utility_type: gas
+    doc_type: bill
+    provider: "NeckarEnergie Versorgung AG"
+    contract_id: "GV-2024-7731"
+    document_date: 2025-01-24
+    billing_period_start: 2024-01-01
+    billing_period_end: 2024-12-31
+  - file: 02_gas_neckarenergie/09_Gas_Preisanpassung_NeckarEnergie_2026.pdf
+    utility_type: gas
+    doc_type: price_adjustment
+    provider: "NeckarEnergie Versorgung AG"
+    contract_id: "GV-2024-7731"
+    document_date: 2025-11-10
+    valid_from: 2026-01-01
+  - file: 02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf
+    utility_type: gas
+    doc_type: bill
+    provider: "NeckarEnergie Versorgung AG"
+    contract_id: "GV-2024-7731"
+    document_date: 2026-01-28
+    billing_period_start: 2025-01-01
+    billing_period_end: 2025-12-31
+  - file: 02_gas_neckarenergie/11_Gas_Abschlagsplan_2026_NeckarEnergie.pdf
+    utility_type: gas
+    doc_type: payment_plan
+    provider: "NeckarEnergie Versorgung AG"
+    contract_id: "GV-2024-7731"
+    document_date: 2026-01-28
+    billing_period_start: 2026-01-01
+    billing_period_end: 2026-12-31
+    valid_from: 2026-02-15
+  - file: 03_water_stadtwerke_mosbach/12_Wasser_Anmeldebestaetigung_SWM_2024.pdf
+    utility_type: water
+    doc_type: contract
+    provider: "Stadtwerke Mosbach GmbH"
+    contract_id: "SWM-33910"
+    document_date: 2024-01-04
+    valid_from: 2024-01-01
+  - file: 03_water_stadtwerke_mosbach/13_Wasser_Jahresbescheid_2024_SWM.pdf
+    utility_type: water
+    doc_type: bill
+    provider: "Stadtwerke Mosbach GmbH"
+    contract_id: "SWM-33910"
+    document_date: 2025-02-03
+    billing_period_start: 2024-01-01
+    billing_period_end: 2024-12-31
+  - file: 03_water_stadtwerke_mosbach/14_Wasser_Gebuehrenanpassung_2026_SWM.pdf
+    utility_type: water
+    doc_type: price_adjustment
+    provider: "Stadtwerke Mosbach GmbH"
+    contract_id: "SWM-33910"
+    document_date: 2025-12-08
+    valid_from: 2026-01-01
+  - file: 03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf
+    utility_type: water
+    doc_type: bill
+    provider: "Stadtwerke Mosbach GmbH"
+    contract_id: "SWM-33910"
+    document_date: 2026-02-02
+    billing_period_start: 2025-01-01
+    billing_period_end: 2025-12-31
+  - file: 04_housing_utilities_contractors/16_Mietvertrag_Hauptstrasse42_2023.pdf
+    utility_type: rent
+    doc_type: contract
+    provider: "Hausverwaltung Kraichgau & Neckar GmbH"
+    contract_id: "OB-104-WE03"
+    document_date: 2023-11-18
+    valid_from: 2024-01-01
+  - file: 04_housing_utilities_contractors/17_Uebergabeprotokoll_Wohnung_2023.pdf
+    utility_type: rent
+    doc_type: handover_protocol
+    provider: "Hausverwaltung Kraichgau & Neckar GmbH"
+    contract_id: "OB-104-WE03"
+    document_date: 2023-12-30
+  - file: 04_housing_utilities_contractors/18_Nebenkostenabrechnung_2024_Hausverwaltung.pdf
+    utility_type: service_charges
+    doc_type: bill
+    provider: "Hausverwaltung Kraichgau & Neckar GmbH"
+    contract_id: "OB-104-WE03"
+    document_date: 2025-03-18
+    billing_period_start: 2024-01-01
+    billing_period_end: 2024-12-31
+  - file: 04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf
+    utility_type: service_charges
+    doc_type: bill
+    provider: "Hausverwaltung Kraichgau & Neckar GmbH"
+    contract_id: "OB-104-WE03"
+    document_date: 2026-03-12
+    billing_period_start: 2025-01-01
+    billing_period_end: 2025-12-31
+  - file: 04_housing_utilities_contractors/20_Handwerkerrechnung_Heizungswartung_2024.pdf
+    utility_type: gas
+    doc_type: bill
+    provider: "Sanitär & Heizungstechnik Kraichgau GmbH"
+    contract_id: null
+    document_date: 2024-10-16
+  - file: 04_housing_utilities_contractors/21_Handwerkerrechnung_Heizungswartung_2025.pdf
+    utility_type: gas
+    doc_type: bill
+    provider: "Sanitär & Heizungstechnik Kraichgau GmbH"
+    contract_id: null
+    document_date: 2025-10-14
+  - file: 05_telecom_insurance/22_Internet_Vertragszusammenfassung_GlasfaserPlus_2024.pdf
+    utility_type: telecom
+    doc_type: contract
+    provider: "GlasfaserPlus Telekommunikation GmbH"
+    contract_id: "GFP-2024-3091"
+    document_date: 2024-02-14
+    valid_from: 2024-03-01
+    is_noise_document: true
+  - file: 05_telecom_insurance/23_Internet_Monatsrechnung_Dez2025_GlasfaserPlus.pdf
+    utility_type: telecom
+    doc_type: bill
+    provider: "GlasfaserPlus Telekommunikation GmbH"
+    contract_id: "GFP-2024-3091"
+    document_date: 2026-01-04
+    billing_period_start: 2025-12-01
+    billing_period_end: 2025-12-31
+    is_noise_document: true
+  - file: 05_telecom_insurance/24_Mobilfunk_Vertrag_MobilPlus_2025.pdf
+    utility_type: telecom
+    doc_type: contract
+    provider: "MobilPlus Telekommunikation AG"
+    contract_id: "MF-2025-8821"
+    document_date: 2025-03-25
+    valid_from: 2025-04-01
+    is_noise_document: true
+  - file: 05_telecom_insurance/25_Mobilfunk_Monatsrechnung_Dez2025_MobilPlus.pdf
+    utility_type: telecom
+    doc_type: bill
+    provider: "MobilPlus Telekommunikation AG"
+    contract_id: "MF-2025-8821"
+    document_date: 2026-01-03
+    billing_period_start: 2025-12-01
+    billing_period_end: 2025-12-31
+    is_noise_document: true
+  - file: 05_telecom_insurance/26_Hausrat_Versicherungsschein_AlpenSchutz_2024.pdf
+    utility_type: insurance
+    doc_type: policy
+    provider: "AlpenSchutz Sachversicherung AG"
+    contract_id: "HR-9023418"
+    document_date: 2024-01-22
+    valid_from: 2024-02-01
+    is_noise_document: true
+  - file: 05_telecom_insurance/27_Hausrat_Beitragsrechnung_2026_AlpenSchutz.pdf
+    utility_type: insurance
+    doc_type: bill
+    provider: "AlpenSchutz Sachversicherung AG"
+    contract_id: "HR-9023418"
+    document_date: 2026-01-08
+    billing_period_start: 2026-02-01
+    billing_period_end: 2027-01-31
+    is_noise_document: true
+  - file: 05_telecom_insurance/28_KFZ_Versicherungsschein_Beitrag2025_AlpenSchutz.pdf
+    utility_type: insurance
+    doc_type: policy
+    provider: "AlpenSchutz Sachversicherung AG"
+    contract_id: "KFZ-5510924"
+    document_date: 2024-11-15
+    billing_period_start: 2025-01-01
+    billing_period_end: 2025-12-31
+    is_noise_document: true
+  - file: 02_gas_neckarenergie/29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf
+    utility_type: gas
+    doc_type: bill
+    provider: "NeckarEnergie Versorgung AG"
+    contract_id: "GV-2024-7731"
+    document_date: 2027-01-27
+    billing_period_start: 2026-01-01
+    billing_period_end: 2026-12-31
+  - file: 04_housing_utilities_contractors/30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf
+    utility_type: service_charges
+    doc_type: bill
+    provider: "Hausverwaltung Kraichgau & Neckar GmbH"
+    contract_id: "OB-104-WE03"
+    document_date: 2027-03-11
+    billing_period_start: 2026-01-01
+    billing_period_end: 2026-12-31
