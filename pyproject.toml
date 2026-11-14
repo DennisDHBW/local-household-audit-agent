@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Local agentic RAG prototype for auditing household energy and utility documents"
 requires-python = ">=3.13"
 dependencies = [
+    "diskcache>=5.6.3",
     "ollama>=0.4",
     "pydantic>=2.8",
     "pymupdf>=1.24",

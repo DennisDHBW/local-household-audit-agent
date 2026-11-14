@@ -10,6 +10,7 @@ import pymupdf
 from ollama import Image
 
 from audit_agent.config import Settings
+from audit_agent.numbers import extract_numbers
 from audit_agent.preflight import ensure_models_available, normalize_model_tag
 from audit_agent.smoke import tasks
 from audit_agent.smoke.metrics import (
@@ -22,7 +23,6 @@ from audit_agent.smoke.metrics import (
     ToolCallResult,
     VisionResult,
     cosine_similarity,
-    extract_numbers,
     is_prefix_reused,
     speed_from_response,
     tool_call_is_correct,
