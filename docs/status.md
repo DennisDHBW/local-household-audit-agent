@@ -32,7 +32,7 @@ M2 – Parser & JSON-Zwischenformat: PyMuPDF-Parser (Tabellen zuerst per `find_t
 **Empfohlenes Modell:** Sonnet 5.5, Effort High
 
 ## Nächste Schritte
-1. Reverse-Engineering-Fragen zu M0 und M1 beantworten (`docs/reverse-engineering/`, Abschnitte 5–7) und O-Ton nachtragen
+1. Reverse-Engineering zu M0 und M1 nachholen: Fragen selbst beantworten (`docs/reverse-engineering/m1-metadata-ground-truth.md`, Abschnitte 5–7; Referenzantworten in `m1-fragen-und-antworten.md`), O-Ton für M0 und M1 nachtragen
 2. M2: Parser und JSON-Zwischenformat
 3. M3: Enrichment (Ollama nötig) und Cache
 
