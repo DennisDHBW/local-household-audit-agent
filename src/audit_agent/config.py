@@ -10,7 +10,7 @@ import os
 from collections.abc import Mapping
 from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 ENV_PREFIX = "AUDIT_"
@@ -70,6 +70,37 @@ class EnrichmentSettings(BaseModel):
     """How long Ollama keeps a model loaded between two enrichment calls."""
 
 
+class RetrievalSettings(BaseModel):
+    """Parameters of index and search (concept.md, section 10.9; ADR-0002, ADR-0009)."""
+
+    model_config = ConfigDict(frozen=True)
+
+    collection_name: str = "chunks"
+    """Name of the ChromaDB collection in ``data/vectors/``."""
+    document_task_prefix: str = "search_document: "
+    """Task prefix ``nomic-embed-text`` expects in front of every indexed text."""
+    query_task_prefix: str = "search_query: "
+    """Task prefix ``nomic-embed-text`` expects in front of every search query."""
+    embed_batch_size: int = Field(default=16, ge=1)
+    """Texts per embedding call while building the index."""
+    candidate_count: int = Field(default=20, ge=1)
+    """Candidates the vector search returns before the hierarchy boost is applied."""
+    top_k: int = Field(default=5, ge=1)
+    """Hits that are returned after re-ranking."""
+    hierarchy_boost: float = Field(default=1.5, ge=1)
+    """Score multiplier for hits whose path (file, folder, headings) contains a query term."""
+    min_term_chars: int = Field(default=3, ge=1)
+    """Query words shorter than this are ignored by the hierarchy boost."""
+    keep_alive: str = "5m"
+    """How long Ollama keeps the embedding model loaded between two calls."""
+
+    @model_validator(mode="after")
+    def _check_top_k(self) -> RetrievalSettings:
+        if self.top_k > self.candidate_count:
+            raise ValueError("top_k must not exceed candidate_count")
+        return self
+
+
 class Settings(BaseModel):
     """Runtime settings of the application."""
 
@@ -84,6 +115,7 @@ class Settings(BaseModel):
     models: ModelNames = Field(default_factory=ModelNames)
     parser: ParserSettings = Field(default_factory=ParserSettings)
     enrichment: EnrichmentSettings = Field(default_factory=EnrichmentSettings)
+    retrieval: RetrievalSettings = Field(default_factory=RetrievalSettings)
 
     @property
     def dataset_dir(self) -> Path:
