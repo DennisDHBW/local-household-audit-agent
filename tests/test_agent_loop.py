@@ -18,7 +18,13 @@ from audit_agent.agent import (
 from audit_agent.agent.evidence_view import evidence_sections
 from audit_agent.agent.log import RunLog
 from audit_agent.agent.loop import LIMIT_OBSERVATION, estimate_tokens
-from audit_agent.agent.prompts import FORCED_ANSWER_MESSAGE, system_prompt
+from audit_agent.agent.prompts import (
+    FORCED_ANSWER_MESSAGE,
+    GAP_ANSWER,
+    RETRY_BEFORE_GAP_MESSAGE,
+    is_gap_answer,
+    system_prompt,
+)
 from audit_agent.agent.report import evaluate_run, is_fact_in_answer, render_markdown
 from audit_agent.config import AgentSettings, Settings
 from audit_agent.corpus import ExpectedFact, Question, QuestionCategory, SourceRef
@@ -108,6 +114,7 @@ def test_invalid_arguments_and_unknown_tools_become_error_observations():
     first, second = run.steps[1], run.steps[3]
     assert not first.is_valid and "Ungültige Argumente für search_tables" in first.observation
     assert "query" in first.observation and "doc_type" in first.observation
+    assert "Richtiger Aufruf: search_tables(" in first.observation
     assert not second.is_valid and "Unbekanntes Werkzeug 'make_coffee'" in second.observation
     assert run.tool_call_count == 2  # invalid calls count against the limit
     assert chat.requests[1]["messages"][-1]["content"] == first.observation
@@ -155,9 +162,8 @@ def test_calls_beyond_the_limit_in_one_reply_are_refused_but_answered():
 
 
 def test_context_guard_stops_searching_when_the_window_is_nearly_full():
-    # Arrange: free = 2048 - 600 - 1200 = 248 tokens; the first call already used 300
-    replies = [tool_reply(CALCULATE, prompt_tokens=300), answer_reply("Notantwort.")]
-    loop, chat = _loop(replies, num_ctx=2048)
+    # Arrange: the tool schemas alone (about 2000 tokens) leave no room in a 4096 window
+    loop, chat = _loop([tool_reply(CALCULATE), answer_reply("Notantwort.")], num_ctx=4096)
 
     # Act
     run = loop.run("Frage?")
@@ -165,6 +171,63 @@ def test_context_guard_stops_searching_when_the_window_is_nearly_full():
     # Assert
     assert run.stop_reason == "context_limit" and run.answer == "Notantwort."
     assert "tools" not in chat.requests[1]
+
+
+def test_context_guard_leaves_the_default_window_alone_after_one_small_call():
+    # Arrange
+    loop, chat = _loop([tool_reply(CALCULATE), answer_reply("Sechs.")])
+
+    # Act
+    run = loop.run("Frage?")
+
+    # Assert
+    assert run.stop_reason == "answer" and "tools" in chat.requests[1]
+
+
+def test_gap_answer_after_one_search_is_questioned_once():
+    # Arrange
+    replies = [
+        tool_reply(SEARCH),
+        answer_reply(GAP_ANSWER),
+        tool_reply(("list_documents", {})),
+        answer_reply("Gefunden: 34,80 ct/kWh [1]."),
+    ]
+    loop, chat = _loop(replies)
+
+    # Act
+    run = loop.run("Frage?")
+
+    # Assert
+    assert run.answer == "Gefunden: 34,80 ct/kWh [1]." and run.stop_reason == "answer"
+    assert [step.kind for step in run.steps].count("nudge") == 1
+    nudge_request = chat.requests[2]["messages"]
+    assert nudge_request[-1] == {"role": "user", "content": RETRY_BEFORE_GAP_MESSAGE}
+    assert nudge_request[-2].content == GAP_ANSWER
+    assert run.tool_call_count == 2
+
+
+def test_gap_answer_is_accepted_after_enough_searches_and_not_questioned_twice():
+    # Arrange
+    enough = [tool_reply(SEARCH), tool_reply(("list_documents", {})), answer_reply(GAP_ANSWER)]
+    twice = [answer_reply(GAP_ANSWER), answer_reply(GAP_ANSWER)]
+
+    # Act
+    after_two_calls = _loop(enough)[0].run("Frage?")
+    questioned_once = _loop(twice)[0].run("Frage?")
+
+    # Assert
+    assert "nudge" not in [step.kind for step in after_two_calls.steps]
+    assert after_two_calls.answer == GAP_ANSWER
+    assert [step.kind for step in questioned_once.steps].count("nudge") == 1
+    assert questioned_once.answer == GAP_ANSWER
+
+
+def test_is_gap_answer_and_system_prompt_use_the_same_sentence():
+    assert is_gap_answer(GAP_ANSWER)
+    assert is_gap_answer("Das liegt nicht vor.")
+    assert not is_gap_answer("Der Arbeitspreis beträgt 34,80 ct/kWh.")
+    assert GAP_ANSWER in system_prompt(6)
+    assert "brutto" in system_prompt(6)
 
 
 def test_empty_answer_is_reported():

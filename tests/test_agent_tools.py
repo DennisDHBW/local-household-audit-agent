@@ -150,7 +150,7 @@ def test_toolbox_offers_the_six_tools_with_specs(tmp_path):
     ("tool", "expected_types"),
     [
         ("search_documents", {ChunkType.TEXT}),
-        ("search_tables", {ChunkType.TABLE_ROW, ChunkType.TABLE_SUMMARY}),
+        ("search_tables", {ChunkType.TABLE_ROW}),
         ("search_images", {ChunkType.IMAGE}),
     ],
 )
@@ -163,6 +163,26 @@ def test_search_tools_restrict_the_chunk_types(tmp_path, tool, expected_types):
 
     # Assert
     assert backend.calls[0][1].chunk_types == frozenset(expected_types)
+
+
+def test_table_summaries_reach_the_model_only_when_switched_on(tmp_path):
+    # Arrange
+    toolbox, backend, _ = _toolbox(tmp_path, include_table_summaries=True)
+
+    # Act
+    toolbox.tools()["search_tables"].run(SearchArguments(query="Preis"), EvidenceBook())
+
+    # Assert
+    assert backend.calls[0][1].chunk_types == {ChunkType.TABLE_ROW, ChunkType.TABLE_SUMMARY}
+
+
+def test_usage_shows_the_call_shape_with_required_arguments(tmp_path):
+    # Act
+    tools = _toolbox(tmp_path)[0].tools()
+
+    # Assert
+    assert tools["calculate"].usage() == "calculate(expression*)"
+    assert tools["search_tables"].usage() == "search_tables(utility_type, doc_type, year, query*)"
 
 
 def test_search_result_text_numbers_hits_and_registers_them(tmp_path):
