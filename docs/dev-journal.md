@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-14 – M4: Embedding & Retrieval
+**Ziel der Sitzung:** Aus den 629 Chunks einen ChromaDB-Index bauen und eine Suche mit Metadatenfilter und Hierarchie-Boost liefern, deren Score sich von Hand nachrechnen lässt; Wirkung von Filter, Boost und Chunk-Auswahl messen.
+**Was wurde gemacht:**
+- Plan mit sechs Punkten vorgelegt und bestätigt (kein Query-Rewriting in M4, Streamlit erst in M5)
+- Paket `audit_agent.retrieval`: Index (Hierarchie-Präfix, Task-Präfixe, flache Metadaten, Neuaufbau je Lauf), Suche (Kandidaten, `where`-Filter, Pfadregel, Boost), Evidenz, Vergleichslauf, CLI; `RetrievalSettings` in der Config; `chromadb` als Abhängigkeit
+- 39 Tests mit Fake-Embedder; dabei einen eigenen Fehler gefunden (Unterstrich als Wortzeichen, ISS-026)
+- Index mit Ollama gebaut (86 s) und RUN-004 gefahren: Filter bringt 0 statt 4 Ablenker-Treffer und MRR 0,733 statt 0,683, der Boost ändert keinen Rang, Summaries helfen, Chunks ohne Kapitel stören nicht, S4 wird nicht gefunden
+**Gelieferte Dateien / Funktionen:** `src/audit_agent/retrieval/{models,index,search,evidence,compare,__main__,__init__}.py`, `config.py` (`RetrievalSettings`), `tests/test_retrieval.py`, `docs/adr/0009-index-and-search-design.md`, `docs/reverse-engineering/m4-retrieval.md`, `data/eval/run-004/`
+**Entscheidungen:** ADR-0009 (Aufbau von Index und Suche), ADR-0002 akzeptiert (Filter belegt, Boost ohne belegten Nutzen)
+**Probleme / Überraschungen:** ISS-025 (Zeitraumfilter schließt Dokumente ohne Zeitraum aus), ISS-026 (eigener Fehler: Regex-Wortzeichen), ISS-027 (Boost greift fast überall), ISS-028 (Vergleich mit handgesetzten Filtern), ISS-029 (S4 nicht gefunden); im Plan stand 542 statt 547 Chunks, ein Rechenfehler von mir; überrascht hat, dass der Boost keinen Rang ändert, obwohl er fast jeden Treffer erreicht
+**Offen / unklar:** Ob der Boost bleibt (ISS-027); wie oft der Agent falsche Filter setzt (ISS-028); Rang des S4-Bild-Chunks außerhalb der Top-5 unbekannt; Reverse-Engineering zu M2, M3 und M4 unbeantwortet
+**O-Ton (von mir):** (ausstehend)
+**Zeitaufwand:** ca. 1,2 h (Ollama-Lauf unter 2 min) · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `build`, `feat(config)`, `feat(retrieval)`, `test(retrieval)`, `docs(adr)`, `docs` ×3, `docs: close M4 session`
+
 ### 2026-11-14 – M3: Enrichment & Cache
 **Ziel der Sitzung:** Die fünf Diagramme beschreiben (Caption) und jede der 65 Tabellen zusammenfassen (`table_summary`), mit einem Cache, damit die langsame Anreicherung nur einmal läuft.
 **Was wurde gemacht:**
