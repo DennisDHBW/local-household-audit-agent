@@ -47,7 +47,7 @@ def test_speed_from_response_uses_ollama_fields():
 
 @pytest.mark.parametrize(
     ("first", "second", "expected"),
-    [(400, 20, True), (400, 380, False), (None, 20, False), (400, None, False)],
+    [(20.0, 1.0, True), (20.0, 19.0, False), (None, 1.0, False), (20.0, None, False)],
 )
 def test_prefix_reuse_heuristic(first, second, expected):
     assert is_prefix_reused(first, second) is expected

@@ -33,9 +33,9 @@ def _speed_section(report: SmokeReport) -> list[str]:
     lines += ["", "## Prompt-Präfix-Wiederverwendung", ""]
     for p in report.prefix_reuse:
         lines.append(
-            f"- {p.model}: 1. Aufruf {p.first_prompt_tokens} Tokens, "
-            f"2. Aufruf {p.second_prompt_tokens} Tokens → wiederverwendet: "
-            f"{_yes_no(p.is_prefix_reused)}"
+            f"- {p.model}: Prefill 1. Aufruf {_fmt(p.first_prefill_seconds)} s "
+            f"({p.first_prompt_tokens} Tokens), 2. Aufruf {_fmt(p.second_prefill_seconds)} s "
+            f"({p.second_prompt_tokens} Tokens) → wiederverwendet: {_yes_no(p.is_prefix_reused)}"
         )
     return lines
 

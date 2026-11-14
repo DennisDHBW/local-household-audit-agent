@@ -27,7 +27,7 @@ def test_speed_measurement_reports_resident_memory(fake_client):
 def test_prefix_reuse_detected_from_token_counts(fake_client):
     result = measure_prefix_reuse(fake_client, "qwen2.5:7b", SETTINGS)
 
-    assert (result.first_prompt_tokens, result.second_prompt_tokens) == (400, 15)
+    assert result.first_prefill_seconds > result.second_prefill_seconds
     assert result.is_prefix_reused
 
 

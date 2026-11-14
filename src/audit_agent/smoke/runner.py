@@ -13,6 +13,7 @@ from audit_agent.config import Settings
 from audit_agent.preflight import ensure_models_available, normalize_model_tag
 from audit_agent.smoke import tasks
 from audit_agent.smoke.metrics import (
+    NANOSECONDS_PER_SECOND,
     EmbeddingResult,
     PrefixReuseResult,
     SmokeReport,
@@ -75,7 +76,8 @@ def measure_speed(client: OllamaClient, model: str, settings: Settings) -> Speed
 
 
 def measure_prefix_reuse(client: OllamaClient, model: str, settings: Settings) -> PrefixReuseResult:
-    counts: list[int | None] = []
+    tokens: list[int | None] = []
+    seconds: list[float | None] = []
     for question in tasks.PREFIX_QUESTIONS:
         response = client.chat(
             model=model,
@@ -86,12 +88,16 @@ def measure_prefix_reuse(client: OllamaClient, model: str, settings: Settings) -
             options=_options(settings, num_predict=8),
             keep_alive="10m",
         )
-        counts.append(getattr(response, "prompt_eval_count", None))
+        tokens.append(getattr(response, "prompt_eval_count", None))
+        duration = getattr(response, "prompt_eval_duration", None)
+        seconds.append(None if duration is None else duration / NANOSECONDS_PER_SECOND)
     return PrefixReuseResult(
         model=model,
-        first_prompt_tokens=counts[0],
-        second_prompt_tokens=counts[1],
-        is_prefix_reused=is_prefix_reused(counts[0], counts[1]),
+        first_prompt_tokens=tokens[0],
+        second_prompt_tokens=tokens[1],
+        first_prefill_seconds=seconds[0],
+        second_prefill_seconds=seconds[1],
+        is_prefix_reused=is_prefix_reused(seconds[0], seconds[1]),
     )
 
 

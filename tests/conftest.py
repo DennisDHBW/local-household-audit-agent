@@ -48,8 +48,8 @@ class FakeOllama:
             return _response(model, CHART_CAPTION)
         if messages[0]["role"] == "system":
             self._prefix_calls += 1
-            tokens = 400 if self._prefix_calls % 2 == 1 else 15
-            return _response(model, "ok", prompt_tokens=tokens)
+            prefill_ns = 20_000_000_000 if self._prefix_calls % 2 == 1 else 500_000_000
+            return _response(model, "ok", prompt_tokens=400, prefill_ns=prefill_ns)
         return _response(model, "Zusammenfassung", prompt_tokens=360)
 
     @staticmethod
@@ -66,12 +66,12 @@ class FakeOllama:
         return ChatResponse(model=model, message=message)
 
 
-def _response(model, content, prompt_tokens=360):
+def _response(model, content, prompt_tokens=360, prefill_ns=20_000_000_000):
     return ChatResponse(
         model=model,
         message=Message(role="assistant", content=content),
         prompt_eval_count=prompt_tokens,
-        prompt_eval_duration=20_000_000_000,
+        prompt_eval_duration=prefill_ns,
         eval_count=60,
         eval_duration=10_000_000_000,
         load_duration=2_000_000_000,

@@ -30,6 +30,8 @@ class PrefixReuseResult(BaseModel):
     model: str
     first_prompt_tokens: int | None
     second_prompt_tokens: int | None
+    first_prefill_seconds: float | None = None
+    second_prefill_seconds: float | None = None
     is_prefix_reused: bool
 
 
@@ -122,15 +124,15 @@ def speed_from_response(model: str, response: Any, resident_gb: float | None = N
     )
 
 
-def is_prefix_reused(first_tokens: int | None, second_tokens: int | None) -> bool:
-    """Heuristic: the second call evaluates clearly fewer prompt tokens than the first.
+def is_prefix_reused(first_seconds: float | None, second_seconds: float | None) -> bool:
+    """Heuristic: the second call needs clearly less prefill time than the first.
 
-    Ollama reports only the tokens it really evaluated, so a cached prefix shows up as a
-    much smaller ``prompt_eval_count``.
+    The token counts are not usable: Ollama 0.35.1 reports the full prompt length even when
+    a cached prefix is reused (RUN-000, ISS-004). The prefill duration is what really drops.
     """
-    if not first_tokens or second_tokens is None:
+    if not first_seconds or second_seconds is None:
         return False
-    return second_tokens < 0.5 * first_tokens
+    return second_seconds < 0.5 * first_seconds
 
 
 def cosine_similarity(a: Sequence[float], b: Sequence[float]) -> float:
