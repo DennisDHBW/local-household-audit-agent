@@ -1,0 +1,25 @@
+warning: Ignoring existing virtual environment linked to non-existent Python interpreter: .venv/bin/python -> /sessions/rcw-01eajgmkalb3enywgltozwrg/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13
+Using CPython 3.13.15
+Removed virtual environment at: .venv
+Creating virtual environment at: .venv
+   Building local-household-audit-agent @ file:///home/usr0/PycharmProjects/local-household-audit-agent
+Downloading pymupdf (65.8MiB)
+Downloading pydantic-core (2.2MiB)
+Downloading numpy (15.9MiB)
+Downloading ruff (10.1MiB)
+Downloading onnxruntime (26.5MiB)
+ Downloaded pydantic-core
+      Built local-household-audit-agent @ file:///home/usr0/PycharmProjects/local-household-audit-agent
+ Downloaded ruff
+ Downloaded numpy
+ Downloaded onnxruntime
+ Downloaded pymupdf
+Installed 30 packages in 29ms
+[15:17:01] speed + prefix reuse (qwen2.5:7b) ...
+[15:18:23] tool calling (qwen2.5:7b) ...
+[15:19:31] speed + prefix reuse (llama3.1:8b) ...
+[15:20:49] tool calling (llama3.1:8b) ...
+[15:21:58] speed (llama3.2) ...
+[15:22:20] vision (gemma3:4b) ...
+[15:23:39] embedding (nomic-embed-text) ...
+Done. Results: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-000/smoke.json and /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-000/smoke.md

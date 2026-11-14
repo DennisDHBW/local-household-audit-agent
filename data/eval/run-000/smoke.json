@@ -1,0 +1,212 @@
+{
+  "run_id": "run-000",
+  "started_at": "2026-11-14T15:17:01+01:00",
+  "num_ctx": 8192,
+  "speed": [
+    {
+      "model": "qwen2.5:7b",
+      "prompt_tokens": 592,
+      "prefill_tokens_per_s": 18.876009519758288,
+      "generated_tokens": 64,
+      "generation_tokens_per_s": 4.991425666597099,
+      "load_seconds": 12.86773693,
+      "resident_gb": 5.455793356
+    },
+    {
+      "model": "llama3.1:8b",
+      "prompt_tokens": 579,
+      "prefill_tokens_per_s": 20.132871387670853,
+      "generated_tokens": 64,
+      "generation_tokens_per_s": 5.904800408981238,
+      "load_seconds": 10.504978885,
+      "resident_gb": 6.247216577
+    },
+    {
+      "model": "llama3.2",
+      "prompt_tokens": 594,
+      "prefill_tokens_per_s": 45.86022313546346,
+      "generated_tokens": 50,
+      "generation_tokens_per_s": 12.495598425454634,
+      "load_seconds": 5.479690166,
+      "resident_gb": 3.119377283
+    }
+  ],
+  "prefix_reuse": [
+    {
+      "model": "qwen2.5:7b",
+      "first_prompt_tokens": 507,
+      "second_prompt_tokens": 502,
+      "is_prefix_reused": false
+    },
+    {
+      "model": "llama3.1:8b",
+      "first_prompt_tokens": 514,
+      "second_prompt_tokens": 509,
+      "is_prefix_reused": false
+    }
+  ],
+  "tool_calling": [
+    {
+      "model": "qwen2.5:7b",
+      "results": [
+        {
+          "task_id": "T1-clause",
+          "called_tool": "search_documents",
+          "arguments": {
+            "query": "Kündigungsfrist",
+            "utility_type": "gas",
+            "doc_type": "contract"
+          },
+          "is_tool_correct": true,
+          "are_arguments_valid": true,
+          "seconds": 37.5797202520007
+        },
+        {
+          "task_id": "T2-table",
+          "called_tool": "search_documents",
+          "arguments": {
+            "query": "Arbeitspreis",
+            "doc_type": "contract",
+            "utility_type": "electricity"
+          },
+          "is_tool_correct": false,
+          "are_arguments_valid": false,
+          "seconds": 6.7839628430010634
+        },
+        {
+          "task_id": "T3-calc",
+          "called_tool": "calculate",
+          "arguments": {
+            "expression": "3100 * (0.395 - 0.382)"
+          },
+          "is_tool_correct": true,
+          "are_arguments_valid": true,
+          "seconds": 7.438531392996083
+        },
+        {
+          "task_id": "T4-table-water",
+          "called_tool": "search_tables",
+          "arguments": {
+            "doc_type": "bill",
+            "query": "Wasserverbrauch 2025",
+            "utility_type": "water"
+          },
+          "is_tool_correct": true,
+          "are_arguments_valid": true,
+          "seconds": 7.951466931997857
+        },
+        {
+          "task_id": "T5-calc-percent",
+          "called_tool": "calculate",
+          "arguments": {
+            "expression": "100 * (1339 / 1379.30)"
+          },
+          "is_tool_correct": true,
+          "are_arguments_valid": true,
+          "seconds": 7.423714609998569
+        }
+      ]
+    },
+    {
+      "model": "llama3.1:8b",
+      "results": [
+        {
+          "task_id": "T1-clause",
+          "called_tool": "search_documents",
+          "arguments": {
+            "doc_type": "contract",
+            "query": "Kündigungsfrist Gasliefervertrag",
+            "utility_type": "gas"
+          },
+          "is_tool_correct": true,
+          "are_arguments_valid": true,
+          "seconds": 41.701545028998225
+        },
+        {
+          "task_id": "T2-table",
+          "called_tool": "search_documents",
+          "arguments": {
+            "utility_type": "electricity",
+            "doc_type": "contract",
+            "query": "Arbeitspreis"
+          },
+          "is_tool_correct": false,
+          "are_arguments_valid": false,
+          "seconds": 6.980874427994422
+        },
+        {
+          "task_id": "T3-calc",
+          "called_tool": "calculate",
+          "arguments": {
+            "expression": "3100 * (0.395 - 0.382)"
+          },
+          "is_tool_correct": true,
+          "are_arguments_valid": true,
+          "seconds": 6.3707516719950945
+        },
+        {
+          "task_id": "T4-table-water",
+          "called_tool": "search_tables",
+          "arguments": {
+            "utility_type": "water",
+            "doc_type": "bill",
+            "query": "Wasserverbrauch 2025"
+          },
+          "is_tool_correct": true,
+          "are_arguments_valid": true,
+          "seconds": 7.908494582006824
+        },
+        {
+          "task_id": "T5-calc-percent",
+          "called_tool": "calculate",
+          "arguments": {
+            "expression": "(1339 / 1379.30) * 100"
+          },
+          "is_tool_correct": true,
+          "are_arguments_valid": true,
+          "seconds": 6.169006363998051
+        }
+      ]
+    }
+  ],
+  "embedding": {
+    "model": "nomic-embed-text",
+    "dimensions": 768,
+    "relevant_similarity": 0.7469010950599085,
+    "irrelevant_similarity": 0.5496389568997578,
+    "is_ranking_correct": true
+  },
+  "vision": {
+    "model": "gemma3:4b",
+    "page_image": "chart.png",
+    "caption": "Okay, hier ist eine Beschreibung des Diagramms, mit den jeweiligen Jahreswerten und Einheiten:\n\n**Diagrammübersicht:**\n\nDas Diagramm zeigt den Energieverbrauch (in kWh/Jahr) verschiedener Haushaltstypen über die Jahre 2022, 2023 und 2024. Zusätzlich werden Vergleichsgruppen für Single-, Zwei- und Dreiköpfige Haushalte dargestellt.\n\n**Jahreswerte und Einheiten:**\n\n*   **Vorjahr 2 (2022):** 3.480 kWh/Jahr\n*   **Vorjahr 1 (2023):** 3.390 kWh/Jahr\n*   **Abrechnungsjahr 2024:** 3.250 kWh/Jahr\n*   **Single-Haushalt:** 1.900 kWh/Jahr\n*   **2-Personen-Haushalt:** 3.000 kWh/Jahr\n*   **3-Personen-Haushalt:** 3.900 kWh/Jahr\n\n**Zusätzliche Anmerkungen:**\n\n*   Das Diagramm ist nach dem deutschen Titel \"Verbrauchsentwicklung & Vergleichsgruppen gemäß § 40 Abs. 2 EnWG\" (Entwicklung des Energieverbrauchs und Vergleichsgruppen gemäß § 40 Absatz 2 der Energieeinsparver",
+    "expected_values": [
+      3480.0,
+      3390.0
+    ],
+    "found_values": [
+      2022.0,
+      2023.0,
+      2024.0,
+      2.0,
+      2022.0,
+      3480.0,
+      1.0,
+      2023.0,
+      3390.0,
+      2024.0,
+      3250.0,
+      1900.0,
+      2.0,
+      3000.0,
+      3.0,
+      3900.0,
+      40.0,
+      2.0,
+      40.0,
+      2.0
+    ],
+    "seconds": 78.38918226600072
+  },
+  "errors": []
+}
