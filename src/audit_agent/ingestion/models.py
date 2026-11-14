@@ -17,11 +17,12 @@ from audit_agent.corpus import DocType, DocumentMeta, UtilityType
 
 
 class ChunkType(StrEnum):
-    """Element type of a chunk. ``table_summary`` follows with the enrichment in M3."""
+    """Element type of a chunk. ``table_summary`` is added by the enrichment (M3)."""
 
     TEXT = "text"
     HEADING = "heading"
     TABLE_ROW = "table_row"
+    TABLE_SUMMARY = "table_summary"
     IMAGE = "image"
 
 
@@ -74,8 +75,11 @@ class DocumentChunk(_Frozen):
 
     @model_validator(mode="after")
     def _check_type_details(self) -> Self:
-        if self.chunk_type is ChunkType.TABLE_ROW and self.metadata.table_id is None:
-            raise ValueError(f"{self.chunk_id}: table_row needs a table_id")
+        if (
+            self.chunk_type in (ChunkType.TABLE_ROW, ChunkType.TABLE_SUMMARY)
+            and self.metadata.table_id is None
+        ):
+            raise ValueError(f"{self.chunk_id}: {self.chunk_type.value} needs a table_id")
         if self.chunk_type is ChunkType.IMAGE and self.metadata.image_path is None:
             raise ValueError(f"{self.chunk_id}: image needs an image_path")
         return self

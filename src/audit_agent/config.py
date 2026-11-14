@@ -57,6 +57,19 @@ class ParserSettings(BaseModel):
     """Images narrower than this are decoration and not extracted."""
 
 
+class EnrichmentSettings(BaseModel):
+    """Parameters of the model-based enrichment (concept.md, section 5.2)."""
+
+    model_config = ConfigDict(frozen=True)
+
+    caption_max_tokens: int = Field(default=400, ge=16)
+    """Generation limit for one image caption."""
+    summary_max_tokens: int = Field(default=160, ge=16)
+    """Generation limit for one table summary (two to three sentences)."""
+    keep_alive: str = "10m"
+    """How long Ollama keeps a model loaded between two enrichment calls."""
+
+
 class Settings(BaseModel):
     """Runtime settings of the application."""
 
@@ -70,6 +83,7 @@ class Settings(BaseModel):
     max_loaded_models: int = Field(default=MAX_LOADED_MODELS, ge=1)
     models: ModelNames = Field(default_factory=ModelNames)
     parser: ParserSettings = Field(default_factory=ParserSettings)
+    enrichment: EnrichmentSettings = Field(default_factory=EnrichmentSettings)
 
     @property
     def dataset_dir(self) -> Path:
