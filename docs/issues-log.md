@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-036 – `llama3.1:8b` gibt früh auf und wählt Tools und Argumente unzuverlässig
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** RUN-005: G1 endet nach einer gefilterten Suche mit „keine Angaben“ (Filter `bill`/2025 schloss die Preisanpassung aus); S4 ruft nie `search_images`, wiederholt dreimal denselben ungültigen `calculate`-Aufruf (`a`, `b` statt `expression`) und beschriftet Eurobeträge als Verbrauch; in S2 und N1 erfindet es Argumentnamen (`doc_id`, `query` bei `list_documents`).
+- **Ursache:** Ein 8B-Modell mit sechs Tools folgt Beschreibungen nur teilweise (ISS-006, ISS-007 bestätigt). Die Fehlermeldung nannte nur den fehlenden Parameter, nicht den richtigen Aufruf.
+- **Lösung / Workaround:** Seit RUN-006-Stand: Fehlermeldung nennt `calculate(expression*)`; eine Lückenantwort nach weniger als 2 Werkzeugaufrufen wird einmal hinterfragt; der System-Prompt nennt Vorjahreswerte und Diagramme. Ob das reicht, zeigen RUN-006 und M6 (auch `qwen2.5:7b`).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation / Grenzen kleiner Modelle
+
+### ISS-035 – Das Modell zitiert eine KI-Zusammenfassung als Beleg
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** agent
+- **Status:** gelöst
+- **Symptom:** S2: Treffer [1] war die `table_summary` mit Nettowerten (29,24 ct, 9,66 EUR), die Tabellenzeilen mit Brutto folgten als [2] bis [5]. Das Modell antwortete mit [1], obwohl der Treffer „KI-Zusammenfassung, kein Beleg“ trug.
+- **Ursache:** Die Summary ist der Frage sprachlich am ähnlichsten und steht daher oben; kleine Modelle folgen dem Ranking, nicht der Kennzeichnung. Die Zahlen der Summary sind zudem mit einem 3B-Modell erzeugt (ISS-022).
+- **Lösung / Workaround:** Der Agent sieht Summaries nicht mehr (`AgentSettings.include_table_summaries=False`); sie bleiben im Index für P1. Im System-Prompt: Preise brutto. Preis: Die Hilfe der Summaries beim Finden (RUN-004: 9/10 statt 8/10) entfällt für den Agenten; M6 kann beides vergleichen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Retrieval / Agent (KI-Texte nur als Suchhilfe, nie als Beleg)
+
 ### ISS-034 – Eigene Fehler beim Bau von M5 (von den Tests gefunden)
 - **Datum / Meilenstein:** 2026-11-14 / M5
 - **Kategorie:** ki-assistent
@@ -323,6 +343,7 @@
 - **Status:** offen
 - **Symptom:** `smoke.md` meldet „wiederverwendet: nein“ (507 vs. 502 Tokens). Gleichzeitig dauerten Tool-Aufgaben 2–5 mit gleichem System-Prompt und Tool-Schema nur 6–8 s statt der erwarteten 20 s Prefill.
 - **Ursache:** Ollama 0.35.1 meldet in `prompt_eval_count` offenbar die volle Prompt-Länge, auch wenn Teile aus dem Cache kommen. Meine Heuristik (weniger Tokens ⇒ Cache) stimmte nicht.
+- **Update RUN-005:** Wiederverwendung des Prompt-Anfangs ist zum Teil belegt (G1 und N1: erste Aufrufe mit rund 2.000 Token in 4,8 s und 2,8 s statt 108 s), aber nicht verlässlich (S4: wieder 89 s). `prompt_eval_count` entspricht nicht der Kontextgröße; der Kontextwächter schätzt selbst.
 - **Lösung / Workaround:** Heuristik auf die Prefill-Dauer umgestellt (`is_prefix_reused` vergleicht Sekunden, Test angepasst). Nachmessen ist offen und passiert beim ersten Mehrschritt-Agentenlauf in M5; bis dahin gilt die Wiederverwendung als „sehr wahrscheinlich“ (Zeitindiz), nicht als belegt.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Architektur (Latenz im Agentenlauf), Reflexion
