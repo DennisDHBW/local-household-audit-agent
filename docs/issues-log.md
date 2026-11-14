@@ -24,6 +24,47 @@
 
 ## Einträge
 
+### ISS-028 – Vergleichslauf nutzt handgesetzte Filter und nur 12 Fragen
+- **Datum / Meilenstein:** 2026-11-14 / M4
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** Der Vergleich in `retrieval/compare.py` setzt für jede Frage den Metadatenfilter von Hand (`QUESTION_FILTERS`). Die Konfigurationen mit Filter zeigen damit, was ein Agent mit richtigen Filtern erreicht, nicht was er tatsächlich wählt. Dazu sind es nur 10 beantwortbare Fragen, die nach dem Bau der Pipeline bekannt waren.
+- **Ursache:** Die Filterwahl gehört zum Agenten (M5); in M4 gibt es ihn noch nicht. Ein größeres Fragenset würde den Aufwand der Ground Truth sprengen.
+- **Lösung / Workaround:** Die Zahlen als obere Schranke lesen und in der Ausarbeitung so benennen. In M5/M6 messen, wie oft der Agent falsche Filter setzt (ISS-007).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen der Messung)
+
+### ISS-027 – Pfadregel des Hierarchie-Boosts ist eine Heuristik
+- **Datum / Meilenstein:** 2026-11-14 / M4
+- **Kategorie:** retrieval
+- **Status:** offen
+- **Symptom:** Der Boost greift, wenn ein Anfrageterm im Pfad steht oder ein Pfadwort der Anfang des Terms ist. Kurze Pfadwörter wie „gas“ treffen jedes Kompositum, das so beginnt („Gasvertrag“, aber auch „Gaststätte“). Der Boost gilt außerdem für alle Chunks eines Dokuments gleich, auch für die unwichtigen (Briefkopf, Summaries). Mit Fake-Embedder zeigt der Test, dass die Regel greift, nicht ob sie mit echten Embeddings hilft.
+- **Ursache:** Konzept sieht „Suchbegriffe im Pfad“ vor, ohne Wortbildung zu regeln; deutsche Komposita brauchen mehr als einen Teilstring-Vergleich.
+- **Lösung / Workaround:** Regel in ADR-0009 dokumentiert und mit Tests belegt; Wirkung mit echten Embeddings in RUN-004 messen. Bei schlechten Ergebnissen Mindestlänge der Pfadwörter erhöhen oder den Boost auf Chunks mit Kapitel beschränken.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Retrieval-Konzept (Grenzen des Boosts)
+
+### ISS-026 – Eigener Fehler: Unterstriche wurden nicht als Worttrenner behandelt
+- **Datum / Meilenstein:** 2026-11-14 / M4
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Die Pfadregel fand „Strom“ im Dateinamen `04_Strom_Jahresabrechnung_2024` nicht, weil der reguläre Ausdruck `\w+` den Unterstrich als Wortzeichen zählt und den ganzen Dateinamen als ein Wort las. Der Test `test_compound_matches_path_word_as_prefix` schlug fehl.
+- **Ursache:** Von mir (Claude) falsch gewählter Ausdruck; der Fehler wäre bei den echten Dateinamen unbemerkt geblieben, weil der Boost dann nur seltener greift und keine Fehlermeldung kommt.
+- **Lösung / Workaround:** Ausdruck `[^\W_]+` (Buchstaben und Ziffern), Test bleibt als Absicherung.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-025 – Zeitraumfilter schließt Dokumente ohne Abrechnungszeitraum aus
+- **Datum / Meilenstein:** 2026-11-14 / M4
+- **Kategorie:** retrieval
+- **Status:** akzeptiert
+- **Symptom:** Ein Filter auf das Jahr 2025 liefert nur Rechnungen und Bescheide. Verträge, Preisanpassungen und Hinweise haben keinen `billing_period` und verschwinden aus dem Ergebnis, obwohl sie für 2025 gelten können (z. B. die Preisanpassung 2025 für die Frage G1).
+- **Ursache:** Der Zeitraum ist nur bei Abrechnungen gepflegt; `valid_from` gibt es nur bei Preisanpassungen und wird nicht gefiltert.
+- **Lösung / Workaround:** Der Agent soll den Zeitraumfilter nur für Abrechnungen setzen und sonst über Sparte und Dokumenttyp filtern (Tool-Beschreibung in M5). Ein Filter auf `valid_from` ist nicht umgesetzt (YAGNI).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Retrieval-Konzept (Metadatenfilter und seine Grenzen)
+
+
 ### ISS-024 – Summaries am Token-Limit abgeschnitten, Prompt-Vorgaben missachtet
 - **Datum / Meilenstein:** 2026-11-14 / M3
 - **Kategorie:** enrichment
