@@ -1,6 +1,6 @@
 # ADR-0010: Agentenschleife und Werkzeuge (P2)
 
-- **Status:** akzeptiert (vorläufig, Bestätigung durch RUN-005 und M6)
+- **Status:** akzeptiert (Technik in RUN-005/006 bestätigt; Antwortqualität offen bis M6)
 - **Datum:** 2026-11-14
 - **Meilenstein:** M5
 

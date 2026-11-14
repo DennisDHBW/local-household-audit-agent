@@ -23,6 +23,22 @@
 
 ## Einträge
 
+### 2026-11-14 – M5: Agent (P2) mit Tools
+**Ziel der Sitzung:** Auf dem Retriever aus M4 einen Agenten mit nativem Tool-Calling und den sechs Tools aus dem Konzept bauen, mit Protokoll je Schritt und Streamlit-Oberfläche für die Belege, und prüfen, ob er mit `llama3.1:8b` brauchbar antwortet.
+**Was wurde gemacht:**
+- Plan mit sieben Punkten vorgelegt und bestätigt (getrennte Such-Tools, kein `top_k`, Jahresfilter-Regel und Wiederholung ohne Filter im Code)
+- Paket `audit_agent.agent`: Rechner über `ast` mit `Decimal`, sechs Tools mit pydantic-Argumenten und erzeugtem JSON-Schema, Schleife mit Limit, Kontextwächter und Belegnummern, JSON-Zeilen-Log, Report, CLI, Streamlit-Seite; `AgentSettings` in der Config; `streamlit` als Abhängigkeit
+- 79 Tests mit Skript-Client und Fake-Suche; zwei eigene Fehler von den Tests gefunden (ISS-034)
+- RUN-005: 1 von 4 richtig; Ursachen gefunden und behoben: Summaries als Beleg zitiert (ISS-035), Aufgeben nach einem Aufruf, Fehlermeldung ohne richtigen Aufruf, Kontextschätzung über `prompt_eval_count` unbrauchbar
+- RUN-006: 2 von 4 richtig (S2, N1); G1 und S4 scheitern weiter an Tool-Wahl und Filtern (ISS-036). Danach bewusst keine weitere Prompt-Arbeit an denselben vier Fragen
+- Beim Planen von M6 aufgefallen: P1 hat keine Antwortsynthese, B0 fehlt (ISS-037)
+**Gelieferte Dateien / Funktionen:** `src/audit_agent/agent/{calculator,models,tools,prompts,loop,log,factory,report,evidence_view,app,__main__,__init__}.py`, `config.py` (`AgentSettings`), `tests/{agent_fakes,test_agent_tools,test_agent_loop}.py`, `docs/adr/0010-agent-loop-and-tools.md`, `docs/reverse-engineering/m5-agent.md`, `data/eval/run-005/`, `data/eval/run-006/`
+**Entscheidungen:** ADR-0010 (Agentenschleife und Tools), ADR-0006 bestätigt (Aufrufformat bleibt)
+**Probleme / Überraschungen:** ISS-030 (großer Prompt), ISS-031 (Kürzung), ISS-032 (Filterregeln als Heuristik), ISS-033 (keine Vertragslaufzeit), ISS-034 (eigene Fehler), ISS-035 (Summary als Beleg zitiert), ISS-036 (Modell gibt auf, wählt falsch), ISS-037 (P1-Synthese und B0 fehlen); überrascht hat, dass die Rückfrage bei „keine Angaben“ nur dieselbe Suche wiederholen ließ und dass `prompt_eval_count` nicht die Kontextgröße ist
+**Offen / unklar:** Ob `qwen2.5:7b` oder ein gemeinsames Suchtool die Tool-Wahl verbessert (M6); ob die Summaries für den Agenten wieder eingeschaltet werden; Reverse-Engineering zu M2 bis M5 unbeantwortet
+**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**Zeitaufwand:** ca. 1,5 h (zwei Ollama-Läufe mit zusammen gut 25 min) · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `build`, `feat(config)`, `feat(agent)`, `feat(ui)`, `test(agent)`, `fix(agent)`, `docs(adr)`, `docs` ×3, `docs: close M5 session`
+
 ### 2026-11-14 – M4: Embedding & Retrieval
 **Ziel der Sitzung:** Aus den 629 Chunks einen ChromaDB-Index bauen und eine Suche mit Metadatenfilter und Hierarchie-Boost liefern, deren Score sich von Hand nachrechnen lässt; Wirkung von Filter, Boost und Chunk-Auswahl messen.
 **Was wurde gemacht:**

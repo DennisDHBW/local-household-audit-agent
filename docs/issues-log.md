@@ -24,13 +24,25 @@
 
 ## Einträge
 
+### ISS-037 – P1 hat noch keine Antwortsynthese, B0 fehlt
+- **Datum / Meilenstein:** 2026-11-14 / M5 (aufgefallen beim Planen von M6)
+- **Kategorie:** konzept
+- **Status:** offen
+- **Symptom:** `concept.md` 7.1 und 11.1 vergleichen drei Varianten (B0 Volltext, P1 Pipeline mit LLM-Synthese, P2 Agent). Gebaut sind bisher nur das Retrieval von P1 (M4) und der Agent P2 (M5). Es gibt weder eine Synthese-Funktion, die aus den Top-5 eine Antwort erzeugt, noch den Volltext-Prompt von B0.
+- **Ursache:** Meilensteintabelle und Konzept führten „P1“ unter M4 als Retrieval, die Synthese wurde in keinem Paket eingeplant.
+- **Lösung / Workaround:** M6 beginnt mit P1-Synthese (ein Modellaufruf mit Evidenz, Belegnummern wie im Agenten) und B0 (so viel Text wie in 8.192 Token passt), beide über denselben `ChatClient` und dieselben Protokollsätze; erst danach die Evaluation. Das ist mehr Arbeit als im Konzept sichtbar; M6 kann in zwei Pakete geteilt werden.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Varianten)
+
 ### ISS-036 – `llama3.1:8b` gibt früh auf und wählt Tools und Argumente unzuverlässig
 - **Datum / Meilenstein:** 2026-11-14 / M5
 - **Kategorie:** agent
 - **Status:** offen
 - **Symptom:** RUN-005: G1 endet nach einer gefilterten Suche mit „keine Angaben“ (Filter `bill`/2025 schloss die Preisanpassung aus); S4 ruft nie `search_images`, wiederholt dreimal denselben ungültigen `calculate`-Aufruf (`a`, `b` statt `expression`) und beschriftet Eurobeträge als Verbrauch; in S2 und N1 erfindet es Argumentnamen (`doc_id`, `query` bei `list_documents`).
 - **Ursache:** Ein 8B-Modell mit sechs Tools folgt Beschreibungen nur teilweise (ISS-006, ISS-007 bestätigt). Die Fehlermeldung nannte nur den fehlenden Parameter, nicht den richtigen Aufruf.
-- **Lösung / Workaround:** Seit RUN-006-Stand: Fehlermeldung nennt `calculate(expression*)`; eine Lückenantwort nach weniger als 2 Werkzeugaufrufen wird einmal hinterfragt; der System-Prompt nennt Vorjahreswerte und Diagramme. Ob das reicht, zeigen RUN-006 und M6 (auch `qwen2.5:7b`).
+- **Lösung / Workaround:** Fehlermeldung nennt `calculate(expression*)`; eine Lückenantwort nach weniger als 2 Werkzeugaufrufen wird einmal hinterfragt; der System-Prompt nennt Vorjahreswerte und Diagramme.
+- **Update RUN-006:** Hat nicht gereicht. G1: Die Rückfrage wiederholte denselben Aufruf mit denselben Filtern und tauschte „keine Angaben“ gegen eine unpassende Zahl; S4: weiter kein `search_images`, ungültiges `calculate`, erfundenes Argument `doc_id`; die Schlussantwort ist aber ehrlich. 2 von 4 richtig (S2, N1). Weitere Prompt-Änderungen an diesen vier Fragen unterbleiben (Anpassen an den Test); M6 prüft Gegenmaßnahmen gezielt: `qwen2.5:7b`, ein gemeinsames Suchtool (ISS-006), Filter durch Code statt durch das Modell (ISS-007), Beispiele im Prompt.
+- **Status-Hinweis:** bleibt offen bis M6.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Evaluation / Grenzen kleiner Modelle
 
