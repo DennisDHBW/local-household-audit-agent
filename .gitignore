@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# IDE
+.idea/
+.vscode/
+
+# Generated data (rebuilt by ingest); evaluation results in data/eval/ are versioned
+data/processed/
+data/vectors/
+.cache/
+
+# Real personal documents (never commit)
+dataset/private/
+
+# OS
+.DS_Store
