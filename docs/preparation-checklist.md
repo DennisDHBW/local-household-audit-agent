@@ -39,8 +39,8 @@ ollama list
 - [ ] Referenzprototyp aus der Vorlesung (falls vorhanden) in den Projektordner legen, z. B. unter `reference/`, damit Claude ihn mit dem eigenen Ansatz vergleichen kann
 
 ## G. Danach: Start mit M0
-Neuer Chat, Sonnet 5.5 / High:
+Neuer Chat, Sonnet 5.5 / High, Prompt:
 ```text
-Neue Sitzung. Lies docs/status.md. Heute: M0, Setup. Erst Plan.
+Weiter
 ```
 M0 umfasst: Abhängigkeiten und Tooling (`uv`, ruff, pytest), Projektstruktur `src/`, zentrale Konfiguration, Quality-Gate-Skript, Smoke-Test (Geschwindigkeit, Tool-Calling, Embedding, Vision) mit Ergebnis in `evaluation-log.md`, Abschluss von ADR-0004.
