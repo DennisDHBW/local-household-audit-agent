@@ -24,6 +24,96 @@
 
 ## Einträge
 
+### ISS-020 – Datenmodell zunächst `Chunk` statt `DocumentChunk` (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-14 / M2
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Das Chunk-Modell hieß im ersten Entwurf `Chunk`, im Glossar und in `CODING_STANDARDS.md` steht `DocumentChunk`.
+- **Ursache:** Glossar vor dem Anlegen der Klasse nicht abgeglichen.
+- **Lösung / Workaround:** Umbenennung in `DocumentChunk` (eigener Commit), vor dem Merge.
+- **Gelernt:** Begriffe vor dem Schreiben im Glossar nachschlagen, nicht danach.
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-019 – Grenzen des Parsers (bewusst nicht behandelt)
+- **Datum / Meilenstein:** 2026-11-14 / M2
+- **Kategorie:** parser
+- **Status:** akzeptiert
+- **Symptom:** Nicht abgedeckt sind: Tabellen über mehrere Seiten (jede Seite ergibt eine eigene Tabelle), gescannte PDFs ohne Textebene (kein OCR), zweizeilige Spaltenköpfe mit unterschiedlicher Spaltenbreite und Layouts ohne fette Überschriften. Diagramme liefern nur Bild und Seitenzahl; ihre Werte stehen erst nach dem Enrichment (M3) im Text.
+- **Ursache:** Regeln sind auf die 30 synthetischen PDFs abgestimmt (ADR-0007); YAGNI.
+- **Lösung / Workaround:** Als Grenze in der Ausarbeitung nennen. Kein Korpus-PDF ist betroffen (alle Tabellen passen auf eine Seite).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Reflexion (Grenzen der Vorverarbeitung), Übertragbarkeit auf echte Post
+
+### ISS-018 – Parser braucht ca. 30 Sekunden für 30 PDFs
+- **Datum / Meilenstein:** 2026-11-14 / M2
+- **Kategorie:** parser
+- **Status:** akzeptiert
+- **Symptom:** `python -m audit_agent.ingestion` dauert ca. 31 s, der Test über den ganzen Korpus ebenfalls.
+- **Ursache:** `find_tables()` läuft pro Seite zweimal (beide Strategien, ADR-0007) und ist der teure Schritt.
+- **Lösung / Workaround:** Der Gesamttest ist mit `slow` markiert; die schnellen Tests parsen nur sechs ausgewählte PDFs. Ingestion läuft einmalig, das Ergebnis liegt als JSON vor.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-017 – Kurzer Rest „Datum: 18.01.2025“ ging verloren (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-14 / M2
+- **Kategorie:** chunking
+- **Status:** gelöst
+- **Symptom:** Der Unit-Test für das Zusammenfügen kurzer Fragmente schlug fehl. Ursache im Code: Reste unter `min_chars` (20 Zeichen) wurden verworfen, obwohl „Datum: 18.01.2025“ (das Rechnungsdatum) eine echte Angabe ist. Im Korpus betraf es vier Reste („Datum: …“ in Dok. 04 und 06, zweimal „Mosbach“).
+- **Ursache:** `min_chars` aus dem Konzept wörtlich als „verwerfen“ umgesetzt.
+- **Lösung / Workaround:** Reste unter der Schwelle bleiben, wenn sie eine Ziffer enthalten; reine Wortreste („Mosbach“) entfallen (ADR-0007, Punkt 8).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel Vorverarbeitung (Abweichung von der Vorlage der Aufgabenstellung, begründet)
+
+### ISS-016 – Überschriften-Heuristik: Briefkopf-Namen und gemischte Blöcke
+- **Datum / Meilenstein:** 2026-11-14 / M2
+- **Kategorie:** parser
+- **Status:** akzeptiert
+- **Symptom:** Fett gesetzte Firmennamen im Briefkopf („AlpenSchutz …“, „MobilPlus AG“, „Sanitär & Heizungstechnik …“) werden zu Überschriften und stehen damit am Anfang des `heading_stack` der ganzen Seite. Umgekehrt wird ein fetter Absatzanfang innerhalb eines gemischten Blocks nicht als Überschrift erkannt.
+- **Ursache:** Die Heuristik prüft Fettdruck, Größe und Position, aber nicht die Rolle im Dokument.
+- **Lösung / Workaround:** Hingenommen; der Prefix hat dadurch bei diesen Dokumenten einen zusätzlichen Eintrag. Wirkung auf das Retrieval in M4 prüfen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Reflexion (Heuristik vs. Dokumentverständnis)
+
+### ISS-015 – Layout-Tabellen im Briefkopf werden als Datentabelle erkannt
+- **Datum / Meilenstein:** 2026-11-14 / M2
+- **Kategorie:** parser
+- **Status:** akzeptiert
+- **Symptom:** In den NeckarEnergie-Dokumenten (08, 10, 29) ist der Briefkopf aus Absender, Anschrift und Kundendaten ein rahmenloses Raster, das `find_tables()` als Tabelle liefert. Ergebnis: Zeilen wie „Herrn | Datum: 28.01.2026“ mischen Anschrift und Metadaten.
+- **Ursache:** Layouttabelle und Datentabelle sehen für `find_tables()` gleich aus.
+- **Lösung / Workaround:** Inhalt ist vollständig und durchsuchbar, nur ungünstig geschnitten. Nicht behoben; Bewertung nach M4.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Reflexion
+
+### ISS-014 – Aneinanderstoßende Tabellen wurden zu einer verschmolzen (und mein erster Fix griff nicht)
+- **Datum / Meilenstein:** 2026-11-14 / M2
+- **Kategorie:** parser
+- **Status:** gelöst
+- **Symptom:** In Dok. 08, 10, 13, 15, 29 lagen Zählerstandstabelle und Entgelttabelle direkt untereinander. `find_tables()` lieferte eine Tabelle; die Zwischenüberschrift „2. Entgeltberechnung“ wurde Tabellenzeile, die Kostenzeilen bekamen die Spalten der Zählertabelle („Zählernummer: Arbeitspreis Erdgas“).
+- **Ursache:** Zwischen den Tabellen liegt kein Text- oder Leerraum, den die Erkennung als Trennung sieht.
+- **Lösung / Workaround:** Zeilen mit nur einer fetten, größeren Zelle trennen die Tabelle (ADR-0007, Punkt 4). Beim ersten Versuch fehlte trotzdem der Spaltenkopf der zweiten Tabelle, weil ich den Kopf aus `row_bboxes[0]` las und dort eine leere Schmalzeile (5 pt hoch) lag. Jetzt wird die erste nicht leere Zeile benutzt; ein Golden-Test deckt Dok. 10 ab.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel Vorverarbeitung
+
+### ISS-013 – Zelltext aus `find_tables()` ist zerrissen
+- **Datum / Meilenstein:** 2026-11-14 / M2
+- **Kategorie:** parser
+- **Status:** gelöst
+- **Symptom:** `Table.extract()` lieferte z. B. „1 189 00\n. ,\nEUR“ statt „1.189,00 EUR“ und „Grundpreis(12Monate)“ ohne Leerzeichen.
+- **Ursache:** Die Zellextraktion setzt Wörter aus Zeichenpositionen neu zusammen; bei kleiner Schrift und eng gesetzten Satzzeichen geht das schief.
+- **Lösung / Workaround:** Nur Fläche und Zeilenbänder von `find_tables()` verwenden; den Text liefern die Spans (`get_text("dict")`), die ich selbst zu Zellen gruppiere (ADR-0007, Punkt 2).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel Vorverarbeitung, Beleg für „Architektur schlägt naiven Ansatz“
+
+### ISS-012 – `find_tables()` erkennt je nach Strategie unvollständige Tabellen
+- **Datum / Meilenstein:** 2026-11-14 / M2
+- **Kategorie:** parser
+- **Status:** gelöst
+- **Symptom:** Bei den Rechnungen mit gefüllten Zellen fehlen Kopfzeile und erste Datenzeile (`lines` in Dok. 04: Tabelle beginnt erst bei „Grundpreis“). `lines_strict` verliert dagegen Kopfzeilen in Dok. 16–19, 26, 28 und fasst in Dok. 29 zwei Zeilen zu einer zusammen („Rechnungsbetrag … Abzüglich Abschlagszahlungen“). Das wäre bei dem Dokument mit dem eingebauten Fehler besonders unglücklich.
+- **Ursache:** Die Erkennung braucht sichtbare Kanten. Weiße Zeilen ohne Füllung und ohne Linie haben keine.
+- **Lösung / Workaround:** Beide Strategien laufen, bei Überlappung gewinnt die Tabelle mit mehr Zeilen (ADR-0007, Punkt 1). Golden-Tests für Dok. 04, 10, 29.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel Vorverarbeitung
+
 ### ISS-011 – Löschrecht für git zu spät angefragt (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-14 / M1
 - **Kategorie:** ki-assistent

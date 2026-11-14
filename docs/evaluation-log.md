@@ -61,3 +61,30 @@
   - Prefix-Test: „wiederverwendet: nein“ in `smoke.md` ist ein Messfehler. Die Tokenzahl (507 vs. 502) sagt bei Ollama 0.35.1 nichts über den Cache aus (ISS-005). Indirekter Hinweis auf Wiederverwendung: Die erste Tool-Aufgabe dauerte 38–42 s (inkl. Laden und Prefill von ca. 370 Tokens), die folgenden mit gleichem System-Prompt und gleichen Tool-Schemas nur 6–8 s.
 - **Grenzen der Messung:** nur 5 Aufgaben pro Modell und nur der erste Schritt ohne Rückgabe von Tool-Ergebnissen; eine Einzelmessung pro Modell (keine Streuung); der Vision-Test prüft „Sollwerte kommen vor“ und ist deshalb großzügig.
 - **Meine Deutung (eigene Worte):**
+
+### RUN-001 – Parser-Lauf M2 (30 PDFs → JSON-Zwischenformat)
+- **Datum / Commit:** 2026-11-14 · Branch `feat/m2-parser`, Stand nach `refactor(ingestion): rename Chunk to DocumentChunk …`
+- **Varianten:** keine (kein LLM, nur Parser)
+- **Konfiguration:** `ParserSettings` mit Standardwerten (`min_chars=20`, `max_block_chars=1500`, Kopfzone 4 %, Fußzone 6 %, `heading_size_factor=1.0`, `cell_gap_pt=5`, `min_image_width_pt=50`); PyMuPDF 2.1 (Lockfile), Python 3.13; Befehl `uv run python -m audit_agent.ingestion`
+- **Dauer:** ca. 31 s für 30 PDFs (Claudes VM, CPU)
+- **Rohdaten:** `data/processed/*_chunks.json`, `data/processed/images/` (nicht versioniert, jederzeit neu erzeugbar)
+
+| Messung | Wert |
+|---|---|
+| Dokumente / Seiten | 30 / 34 |
+| Chunks gesamt | 564 |
+| davon `text` | 178 |
+| davon `heading` | 82 |
+| davon `table_row` | 299 (aus 65 Tabellen) |
+| davon `image` | 5 (Diagramme in Dok. 04, 06, 10 (2×), 15) |
+| Text-Chunks: Länge min / max (Zeichen) | 25 / 1.056 (Grenze 1.500 nie erreicht) |
+
+- **Manuelle Sichtprüfung** (Chunk-Liste gegen PDF) an Dok. 04, 10, 16, 18, 22, 26, 29, 30:
+  - Spaltenköpfe stehen in jeder Tabellenzeile; Beträge, Einheiten und Datumsangaben sind unversehrt („Betrag Brutto: 1.131,00 EUR“).
+  - Fehlerdokumente: Dok. 29 enthält „z-Zahl: 1,0000“ und „Volumen: 1.060 m³“ als Zeile; „Rechnungsbetrag … 1.367,99 EUR“ und „Abzüglich Abschlagszahlungen … -1.375,00 EUR“ stehen in getrennten Zeilen. Dok. 30 enthält „Wohnfläche 82,00 m²“ im Text.
+  - Fußzeilen (Bank, Handelsregister) und Seitenkopf („Seite 2 von 2“) tauchen in keinem Chunk auf.
+- **Auffällige Einzelfälle (Parser):** Briefkopf-Tabellen in Dok. 08/10/29 mischen Anschrift und Metadaten (ISS-015); Firmennamen im Briefkopf werden zu Überschriften (ISS-016); die Fehler ISS-012 bis ISS-014 fielen erst bei der Sichtprüfung der echten PDFs auf; die Unit-Tests entstanden danach und sichern sie jetzt ab.
+- **Grenzen der Messung:** Die Sichtprüfung deckt acht von 30 Dokumenten ab; es gibt keinen automatischen Vergleich gegen eine Soll-Struktur. Die Golden-Tests prüfen einzelne Zeilen, nicht die Vollständigkeit.
+- **Meine Deutung (eigene Worte):**
+- **Konsequenz / nächster Schritt:** M3: Bild-Captions (`gemma3:4b`) und Tabellen-Summaries; danach M4 mit Embedding und erstem Retrieval, dort die Wirkung der Briefkopf-Chunks prüfen.
+

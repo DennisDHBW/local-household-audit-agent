@@ -169,6 +169,8 @@ Damit der Agent gezielt filtern kann, bekommt jedes Dokument (und damit jeder Ch
 
 *(Zahlen sind Platzhalter.)*
 
+**Umsetzung in M2 (Stand 2026-11-14):** Die Datei `data/processed/<datei>_chunks.json` enthält ein `ParsedDocument` mit `file`, `page_count` und `chunks`. Jeder Chunk hat genau die oben gezeigten Felder; `table_id` lautet `p<Seite>_tab<NN>` (z. B. `p1_tab03`), `chunk_id` bei Tabellenzeilen `<dateiname>_p1_tab03_r02`. Bild-Chunks tragen in `metadata.image_path` den Pfad unter `data/processed/images/`; ihr Text ist bis M3 ein Platzhalter. Die Parser-Regeln stehen in ADR-0007, bekannte Grenzen in ISS-015 bis ISS-019.
+
 ---
 
 ## 6. Retrieval-Konzept
