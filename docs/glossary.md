@@ -45,3 +45,17 @@
 | Tool-Ergebnis | `AuditToolResult` | Normalisiertes Ergebnis eines Tools mit Quellen | |
 | Ground Truth | `ground_truth` | Bekannte richtige Antwort für eine Testfrage | |
 | Halluzination | – | Plausible, aber nicht belegte Aussage | |
+
+## Betrieb & Messung
+
+| Begriff | Code (EN) | Kurzdefinition | In meinen Worten |
+|---|---|---|---|
+| Smoke-Test | `audit_agent.smoke` | Kurzer Funktionstest der Umgebung (Geschwindigkeit, Tool-Calling, Embedding, Vision) | |
+| Prefill | `prompt_eval_*` | Verarbeitung des Eingabe-Prompts vor der ersten Ausgabe (hier ca. 18–20 Tokens/s) | |
+| Generierung | `eval_*` | Erzeugung der Antwort-Tokens (hier ca. 5–6 Tokens/s bei 7–8B) | |
+| Kontextfenster | `num_ctx` | Anzahl Tokens, die das Modell gleichzeitig sieht; bestimmt den KV-Cache und damit den RAM-Bedarf | |
+| Modell entladen | `keep_alive=0` | Gibt den RAM eines Modells sofort frei | |
+| Preflight | `ensure_models_available` | Fail-fast-Prüfung, ob alle benötigten Ollama-Modelle installiert sind | |
+| Tool-Calling (nativ) | `tools=[...]` | Das Modell antwortet mit einem strukturierten Werkzeugaufruf statt Freitext | |
+| Einstellungen | `Settings` | Zentrale Konfiguration (Pfade, Modelle, Limits), überschreibbar per `AUDIT_*`-Variablen | |
+| Präfix-Wiederverwendung | `is_prefix_reused` | Ollama behält den gleichen Prompt-Anfang im Cache und spart Prefill-Zeit | |
