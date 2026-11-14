@@ -221,6 +221,8 @@ Vor der Final Answer prüft der Agent per Prompt-Regel:
 - Ungültiges Tool-JSON wird abgefangen und dem Modell als Fehlermeldung zurückgegeben (einmaliger Korrekturversuch)
 - Vollständiges Logging von Thought/Action/Observation, als Grundlage für Tests und Reverse Engineering
 
+**Umsetzung in M5 (Stand 2026-11-14):** Paket `audit_agent.agent` (ADR-0010). Die sechs Tools stehen wie oben, aber ohne `top_k` und mit flachen Filterargumenten (`utility_type`, `doc_type`, `year`) statt `filter?`. `search_documents` durchsucht nur `text` (Überschriften sind nicht indiziert, ihr Pfad steckt in den Chunks; die Gliederung liefert `get_document_outline`). Der Jahresfilter gilt nur mit `bill`, `notice` oder `payment_plan` (ISS-025); eine Suche ohne Jahr und ohne Treffer wird ohne Filter wiederholt (ISS-007). Jeder Treffer trägt eine Belegnummer `[n]`, die Antwort zitiert sie. Jeder Aufruf, auch ein ungültiger, zählt gegen das Limit von 6; der Korrekturversuch ist der nächste Modellaufruf nach der Fehlermeldung. Das Log ist eine JSON-Zeile je Schritt unter `data/eval/<run>/`. Die Streamlit-Oberfläche (`agent/app.py`) zeigt die Belege schon während der Suche.
+
 ---
 
 ## 8. ReAct-Zyklen (Beispiele für die Ausarbeitung)

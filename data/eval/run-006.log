@@ -1,0 +1,69 @@
+
+== S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+  Modell: 139.04 s, Prompt 2044 Token -> search_tables
+  Tool search_tables {'doc_type': 'contract', 'query': 'Arbeitspreis und Grundpreis Stromvertrag', 'utility_type': 'electricity'} -> ok (0.63 s)
+  Modell: 52.21 s, Prompt 1254 Token -> Antwort
+
+== G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+  Modell: 19.12 s, Prompt 2055 Token -> search_documents
+  Tool search_documents {'doc_type': 'bill', 'query': 'neuer Arbeitspreis in Stromabrechnung 2025', 'utility_type': 'electricity', 'year': '2025'} -> ok (0.07 s)
+  Modell: 52.79 s, Prompt 1300 Token -> Antwort
+  Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen
+  Modell: 128.19 s, Prompt 2901 Token -> search_documents
+  Tool search_documents {'doc_type': 'bill', 'query': 'neuer Arbeitspreis in Stromabrechnung 2025', 'utility_type': 'electricity', 'year': '2025'} -> ok (0.07 s)
+  Modell: 65.81 s, Prompt 2146 Token -> Antwort
+
+== N1: Wie hoch war meine Stromrechnung 2023?
+  Modell: 16.59 s, Prompt 2041 Token -> search_tables
+  Tool search_tables {'doc_type': 'bill', 'query': 'Stromrechnung 2023', 'utility_type': 'electricity', 'year': '2023'} -> ok (0.07 s)
+  Modell: 13.64 s, Prompt 610 Token -> list_documents
+  Tool list_documents {'doc_type': 'bill', 'query': 'Stromrechnung 2023', 'utility_type': 'electricity', 'year': '2023'} -> ok (0.0 s)
+  Modell: 5.34 s, Prompt 690 Token -> Antwort
+
+== S4: Wie hoch war der Stromverbrauch 2022 und 2023?
+  Modell: 114.06 s, Prompt 2045 Token -> search_tables
+  Tool search_tables {'doc_type': 'bill', 'query': 'Stromverbrauch 2022 und 2023', 'utility_type': 'electricity', 'year': '2022'} -> ok (0.08 s)
+  Modell: 14.36 s, Prompt 622 Token -> list_documents
+  Tool list_documents {'doc_type': 'bill', 'query': 'Stromverbrauch 2022 und 2023', 'utility_type': 'electricity'} -> ok (0.0 s)
+  Modell: 16.15 s, Prompt 782 Token -> search_tables
+  Tool search_tables {'doc_type': 'bill', 'query': 'Stromverbrauch 2022 und 2023', 'utility_type': 'electricity', 'doc_id': 'SV-2024-99104'} -> ok (0.06 s)
+  Modell: 46.1 s, Prompt 1353 Token -> search_tables
+  Tool search_tables {'doc_type': 'bill', 'query': 'Stromverbrauch 2022 und 2023', 'utility_type': 'electricity', 'doc_id': 'SV-2024-99104'} -> ok (0.1 s)
+  Modell: 49.16 s, Prompt 1924 Token -> calculate
+  Tool calculate {'e': '1.155,00', 'a': '1.379,30', 'b': '1.189,00', 'c': '34,00', 'd': '1.265,00'} -> FEHLER (0.0 s)
+  Modell: 18.95 s, Prompt 2014 Token -> search_tables
+  Tool search_tables {'doc_type': 'bill', 'query': 'Stromverbrauch 2022 und 2023', 'utility_type': 'electricity', 'doc_id': 'SV-2024-99104'} -> ok (0.07 s)
+  Modell: 162.19 s, Prompt 2594 Token -> Antwort
+
+Der Arbeitspreis beträgt 34,80 ct/kWh (Brutto) und der Grundpreis 11,50 EUR/Monat (Brutto).
+
+[answer, 1 Werkzeugaufrufe, 191.9 s]
+  [1] 01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, S. 1
+  [2] 01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, S. 1
+  [3] 01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, S. 1
+  [4] 01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, S. 1
+  [5] 01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, S. 1
+
+Es gibt eine Stromabrechnung für 2025. Der neue monatliche Abschlag beträgt ab 15.02.2026 jeweils 120,00 EUR brutto.
+
+[answer, 2 Werkzeugaufrufe, 266.1 s]
+  [1] 06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, S. 1
+  [2] 06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, S. 1
+  [3] 06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, S. 1
+  [4] 06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, S. 1
+  [5] 06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, S. 2
+
+Dazu liegen in den Unterlagen keine Angaben vor.
+
+[answer, 2 Werkzeugaufrufe, 35.6 s]
+
+Es tut mir leid, aber ich konnte keine Informationen über den Stromverbrauch 2022 und 2023 finden. Die Belege, die ich hatte, beziehen sich auf die Jahre 2024 und 2025. Es scheint, dass die Unterlagen für die Jahre 2022 und 2023 nicht vorhanden sind.
+
+[tool_limit, 6 Werkzeugaufrufe, 421.3 s]
+  [1] 06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, S. 1
+  [2] 04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, S. 1
+  [3] 04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, S. 1
+  [4] 06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, S. 1
+  [5] 04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, S. 1
+
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-006/agent.md

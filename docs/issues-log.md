@@ -24,6 +24,88 @@
 
 ## Einträge
 
+### ISS-037 – P1 hat noch keine Antwortsynthese, B0 fehlt
+- **Datum / Meilenstein:** 2026-11-14 / M5 (aufgefallen beim Planen von M6)
+- **Kategorie:** konzept
+- **Status:** offen
+- **Symptom:** `concept.md` 7.1 und 11.1 vergleichen drei Varianten (B0 Volltext, P1 Pipeline mit LLM-Synthese, P2 Agent). Gebaut sind bisher nur das Retrieval von P1 (M4) und der Agent P2 (M5). Es gibt weder eine Synthese-Funktion, die aus den Top-5 eine Antwort erzeugt, noch den Volltext-Prompt von B0.
+- **Ursache:** Meilensteintabelle und Konzept führten „P1“ unter M4 als Retrieval, die Synthese wurde in keinem Paket eingeplant.
+- **Lösung / Workaround:** M6 beginnt mit P1-Synthese (ein Modellaufruf mit Evidenz, Belegnummern wie im Agenten) und B0 (so viel Text wie in 8.192 Token passt), beide über denselben `ChatClient` und dieselben Protokollsätze; erst danach die Evaluation. Das ist mehr Arbeit als im Konzept sichtbar; M6 kann in zwei Pakete geteilt werden.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Varianten)
+
+### ISS-036 – `llama3.1:8b` gibt früh auf und wählt Tools und Argumente unzuverlässig
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** RUN-005: G1 endet nach einer gefilterten Suche mit „keine Angaben“ (Filter `bill`/2025 schloss die Preisanpassung aus); S4 ruft nie `search_images`, wiederholt dreimal denselben ungültigen `calculate`-Aufruf (`a`, `b` statt `expression`) und beschriftet Eurobeträge als Verbrauch; in S2 und N1 erfindet es Argumentnamen (`doc_id`, `query` bei `list_documents`).
+- **Ursache:** Ein 8B-Modell mit sechs Tools folgt Beschreibungen nur teilweise (ISS-006, ISS-007 bestätigt). Die Fehlermeldung nannte nur den fehlenden Parameter, nicht den richtigen Aufruf.
+- **Lösung / Workaround:** Fehlermeldung nennt `calculate(expression*)`; eine Lückenantwort nach weniger als 2 Werkzeugaufrufen wird einmal hinterfragt; der System-Prompt nennt Vorjahreswerte und Diagramme.
+- **Update RUN-006:** Hat nicht gereicht. G1: Die Rückfrage wiederholte denselben Aufruf mit denselben Filtern und tauschte „keine Angaben“ gegen eine unpassende Zahl; S4: weiter kein `search_images`, ungültiges `calculate`, erfundenes Argument `doc_id`; die Schlussantwort ist aber ehrlich. 2 von 4 richtig (S2, N1). Weitere Prompt-Änderungen an diesen vier Fragen unterbleiben (Anpassen an den Test); M6 prüft Gegenmaßnahmen gezielt: `qwen2.5:7b`, ein gemeinsames Suchtool (ISS-006), Filter durch Code statt durch das Modell (ISS-007), Beispiele im Prompt.
+- **Status-Hinweis:** bleibt offen bis M6.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation / Grenzen kleiner Modelle
+
+### ISS-035 – Das Modell zitiert eine KI-Zusammenfassung als Beleg
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** agent
+- **Status:** gelöst
+- **Symptom:** S2: Treffer [1] war die `table_summary` mit Nettowerten (29,24 ct, 9,66 EUR), die Tabellenzeilen mit Brutto folgten als [2] bis [5]. Das Modell antwortete mit [1], obwohl der Treffer „KI-Zusammenfassung, kein Beleg“ trug.
+- **Ursache:** Die Summary ist der Frage sprachlich am ähnlichsten und steht daher oben; kleine Modelle folgen dem Ranking, nicht der Kennzeichnung. Die Zahlen der Summary sind zudem mit einem 3B-Modell erzeugt (ISS-022).
+- **Lösung / Workaround:** Der Agent sieht Summaries nicht mehr (`AgentSettings.include_table_summaries=False`); sie bleiben im Index für P1. Im System-Prompt: Preise brutto. Preis: Die Hilfe der Summaries beim Finden (RUN-004: 9/10 statt 8/10) entfällt für den Agenten; M6 kann beides vergleichen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Retrieval / Agent (KI-Texte nur als Suchhilfe, nie als Beleg)
+
+### ISS-034 – Eigene Fehler beim Bau von M5 (von den Tests gefunden)
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** (1) `list_documents` mit Jahr 2023 listete den Stromvertrag, obwohl er erst ab 2024 gilt. (2) Der Rechner fing nur `DivisionByZero` und `InvalidOperation`, aber nicht `Overflow`.
+- **Ursache:** (1) Meine erste Jahreslogik nahm bei Dokumenten ohne Zeitraum auch das Schreibdatum (Dezember 2023) als Treffer; die Ausgabe zeigte aber nur „gültig ab 2024“, der Treffer war nicht erklärbar. (2) Zu enge Ausnahmeliste.
+- **Lösung / Workaround:** (1) Reihenfolge Abrechnungszeitraum, dann `valid_from`, dann Schreibdatum; sie entspricht der ausgegebenen Zeile. (2) `ArithmeticError` fangen. Beides hat ein Test aufgedeckt (`test_list_documents_says_so_when_nothing_exists`, Rechner-Angriffsliste).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-033 – `list_documents` kennt die Laufzeit eines Vertrags nicht
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** tools
+- **Status:** akzeptiert
+- **Symptom:** Ein Vertrag mit `valid_from` 2024 erscheint bei `year=2025` nicht, obwohl er 2025 noch läuft.
+- **Ursache:** Die Metadaten haben kein Vertragsende; nur Abrechnungszeitraum und `valid_from` sind gepflegt.
+- **Lösung / Workaround:** Der Jahresfilter von `list_documents` meint „Dokument gehört zu diesem Jahr“, nicht „Vertrag gilt in diesem Jahr“. Für Verträge fragt der Agent ohne Jahr; die Tool-Beschreibung sagt, dass die Liste mit Filtern aufzurufen ist. Ein Feld `valid_until` wäre ein Eingriff in `documents.yaml` und wird nur gemacht, wenn M6 den Fall zeigt.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-032 – Filterregeln im Code sind Heuristiken
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** (a) Ein Jahresfilter ohne `bill`/`notice`/`payment_plan` wird verworfen, auch wenn das Modell ihn für ein Dokument mit `valid_from` meint (Preisanpassung 2025). (b) Die automatische Wiederholung ohne Filter kann Treffer liefern, die zur Frage nicht mehr passen; das Modell muss den Hinweistext lesen.
+- **Ursache:** Der Index hat keinen Filter auf `valid_from` (ISS-025, YAGNI); kleine Modelle lesen Hinweise in Beobachtungen nicht zuverlässig.
+- **Lösung / Workaround:** Die Hinweise stehen als erste Zeilen der Beobachtung. In RUN-005 und M6 messen: Wie oft wird ein Filter verworfen oder wiederholt, und führt das zu falschen Antworten?
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Agent / Tools (Regeln im Code statt im Prompt)
+
+### ISS-031 – Kürzung der Treffertexte kann die gesuchte Stelle abschneiden
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** Das Modell sieht von jedem Treffer höchstens 600 Zeichen; Text-Chunks sind bis 1.500 Zeichen lang. Eine Kündigungsfrist am Ende eines langen Absatzes könnte fehlen.
+- **Ursache:** Abwägung gegen die Prefill-Zeit (ca. 18 Token/s): 5 volle Treffer wären rund 110 s je Suche.
+- **Lösung / Workaround:** Die Evidenz in der Oberfläche zeigt den vollen Text. In RUN-005 prüfen, ob eine erwartete Zahl in der gekürzten Beobachtung fehlt; sonst `max_hit_chars` erhöhen oder Treffer am Satzende kürzen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Agent / Grenzen
+
+### ISS-030 – Der Prompt ist groß, bevor die erste Frage kommt
+- **Datum / Meilenstein:** 2026-11-14 / M5
+- **Kategorie:** hardware
+- **Status:** offen
+- **Symptom:** Die sechs Tool-Schemas sind ca. 6.000 Zeichen lang (die Aufzählungen von Sparte und Dokumenttyp stehen in vier Tools), dazu kommt der System-Prompt (ca. 1.300 Zeichen). Geschätzt 1.500 bis 2.500 Token, bei 18 Token/s ein Prefill von 80 bis 140 s vor dem ersten Schritt. `list_documents` ohne Filter liefert 30 Zeilen (ca. 3.300 Zeichen).
+- **Ursache:** Kleine Modelle brauchen ausführliche Beschreibungen, die Schemas wiederholen die Filterbeschreibungen.
+- **Lösung / Workaround:** Erst messen (RUN-005 protokolliert `prompt_tokens` und `prefill_seconds` je Aufruf), dann kürzen. Wenn die Präfix-Wiederverwendung greift (ISS-005), zahlt sich der Anfang nur einmal aus; ein letzter Aufruf ohne Tools bricht sie und kostet einen vollen Prefill.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Hardware-Grenzen / Agent
+
 ### ISS-029 – Frage S4 (Verbrauch 2022/2023 aus dem Diagramm) wird nicht gefunden
 - **Datum / Meilenstein:** 2026-11-14 / M4
 - **Kategorie:** retrieval
@@ -273,6 +355,7 @@
 - **Status:** offen
 - **Symptom:** `smoke.md` meldet „wiederverwendet: nein“ (507 vs. 502 Tokens). Gleichzeitig dauerten Tool-Aufgaben 2–5 mit gleichem System-Prompt und Tool-Schema nur 6–8 s statt der erwarteten 20 s Prefill.
 - **Ursache:** Ollama 0.35.1 meldet in `prompt_eval_count` offenbar die volle Prompt-Länge, auch wenn Teile aus dem Cache kommen. Meine Heuristik (weniger Tokens ⇒ Cache) stimmte nicht.
+- **Update RUN-005:** Wiederverwendung des Prompt-Anfangs ist zum Teil belegt (G1 und N1: erste Aufrufe mit rund 2.000 Token in 4,8 s und 2,8 s statt 108 s), aber nicht verlässlich (S4: wieder 89 s). `prompt_eval_count` entspricht nicht der Kontextgröße; der Kontextwächter schätzt selbst.
 - **Lösung / Workaround:** Heuristik auf die Prefill-Dauer umgestellt (`is_prefix_reused` vergleicht Sekunden, Test angepasst). Nachmessen ist offen und passiert beim ersten Mehrschritt-Agentenlauf in M5; bis dahin gilt die Wiederverwendung als „sehr wahrscheinlich“ (Zeitindiz), nicht als belegt.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Architektur (Latenz im Agentenlauf), Reflexion

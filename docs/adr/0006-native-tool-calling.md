@@ -1,6 +1,6 @@
 # ADR-0006: Natives Ollama-Tool-Calling statt Text-ReAct
 
-- **Status:** akzeptiert (vorläufig, Bestätigung in M5)
+- **Status:** akzeptiert (Aufrufformat in M5 bestätigt, Modellwahl offen bis M6)
 - **Datum:** 2026-11-14
 - **Meilenstein:** M0
 
@@ -21,5 +21,8 @@ Der Agent nutzt das native Tool-Calling der Ollama-API (`tools=[...]` im Chat-Au
 - Negativ: Die Tool-Wahl ist nicht perfekt (ISS-006), und die Modelle setzen ungefragt Filter (ISS-007). Beides muss durch Tool-Beschreibungen und Fallbacks aufgefangen werden.
 - Zu testen (M5): Mehrschritt-Läufe, bei denen Tool-Ergebnisse zurück an das Modell gehen (im Smoke-Test nur der erste Schritt). Zeigt sich dort Instabilität, wird ein Text-ReAct-Fallback ergänzt und dieses ADR angepasst.
 
+## Bestätigung in M5
+In RUN-005 und RUN-006 (8 Fragenläufe, 30 Modellaufrufe, bis zu 6 Tool-Aufrufe je Frage) war jeder Tool-Aufruf formal lesbar, und die Schleife mit zurückgegebenen Beobachtungen lief stabil. Die Fehler liegen darüber: falsche Tool-Wahl, selbst gesetzte Filter, erfundene Argumentnamen, ungültige `calculate`-Aufrufe (ISS-036). Das sind Modellfehler, kein Formatproblem; ein Text-ReAct-Fallback hätte sie nicht behoben. Das Format bleibt, die Modellwahl entscheidet M6.
+
 ## Belege
-RUN-000, ISS-005, ISS-006, ISS-007.
+RUN-000, RUN-005, RUN-006, ISS-005, ISS-006, ISS-007, ISS-036.

@@ -171,3 +171,49 @@
 - **Grenzen der Messung:** 10 beantwortbare Fragen, nach dem Pipeline-Bau bekannt; Filter von Hand statt vom Agenten gewählt (ISS-028); eine Messung je Konfiguration; von jeder Suche nur die Top-5 gespeichert, daher ist der Rang außerhalb der Top-5 unbekannt; keine Messung der Antwortqualität.
 - **Meine Deutung (eigene Worte):**
 - **Konsequenz / nächster Schritt:** Der Filter trägt den Nutzen (ADR-0002 akzeptiert), der Boost bleibt als Vorlesungsbaustein, sein Nutzen ist nicht belegt (ISS-027). Summaries und Chunks ohne Kapitel bleiben im Index. M5: Tool `search_images` mit `chunk_types={image}` für S4; Tool-Beschreibungen sagen, wann welcher Filter zu setzen ist (ISS-025).
+
+### RUN-005 – Agent M5, erster Lauf (4 Fragen, `llama3.1:8b`)
+- **Datum / Commit:** 2026-11-14 · Branch `feat/m5-agent`, Stand `docs: document agent commands, glossary terms, concept notes and M5 issues`
+- **Varianten:** P2 (Agent)
+- **Konfiguration:** `llama3.1:8b`, `num_ctx` 8192, `temperature` 0, `num_predict` 600, höchstens 6 Werkzeugaufrufe, Treffer auf 600 Zeichen gekürzt, `table_summary`-Treffer für das Modell sichtbar (damaliger Stand), Index aus M4; Fragen S2, G1, N1, S4; Befehl `uv run python -m audit_agent.agent run-set --run-id run-005`
+- **Dauer:** S2 183 s, G1 66 s, N1 33 s, S4 301 s, zusammen knapp 10 Minuten
+- **Rohdaten:** `data/eval/run-005/` (`agent.md`, `agent.json`, `agent-<Frage>.jsonl`), `data/eval/run-005.log`
+
+| Frage | erwartete Tools | gerufene Tools | Antwort richtig | Ende |
+|---|---|---|---|---|
+| S2 Arbeits-/Grundpreis | search_tables | search_tables | nein (netto statt brutto) | answer |
+| G1 neuer Arbeitspreis angewendet? | search_tables, calculate | search_documents | nein („keine Angaben“) | answer |
+| N1 Stromrechnung 2023 | list_documents | search_tables, list_documents | ja („keine Angaben“) | answer |
+| S4 Verbrauch 2022/2023 | search_images | search_tables, list_documents, search_tables, calculate ×3 | nein | tool_limit |
+
+- **Technik:** Alle 4 Läufe liefen durch; Schleife, Argumentprüfung, Log und Belegnummern funktionieren; keine Abstürze, kein Kontextüberlauf.
+- **S2:** Die Suche fand die richtigen Tabellenzeilen (Treffer [2] Grundpreis, [4] Arbeitspreis, je mit netto und brutto). Das Modell nahm aber Treffer [1], die KI-Zusammenfassung, und nannte 29,24 ct/kWh und 9,66 EUR/Monat (netto). Erwartet waren die Bruttowerte 34,80 ct/kWh und 11,50 EUR/Monat. Die Warnung „kein Beleg“ im Treffer hat das Modell nicht gehindert (ISS-035).
+- **G1:** Das Modell wählte `search_documents` mit den selbst gesetzten Filtern `bill` und Jahr 2025 (ISS-007). Die Preisanpassung ist keine Rechnung, also fehlte sie; nach einem Aufruf antwortete es „keine Angaben“. Weder Rechnungszeile noch `calculate` kamen vor (ISS-036).
+- **N1:** Richtig. Die Suche mit Jahr 2023 fand nichts, `list_documents` bestätigte, dass es nur Rechnungen 2024 und 2025 gibt, die Antwort räumt die Lücke ein.
+- **S4:** `search_tables` mit Jahr 2022 und `bill` fand nichts; `search_images` wurde nie gerufen. Dann dreimal derselbe ungültige Aufruf `calculate({'a': ..., 'b': ...})`, obwohl die Fehlermeldung den fehlenden Parameter nannte. Die erzwungene Schlussantwort nennt Rechnungsbeträge in EUR „Stromverbrauch“ (ISS-036).
+- **Zeiten und Prompt (ISS-030, ISS-005):** Der erste Aufruf hatte 1.997 bis 2.008 Prompt-Token (Tool-Schemas plus System-Prompt). Prefill S2: 108,7 s (18 Token/s, wie ISS-001); G1 und N1: 4,8 s und 2,8 s für dieselbe Prompt-Länge, also Wiederverwendung des Anfangs im Cache; S4: wieder 88,9 s, ohne erkennbaren Grund. Der letzte Aufruf ohne Tools (S4, 1.621 Token) kostete 69,6 s, wie in ADR-0010 vorhergesagt. Die gemeldeten Token-Zahlen sind widersprüchlich (N1, zweiter Aufruf: 563 Token, weniger als die Schemas allein); `prompt_eval_count` ist nicht die Kontextgröße. Der Kontextwächter schätzt deshalb jetzt selbst.
+- **Grenzen der Messung:** 4 von 12 Fragen, ein Lauf, ein Modell; grobe Prüfung (Tool, Quelle, Zahl), die Antworten wurden von Hand gelesen; die Zeitmessung stammt aus Ollama-Zahlen, die nicht immer zueinander passen.
+- **Meine Deutung (eigene Worte):**
+- **Konsequenz / nächster Schritt:** Vier Änderungen mit Test: (1) Summaries für das Modell ausgeblendet (`include_table_summaries=False`), (2) System-Prompt: Preise brutto, Verbräuche früherer Jahre stehen im Diagramm, (3) eine Antwort „keine Angaben“ nach weniger als 2 Werkzeugaufrufen wird einmal hinterfragt, (4) Fehlermeldung bei ungültigen Argumenten nennt den richtigen Aufruf. RUN-006 prüft dieselben Fragen. Das Modell (`llama3.1:8b` gegen `qwen2.5:7b`) bleibt Aufgabe von M6.
+
+### RUN-006 – Agent M5, zweiter Lauf nach Korrekturen (4 Fragen, `llama3.1:8b`)
+- **Datum / Commit:** 2026-11-14 · Branch `feat/m5-agent`, Stand `docs: record RUN-005, ISS-035 and ISS-036 and update ADR-0010`
+- **Varianten:** P2 (Agent)
+- **Konfiguration:** wie RUN-005, aber `table_summary` für das Modell ausgeblendet, Prompt mit „Preise brutto“ und Hinweis auf Vorjahreswerte im Diagramm, Rückfrage bei „keine Angaben“ nach weniger als 2 Werkzeugaufrufen, Fehlermeldung mit richtigem Aufruf; Befehl `uv run python -m audit_agent.agent run-set --run-id run-006`
+- **Dauer:** S2 192 s, G1 266 s, N1 36 s, S4 421 s, zusammen gut 15 Minuten
+- **Rohdaten:** `data/eval/run-006/`, `data/eval/run-006.log`
+
+| Frage | gerufene Tools | Antwort richtig | Ende | RUN-005 |
+|---|---|---|---|---|
+| S2 | search_tables | ja (34,80 ct/kWh brutto, 11,50 EUR/Monat brutto) | answer | falsch (netto) |
+| G1 | search_documents ×2 (mit Rückfrage) | nein (nennt den Abschlag 120 EUR, nicht den Arbeitspreis) | answer | falsch („keine Angaben“) |
+| N1 | search_tables, list_documents | ja („keine Angaben“) | answer | ja |
+| S4 | search_tables ×4, list_documents, calculate (ungültig) | nein, aber ehrlich („keine Informationen gefunden“) | tool_limit | falsch (Euro als Verbrauch) |
+
+- **S2 gelöst:** Ohne Summaries steht die Tabellenzeile oben, das Modell nennt die Bruttowerte. Es zitiert keine Belegnummer, obwohl der Prompt es verlangt.
+- **G1 nicht gelöst:** Die Rückfrage wurde ausgelöst („Antwort nach einem Aufruf: keine Angaben“), das Modell wiederholte aber denselben Aufruf mit `bill` und Jahr 2025 unverändert. Danach antwortete es mit einer unpassenden Zahl, nicht mit „keine Angaben“. Die Rückfrage hat also die falsche Antwort nur ausgetauscht.
+- **S4 nicht gelöst:** `search_images` wird wieder nie gerufen; viermal `search_tables` mit erfundenem Argument `doc_id`; ein ungültiger `calculate`-Aufruf (`a` bis `e`), obwohl die Meldung `calculate(expression*)` nannte. Die Schlussantwort ist diesmal ehrlich statt falsch.
+- **Zeiten:** Erste Aufrufe 2.041 bis 2.055 Prompt-Token; Prefill S2 118 s und S4 100 s (kein Cache), G1 5 s und N1 3 s (Cache). Der Aufruf ohne Tools am Ende von S4 (2.594 Token) brauchte 140 s. Die gemeldeten Token-Zahlen bleiben uneinheitlich (je Frage meldet der zweite Aufruf nur 1.254, 1.300 oder 610 Token, weniger als die Tool-Schemas allein); `prompt_eval_count` ist weiter kein Maß für die Kontextgröße.
+- **Grenzen der Messung:** wie RUN-005 (4 Fragen, ein Lauf, ein Modell, Antworten von Hand gelesen).
+- **Meine Deutung (eigene Worte):**
+- **Konsequenz / nächster Schritt:** Die Technik (Schleife, Argumentprüfung, Log, Oberfläche) steht; die Antwortqualität von `llama3.1:8b` bei Tool-Wahl und Filtern nicht (2 von 4). Weitere Prompt-Arbeit an vier Fragen wäre Anpassen an den Test. M6 misst alle 12 Fragen mit `llama3.1:8b` und `qwen2.5:7b` und prüft Gegenmaßnahmen: gemeinsames Suchwerkzeug (ISS-006), Filter nur durch Code statt durch das Modell (ISS-007), Beispiele im Prompt.
