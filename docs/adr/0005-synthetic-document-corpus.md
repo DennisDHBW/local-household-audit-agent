@@ -8,7 +8,7 @@
 Der Agent braucht Testdokumente mit Tabellen, Überschriften-Hierarchien und Diagrammen sowie Fragen mit gesicherter richtiger Antwort. Echte Unterlagen enthalten personenbezogene Daten und keine bekannten Fehler. Selbst erzeugte Dokumente sind für die Prüfungsleistung erlaubt.
 
 ## Entscheidung
-Der Korpus unter `dataset/` ist vollständig synthetisch: 28 PDFs eines fiktiven Haushalts (Strom, Gas, Wasser, Miete/Betriebskosten, Handwerker sowie Telekommunikation und Versicherungen als Ablenker). Metadaten und erwartete Antworten werden in `documents.yaml` und `ground_truth.yaml` gepflegt.
+Der Korpus unter `dataset/` ist vollständig synthetisch: 30 PDFs eines fiktiven Haushalts (28 Ausgangsdokumente, dazu zwei fehlerhafte Varianten für 2026) (Strom, Gas, Wasser, Miete/Betriebskosten, Handwerker sowie Telekommunikation und Versicherungen als Ablenker). Metadaten und erwartete Antworten werden in `documents.yaml` und `ground_truth.yaml` gepflegt.
 
 ## Verworfene Alternativen
 | Alternative | Warum nicht? |
@@ -18,7 +18,7 @@ Der Korpus unter `dataset/` ist vollständig synthetisch: 28 PDFs eines fiktiven
 
 ## Konsequenzen
 - Positiv: Ground Truth bekannt, unbedenklich im öffentlichen Repo, gezielte Fallen möglich
-- Negativ: Layouts einheitlicher als echte Post; bisher nur ein eingebauter Fehler (ISS-004)
+- Negativ: Layouts einheitlicher als echte Post; drei eingebaute Fehler (E1–E3, ISS-004 gelöst), Zusatzdokumente 29/30 mit anderem Seitenaufbau als das Original-Layout (ISS-010)
 - Zu testen: Parser-Robustheit bei mehrspaltigen Tabellen und Diagrammen (M2/M3)
 
 ## Belege

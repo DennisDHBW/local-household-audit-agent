@@ -25,7 +25,7 @@
 ## D. Testkorpus
 - [x] 28 synthetische PDFs vorhanden und geprüft (`concept.md`, Abschnitt 4.2): gut geeignet
 - [x] Entschieden: zwei weitere fehlerhafte Dokumente in M1 (macht Claude)
-- [ ] (M1) `dataset/documents.yaml` und `dataset/ground_truth.yaml` erstellen (macht Claude)
+- [x] (M1) `dataset/documents.yaml` und `dataset/ground_truth.yaml` erstellt
 
 ## E. Lokale Umgebung (nur auf deinem Rechner möglich)
 Claudes Shell erreicht Ollama nicht. Diese Befehle einmal im Terminal ausführen (ca. 15 GB Download, kann nebenher laufen):

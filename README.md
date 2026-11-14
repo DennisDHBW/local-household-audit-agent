@@ -15,12 +15,13 @@ local-household-audit-agent/
 ├── CODING_STANDARDS.md        # verbindliche Engineering-Regeln
 ├── pyproject.toml, uv.lock    # Abhängigkeiten (uv), ruff- und pytest-Konfiguration
 ├── scripts/check.sh           # Quality Gate (ruff check, ruff format --check, pytest)
-├── dataset/                   # synthetischer Testkorpus (28 PDFs) + später documents.yaml, ground_truth.yaml
+├── dataset/                   # synthetischer Testkorpus (30 PDFs), documents.yaml, ground_truth.yaml
 ├── data/                      # erzeugt: processed/ (JSON-Chunks), vectors/ (ChromaDB), eval/ (versioniert)
 ├── src/audit_agent/
 │   ├── config.py              # zentrale Konfiguration (Pfade, Modelle, Limits, AUDIT_*-Variablen)
 │   ├── preflight.py           # Fail-fast-Prüfung der Ollama-Modelle
 │   ├── smoke/                 # Smoke-Test (Geschwindigkeit, Tool-Calling, Embedding, Vision)
+│   ├── corpus/                # Modelle und Loader für documents.yaml und ground_truth.yaml
 │   ├── ingestion/             # (geplant) Parsing, Chunking, Enrichment
 │   ├── retrieval/             # (geplant) Suche, Scoring, Filter
 │   ├── tools/                 # (geplant) deterministische Agent-Tools

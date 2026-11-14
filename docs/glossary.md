@@ -44,6 +44,12 @@
 | Tool | `AuditTool` | Funktion, die der Agent aufrufen kann | |
 | Tool-Ergebnis | `AuditToolResult` | Normalisiertes Ergebnis eines Tools mit Quellen | |
 | Ground Truth | `ground_truth` | Bekannte richtige Antwort für eine Testfrage | |
+| Dokument-Metadaten | `DocumentMeta` | Von Hand gepflegte Angaben je PDF (Sparte, Dokumentart, Anbieter, Zeitraum, Rauschen) | |
+| Eingebauter Fehler | `PlantedError` | Absichtlich falsche Angabe in einer Abrechnung, Grundlage der Fehlererkennungsrate | |
+| Prüfurteil | `AuditCheck` | Erwartetes Ergebnis der Prüfung einer Abrechnung (korrekt oder fehlerhaft) | |
+| Erwartete Tatsache | `ExpectedFact` | Prüfbarer Wert einer erwarteten Antwort mit Einheit und Toleranz | |
+| Ablenkungsdokument | `is_noise_document` | PDF mit ähnlichem Vokabular, aber ohne Bezug zur Frage (Internet, Mobilfunk, Versicherung) | |
+| Korpus-Fehler | `CorpusError` | Fehler beim Laden oder Validieren von `documents.yaml` bzw. `ground_truth.yaml` | |
 | Halluzination | – | Plausible, aber nicht belegte Aussage | |
 
 ## Betrieb & Messung
