@@ -25,6 +25,11 @@
 - 12-Fragen-Katalog an den echten Korpus angepasst (`concept.md`, 11.2)
 - Doku, `.gitignore`, LaTeX-Vorlage (`paper/`) eingespielt; Git-Historie in sinnvolle Commits aufgeteilt
 
+## Nächstes Arbeitspaket
+M0 – Setup: Tooling (uv, Python 3.13, ruff, pytest), Projektstruktur `src/`, zentrale Config, Quality-Gate-Skript, Smoke-Test-Skript (Ollama-Befehl für den Nutzer).
+
+**Empfohlenes Modell:** Sonnet 5.5, Effort High
+
 ## Nächste Schritte
 1. Nutzer: Projektanweisungen ersetzen, pushen, Ollama-Modelle laden (`preparation-checklist.md`)
 2. M0 starten

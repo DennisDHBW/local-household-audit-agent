@@ -30,9 +30,16 @@ Hochschulprojekt (DHBW, Kurs „Agentensysteme: Local Agentic AI“): lokaler, a
 - Pushen: siehe docs/ai-workflow.md, Abschnitt 3 (aktueller Stand dort).
 - Vor jedem Commit: `ruff check`, `ruff format --check`, `pytest -m "not slow"` müssen grün sein.
 
-## Ablauf
-- Sitzungsbeginn: docs/status.md lesen. Weitere Dateien nur, wenn die Aufgabe sie braucht.
+## Ablauf – du führst, ich muss mir nichts merken
+- Mein Start-Prompt ist immer nur „Weiter“. Dann: (1) Ordnerzugriff und Löschrecht für den Projektordner anfragen, falls noch nicht vorhanden, (2) docs/status.md lesen, (3) das nächste Arbeitspaket aus „Nächstes Arbeitspaket“ nehmen und den Plan vorlegen.
 - Vor jedem Arbeitspaket: Plan in 3–6 Stichpunkten (Dateien, Funktionen, Datenfluss), auf mein OK warten. Danach ohne weitere Rückfragen umsetzen, testen, committen, mergen.
+- Du sagst mir jeweils genau, was ich tun muss (Ollama-Befehl, Frage beantworten). Ich muss mir keine Abläufe merken.
+- Ein Chat = ein Arbeitspaket. Ist das Paket fertig, schließt du die Sitzung von selbst ab (Skill audit-session-closeout): Doku aktualisieren, O-Ton bei mir erfragen, committen, mergen. Ist ein Meilenstein fertig, startest du vorher die Reverse-Engineering-Runde (Skill audit-reverse-engineering).
+- Deine letzte Nachricht jeder Sitzung endet immer mit diesem Block:
+  1. Push-Befehl: cd /home/usr0/PycharmProjects/local-household-audit-agent && git push origin main --tags
+  2. Neuen Chat öffnen mit Modell <Modell> / Effort <Stufe> (laut docs/ai-workflow.md, Abschnitt 4)
+  3. Prompt: Weiter
+- Trag „Nächstes Arbeitspaket“ und „Empfohlenes Modell“ beim Abschluss in docs/status.md ein.
 - Bei echten Unsicherheiten (fachlich, Architektur, Daten, irreversible Aktionen) fragen, statt zu raten.
 - Code nach CODING_STANDARDS.md. Hardware: nur CPU, Ollama MemoryMax=9G, max. 2 geladene Modelle, Prefill ca. 18 Tokens/s, keine Modelle > 8B.
 - Keine erfundenen APIs. Bei Unsicherheit über Bibliotheken nachsehen oder es offen sagen.
@@ -116,21 +123,19 @@ Fable 5.2 ist nicht nötig. Grundregel: mit Sonnet Medium starten, bei Bedarf ei
 
 **Ein Chat pro Arbeitspaket.** Lange Chats werden teuer; der Zusammenhang steckt in `docs/status.md`.
 
-### Start-Prompt
+Claude führt durch die Sitzung. Ich muss mir nichts merken.
+
+### Start
+Neuen Chat öffnen (Modell laut letzter Sitzung bzw. `status.md`) und schreiben:
 ```text
-Neue Sitzung. Lies docs/status.md. Heute: M<x>, „<Arbeitspaket>“. Erst Plan.
+Weiter
 ```
 
 ### Während der Sitzung
-- Plan lesen, mit „ok“ oder Änderungswunsch antworten
-- Wenn Claude einen Ollama-Befehl gibt: im Terminal ausführen, „fertig“ schreiben
-- Verständnisfragen kurz beantworten
+Claude sagt jeweils, was zu tun ist: Plan freigeben, ggf. einen Ollama-Befehl im Terminal ausführen, kurze Fragen beantworten.
 
-### Ende-Prompt
-```text
-Sitzung abschließen. O-Ton: <2–3 ungeschliffene Sätze, wie es lief>
-```
-Danach pushen (Abschnitt 3).
+### Ende
+Claude schließt die Sitzung von selbst ab, fragt nach dem O-Ton und endet mit drei Schritten: Push-Befehl, Modell für den nächsten Chat, Prompt „Weiter“.
 
 ---
 
