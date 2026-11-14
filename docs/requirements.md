@@ -80,10 +80,10 @@ Laut Folie ist der lauffähige Prototyp optional. Die Zusatzanforderungen des Pr
 | Abgabe des Codes | GitHub-Repository `DennisDHBW/local-household-audit-agent` |
 | Seitenumfang | 5–8 Seiten ohne Anhang, Verzeichnisse und Titelblatt |
 | LaTeX-Vorlage | DHBW-Projektarbeiten-Template (Evolinox), unter `paper/`; aktiv sind nur Titelblatt, Inhaltsverzeichnis und Kapitel |
-| Quellen / Literaturverzeichnis | laut Nutzer für die Ausarbeitung nicht erforderlich (siehe Hinweis) |
+| Quellen / Literaturverzeichnis | keine Literatur in der Ausarbeitung (Entscheidung 2026-11-14) |
 | Abgabetermin, Coaching-Termine | für die Planung nicht relevant |
 
-> Hinweis: Das Bewertungskriterium „Literaturbezug & Reflexion“ (10 %) bleibt bestehen. Ohne Literaturverzeichnis kann der Reflexionsteil trotzdem auf die Konzepte der Vorlesung (ReAct, Modular RAG, Self-RAG, RAGAS) Bezug nehmen.
+> Hinweis: Das Bewertungskriterium „Literaturbezug & Reflexion“ (10 %) bleibt bestehen. Der Literaturteil wird bewusst nicht bedient; der Reflexionsteil stützt sich auf eigene Ergebnisse.
 
 ---
 

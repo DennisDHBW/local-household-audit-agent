@@ -88,7 +88,7 @@ cd /home/usr0/PycharmProjects/local-household-audit-agent && git push origin mai
 
 (oder in PyCharm: Git → Push)
 
-**Optional:** Wird die Claude-GitHub-App für dieses Repo installiert, kann Claude selbst pushen. Die Commits bleiben unter meinem Namen, weil GitHub Beiträge über den Commit-Autor zuordnet.
+Entscheidung: Ich pushe selbst; die Claude-GitHub-App wird nicht installiert.
 
 ---
 

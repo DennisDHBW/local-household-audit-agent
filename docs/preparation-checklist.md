@@ -24,7 +24,7 @@
 
 ## D. Testkorpus
 - [x] 28 synthetische PDFs vorhanden und geprüft (`concept.md`, Abschnitt 4.2): gut geeignet
-- [ ] Entscheiden: 1–2 weitere eingebaute Fehler ergänzen? (derzeit nur einer)
+- [x] Entschieden: zwei weitere fehlerhafte Dokumente in M1 (macht Claude)
 - [ ] (M1) `dataset/documents.yaml` und `dataset/ground_truth.yaml` erstellen (macht Claude)
 
 ## E. Lokale Umgebung (nur auf deinem Rechner möglich)
@@ -37,7 +37,6 @@ ollama list
 
 ## F. Optional, aber hilfreich
 - [ ] Referenzprototyp aus der Vorlesung (falls vorhanden) in den Projektordner legen, z. B. unter `reference/`, damit Claude ihn mit dem eigenen Ansatz vergleichen kann
-- [ ] Claude-GitHub-App für das Repo installieren, damit Claude selbst pushen kann
 
 ## G. Danach: Start mit M0
 Neuer Chat, Sonnet 5.5 / High:
