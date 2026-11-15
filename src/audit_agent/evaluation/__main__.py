@@ -115,6 +115,7 @@ def _generate(args: argparse.Namespace, settings: Settings, client: Client) -> i
             print(f"{VARIANT_LABELS[name]}: alle Fragen schon beantwortet", file=sys.stderr)
             continue
         variant = _build_variant(name, settings, client, run_dir, manifest)
+        _write_manifest(run_dir, manifest)
         for question in todo:
             print(
                 f"\n== {VARIANT_LABELS[name]} {question.id}: {question.question}", file=sys.stderr
@@ -122,11 +123,16 @@ def _generate(args: argparse.Namespace, settings: Settings, client: Client) -> i
             answer = variant.answer(question, model)
             append_answer(path, answer)
             print(f"   {answer.seconds} s: {answer.answer[:200]}", file=sys.stderr)
+    _write_manifest(run_dir, manifest)
+    return _score(settings, args.run_id)
+
+
+def _write_manifest(run_dir: Path, manifest: dict[str, object]) -> None:
+    """Written before the first answer, so an interrupted run still documents its setup."""
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / MANIFEST_FILE).write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8"
     )
-    return _score(settings, args.run_id)
 
 
 def _score(settings: Settings, run_id: str) -> int:
@@ -159,7 +165,7 @@ def _unload(client: Client, models: list[str]) -> None:
     for model in models:
         try:
             client.generate(model=model, prompt="", keep_alive=0)
-        except ResponseError as error:
+        except (ResponseError, ConnectionError) as error:
             logger.warning("could not unload %s: %s", model, error)
 
 
@@ -178,6 +184,13 @@ def main() -> int:
             _unload(client, [args.model or settings.models.agent, settings.models.embedding])
     except (EvaluationError, RetrievalError, MissingModelError, CorpusError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+    except ConnectionError as error:
+        print(
+            f"ERROR: {error}\nFertige Antworten sind gespeichert; nach dem Neustart von "
+            "Ollama setzt derselbe Befehl den Lauf fort.",
+            file=sys.stderr,
+        )
         return 1
 
 

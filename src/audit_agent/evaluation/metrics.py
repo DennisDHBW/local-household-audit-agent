@@ -1,7 +1,7 @@
 """Deterministic metrics of one answer (concept.md, 11.3); no LLM judge is involved.
 
 The checks are simple on purpose and therefore have known limits (ISS-038): a number is
-found anywhere in the answer, a verdict is read from the first sentence. The report shows
+found anywhere in the answer, a verdict is read from the first or last sentence. The report shows
 every answer next to its score, so a wrong check can be spotted by hand.
 """
 
@@ -72,17 +72,30 @@ def expected_verdict(question: Question) -> Verdict | None:
 
 
 def answer_verdict(answer: str) -> Verdict | None:
-    """Verdict of an answer: a leading ja/nein, else markers in the first sentence (heuristic)."""
+    """Verdict: a leading ja/nein, else markers in the first, then the last sentence (heuristic).
+
+    Small models often state the conclusion at the end ("… wurde nicht angewendet.").
+    """
     text = fold(strip_citations(answer)).strip()
     match = _LEADING_VERDICT.match(text)
     if match is not None:
         return match.group(1)  # type: ignore[return-value]
-    first = _SENTENCE_END.split(text, maxsplit=1)[0]
+    sentences = [part for part in _SENTENCE_END.split(text) if part.strip()]
+    if not sentences:
+        return None
+    for sentence in dict.fromkeys((sentences[0], sentences[-1])):
+        verdict = _marker_verdict(sentence)
+        if verdict is not None:
+            return verdict
+    return None
+
+
+def _marker_verdict(sentence: str) -> Verdict | None:
     for phrase in NEUTRAL_PHRASES:
-        first = first.replace(phrase, " stimmt ")
-    if any(marker in first for marker in NEGATIVE_MARKERS):
+        sentence = sentence.replace(phrase, " stimmt ")
+    if any(marker in sentence for marker in NEGATIVE_MARKERS):
         return "nein"
-    if any(marker in first for marker in POSITIVE_MARKERS):
+    if any(marker in sentence for marker in POSITIVE_MARKERS):
         return "ja"
     return None
 

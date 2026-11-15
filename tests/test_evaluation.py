@@ -182,6 +182,7 @@ def test_text_facts_match_whole_words_only():
         ("Es gibt keine Abweichung zwischen Vertrag und Rechnung.", "ja"),
         ("Es wurden 40,30 EUR zu viel berechnet.", "nein"),
         ("Der Arbeitspreis beträgt 34,80 ct/kWh [1].", None),
+        ("Abgerechnet wurden 39,50 ct/kWh [1]. Der neue Preis wurde nicht angewendet.", "nein"),
     ],
 )
 def test_answer_verdict_heuristic(answer, expected):
@@ -246,8 +247,9 @@ def test_score_of_a_pipeline_answer_has_no_tool_metrics():
 def test_negative_question_is_correct_only_with_an_honest_gap():
     question = _negative_question()
     honest = score_answer(question, _answer("Dazu liegen keine Angaben vor."), make_catalog())
+    polite = score_answer(question, _answer("Ich habe keine Informationen dazu."), make_catalog())
     invented = score_answer(question, _answer("Sie betrug 980 EUR [1]."), make_catalog())
-    assert honest.is_correct is True
+    assert honest.is_correct is True and polite.is_correct is True
     assert invented.is_correct is False
 
 

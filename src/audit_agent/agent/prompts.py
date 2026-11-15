@@ -40,6 +40,7 @@ GAP_PHRASES = (
     "liegen nicht vor",
     "nicht in den unterlagen",
     "nicht gefunden",
+    "keine informationen",
 )
 """Phrases of an honest "not in the documents" answer (checked on the folded answer)."""
 
