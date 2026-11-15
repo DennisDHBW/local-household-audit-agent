@@ -37,7 +37,7 @@
 ### ISS-043 – Ollama vom Kernel wegen Speichermangel beendet (RUN-007)
 - **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
 - **Kategorie:** hardware
-- **Status:** offen (Gegenmaßnahme eingebaut, Wirkung wird in RUN-008 geprüft)
+- **Status:** gelöst (RUN-008 ohne OOM; weiter beobachten bei den 12-Fragen-Läufen)
 - **Symptom:** Nach B0 (3 lange Prompts), P1 und dem ersten P2-Lauf meldet das Journal um 23:37 `ollama.service: The kernel OOM killer killed some processes` und `Failed with result 'oom-kill'`; systemd startet Ollama neu, der Evaluationslauf bricht mit `ConnectionError` ab.
 - **Ursache:** Nicht sicher belegt. Geladen waren `llama3.1:8b` (6,2 GB laut `ollama ps`, mit 8.192 Token KV-Cache) und `nomic-embed-text` unter `MemoryMax=9G`. Der llama-server meldet `idle slots will be saved to prompt cache` und `context checkpoints enabled, max = 32`; Vermutung: Der Prompt-Cache der langen B0-Prompts wuchs im RAM, bis die Grenze erreicht war.
 - **Lösung / Workaround:** Vor jeder Variante entlädt `generate` die Modelle (`keep_alive=0`), damit Modell und Prompt-Cache neu beginnen (kostet ca. 10 s Ladezeit je Variante). Tritt der Fehler wieder auf: Speicher während des Laufs mit `systemctl status ollama` beobachten.
@@ -417,6 +417,7 @@
 - **Ursache:** Ollama 0.35.1 meldet in `prompt_eval_count` offenbar die volle Prompt-Länge, auch wenn Teile aus dem Cache kommen. Meine Heuristik (weniger Tokens ⇒ Cache) stimmte nicht.
 - **Update RUN-005:** Wiederverwendung des Prompt-Anfangs ist zum Teil belegt (G1 und N1: erste Aufrufe mit rund 2.000 Token in 4,8 s und 2,8 s statt 108 s), aber nicht verlässlich (S4: wieder 89 s). `prompt_eval_count` entspricht nicht der Kontextgröße; der Kontextwächter schätzt selbst.
 - **Lösung / Workaround:** Heuristik auf die Prefill-Dauer umgestellt (`is_prefix_reused` vergleicht Sekunden, Test angepasst). Nachmessen ist offen und passiert beim ersten Mehrschritt-Agentenlauf in M5; bis dahin gilt die Wiederverwendung als „sehr wahrscheinlich“ (Zeitindiz), nicht als belegt.
+- **Update RUN-008:** Für B0 (gleicher Kontext von ca. 6.600 Token, nur die Frage am Ende anders) belegt: Prefill 430 s, danach 12 s und 7 s, bei unverändert gemeldetem `prompt_eval_count`. Die Wiederverwendung wirkt also, `prompt_eval_count` zählt gecachte Token mit; Maß ist die Prefill-Dauer.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Architektur (Latenz im Agentenlauf), Reflexion
 

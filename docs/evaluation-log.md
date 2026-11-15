@@ -239,3 +239,28 @@
 - **Grenzen der Messung:** 3 Fragen, ein Lauf, P2 nur 1 Frage, B0 vermutlich abgeschnitten.
 - **Meine Deutung (eigene Worte):**
 - **Konsequenz / nächster Schritt:** RUN-007 bleibt als dokumentierter Fehlschlag stehen; Wiederholung mit korrigierter Schätzung und Entladen zwischen den Varianten als RUN-008.
+
+### RUN-008 – Testmodul M6a, Probelauf B0/P1/P2 nach Korrekturen (3 Fragen, `llama3.1:8b`)
+- **Datum / Commit:** 2026-11-15 · Branch `feat/m6a-eval-harness`, Stand `docs: record context truncation and OOM findings (ISS-041, ISS-043)`
+- **Varianten:** B0 (Volltext), P1 (Pipeline), P2 (Agent)
+- **Konfiguration:** wie RUN-007, aber Token-Schätzung 2,4 Zeichen/Token (B0 mit Dateien 01–06, ca. 6.730 geschätzte, 6.604 gemeldete Token) und Entladen der Modelle vor jeder Variante; Befehl `uv run python -m audit_agent.evaluation generate --run-id run-008 --ids S2 G1 N1`
+- **Dauer:** ca. 20 Minuten (09:14–09:34); B0 547 / 60 / 14 s, P1 27–73 s, P2 35–245 s
+- **Rohdaten:** `data/eval/run-008/` (`report.md`, `scores.json`, `answers-*.jsonl`, `p2-*.jsonl`, `manifest.json`, `ollama-journal.txt`), `data/eval/run-008.log`
+
+| Metrik | B0 | P1 | P2 |
+|---|---|---|---|
+| Richtig | 2/3 | 1/3 | 2/3 |
+| Fakten gefunden | 3/5 | 0/5 | 2/5 |
+| Erwartete Quellen zitiert | 3/3 | 0/3 | 0/3 |
+| Negativfrage erkannt (N1) | ja | ja | ja |
+| Fehler erkannt (G1, nur Urteil) | ja | nein | nein |
+| Tool-Wahl korrekt | – | – | 2/3 |
+| Suchen mit eigenem Filter / schließen Quelle aus | – | – | 4 / 2 |
+
+- **Technik:** Keine Kürzung (`truncated = 0` in allen Aufrufen), kein OOM-Kill (ISS-041, ISS-043). B0 nutzt den Prompt-Cache: erste Frage 430 s Prefill, die beiden folgenden 12 s und 7 s bei gleich gemeldeten ca. 6.600 Token (ISS-005: Wiederverwendung für B0 belegt; `prompt_eval_count` zählt gecachte Token mit).
+- **S2:** B0 und P2 richtig (34,80 ct/kWh, 11,50 EUR brutto). B0 zitiert [1] und nennt zusätzlich die Preise ab 2025 aus der Preisanpassung [3]. P2 zitiert wieder keine Belegnummer (wie RUN-006), deshalb Recall 0. P1 findet den Vertrag mit der ganzen Frage als Suchanfrage nicht unter den Top-5 und antwortet „keine Angaben“.
+- **G1:** Keine Variante vollständig richtig. B0 urteilt „nicht angewendet“ und nennt 39,50 ct/kWh richtig, aber den angekündigten Preis falsch (32,10 statt 38,20) und keine Differenz. P1 antwortet „keine Angaben“, obwohl Preisanpassung 03 und Rechnung 06 unter den Top-5 waren. P2 wiederholt das Muster aus RUN-006: zweimal `search_documents` mit `bill`/2025 (schließt die Preisanpassung 03 aus) und eine Antwort über den Abschlag statt über den Arbeitspreis (ISS-036).
+- **N1:** alle drei ehrlich.
+- **Grenzen der Messung:** 3 Fragen, ein Lauf, ein Modell; B0 sieht nur Stromdokumente (begünstigt bei S2, G1, ISS-039); „Fehler erkannt“ misst nur das Urteil (ISS-038, ISS-040).
+- **Meine Deutung (eigene Worte):**
+- **Konsequenz / nächster Schritt:** Das Testmodul läuft stabil. M6b: alle 12 Fragen mit `llama3.1:8b` und `qwen2.5:7b` (über Nacht), dann Gegenmaßnahmen messen (Filter durch Code, gemeinsames Suchwerkzeug, Zitierpflicht für P2) und RAGAS. Auffällig für die Auswertung: P1 antwortet bei vorhandenen Belegen „keine Angaben“ (2 von 3), B0 ist bei Stromfragen konkurrenzfähig, solange alles in den Kontext passt.

@@ -1,0 +1,38 @@
+Nov 15 08:37:05 usr0-HP-Laptop-15-fc0xxx systemd[1]: Started ollama.service - Ollama Service.
+Nov 15 08:45:18 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T08:45:18.828+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 9.29 seconds"
+Nov 15 08:45:18 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T08:45:18.829+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 9.29 seconds"
+Nov 15 08:46:56 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 0 | stop processing: n_tokens = 1914, truncated = 0
+Nov 15 08:50:29 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 5 | stop processing: n_tokens = 3789, truncated = 0
+Nov 15 08:58:53 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 12 | stop processing: n_tokens = 7539, truncated = 0
+Nov 15 09:14:08 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T09:14:08.394+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 9.80 seconds"
+Nov 15 09:14:08 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T09:14:08.396+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 9.80 seconds"
+Nov 15 09:23:05 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 0 | stop processing: n_tokens = 6790, truncated = 0
+Nov 15 09:24:05 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 194 | stop processing: n_tokens = 6695, truncated = 0
+Nov 15 09:24:20 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 276 | stop processing: n_tokens = 6614, truncated = 0
+Nov 15 09:24:21 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T09:24:21.341+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 0.50 seconds"
+Nov 15 09:24:21 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T09:24:21.341+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 0.50 seconds"
+Nov 15 09:24:21 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 0 | stop processing: n_tokens = 26, truncated = 0
+Nov 15 09:24:34 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T09:24:34.274+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 12.81 seconds"
+Nov 15 09:24:34 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T09:24:34.275+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 12.81 seconds"
+Nov 15 09:25:33 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 0 | stop processing: n_tokens = 937, truncated = 0
+Nov 15 09:25:34 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 2 | stop processing: n_tokens = 36, truncated = 0
+Nov 15 09:26:17 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 15 | stop processing: n_tokens = 945, truncated = 0
+Nov 15 09:26:17 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 4 | stop processing: n_tokens = 22, truncated = 0
+Nov 15 09:26:44 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 30 | stop processing: n_tokens = 714, truncated = 0
+Nov 15 09:26:53 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T09:26:53.352+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 8.54 seconds"
+Nov 15 09:26:53 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T09:26:53.353+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 8.54 seconds"
+Nov 15 09:28:56 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 0 | stop processing: n_tokens = 2085, truncated = 0
+Nov 15 09:28:56 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T09:28:56.733+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 0.50 seconds"
+Nov 15 09:28:56 usr0-HP-Laptop-15-fc0xxx ollama[4273]: time=2026-11-15T09:28:56.733+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 0.50 seconds"
+Nov 15 09:28:56 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 0 | stop processing: n_tokens = 20, truncated = 0
+Nov 15 09:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 44 | stop processing: n_tokens = 1289, truncated = 0
+Nov 15 09:30:01 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 81 | stop processing: n_tokens = 2106, truncated = 0
+Nov 15 09:30:01 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 2 | stop processing: n_tokens = 23, truncated = 0
+Nov 15 09:30:49 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 134 | stop processing: n_tokens = 1313, truncated = 0
+Nov 15 09:32:44 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 149 | stop processing: n_tokens = 2952, truncated = 0
+Nov 15 09:32:44 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 4 | stop processing: n_tokens = 23, truncated = 0
+Nov 15 09:33:47 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 203 | stop processing: n_tokens = 2189, truncated = 0
+Nov 15 09:34:03 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 248 | stop processing: n_tokens = 2086, truncated = 0
+Nov 15 09:34:03 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 6 | stop processing: n_tokens = 14, truncated = 0
+Nov 15 09:34:17 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 295 | stop processing: n_tokens = 648, truncated = 0
+Nov 15 09:34:23 usr0-HP-Laptop-15-fc0xxx ollama[4273]: slot      release: id  0 | task 335 | stop processing: n_tokens = 703, truncated = 0

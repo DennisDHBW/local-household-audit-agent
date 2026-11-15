@@ -1,0 +1,33 @@
+
+== B0 Volltext S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   546.8 s: Laut Auszug [1] gelten folgende Preise:
+
+* Arbeitspreis (verbrauchsabhängig): 34,80 ct/kWh (Brutto, inkl. 19 % USt.)
+* Grundpreis (verbrauchsabhängig): 11,50 EUR/Monat (Brutto, inkl. 19 % USt.)
+
+Laut 
+
+== B0 Volltext G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   60.4 s: [3] besagt, dass der Arbeitspreis ab 01.01.2025 32,10 ct/kWh brutto (neu) ist, aber in der Abrechnung 2025 [7] wird ein Arbeitspreis von 39,50 ct/kWh brutto (alt) angegeben. Der neue Arbeitspreis wurd
+
+== B0 Volltext N1: Wie hoch war meine Stromrechnung 2023?
+   14.4 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   73.2 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   43.2 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline N1: Wie hoch war meine Stromrechnung 2023?
+   26.9 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   177.9 s: Der Arbeitspreis beträgt 34,80 ct/kWh (Brutto) und der Grundpreis 11,50 EUR/Monat (Brutto).
+
+== P2 Agent G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   245.2 s: Es gibt eine Stromabrechnung für 2025. Der neue monatliche Abschlag beträgt ab 15.02.2026 jeweils 120,00 EUR brutto.
+
+== P2 Agent N1: Wie hoch war meine Stromrechnung 2023?
+   35.4 s: Dazu liegen in den Unterlagen keine Angaben vor.
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-008/report.md

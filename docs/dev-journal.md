@@ -23,6 +23,22 @@
 
 ## Einträge
 
+### 2026-11-14/15 – M6a: Testmodul-Grundlage (B0, P1-Synthese, Metriken)
+**Ziel der Sitzung:** Das Testmodul bauen: Testset aus der Ground Truth, P1 mit Antwortsynthese und B0 als Volltext-Baseline neben dem Agenten, eigene Metriken und einen Lauf, der Antworten und Bewertung getrennt speichert; erster Probelauf mit 3 Fragen.
+**Was wurde gemacht:**
+- Plan mit sechs Punkten vorgelegt; B0-Variante A (Katalogreihenfolge bis zum Budget) gewählt
+- Refactoring: gemeinsames Trefferformat, Chat-Argumente und Modellaufruf-Protokoll für Agent und Evaluation
+- Paket `audit_agent.evaluation` mit Varianten, Metriken, Speicherung, Report und CLI; 28 neue Tests
+- RUN-007: abgebrochen. Journal und Messskript zeigten: B0-Prompt real 8.424 statt geschätzt ca. 7.200 Token, Ollama kürzte still auf 4.096 (ISS-041); danach OOM-Kill (ISS-043); CLI fing den Abbruch nicht ab (ISS-042)
+- Korrekturen: 2,4 Zeichen/Token, Entladen vor jeder Variante, Manifest zuerst, Lücke „keine Informationen“, Urteil auch aus dem letzten Satz
+- RUN-008: stabil; B0 2/3, P1 1/3, P2 2/3 richtig; B0-Präfix-Cache belegt
+**Gelieferte Dateien / Funktionen:** `src/audit_agent/evaluation/{models,testset,prompts,metrics,variants,store,report,__main__,__init__}.py`, `config.py` (`EvaluationSettings`), `scripts/probe_context.py`, `tests/test_evaluation.py`, `docs/adr/0011-evaluation-harness.md`, `data/eval/run-007/`, `data/eval/run-008/`
+**Entscheidungen:** ADR-0011 (Aufbau des Testmoduls, B0 Variante A)
+**Probleme / Überraschungen:** ISS-037 gelöst; ISS-038 (Metriken sind Heuristiken), ISS-039 (B0 sieht nur 6 Dateien), ISS-040 (Fehlererkennung nur E1), ISS-041 (stille Kürzung durch falsche Token-Schätzung), ISS-042 (eigener Fehler: Abbruch nicht abgefangen), ISS-043 (OOM-Kill); überrascht hat, dass Ollama zu lange Prompts ohne Fehlermeldung halbiert und nur das Journal es zeigt, und dass P1 trotz passender Treffer „keine Angaben“ antwortet
+**Offen / unklar:** RAGAS mit lokalem Bewerter; E2/E3 als Fragen; ob `qwen2.5:7b` die Tool-Wahl verbessert; warum P1 bei vorhandenen Belegen aufgibt
+**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**Zeitaufwand:** ca. 2,5 h (davon Ollama-Läufe ca. 50 min) · **Modell/Effort:** Opus 5.5 · **Commit(s):** `refactor(agent)`, `feat(evaluation)`, `test(evaluation)`, `fix(evaluation)` ×2, `feat(scripts)`, `docs` ×4
+
 ### 2026-11-14 – M5: Agent (P2) mit Tools
 **Ziel der Sitzung:** Auf dem Retriever aus M4 einen Agenten mit nativem Tool-Calling und den sechs Tools aus dem Konzept bauen, mit Protokoll je Schritt und Streamlit-Oberfläche für die Belege, und prüfen, ob er mit `llama3.1:8b` brauchbar antwortet.
 **Was wurde gemacht:**
