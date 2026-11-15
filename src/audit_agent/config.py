@@ -125,6 +125,15 @@ class AgentSettings(BaseModel):
     """Fewer tool calls than this and a "not in the documents" answer is questioned once."""
 
 
+class EvaluationSettings(BaseModel):
+    """Parameters of the test module (concept.md, section 11; ADR-0011)."""
+
+    model_config = ConfigDict(frozen=True)
+
+    full_text_reserve_tokens: int = Field(default=300, ge=0)
+    """B0: tokens kept free for the question and the chat template besides the answer."""
+
+
 class Settings(BaseModel):
     """Runtime settings of the application."""
 
@@ -141,6 +150,7 @@ class Settings(BaseModel):
     enrichment: EnrichmentSettings = Field(default_factory=EnrichmentSettings)
     retrieval: RetrievalSettings = Field(default_factory=RetrievalSettings)
     agent: AgentSettings = Field(default_factory=AgentSettings)
+    evaluation: EvaluationSettings = Field(default_factory=EvaluationSettings)
 
     @property
     def dataset_dir(self) -> Path:

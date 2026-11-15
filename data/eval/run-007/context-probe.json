@@ -1,0 +1,53 @@
+{
+  "model": "llama3.1:8b",
+  "results": [
+    {
+      "lines": 75,
+      "prompt_chars": 5246,
+      "num_ctx_requested": 8192,
+      "prompt_eval_count": 1912,
+      "prefill_seconds": 97.026044,
+      "answer": "7000",
+      "expected_answer": "7000"
+    },
+    {
+      "lines": 150,
+      "prompt_chars": 10472,
+      "num_ctx_requested": 8192,
+      "prompt_eval_count": 3787,
+      "prefill_seconds": 212.574022,
+      "answer": "7000",
+      "expected_answer": "7000"
+    },
+    {
+      "lines": 300,
+      "prompt_chars": 20972,
+      "num_ctx_requested": 8192,
+      "prompt_eval_count": 7537,
+      "prefill_seconds": 501.804912,
+      "answer": "7000",
+      "expected_answer": "7000"
+    }
+  ],
+  "ollama_ps": [
+    {
+      "model": "llama3.1:8b",
+      "name": "llama3.1:8b",
+      "digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+      "expires_at": "2026-11-15T09:08:53.354639+01:00",
+      "size": 6247216577,
+      "size_vram": 0,
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "llama",
+        "families": [
+          "llama"
+        ],
+        "parameter_size": "8.0B",
+        "quantization_level": "Q4_K_M"
+      },
+      "context_length": 8192
+    }
+  ]
+}

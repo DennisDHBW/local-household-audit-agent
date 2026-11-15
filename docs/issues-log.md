@@ -24,10 +24,70 @@
 
 ## Einträge
 
+### ISS-042 – Evaluations-CLI fing einen Verbindungsabbruch nicht ab
+- **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Als Ollama während RUN-007 nicht mehr erreichbar war, endete `generate` mit einem Python-Traceback. `manifest.json` (welche Dateien im B0-Kontext waren) fehlte, weil es erst am Ende geschrieben wurde; auch das Entladen der Modelle im `finally` hätte erneut eine Ausnahme geworfen.
+- **Ursache:** Von Claude nur für `ResponseError` geplant, nicht für `ConnectionError`; Manifest als „Abschlussdatei“ gedacht statt als Beschreibung des Laufs.
+- **Lösung / Workaround:** `ConnectionError` wird abgefangen (Hinweis: derselbe Befehl setzt fort), das Entladen ignoriert ihn, das Manifest wird vor der ersten Antwort geschrieben. Die gespeicherten Antworten blieben dank JSON-Zeilen erhalten.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-043 – Ollama vom Kernel wegen Speichermangel beendet (RUN-007)
+- **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
+- **Kategorie:** hardware
+- **Status:** gelöst (RUN-008 ohne OOM; weiter beobachten bei den 12-Fragen-Läufen)
+- **Symptom:** Nach B0 (3 lange Prompts), P1 und dem ersten P2-Lauf meldet das Journal um 23:37 `ollama.service: The kernel OOM killer killed some processes` und `Failed with result 'oom-kill'`; systemd startet Ollama neu, der Evaluationslauf bricht mit `ConnectionError` ab.
+- **Ursache:** Nicht sicher belegt. Geladen waren `llama3.1:8b` (6,2 GB laut `ollama ps`, mit 8.192 Token KV-Cache) und `nomic-embed-text` unter `MemoryMax=9G`. Der llama-server meldet `idle slots will be saved to prompt cache` und `context checkpoints enabled, max = 32`; Vermutung: Der Prompt-Cache der langen B0-Prompts wuchs im RAM, bis die Grenze erreicht war.
+- **Lösung / Workaround:** Vor jeder Variante entlädt `generate` die Modelle (`keep_alive=0`), damit Modell und Prompt-Cache neu beginnen (kostet ca. 10 s Ladezeit je Variante). Tritt der Fehler wieder auf: Speicher während des Laufs mit `systemctl status ollama` beobachten.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Hardware/Betrieb
+
+### ISS-041 – Ollama kürzt zu lange Prompts still auf die Hälfte (Token-Schätzung zu niedrig)
+- **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
+- **Kategorie:** llm
+- **Status:** gelöst (Schätzung korrigiert), Prüfung früherer Agentenläufe offen
+- **Symptom:** Alle drei B0-Aufrufe in RUN-007 melden `prompt_eval_count` = 4.098. Das Journal zeigt `truncating input prompt limit=4098 prompt=8424 keep=4 new=4098`: Der Prompt hatte real 8.424 Token, mehr als `num_ctx` 8192, und Ollama behielt nur die letzten ca. 4.096 Token. Die Antworten kannten deshalb nur die hinteren Dateien (06, 07).
+- **Ursache:** Meine Token-Schätzung „Zeichen/3“ (aus M5) war zu optimistisch. Gemessen: B0-Text mit vielen Tabellenzahlen 2,5 Zeichen/Token, Messtext 2,8 Zeichen/Token. `num_ctx` selbst wirkt: `scripts/probe_context.py` schickte 7.537 Token ungekürzt (`ollama ps`: `context_length` 8192), Zeile 0 wurde richtig beantwortet.
+- **Lösung / Workaround:** `CHARS_PER_TOKEN` = 2,4 (gilt auch für den Kontextwächter des Agenten, der jetzt früher stoppt). B0 passt damit noch 6 Dateien (01–06, ca. 16.100 Zeichen). Ob in RUN-005/006 Agentenläufe gekürzt wurden, ist nicht geprüft (Journal nur ab 22:00 gesichert); die gemeldeten Prompt-Größen dort lagen unter 2.600 Token.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Hardware/Betrieb, Evaluation (Grenzen)
+
+### ISS-040 – Fehlererkennung misst nur einen der drei eingebauten Fehler
+- **Datum / Meilenstein:** 2026-11-14 / M6a
+- **Kategorie:** evaluation
+- **Status:** offen
+- **Symptom:** Die Metriken „Fehler erkannt“ und „Fehlalarm“ zählen Fragen, deren erwartete Antwort mit „Ja“ oder „Nein“ beginnt (S5, G1, G2, Z1). Nur G1 enthält einen eingebauten Fehler (E1). E2 (z-Zahl Gas 2026) und E3 (Wohnfläche Nebenkosten 2026) kommen in keiner Frage vor; `audit_checks` mit 10 Abrechnungen wird nicht genutzt.
+- **Ursache:** Der 12-Fragen-Katalog ist aus M1 übernommen; die Prüffragen zu den Abrechnungen 29 und 30 wurden nie formuliert.
+- **Lösung / Workaround:** In M6b entweder zwei Reservefragen zu E2/E3 ergänzen oder einen eigenen Prüflauf „Prüfe die Abrechnung X“ über `audit_checks` bauen. Bis dahin die Rate als „1 von 1“ und nicht als Prozentwert berichten.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen)
+
+### ISS-039 – B0 sieht nur 8 von 30 Dokumenten
+- **Datum / Meilenstein:** 2026-11-14 / M6a
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** Bei `num_ctx` 8192 passen nach Prompt, Antwort und Reserve ca. 7.000 geschätzte Token Seitentext in B0. Seit der korrigierten Schätzung (ISS-041) sind das die Dateien 01–06 (nur Strom). Fragen zu Gas (S1, Z1), Wasser (S3) und Nebenkosten (G2) kann B0 daher nicht beantworten; die Stromfragen sind durch die Reihenfolge begünstigt.
+- **Ursache:** Der Korpus hat ca. 60.000 Zeichen Seitentext; Entscheidung für Variante A (Katalogreihenfolge, gleicher Kontext für alle Fragen), ADR-0011.
+- **Lösung / Workaround:** Bewusst so gelassen: Genau das ist die Aussage von B0 („Volltext passt auf dieser Hardware nicht“). Im Bericht steht, welche Dateien im Kontext waren (`manifest.json`). Die Schätzung Zeichen/3 ist vorsichtig; real ist der Prompt kürzer.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Varianten, Grenzen)
+
+### ISS-038 – Fakten- und Urteilsprüfung der eigenen Metriken sind Heuristiken
+- **Datum / Meilenstein:** 2026-11-14 / M6a
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** (1) Eine erwartete Zahl gilt als gefunden, wenn sie irgendwo in der Antwort steht, auch in einem falschen Zusammenhang. (2) Textfakten werden als ganzes Wort gesucht; „31. Dezember 2025“ trifft „31.12.2025“ nicht. (3) Das Urteil ja/nein wird aus dem ersten Satz gelesen (führendes Ja/Nein, sonst Signalwörter wie „nicht“, „abweich“, „stimmt“); Sätze wie „weicht nicht ab“ werden falsch eingeordnet. (4) Vorher zählte ein Textfakt „ja“ als gefunden, sobald „Jahresabrechnung“ in der Antwort stand, und eine Belegnummer `[25]` als Zahl 25; beides ist behoben.
+- **Ursache:** Deterministische Prüfung ohne LLM-Bewerter (ADR-0011).
+- **Lösung / Workaround:** `report.md` zeigt jede Antwort mit erkanntem Urteil und fehlenden Fakten, Fehlurteile werden beim Auswerten von Hand korrigiert und hier notiert. RAGAS (M6b) als zweite Sicht. Nach RUN-007: „keine Informationen“ zählt als ehrliche Lücke; das Urteil wird auch aus dem letzten Satz gelesen. Ein richtiges Ja/Nein kann eine falsche Begründung haben (B0/G1); deshalb zählt eine Antwort nur mit allen Fakten als richtig.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Metriken, Grenzen)
+
 ### ISS-037 – P1 hat noch keine Antwortsynthese, B0 fehlt
 - **Datum / Meilenstein:** 2026-11-14 / M5 (aufgefallen beim Planen von M6)
 - **Kategorie:** konzept
-- **Status:** offen
+- **Status:** gelöst (M6a, ADR-0011)
 - **Symptom:** `concept.md` 7.1 und 11.1 vergleichen drei Varianten (B0 Volltext, P1 Pipeline mit LLM-Synthese, P2 Agent). Gebaut sind bisher nur das Retrieval von P1 (M4) und der Agent P2 (M5). Es gibt weder eine Synthese-Funktion, die aus den Top-5 eine Antwort erzeugt, noch den Volltext-Prompt von B0.
 - **Ursache:** Meilensteintabelle und Konzept führten „P1“ unter M4 als Retrieval, die Synthese wurde in keinem Paket eingeplant.
 - **Lösung / Workaround:** M6 beginnt mit P1-Synthese (ein Modellaufruf mit Evidenz, Belegnummern wie im Agenten) und B0 (so viel Text wie in 8.192 Token passt), beide über denselben `ChatClient` und dieselben Protokollsätze; erst danach die Evaluation. Das ist mehr Arbeit als im Konzept sichtbar; M6 kann in zwei Pakete geteilt werden.
@@ -357,6 +417,7 @@
 - **Ursache:** Ollama 0.35.1 meldet in `prompt_eval_count` offenbar die volle Prompt-Länge, auch wenn Teile aus dem Cache kommen. Meine Heuristik (weniger Tokens ⇒ Cache) stimmte nicht.
 - **Update RUN-005:** Wiederverwendung des Prompt-Anfangs ist zum Teil belegt (G1 und N1: erste Aufrufe mit rund 2.000 Token in 4,8 s und 2,8 s statt 108 s), aber nicht verlässlich (S4: wieder 89 s). `prompt_eval_count` entspricht nicht der Kontextgröße; der Kontextwächter schätzt selbst.
 - **Lösung / Workaround:** Heuristik auf die Prefill-Dauer umgestellt (`is_prefix_reused` vergleicht Sekunden, Test angepasst). Nachmessen ist offen und passiert beim ersten Mehrschritt-Agentenlauf in M5; bis dahin gilt die Wiederverwendung als „sehr wahrscheinlich“ (Zeitindiz), nicht als belegt.
+- **Update RUN-008:** Für B0 (gleicher Kontext von ca. 6.600 Token, nur die Frage am Ende anders) belegt: Prefill 430 s, danach 12 s und 7 s, bei unverändert gemeldetem `prompt_eval_count`. Die Wiederverwendung wirkt also, `prompt_eval_count` zählt gecachte Token mit; Maß ist die Prefill-Dauer.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Architektur (Latenz im Agentenlauf), Reflexion
 

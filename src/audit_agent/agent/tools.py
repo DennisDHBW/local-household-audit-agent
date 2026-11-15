@@ -31,7 +31,7 @@ from audit_agent.config import Settings
 from audit_agent.corpus import DocType, DocumentCatalog, DocumentMeta, UtilityType
 from audit_agent.ingestion import ChunkType, chunks_path, load_parsed_document
 from audit_agent.retrieval import MetadataFilter, SearchHit, SearchOptions
-from audit_agent.retrieval.evidence import TYPE_LABELS
+from audit_agent.retrieval.evidence import render_numbered_hit
 from audit_agent.retrieval.search import fold
 
 YEAR_FILTER_DOC_TYPES = frozenset({DocType.BILL, DocType.NOTICE, DocType.PAYMENT_PLAN})
@@ -192,12 +192,6 @@ def describe_filter(metadata_filter: MetadataFilter) -> str:
     return ", ".join(parts) or "keine"
 
 
-def shorten(text: str, limit: int) -> str:
-    """One line of at most ``limit`` characters."""
-    flat = " ".join(text.split())
-    return flat if len(flat) <= limit else flat[: limit - 1] + "…"
-
-
 def matches_year(document: DocumentMeta, year: int) -> bool:
     """Year of the billing period; else of ``valid_from``; else of the document date.
 
@@ -347,7 +341,7 @@ class ToolBox:
             return ToolResult(text="\n".join([header, *notes, hint]))
         numbers = tuple(book.register(hit) for hit in hits)
         limit = self._settings.agent.max_hit_chars
-        blocks = [self._hit_block(n, hit, limit) for n, hit in zip(numbers, hits, strict=True)]
+        blocks = [render_numbered_hit(n, hit, limit) for n, hit in zip(numbers, hits, strict=True)]
         return ToolResult(text="\n".join([header, *notes, *blocks]), hit_numbers=numbers)
 
     @staticmethod
@@ -365,16 +359,6 @@ class ToolBox:
         if year is None:
             return MetadataFilter(**fields), notes
         return MetadataFilter.for_year(year, **fields), notes
-
-    @staticmethod
-    def _hit_block(number: int, hit: SearchHit, max_chars: int) -> str:
-        head = f"[{number}] {_file_name(hit.filename)}, S. {hit.page_number}, "
-        head += TYPE_LABELS[hit.chunk_type]
-        lines = [head]
-        if hit.heading_stack:
-            lines.append("Kapitel: " + " > ".join(hit.heading_stack))
-        lines.append(shorten(hit.content, max_chars))
-        return "\n".join(lines)
 
     def _outline(self, args: OutlineArguments, book: EvidenceBook) -> ToolResult:
         wanted = fold(args.filename)

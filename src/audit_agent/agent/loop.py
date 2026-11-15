@@ -35,8 +35,13 @@ from audit_agent.agent.tools import AgentTool, ToolError, clean_arguments
 from audit_agent.config import Settings
 
 NANOSECONDS_PER_SECOND = 1_000_000_000
-CHARS_PER_TOKEN = 3
-"""Conservative estimate for German text; used only for the context guard."""
+CHARS_PER_TOKEN = 2.4
+"""Characters per token of ``llama3.1:8b`` on our German texts, rounded down from measurements.
+
+RUN-007: the B0 prompt (tables with many numbers) had 2.5 characters per token, the probe
+text 2.8 (``scripts/probe_context.py``). The former value 3 underestimated the prompt, and
+Ollama cut it to half of ``num_ctx`` (ISS-041).
+"""
 LIMIT_OBSERVATION = (
     "FEHLER: Das Limit der Werkzeugaufrufe ist erreicht. Antworte mit den vorhandenen Belegen."
 )
@@ -49,8 +54,8 @@ class ChatClient(Protocol):
 
 
 def estimate_tokens(text: str) -> int:
-    """Rough token count of a text (characters / 3)."""
-    return len(text) // CHARS_PER_TOKEN + 1
+    """Rough, deliberately high token count of a text (characters / ``CHARS_PER_TOKEN``)."""
+    return int(len(text) / CHARS_PER_TOKEN) + 1
 
 
 def _seconds(nanoseconds: int | None) -> float | None:
@@ -66,6 +71,43 @@ def _message_text(message: Any) -> str:
     content = message.get("content") if isinstance(message, dict) else message.content
     calls = "" if isinstance(message, dict) else str([c.function for c in _invocations(message)])
     return f"{content or ''}{calls}"
+
+
+def chat_arguments(settings: Settings, model: str, messages: list[Any]) -> dict[str, Any]:
+    """Arguments of one chat call; the agent and the evaluation variants use the same ones."""
+    agent = settings.agent
+    return {
+        "model": model,
+        "messages": messages,
+        "options": {
+            "num_ctx": settings.num_ctx,
+            "num_predict": agent.num_predict,
+            "temperature": agent.temperature,
+        },
+        "keep_alive": agent.keep_alive,
+    }
+
+
+def model_call_step(
+    response: Any, index: int, offered_tools: bool, message_count: int, seconds: float
+) -> ModelCallStep:
+    """Log record of one chat response (token counts and durations as Ollama reports them)."""
+    message = response.message
+    return ModelCallStep(
+        index=index,
+        offered_tools=offered_tools,
+        message_count=message_count,
+        prompt_tokens=getattr(response, "prompt_eval_count", None),
+        prefill_seconds=_seconds(getattr(response, "prompt_eval_duration", None)),
+        generated_tokens=getattr(response, "eval_count", None),
+        decode_seconds=_seconds(getattr(response, "eval_duration", None)),
+        seconds=round(seconds, 2),
+        content=(message.content or "").strip(),
+        tool_calls=tuple(
+            ToolInvocation(name=call.function.name, arguments=dict(call.function.arguments or {}))
+            for call in _invocations(message)
+        ),
+    )
 
 
 def _validation_summary(error: ValidationError) -> str:
@@ -178,39 +220,17 @@ class AgentLoop:
     def _call_model(
         self, model: str, messages: list[Any], index: int, offer_tools: bool
     ) -> tuple[Any, ModelCallStep]:
-        agent = self._settings.agent
-        arguments: dict[str, Any] = {
-            "model": model,
-            "messages": messages,
-            "options": {
-                "num_ctx": self._settings.num_ctx,
-                "num_predict": agent.num_predict,
-                "temperature": agent.temperature,
-            },
-            "keep_alive": agent.keep_alive,
-        }
+        arguments = chat_arguments(self._settings, model, messages)
         if offer_tools:
             arguments["tools"] = self._specs
         started = time.perf_counter()
         response = self._client.chat(**arguments)
-        seconds = time.perf_counter() - started
-        message = response.message
-        step = ModelCallStep(
+        step = model_call_step(
+            response,
             index=index,
             offered_tools=offer_tools,
             message_count=len(messages),
-            prompt_tokens=getattr(response, "prompt_eval_count", None),
-            prefill_seconds=_seconds(getattr(response, "prompt_eval_duration", None)),
-            generated_tokens=getattr(response, "eval_count", None),
-            decode_seconds=_seconds(getattr(response, "eval_duration", None)),
-            seconds=round(seconds, 2),
-            content=(message.content or "").strip(),
-            tool_calls=tuple(
-                ToolInvocation(
-                    name=call.function.name, arguments=dict(call.function.arguments or {})
-                )
-                for call in _invocations(message)
-            ),
+            seconds=time.perf_counter() - started,
         )
         return response, step
 

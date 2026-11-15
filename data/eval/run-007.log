@@ -1,0 +1,58 @@
+   Building local-household-audit-agent @ file:///home/usr0/PycharmProjects/local-household-audit-agent
+      Built local-household-audit-agent @ file:///home/usr0/PycharmProjects/local-household-audit-agent
+Uninstalled 1 package in 1ms
+Installed 1 package in 0.95ms
+
+== B0 Volltext S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   300.1 s: Laut dem Liefervertrag von SüdVolt Energie GmbH (Dokument [1] 01_Strom_Liefervertrag_SuedVolt.pdf, S. 1) gelten folgende Preise:
+
+* Arbeitspreis: 33,19 ct/kWh (Netto)
+* Grundpreis: 10,84 EUR/Monat (Ne
+
+== B0 Volltext G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   303.8 s: In der Stromabrechnung 2025 von SüdVolt Energie GmbH ist der Arbeitspreis ÖkoStrom mit 33,19 ct/kWh angegeben. Im Liefervertrag von 2024 ist jedoch ein Arbeitspreis Erdgas (inkl. Energiesteuer & CO₂-P
+
+== B0 Volltext N1: Wie hoch war meine Stromrechnung 2023?
+   306.7 s: Ich habe keine Informationen über deine Stromrechnung 2023. Die bereitgestellten Dokumente enthalten Informationen über deine Stromrechnung 2025 und deine Gasrechnung 2024, aber keine Informationen üb
+
+== P1 Pipeline S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   59.9 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   38.4 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline N1: Wie hoch war meine Stromrechnung 2023?
+   31.0 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   206.7 s: Der Arbeitspreis beträgt 34,80 ct/kWh (Brutto) und der Grundpreis 11,50 EUR/Monat (Brutto).
+
+== P2 Agent G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 185, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 178, in main
+    _unload(client, [args.model or settings.models.agent, settings.models.embedding])
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 161, in _unload
+    client.generate(model=model, prompt="", keep_alive=0)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/ollama/_client.py", line 285, in generate
+    return self._request(
+           ~~~~~~~~~~~~~^
+      GenerateResponse,
+      ^^^^^^^^^^^^^^^^^
+    ...<22 lines>...
+      stream=stream,
+      ^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/ollama/_client.py", line 203, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/ollama/_client.py", line 149, in _request_raw
+    raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
+ConnectionError: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download

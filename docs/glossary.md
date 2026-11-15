@@ -113,3 +113,26 @@
 | Rechner | `calculate` | Rechnet Ausdrücke über den Syntaxbaum (`ast`) mit `Decimal`, ohne `eval` | |
 | Jahresfilter-Regel | `YEAR_FILTER_DOC_TYPES` | Der Jahresfilter gilt nur für Dokumente mit Abrechnungszeitraum (Rechnung, Hinweis, Abschlagsplan) | |
 | Laufprotokoll | `RunLog` | Schreibt jeden Schritt sofort als JSON-Zeile nach `data/eval/<run>/` | |
+
+## Evaluation (M6)
+
+| Begriff | Code (EN) | Kurzdefinition | In meinen Worten |
+|---|---|---|---|
+| Variante | `Variant`, `VariantName` | Eine der drei verglichenen Lösungen: `b0`, `p1`, `p2` | |
+| B0 – Volltext-Baseline | `FullTextVariant`, `build_full_text_context` | Seitentext aller Dokumente in Katalogreihenfolge, bis das Kontextfenster voll ist; ein Modellaufruf ohne Suche | |
+| P1 – Pipeline | `PipelineVariant` | Eine Suche (Top-5, ohne Filter, mit Boost), danach ein Modellaufruf mit den nummerierten Treffern | |
+| P2 – Agent | `AgentVariant`, `answer_from_run` | Der ReAct-Agent aus M5, übersetzt ins gemeinsame Antwortformat | |
+| Antwortdatensatz | `VariantAnswer` | Antwort einer Variante auf eine Frage mit gezeigten Quellen, Tool-Aufrufen und Modellaufrufen | |
+| Gezeigte Quelle | `ShownSource` | Nummerierter Beleg, den das Modell sah und als `[n]` zitieren kann | |
+| Token-Budget (B0) | `full_text_budget` | `num_ctx − num_predict − Reserve − Prompt`; so viel Seitentext darf in den B0-Prompt | |
+| Generieren / Bewerten | `generate`, `score` | Getrennte Schritte: Antworten erzeugen (Ollama, langsam) und deterministisch bewerten (ohne Ollama) | |
+| Bewertung einer Antwort | `AnswerScore`, `score_answer` | Alle eigenen Metriken einer Antwort gegen die Ground Truth | |
+| Zusammenfassung je Variante | `VariantSummary`, `summarize` | Summen und Quoten einer Variante über alle Fragen (Tabelle Variante × Metrik) | |
+| Quellen-Präzision | `cited_expected / cited_count` | Anteil der zitierten Belege, deren Datei und Seite erwartet sind | |
+| Quellen-Recall | `expected_cited / expected_count` | Anteil der erwarteten Quellen, die die Antwort zitiert | |
+| Erfundene Belegnummer | `invalid_citations` | Zitierte `[n]`, die das Modell nie gesehen hat | |
+| Ablenkerquote | `cited_distractors`, `shown_distractors` | Anteil von Ablenkungsdokumenten (`is_noise_document`) in den Zitaten bzw. im Kontext | |
+| Filterfehler | `filter_misses`, `filter_excludes` | Suche des Agenten, deren selbst gesetzter Filter ein erwartetes Quelldokument ausschließt | |
+| Prüfurteil | `answer_verdict`, `expected_verdict` | Ja/Nein einer Prüffrage (stimmt die Abrechnung?); daraus Fehlererkennung und Fehlalarm | |
+| Fehlererkennung / Fehlalarm | `errors_detected`, `false_alarms` | Erwartet „nein“ und geantwortet „nein“ / erwartet „ja“ und geantwortet „nein“ | |
+| Laufmanifest | `manifest.json` | Modell, `num_ctx` und B0-Kontext (welche Dateien passten) eines Evaluationslaufs | |
