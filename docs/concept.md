@@ -281,7 +281,7 @@ Modelle aus den Folien wie `phi3:medium` (14B) oder `qwen2.5:32b` scheiden aus.
 | Embeddings | `nomic-embed-text` | < 0,5 GB | 768 Dimensionen, Standard der Vorlesung; Präfixe `search_document:` / `search_query:` |
 | Bild-Captions (Ingest) | `gemma3:4b` | 4,0 GB | multimodal, ca. 8–9 Tokens/s |
 | Tabellen-Summaries (Ingest) | `llama3.2` (3B) | 3,1 GB | schnell, einfache Zusammenfassungsaufgabe |
-| Agent, Tool-Calling, Antwort (Query) | `qwen2.5:7b` **oder** `llama3.1:8b` | 5,5 bzw. 6,3 GB | beide gut bei strukturierter Ausgabe/Tool-Calling; in RUN-000 gleichauf; vorläufig `llama3.1:8b`, Endentscheidung im Testmodul (ADR-0004) |
+| Agent, Tool-Calling, Antwort (Query) | `qwen2.5:7b` **oder** `llama3.1:8b` | 5,5 bzw. 6,3 GB | beide gut bei strukturierter Ausgabe/Tool-Calling; in RUN-000 gleichauf; nach RUN-010/011 `llama3.1:8b` (ADR-0013), `qwen2.5:7b` bleibt RAGAS-Bewerter |
 
 `qwen3` (bis 8B) höchstens mit abgeschaltetem Thinking-Modus testen: Denk-Tokens kosten bei 5 Tokens/s zu viel Zeit.
 
@@ -383,6 +383,8 @@ Umsetzung (M6a): Zahlen gelten als gefunden, wenn sie irgendwo in der Antwort st
 
 Umsetzung RAGAS (M6b, ADR-0012): Faithfulness und Context Recall mit dem lokalen Bewerter `audit-judge` (`qwen2.5:7b`, `num_ctx` 8192) auf den gespeicherten Antworten und deren Belegtexten; Answer Relevancy, Context Precision und die Testset-Generierung entfallen aus Zeitgründen. Prompts, die nicht in den Kontext passen, werden nicht bewertet statt still gekürzt (betrifft vor allem B0, ISS-046); beim `qwen2.5:7b`-Lauf bewertet das Modell sich selbst (ISS-045).
 
+Auswertung (M6c): Jede Antwort wird zusätzlich von Hand gelesen; der evaluation-log führt „richtig laut Metrik“ und „richtig nach Handprüfung“ getrennt (ISS-050) und ordnet jedem Fehlschlag eine Hauptursache zu (Kontextbudget, Retrieval, Tool-Wahl, Filter, Argumente, Synthese, Parser). `scripts/check_evidence.py` prüft deterministisch, ob die Sollfakten im Kontext des Modells standen. RAGAS-Werte gelten nur als zweite Sicht, weil der lokale Bewerter im Einzelfall unzuverlässig ist (ISS-053).
+
 **Laufzeit der Evaluation realistisch planen:** 14 Fragen × 3 Varianten bei 1–7 Minuten pro Antwort (B0 mit langem Volltext-Prompt am langsamsten) ergeben grob 1–3 Stunden. RAGAS braucht pro Frage mehrere zusätzliche LLM-Aufrufe für die Bewertung. Deshalb:
 - Antworten erzeugen und bewerten in **getrennten Schritten**; Antworten als JSON speichern, damit die Bewertung wiederholt werden kann, ohne neu zu generieren
 - Komplettläufe über Nacht, als `slow` markiert (`pytest -m slow`)
@@ -446,7 +448,7 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 - [x] Python-Umgebung: `uv`, Python 3.13 (laut `pyproject.toml`)
 - [x] Zwei weitere eingebaute Fehler in M1 ergänzt (Abschnitt 4.3)
 - [x] Keine Literatur in der Ausarbeitung
-- [x] Agent-Modell: vorläufig `llama3.1:8b` (RUN-000: gleiche Trefferquote wie `qwen2.5:7b`, ca. 18 % schnellere Generierung); Endentscheidung im Testmodul M6 (ADR-0004)
+- [x] Agent-Modell: `llama3.1:8b` (RUN-010/011: Richtigkeit trennt die Modelle nicht, `llama3.1:8b` ist in P2 gut doppelt so schnell und stimmt nicht jeder Abrechnung zu; ADR-0013, Gegenprobe mit `qwen2.5:7b` nach den Gegenmaßnahmen)
 - [x] Tool-Calling: natives Ollama-Tool-Calling (ADR-0006), Bestätigung in M5
 - [ ] Referenzprototyp als Basis oder eigener Aufbau? (Code liegt nicht im Repo)
 - [ ] UI: Streamlit (Evidence-First wie Referenz) + CLI für Tests (Empfehlung)

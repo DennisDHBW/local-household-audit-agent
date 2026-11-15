@@ -1,6 +1,6 @@
 # ADR-0004: Modellauswahl und Speicherbudget unter `MemoryMax=9G`
 
-- **Status:** akzeptiert (Agent-Modell vorläufig `llama3.1:8b`, Endentscheidung im Testmodul M6)
+- **Status:** akzeptiert (Agent-Modell `llama3.1:8b`, entschieden in ADR-0013)
 - **Datum:** 2026-11-14
 - **Meilenstein:** M0
 

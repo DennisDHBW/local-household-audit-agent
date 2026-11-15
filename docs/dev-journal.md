@@ -23,6 +23,22 @@
 
 ## Einträge
 
+### 2026-11-15 – M6c: Nachtläufe RUN-010/011 auswerten
+**Ziel der Sitzung:** Die Nachtläufe mit beiden Modellen auswerten: jede falsche Antwort einer Ursache zuordnen, RAGAS-Stichproben von Hand prüfen, das Agent-Modell entscheiden.
+**Was wurde gemacht:**
+- Laufprüfung: beide Läufe vollständig (je 42 Antworten, 84 RAGAS-Zeilen), im Nachtlauf kein OOM und keine Kürzung
+- Alle 84 Antworten gegen Ground Truth und Belegtexte gelesen; vier als richtig gezählte qwen-Antworten umgewertet, weil die Begründung nicht trägt
+- Skript für den Belegabgleich geschrieben: standen die Sollfakten im Kontext des Modells? Damit lässt sich „Beleg kam nie an“ von „Beleg da, Antwort falsch“ trennen
+- Fehleranalyse: 61 Fehlschläge mit je einer Hauptursache; P2 verliert die Belege meist schon bei Werkzeugwahl und Filter, P1 beim Retrieval, B0 am Kontextbudget
+- RAGAS-Stichprobe mit 12 Antworten und Abgleich aller 48 Context-Recall-Werte gegen den Faktenabgleich
+- ADR-0013 als Vorschlag geschrieben, vom Nutzer bestätigt
+**Gelieferte Dateien / Funktionen:** `scripts/check_evidence.py`, `data/eval/run-010/`, `data/eval/run-011/` (mit `evidence.json`), `data/eval/night-m6b.log`, `data/eval/night-m6b-journal.txt`, `docs/adr/0013-agent-model-llama31.md`, Eintrag RUN-010/011 in `docs/evaluation-log.md`
+**Entscheidungen:** ADR-0013 (Agent-Modell `llama3.1:8b`, Gegenprobe mit `qwen2.5:7b` nach den Gegenmaßnahmen); ADR-0004 verweist darauf. Rohdaten von RUN-011 bleiben unverändert (erfundene schlüsselähnliche Zeichenkette, ISS-054)
+**Probleme / Überraschungen:** ISS-050 (Metrik zu großzügig bei „ja“), ISS-051 (Wiederholung ohne Filter liefert Ablenker), ISS-052 (`search_documents` findet keine Tabellenzeilen, ist aber das erwartete Werkzeug), ISS-053 (RAGAS im Einzelfall unzuverlässig), ISS-054 (qwen sagt immer „ja“, llama scheitert an `calculate`), ISS-055 (eigener Fehler: frühere Deutung zu P1 war falsch), ISS-056 (eigener Fehler: Commit vor vollständigem Gate); ISS-043 gelöst. Überrascht hat, dass der Agent schlechter abschneidet als die einfache Pipeline und dass der Parser an keinem Fehlschlag schuld ist
+**Offen / unklar:** Wirkung der Gegenmaßnahmen (M6d); ob die Ursachenzuordnung einer zweiten Person standhält (nicht gegengelesen); Streuung zwischen Läufen ist nicht gemessen
+**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**Zeitaufwand:** ca. 0,5 h Sitzung, dazu Nachtlauf ca. 8,5 h Rechenzeit · **Modell/Effort:** Fable 5.2 · **Commit(s):** `test(evaluation)`, `feat(scripts)`, `docs` ×2
+
 ### 2026-11-15 – M6b-1: Prüffragen G3/G4 und RAGAS mit lokalem Bewerter
 **Ziel der Sitzung:** Die Lücke ISS-040 schließen (E2/E3 ohne Prüffrage), RAGAS lokal an die gespeicherten Antworten anbinden und mit einem Probelauf prüfen, bevor die Nachtläufe mit beiden Modellen starten.
 **Was wurde gemacht:**

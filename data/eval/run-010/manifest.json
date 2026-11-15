@@ -1,0 +1,52 @@
+{
+  "model": "llama3.1:8b",
+  "num_ctx": 8192,
+  "b0_context": {
+    "budget_tokens": 6961,
+    "estimated_tokens": 6727,
+    "complete_files": [
+      "01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf",
+      "01_electricity_suedvolt/02_Strom_Begruessung_Abschlagsplan_2024.pdf",
+      "01_electricity_suedvolt/03_Strom_Preisanpassung_SuedVolt_2025.pdf",
+      "01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf",
+      "01_electricity_suedvolt/05_Strom_Zwischenablesung_Info_2025.pdf",
+      "01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf"
+    ],
+    "partial_file": null,
+    "missing_files": [
+      "02_gas_neckarenergie/07_Gas_Liefervertrag_NeckarEnergie_2024.pdf",
+      "02_gas_neckarenergie/08_Gas_Jahresabrechnung_2024_NeckarEnergie.pdf",
+      "02_gas_neckarenergie/09_Gas_Preisanpassung_NeckarEnergie_2026.pdf",
+      "02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf",
+      "02_gas_neckarenergie/11_Gas_Abschlagsplan_2026_NeckarEnergie.pdf",
+      "03_water_stadtwerke_mosbach/12_Wasser_Anmeldebestaetigung_SWM_2024.pdf",
+      "03_water_stadtwerke_mosbach/13_Wasser_Jahresbescheid_2024_SWM.pdf",
+      "03_water_stadtwerke_mosbach/14_Wasser_Gebuehrenanpassung_2026_SWM.pdf",
+      "03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf",
+      "04_housing_utilities_contractors/16_Mietvertrag_Hauptstrasse42_2023.pdf",
+      "04_housing_utilities_contractors/17_Uebergabeprotokoll_Wohnung_2023.pdf",
+      "04_housing_utilities_contractors/18_Nebenkostenabrechnung_2024_Hausverwaltung.pdf",
+      "04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf",
+      "04_housing_utilities_contractors/20_Handwerkerrechnung_Heizungswartung_2024.pdf",
+      "04_housing_utilities_contractors/21_Handwerkerrechnung_Heizungswartung_2025.pdf",
+      "05_telecom_insurance/22_Internet_Vertragszusammenfassung_GlasfaserPlus_2024.pdf",
+      "05_telecom_insurance/23_Internet_Monatsrechnung_Dez2025_GlasfaserPlus.pdf",
+      "05_telecom_insurance/24_Mobilfunk_Vertrag_MobilPlus_2025.pdf",
+      "05_telecom_insurance/25_Mobilfunk_Monatsrechnung_Dez2025_MobilPlus.pdf",
+      "05_telecom_insurance/26_Hausrat_Versicherungsschein_AlpenSchutz_2024.pdf",
+      "05_telecom_insurance/27_Hausrat_Beitragsrechnung_2026_AlpenSchutz.pdf",
+      "05_telecom_insurance/28_KFZ_Versicherungsschein_Beitrag2025_AlpenSchutz.pdf",
+      "02_gas_neckarenergie/29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf",
+      "04_housing_utilities_contractors/30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf"
+    ]
+  },
+  "ragas": {
+    "judge": "audit-judge",
+    "judge_num_ctx": 8192,
+    "judge_max_tokens": 2048,
+    "metrics": [
+      "faithfulness",
+      "context_recall"
+    ]
+  }
+}
