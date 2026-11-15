@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-049 – Abbruch mitten in einer Anfrage endete mit Traceback, Folgeschritte liefen ins Leere
+- **Datum / Meilenstein:** 2026-11-15 / M6b (RUN-010)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Als Ollama während P2/Z3 vom OOM-Killer beendet wurde (ISS-043), endete `generate` mit `httpx.RemoteProtocolError: Server disconnected without sending a response.` und Traceback. Die drei folgenden Befehle der Nachtkette (qwen-Lauf, zweimal RAGAS) scheiterten sofort mit „Failed to connect“, weil Ollama noch neu startete; der Nachtlauf war damit nach ca. 1 h vorbei.
+- **Ursache:** Die CLI fing nur `ConnectionError` ab (Verbindung kommt nicht zustande), nicht den Abbruch einer laufenden Anfrage, den der Ollama-Client als `httpx`-Fehler weiterreicht. Der von Claude gebaute Nachtbefehl hatte weder Warten noch Wiederholung.
+- **Lösung / Workaround:** CLI und Entladen fangen zusätzlich `httpx.TransportError` (Hinweis „derselbe Befehl setzt fort“, Test); `httpx` als direkte Abhängigkeit. Nachtlauf als `scripts/night_eval.sh`: wartet bis zu 10 min auf Ollama und wiederholt jeden Schritt einmal (setzt dabei fort).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Hardware/Betrieb (kurz)
+
 ### ISS-048 – Commit trotz rotem Quality Gate (Exit-Code durch Pipe verdeckt)
 - **Datum / Meilenstein:** 2026-11-15 / M6b
 - **Kategorie:** ki-assistent
@@ -87,10 +97,11 @@
 ### ISS-043 – Ollama vom Kernel wegen Speichermangel beendet (RUN-007)
 - **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
 - **Kategorie:** hardware
-- **Status:** gelöst (RUN-008 ohne OOM; weiter beobachten bei den 12-Fragen-Läufen)
+- **Status:** wieder aufgetreten in RUN-010, Gegenmaßnahme erweitert (weiter beobachten)
 - **Symptom:** Nach B0 (3 lange Prompts), P1 und dem ersten P2-Lauf meldet das Journal um 23:37 `ollama.service: The kernel OOM killer killed some processes` und `Failed with result 'oom-kill'`; systemd startet Ollama neu, der Evaluationslauf bricht mit `ConnectionError` ab.
 - **Ursache:** Nicht sicher belegt. Geladen waren `llama3.1:8b` (6,2 GB laut `ollama ps`, mit 8.192 Token KV-Cache) und `nomic-embed-text` unter `MemoryMax=9G`. Der llama-server meldet `idle slots will be saved to prompt cache` und `context checkpoints enabled, max = 32`; Vermutung: Der Prompt-Cache der langen B0-Prompts wuchs im RAM, bis die Grenze erreicht war.
 - **Lösung / Workaround:** Vor jeder Variante entlädt `generate` die Modelle (`keep_alive=0`), damit Modell und Prompt-Cache neu beginnen (kostet ca. 10 s Ladezeit je Variante). Tritt der Fehler wieder auf: Speicher während des Laufs mit `systemctl status ollama` beobachten.
+- **Nachtrag 2026-11-15 (RUN-010):** Erneut `oom-kill` um 12:28, bei der 14. P2-Frage (Z3) des `llama3.1:8b`-Laufs; B0 und P1 mit je 14 Fragen liefen durch. Auch in RUN-007 starb Ollama in P2. Das Muster passt zur Vermutung, dass der Speicher über viele verschiedene Prompts ohne Entladen wächst; belegt ist es nicht. Erweiterte Gegenmaßnahme: P1 und P2 entladen nach jeder Frage, RAGAS entlädt den Bewerter nach jeder bewerteten Antwort; B0 bleibt geladen, weil alle Fragen denselben Präfix teilen und sonst jede Frage ca. 430 s Prefill kostet. `scripts/night_eval.sh` wartet vor jedem Schritt auf Ollama und wiederholt einen abgebrochenen Schritt einmal.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Hardware/Betrieb
 

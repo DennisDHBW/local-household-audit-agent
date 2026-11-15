@@ -14,6 +14,7 @@ import logging
 import sys
 from pathlib import Path
 
+import httpx
 from ollama import Client, ResponseError
 
 from audit_agent.agent.factory import create_agent
@@ -53,6 +54,7 @@ from audit_agent.evaluation.variants import (
     Variant,
     build_full_text_context,
     needs_index,
+    unloads_after_each_question,
 )
 from audit_agent.preflight import MissingModelError, ensure_models_available, find_missing_models
 from audit_agent.retrieval import RetrievalError, Retriever, get_collection, open_vector_client
@@ -145,6 +147,8 @@ def _generate(args: argparse.Namespace, settings: Settings, client: Client) -> i
             answer = variant.answer(question, model)
             append_answer(path, answer)
             print(f"   {answer.seconds} s: {answer.answer[:200]}", file=sys.stderr)
+            if unloads_after_each_question(name):
+                _unload(client, used_models)
     _write_manifest(run_dir, manifest)
     return _score(settings, args.run_id)
 
@@ -228,6 +232,7 @@ def _ragas(args: argparse.Namespace, settings: Settings, client: Client) -> int:
                 metrics=args.metrics,
                 retry_errors=args.retry_errors,
                 on_score=report,
+                after_judged=lambda _answer: _unload(client, [judge_model]),
             )
         )
     finally:
@@ -239,7 +244,7 @@ def _unload(client: Client, models: list[str]) -> None:
     for model in models:
         try:
             client.generate(model=model, prompt="", keep_alive=0)
-        except (ResponseError, ConnectionError) as error:
+        except (ResponseError, ConnectionError, httpx.TransportError) as error:
             logger.warning("could not unload %s: %s", model, error)
 
 
@@ -261,7 +266,8 @@ def main() -> int:
     except (EvaluationError, RetrievalError, MissingModelError, CorpusError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
-    except ConnectionError as error:
+    except (ConnectionError, httpx.TransportError) as error:
+        # httpx.TransportError: Ollama died in the middle of a request (RUN-010, ISS-049)
         print(
             f"ERROR: {error}\nFertige Antworten sind gespeichert; nach dem Neustart von "
             "Ollama setzt derselbe Befehl den Lauf fort.",

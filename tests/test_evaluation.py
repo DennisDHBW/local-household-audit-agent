@@ -7,6 +7,7 @@ import shutil
 from datetime import date
 from decimal import Decimal
 
+import httpx
 import pytest
 
 from audit_agent.agent import AgentLoop, ToolBox
@@ -34,6 +35,7 @@ from audit_agent.evaluation import (
     select_questions,
     summarize,
 )
+from audit_agent.evaluation import __main__ as cli
 from audit_agent.evaluation.__main__ import _score
 from audit_agent.evaluation.metrics import (
     answer_verdict,
@@ -58,6 +60,7 @@ from audit_agent.evaluation.variants import (
     PipelineVariant,
     build_full_text_context,
     full_text_budget,
+    unloads_after_each_question,
 )
 from audit_agent.ingestion import (
     ChunkMetadata,
@@ -497,3 +500,26 @@ def test_score_writes_scores_and_report_without_ollama(tmp_path):
 def test_token_estimate_uses_the_measured_ratio():
     # 2.4 characters per token (RUN-007, ISS-041); higher than the old estimate of 3
     assert estimate_tokens("x" * 2400) == 1001
+
+
+def test_only_b0_keeps_its_model_between_questions():
+    # B0 lives on the prompt cache of its shared prefix; P1/P2 unload against OOM (ISS-043)
+    assert not unloads_after_each_question("b0")
+    assert unloads_after_each_question("p1") and unloads_after_each_question("p2")
+
+
+def test_a_server_dying_mid_request_ends_with_the_resume_hint(monkeypatch, capsys):
+    # Arrange: Ollama is killed while answering (RUN-010, ISS-049)
+    def dies(*_args):
+        raise httpx.RemoteProtocolError("Server disconnected without sending a response.")
+
+    monkeypatch.setattr(cli, "_generate", dies)
+    monkeypatch.setattr(cli, "_unload", lambda *_args: None)
+    monkeypatch.setattr("sys.argv", ["evaluation", "generate", "--run-id", "r"])
+
+    # Act
+    code = cli.main()
+
+    # Assert
+    assert code == 1
+    assert "setzt derselbe Befehl den Lauf fort" in capsys.readouterr().err

@@ -2,7 +2,7 @@
 
 > Diese Datei liest Claude zu Beginn jeder Sitzung. Kurz halten (max. 1 Seite). Alte Einträge überschreiben; die Historie steht in `dev-journal.md` und in Git.
 
-**Letzte Aktualisierung:** 2026-11-15 (M6b-1)
+**Letzte Aktualisierung:** 2026-11-15 (M6b-1, Nachbesserung OOM)
 **Phase:** 1 – Umsetzung
 **Aktueller Meilenstein:** M6 – Testmodul & Evaluation (M6a, M6b-1 fertig; Nachtläufe und Auswertung offen)
 **Version:** v0.2.0 (nach M5)
@@ -31,11 +31,11 @@ M6c – Nachtläufe auswerten. **Vorher (vom Nutzer, über Nacht, ca. 7–8 h):*
 
 **Empfohlenes Modell:** Opus 5.5, Effort High (Auswertung der Evaluation)
 
-Nachtlauf-Befehl (im Projektordner):
+Nachtlauf-Befehl:
 ```bash
-cd /home/usr0/PycharmProjects/local-household-audit-agent && uv sync --group ragas && mkdir -p data/eval/run-010 data/eval/run-011 && (uv run --group ragas python -m audit_agent.evaluation generate --run-id run-010 --all --model llama3.1:8b; uv run --group ragas python -m audit_agent.evaluation generate --run-id run-011 --all --model qwen2.5:7b; uv run --group ragas python -m audit_agent.evaluation ragas --run-id run-010; uv run --group ragas python -m audit_agent.evaluation ragas --run-id run-011) 2>&1 | tee data/eval/night-m6b.log; journalctl -u ollama --since "-14h" --no-pager | grep -iE "truncat|oom" > data/eval/night-m6b-journal.txt; echo FERTIG
+/home/usr0/PycharmProjects/local-household-audit-agent/scripts/night_eval.sh
 ```
-Abbruch → derselbe Befehl setzt fort (fertige Antworten und RAGAS-Zeilen werden übersprungen).
+Wartet vor jedem Schritt auf Ollama und wiederholt einen abgebrochenen Schritt einmal; erneuter Aufruf setzt fort. Stand 15.11.: RUN-010 hat B0 und P1 mit 14 Fragen, P2 mit 13 (Abbruch durch OOM bei Z3, ISS-043); RUN-011 und RAGAS leer.
 
 ## Nächste Schritte
 1. Nachtlauf, dann M6c (Auswertung)
@@ -51,6 +51,7 @@ Abbruch → derselbe Befehl setzt fort (fertige Antworten und RAGAS-Zeilen werde
 
 ## Bekannte Probleme / Risiken (Details in `issues-log.md`)
 - ISS-036/006/007: Agent wählt Tools und Filter unzuverlässig (G1, G3, G4)
+- ISS-043: OOM-Kill in P2 trotz Entladen je Variante (RUN-010); jetzt Entladen je Frage, beobachten
 - ISS-045/046/047: RAGAS-Bewerter bewertet beim qwen-Lauf sich selbst, B0 nicht bewertbar, Context Recall bei Prüffragen systematisch niedrig
 - ISS-038: eigene Metriken sind Heuristiken; ISS-039: B0 sieht nur Stromdokumente (01–06)
 - ISS-030/031/032/033, ISS-025/027/028/029, ISS-010, ISS-015/016/019, ISS-022/023, ISS-001/002/003: wie bisher

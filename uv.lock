@@ -1322,6 +1322,7 @@ source = { editable = "." }
 dependencies = [
     { name = "chromadb" },
     { name = "diskcache" },
+    { name = "httpx" },
     { name = "ollama" },
     { name = "pydantic" },
     { name = "pymupdf" },
@@ -1342,6 +1343,7 @@ ragas = [
 requires-dist = [
     { name = "chromadb", specifier = ">=1.5.9" },
     { name = "diskcache", specifier = ">=5.6.3" },
+    { name = "httpx", specifier = ">=0.27" },
     { name = "ollama", specifier = ">=0.4" },
     { name = "pydantic", specifier = ">=2.8" },
     { name = "pymupdf", specifier = ">=1.24" },

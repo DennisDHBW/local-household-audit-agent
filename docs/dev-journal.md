@@ -31,12 +31,13 @@
 - Belegtexte je Antwort gespeichert; RAGAS 0.4.4 als eigene Abhängigkeitsgruppe, Modul `ragas_eval` mit Längenprüfung, Fehlerprotokoll, Fortsetzen und Report-Tabelle; Bewerter-Alias über Modelfile, weil die OpenAI-Schnittstelle von Ollama kein `num_ctx` je Anfrage nimmt
 - Beim Lesen des RAGAS-Quelltexts Telemetrie entdeckt und abgeschaltet (ISS-044)
 - RUN-009: Ablauf funktioniert, alle Varianten scheitern an G3/G4; `max_tokens` des Bewerters auf 2048 erhöht
+- Nachtlauf am Mittag gestartet: RUN-010 nach ca. 1 h durch OOM-Kill in P2/Z3 beendet, Folgeschritte scheiterten sofort (ISS-043, ISS-049). Nachgebessert: Entladen nach jeder P1/P2-Frage und jeder bewerteten Antwort, Abbruch mitten in der Anfrage sauber abgefangen, `scripts/night_eval.sh` mit Warten und einer Wiederholung je Schritt
 **Gelieferte Dateien / Funktionen:** `dataset/ground_truth.yaml` (G3, G4), `corpus/models.py` (`planted_error`), `evaluation/ragas_eval.py`, `evaluation/{models,variants,report,__main__}.py`, `config.py` (`judge`, `judge_num_ctx`, `judge_max_tokens`), `scripts/audit-judge.Modelfile`, `tests/test_ragas_eval.py`, `docs/adr/0012-ragas-local-judge.md`, `data/eval/run-009/`
 **Entscheidungen:** ADR-0012 (RAGAS mit lokalem Bewerter); ADR-0011 Punkt 9 verweist darauf
-**Probleme / Überraschungen:** ISS-040 gelöst; ISS-044 (Telemetrie), ISS-045 (Selbstbewertung qwen), ISS-046 (B0 nicht bewertbar), ISS-047 (Abbruch bei `max_tokens`, Context Recall 0, Faithfulness 1,00 trotz falscher Antwort), ISS-048 (eigener Fehler: Commit trotz rotem Gate); überrascht hat, dass RAGAS eine sinnlose Rechnung als „treu“ bewertet, weil das Ergebnis in der Rechner-Beobachtung steht
+**Probleme / Überraschungen:** ISS-040 gelöst; ISS-044 (Telemetrie), ISS-045 (Selbstbewertung qwen), ISS-046 (B0 nicht bewertbar), ISS-047 (Abbruch bei `max_tokens`, Context Recall 0, Faithfulness 1,00 trotz falscher Antwort), ISS-048 (eigener Fehler: Commit trotz rotem Gate), ISS-049 (eigener Fehler: Abbruch nicht abgefangen, Nachtbefehl ohne Wiederholung), ISS-043 wieder aufgetreten; überrascht hat, dass RAGAS eine sinnlose Rechnung als „treu“ bewertet, weil das Ergebnis in der Rechner-Beobachtung steht
 **Offen / unklar:** Nachtläufe RUN-010/011; ob Context Recall 0 wirklich am fehlenden zweiten Dokument liegt (RAGAS gibt die Einzelurteile nicht aus); Stichproben der Bewerterurteile von Hand
 **O-Ton (von mir):** (ausstehend, wird nachgetragen)
-**Zeitaufwand:** ca. 1,5 h (davon Probelauf ca. 47 min) · **Modell/Effort:** Opus 5.5 · **Commit(s):** `feat(corpus)`, `feat(evaluation)` ×2, `fix(evaluation)`, `docs` ×2
+**Zeitaufwand:** ca. 1,5 h (davon Probelauf ca. 47 min) · **Modell/Effort:** Opus 5.5 · **Commit(s):** `feat(corpus)`, `feat(evaluation)` ×2, `fix(evaluation)` ×2, `feat(scripts)`, `docs` ×3
 
 ### 2026-11-14/15 – M6a: Testmodul-Grundlage (B0, P1-Synthese, Metriken)
 **Ziel der Sitzung:** Das Testmodul bauen: Testset aus der Ground Truth, P1 mit Antwortsynthese und B0 als Volltext-Baseline neben dem Agenten, eigene Metriken und einen Lauf, der Antworten und Bewertung getrennt speichert; erster Probelauf mit 3 Fragen.
