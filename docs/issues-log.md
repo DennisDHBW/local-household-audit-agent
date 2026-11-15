@@ -34,13 +34,23 @@
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** nein
 
-### ISS-041 – Verdacht: Ollama kürzt Prompts auf 4.096 Token trotz `num_ctx` 8192
+### ISS-043 – Ollama vom Kernel wegen Speichermangel beendet (RUN-007)
+- **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
+- **Kategorie:** hardware
+- **Status:** offen (Gegenmaßnahme eingebaut, Wirkung wird in RUN-008 geprüft)
+- **Symptom:** Nach B0 (3 lange Prompts), P1 und dem ersten P2-Lauf meldet das Journal um 23:37 `ollama.service: The kernel OOM killer killed some processes` und `Failed with result 'oom-kill'`; systemd startet Ollama neu, der Evaluationslauf bricht mit `ConnectionError` ab.
+- **Ursache:** Nicht sicher belegt. Geladen waren `llama3.1:8b` (6,2 GB laut `ollama ps`, mit 8.192 Token KV-Cache) und `nomic-embed-text` unter `MemoryMax=9G`. Der llama-server meldet `idle slots will be saved to prompt cache` und `context checkpoints enabled, max = 32`; Vermutung: Der Prompt-Cache der langen B0-Prompts wuchs im RAM, bis die Grenze erreicht war.
+- **Lösung / Workaround:** Vor jeder Variante entlädt `generate` die Modelle (`keep_alive=0`), damit Modell und Prompt-Cache neu beginnen (kostet ca. 10 s Ladezeit je Variante). Tritt der Fehler wieder auf: Speicher während des Laufs mit `systemctl status ollama` beobachten.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Hardware/Betrieb
+
+### ISS-041 – Ollama kürzt zu lange Prompts still auf die Hälfte (Token-Schätzung zu niedrig)
 - **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
 - **Kategorie:** llm
-- **Status:** offen
-- **Symptom:** Alle drei B0-Aufrufe in RUN-007 melden `prompt_eval_count` = 4.098, obwohl die Fragen verschieden lang sind und der Kontext auf 5.000–6.900 Token geschätzt war. Die Antworten nutzen nur Werte aus den hinteren Dateien (06, 07); Datei 01 am Anfang fehlt offenbar.
-- **Ursache:** noch offen. Möglich: Ollama übernimmt `num_ctx` aus den Optionen nicht (Dienst-Einstellung oder Modellgrenze) und schneidet den Anfang ab. Falls ja, betrifft das auch den Agenten: Sein Kontextwächter rechnet mit 8.192 Token, längere Läufe (G1, S4 in RUN-005/006) könnten unbemerkt gekürzt worden sein (vgl. ISS-036).
-- **Lösung / Workaround:** Messung mit `scripts/probe_context.py` (drei Prompts mit ca. 1.500/3.000/6.000 Token, Frage nach Zeile 0, `ollama ps`).
+- **Status:** gelöst (Schätzung korrigiert), Prüfung früherer Agentenläufe offen
+- **Symptom:** Alle drei B0-Aufrufe in RUN-007 melden `prompt_eval_count` = 4.098. Das Journal zeigt `truncating input prompt limit=4098 prompt=8424 keep=4 new=4098`: Der Prompt hatte real 8.424 Token, mehr als `num_ctx` 8192, und Ollama behielt nur die letzten ca. 4.096 Token. Die Antworten kannten deshalb nur die hinteren Dateien (06, 07).
+- **Ursache:** Meine Token-Schätzung „Zeichen/3“ (aus M5) war zu optimistisch. Gemessen: B0-Text mit vielen Tabellenzahlen 2,5 Zeichen/Token, Messtext 2,8 Zeichen/Token. `num_ctx` selbst wirkt: `scripts/probe_context.py` schickte 7.537 Token ungekürzt (`ollama ps`: `context_length` 8192), Zeile 0 wurde richtig beantwortet.
+- **Lösung / Workaround:** `CHARS_PER_TOKEN` = 2,4 (gilt auch für den Kontextwächter des Agenten, der jetzt früher stoppt). B0 passt damit noch 6 Dateien (01–06, ca. 16.100 Zeichen). Ob in RUN-005/006 Agentenläufe gekürzt wurden, ist nicht geprüft (Journal nur ab 22:00 gesichert); die gemeldeten Prompt-Größen dort lagen unter 2.600 Token.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Hardware/Betrieb, Evaluation (Grenzen)
 
@@ -58,7 +68,7 @@
 - **Datum / Meilenstein:** 2026-11-14 / M6a
 - **Kategorie:** evaluation
 - **Status:** akzeptiert
-- **Symptom:** Bei `num_ctx` 8192 passen nach Prompt, Antwort und Reserve ca. 7.000 geschätzte Token Seitentext in B0, das sind die Dateien 01–08 (Strom komplett, Gasvertrag, Gasrechnung 2024). Fragen zu Wasser (S3), Nebenkosten (G2), Gas 2025 (Z1) und Preisanpassung Gas (S1, Datei 09) kann B0 daher nicht beantworten.
+- **Symptom:** Bei `num_ctx` 8192 passen nach Prompt, Antwort und Reserve ca. 7.000 geschätzte Token Seitentext in B0. Seit der korrigierten Schätzung (ISS-041) sind das die Dateien 01–06 (nur Strom). Fragen zu Gas (S1, Z1), Wasser (S3) und Nebenkosten (G2) kann B0 daher nicht beantworten; die Stromfragen sind durch die Reihenfolge begünstigt.
 - **Ursache:** Der Korpus hat ca. 60.000 Zeichen Seitentext; Entscheidung für Variante A (Katalogreihenfolge, gleicher Kontext für alle Fragen), ADR-0011.
 - **Lösung / Workaround:** Bewusst so gelassen: Genau das ist die Aussage von B0 („Volltext passt auf dieser Hardware nicht“). Im Bericht steht, welche Dateien im Kontext waren (`manifest.json`). Die Schätzung Zeichen/3 ist vorsichtig; real ist der Prompt kürzer.
 - **Gelernt:**

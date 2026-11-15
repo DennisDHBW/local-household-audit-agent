@@ -326,7 +326,7 @@ Daraus folgt: keine Bildanalyse zur Abfragezeit (nur gecachte Captions) und kein
 ### 11.1 Aufbau des Testmoduls
 - Testset: die Fragen aus `dataset/ground_truth.yaml` (erwartete Antwort, Fakten, Quellen mit Datei + Seite, erwartete Tools, Kategorie); ein eigenes `testset.yaml` entfällt (M6a, ADR-0011)
 - `python -m audit_agent.evaluation generate` führt die Fragen gegen **drei Varianten** aus und schreibt je Variante eine JSON-Zeile pro Antwort; `score` bewertet die gespeicherten Antworten ohne Ollama (`scores.json`, `report.md`):
-  - **B0 – Volltext-Baseline:** Seitentext in Katalogreihenfolge, bis das Kontextfenster voll ist (bei `num_ctx` 8192 die Dateien 01–08, ISS-039), direkt im Prompt
+  - **B0 – Volltext-Baseline:** Seitentext in Katalogreihenfolge, bis das Kontextfenster voll ist (bei `num_ctx` 8192 die Dateien 01–06, ISS-039), direkt im Prompt
   - **P1 – Modulare Pipeline:** eine Suche (Top-5, ohne Filter, mit Boost), danach ein Modellaufruf mit nummerierten Treffern
   - **P2 – Agentic RAG:** der Agent aus M5
   - Alle drei mit demselben Modell, denselben Chat-Optionen und demselben Belegformat `[n]`

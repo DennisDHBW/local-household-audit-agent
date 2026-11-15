@@ -223,7 +223,7 @@
 - **Varianten:** B0 (Volltext), P1 (Pipeline), P2 (Agent)
 - **Konfiguration:** `llama3.1:8b`, `num_ctx` 8192, Temperatur 0; B0 mit Dateien 01–08 (ca. 6.900 geschätzte Token); P1 Top-5 ohne Filter mit Boost; P2 wie RUN-006; Fragen S2, G1, N1; Befehl `uv run python -m audit_agent.evaluation generate --run-id run-007 --ids S2 G1 N1`
 - **Dauer:** ca. 16 Minuten bis zum Abbruch; B0 je Frage rund 300 s, P1 31–60 s, P2/S2 207 s
-- **Abbruch:** Bei P2/G1 war Ollama nicht mehr erreichbar (`ConnectionError`); 7 von 9 Antworten gespeichert. Ursache offen (Journal in `ollama-journal.txt`). Der CLI fing den Fehler nicht ab und schrieb `manifest.json` erst am Ende (ISS-042, behoben).
+- **Abbruch:** Bei P2/G1 war Ollama nicht mehr erreichbar (`ConnectionError`); 7 von 9 Antworten gespeichert. Ursache: OOM-Kill (ISS-043). Der CLI fing den Fehler nicht ab und schrieb `manifest.json` erst am Ende (ISS-042, behoben).
 - **Rohdaten:** `data/eval/run-007/` (`answers-*.jsonl`, `p2-S2.jsonl`, `report.md`, `scores.json`), `data/eval/run-007.log`
 
 | Frage | B0 Volltext | P1 Pipeline | P2 Agent |
@@ -232,9 +232,10 @@
 | G1 | Urteil „nicht angewendet“, aber Begründung falsch (vergleicht mit dem Gaspreis) | „keine Angaben“, obwohl 03 und 06 unter den Top-5 waren | nicht gelaufen |
 | N1 | ehrlich („keine Informationen“) | ehrlich („keine Angaben“) | nicht gelaufen |
 
-- **Wichtigster Befund (ISS-041):** Alle drei B0-Aufrufe melden genau 4.098 Prompt-Token, obwohl die Fragen verschieden lang sind und der Kontext auf ca. 5.000–6.900 Token geschätzt war. Die B0-Antworten zitieren Werte aus den hinteren Dateien (06 Rechnung 2025, 07 Gasvertrag) und nicht aus Datei 01 am Anfang. Das spricht dafür, dass Ollama den Prompt auf 4.096 Token kürzt und den Anfang verwirft, obwohl `num_ctx` 8192 übergeben wird. Damit ist der B0-Teil dieses Laufs nicht verwertbar. Messung mit `scripts/probe_context.py` läuft.
+- **Wichtigster Befund (ISS-041):** Alle drei B0-Aufrufe melden genau 4.098 Prompt-Token. Das Journal bestätigt: Der B0-Prompt hatte real 8.424 Token (geschätzt ca. 7.200), Ollama kürzte ihn auf die letzten ca. 4.096 Token. Die B0-Antworten kannten deshalb nur Datei 06/07. Der B0-Teil dieses Laufs ist nicht verwertbar. Messung mit `scripts/probe_context.py` (`context-probe.json`): 1.912 / 3.787 / 7.537 Token kamen ungekürzt an, Zeile 0 jedes Mal richtig, `context_length` 8192; Prefill 19,7 / 17,8 / 15,0 Token/s (bei langem Prompt langsamer). Ursache war also die Schätzung Zeichen/3, nicht `num_ctx`; neu 2,4 Zeichen/Token.
+- **Abbruch-Ursache (ISS-043):** Kernel-OOM-Kill von `ollama.service` um 23:37 (`ollama-journal.txt`). Gegenmaßnahme: Modelle vor jeder Variante entladen.
 - **P1:** Die Suche mit der ganzen Frage findet für S2 den Vertrag nicht (Top-5: Preisanpassungen 03/09 und Rechnung 04); für G1 waren die richtigen Dokumente dabei, das Modell antwortete trotzdem „keine Angaben“. P1 rät nie, beantwortet aber auch nichts: 2 von 3 Antworten „keine Angaben“.
 - **Metrik-Korrekturen nach dem Lesen:** B0/N1 („Ich habe keine Informationen …“) wurde zuerst nicht als ehrliche Lücke erkannt, B0/G1 nicht als „nein“ (Schluss im letzten Satz). Beides angepasst (ISS-038); B0/G1 zählt jetzt als „Fehler erkannt“, obwohl die Begründung falsch ist: Das Urteil allein ist kein Beleg für eine richtige Prüfung.
 - **Grenzen der Messung:** 3 Fragen, ein Lauf, P2 nur 1 Frage, B0 vermutlich abgeschnitten.
 - **Meine Deutung (eigene Worte):**
-- **Konsequenz / nächster Schritt:** Erst Kontextlänge klären (ISS-041), dann RUN-007 mit demselben Befehl fortsetzen oder neu starten.
+- **Konsequenz / nächster Schritt:** RUN-007 bleibt als dokumentierter Fehlschlag stehen; Wiederholung mit korrigierter Schätzung und Entladen zwischen den Varianten als RUN-008.
