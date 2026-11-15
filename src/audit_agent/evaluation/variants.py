@@ -82,6 +82,7 @@ def _single_call_answer(
     model: str,
     step: ModelCallStep,
     sources: tuple[ShownSource, ...],
+    contexts: tuple[str, ...],
     started: float,
 ) -> VariantAnswer:
     return VariantAnswer(
@@ -93,6 +94,7 @@ def _single_call_answer(
         seconds=round(time.perf_counter() - started, 1),
         sources=sources,
         model_calls=(step,),
+        contexts=contexts,
     )
 
 
@@ -125,7 +127,9 @@ class PipelineVariant:
         )
         context = "\n\n".join(blocks) or NO_HITS
         step = _ask_once(self._client, self._settings, model, context, question.question)
-        return _single_call_answer(self.name, question, model, step, sources, started)
+        return _single_call_answer(
+            self.name, question, model, step, sources, tuple(blocks), started
+        )
 
 
 class FullTextContext(BaseModel):
@@ -134,6 +138,8 @@ class FullTextContext(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     text: str
+    blocks: tuple[str, ...]
+    """The numbered page blocks that ``text`` joins."""
     sources: tuple[ShownSource, ...]
     budget_tokens: int
     estimated_tokens: int
@@ -191,6 +197,7 @@ def build_full_text_context(settings: Settings, catalog: DocumentCatalog) -> Ful
                 missing = files[index + 1 :] if partial else files[index:]
                 return FullTextContext(
                     text="\n\n".join(blocks),
+                    blocks=tuple(blocks),
                     sources=tuple(sources),
                     budget_tokens=budget,
                     estimated_tokens=used,
@@ -204,6 +211,7 @@ def build_full_text_context(settings: Settings, catalog: DocumentCatalog) -> Ful
         complete.append(file)
     return FullTextContext(
         text="\n\n".join(blocks),
+        blocks=tuple(blocks),
         sources=tuple(sources),
         budget_tokens=budget,
         estimated_tokens=used,
@@ -225,8 +233,11 @@ class FullTextVariant:
 
     def answer(self, question: Question, model: str) -> VariantAnswer:
         started = time.perf_counter()
-        step = _ask_once(self._client, self._settings, model, self._context.text, question.question)
-        return _single_call_answer(self.name, question, model, step, self._context.sources, started)
+        context = self._context
+        step = _ask_once(self._client, self._settings, model, context.text, question.question)
+        return _single_call_answer(
+            self.name, question, model, step, context.sources, context.blocks, started
+        )
 
 
 def answer_from_run(question: Question, run: AgentRun) -> VariantAnswer:
@@ -253,6 +264,11 @@ def answer_from_run(question: Question, run: AgentRun) -> VariantAnswer:
             if isinstance(step, ToolCallStep)
         ),
         model_calls=tuple(step for step in run.steps if isinstance(step, ModelCallStep)),
+        contexts=tuple(
+            step.observation
+            for step in run.steps
+            if isinstance(step, ToolCallStep) and step.is_valid
+        ),
     )
 
 

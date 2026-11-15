@@ -86,7 +86,7 @@ def _build_variant(
 ) -> Variant:
     if name == "b0":
         context = build_full_text_context(settings, load_document_catalog(settings.documents_file))
-        manifest["b0_context"] = context.model_dump(exclude={"text", "sources"})
+        manifest["b0_context"] = context.model_dump(exclude={"text", "blocks", "sources"})
         return FullTextVariant(settings, client, context)
     if name == "p1":
         collection = get_collection(settings, open_vector_client(settings))
