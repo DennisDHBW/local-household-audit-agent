@@ -29,6 +29,8 @@ class ModelNames(BaseModel):
     summary: str = "llama3.2"
     agent: str = "llama3.1:8b"
     agent_candidates: tuple[str, ...] = ("qwen2.5:7b", "llama3.1:8b")
+    judge: str = "audit-judge"
+    """RAGAS judge: ``qwen2.5:7b`` with a fixed context (``scripts/audit-judge.Modelfile``)."""
 
     def required_for_smoke_test(self) -> tuple[str, ...]:
         """All distinct model tags the smoke test needs, in a stable order."""
@@ -132,6 +134,13 @@ class EvaluationSettings(BaseModel):
 
     full_text_reserve_tokens: int = Field(default=300, ge=0)
     """B0: tokens kept free for the question and the chat template besides the answer."""
+    judge_num_ctx: int = Field(default=8192, ge=512)
+    """Context of the RAGAS judge; must equal ``num_ctx`` in ``scripts/audit-judge.Modelfile``.
+
+    Ollama's OpenAI endpoint takes no per-request ``num_ctx``, so the model alias fixes it.
+    """
+    judge_max_tokens: int = Field(default=1024, ge=64)
+    """Generation limit of one judge call (statements, verdicts, classifications)."""
 
 
 class Settings(BaseModel):
@@ -205,7 +214,7 @@ class Settings(BaseModel):
             values["project_root"] = Path(root)
 
         model_values: dict[str, object] = {}
-        for field in ("embedding", "vision", "summary", "agent"):
+        for field in ("embedding", "vision", "summary", "agent", "judge"):
             raw = get(f"MODEL_{field.upper()}")
             if raw is not None:
                 model_values[field] = raw

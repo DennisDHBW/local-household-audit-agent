@@ -1,12 +1,14 @@
-"""CLI: ``uv run python -m audit_agent.evaluation generate | score`` (concept.md, 11.1).
+"""CLI: ``uv run python -m audit_agent.evaluation generate | score | ragas`` (concept.md, 11).
 
 ``generate`` needs Ollama and writes the answers; ``score`` needs nothing but the files and
-writes ``scores.json`` and ``report.md``. ``generate`` scores at the end as well.
+writes ``scores.json`` and ``report.md``; ``ragas`` judges the stored answers with a local
+model (ADR-0012). ``generate`` and ``ragas`` score at the end as well.
 """
 
 from __future__ import annotations
 
 import argparse
+import asyncio
 import json
 import logging
 import sys
@@ -25,6 +27,16 @@ from audit_agent.evaluation.models import (
     EvaluationError,
     VariantName,
 )
+from audit_agent.evaluation.ragas_eval import (
+    RAGAS_LABELS,
+    RAGAS_METRICS,
+    RagasJudge,
+    RagasScore,
+    evaluate_run,
+    load_ragas_scores,
+    ragas_path,
+    summarize_ragas,
+)
 from audit_agent.evaluation.report import render_report
 from audit_agent.evaluation.store import (
     answers_path,
@@ -42,9 +54,10 @@ from audit_agent.evaluation.variants import (
     build_full_text_context,
     needs_index,
 )
-from audit_agent.preflight import MissingModelError, ensure_models_available
+from audit_agent.preflight import MissingModelError, ensure_models_available, find_missing_models
 from audit_agent.retrieval import RetrievalError, Retriever, get_collection, open_vector_client
 
+JUDGE_MODELFILE = "scripts/audit-judge.Modelfile"
 DEFAULT_QUESTION_IDS = ("S2", "G1", "N1")
 """Quick subset: table lookup, audit with a planted error, negative question."""
 MANIFEST_FILE = "manifest.json"
@@ -66,6 +79,13 @@ def _parser() -> argparse.ArgumentParser:
 
     score = commands.add_parser("score", help="score stored answers (no Ollama needed)")
     score.add_argument("--run-id", required=True)
+
+    ragas = commands.add_parser("ragas", help="judge stored answers with RAGAS (needs Ollama)")
+    ragas.add_argument("--run-id", required=True)
+    ragas.add_argument("--variants", nargs="+", choices=VARIANT_NAMES, default=list(VARIANT_NAMES))
+    ragas.add_argument("--metrics", nargs="+", choices=RAGAS_METRICS, default=list(RAGAS_METRICS))
+    ragas.add_argument("--judge", help="judge model (default: AUDIT_MODEL_JUDGE)")
+    ragas.add_argument("--retry-errors", action="store_true", help="judge failed answers again")
     return parser
 
 
@@ -148,19 +168,71 @@ def _score(settings: Settings, run_id: str) -> int:
         raise EvaluationError(f"answers for unknown questions: {unknown}")
     scores = [score_answer(by_id[a.question_id], a, catalog) for a in answers]
     summaries = summarize(scores)
+    ragas = load_ragas_scores(ragas_path(run_dir))
     payload = {
         "summaries": [s.model_dump(mode="json") for s in summaries],
+        "ragas": [s.model_dump(mode="json") for s in summarize_ragas(ragas)],
         "scores": [s.model_dump(mode="json") for s in scores],
     }
     (run_dir / "scores.json").write_text(
         json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8"
     )
     report = render_report(
-        run_id, truth.questions, answers, scores, summaries, _read_manifest(run_dir)
+        run_id, truth.questions, answers, scores, summaries, _read_manifest(run_dir), ragas
     )
     (run_dir / "report.md").write_text(report, encoding="utf-8")
     print(f"report: {run_dir / 'report.md'}")
     return 0
+
+
+def _ragas(args: argparse.Namespace, settings: Settings, client: Client) -> int:
+    judge_model = args.judge or settings.models.judge
+    if find_missing_models(installed_models(client), [judge_model]):
+        raise EvaluationError(
+            f"judge model {judge_model} is missing; run once: "
+            f"ollama create {judge_model} -f {JUDGE_MODELFILE}"
+        )
+    run_dir = settings.eval_dir / args.run_id
+    variants = set(args.variants)
+    answers = [answer for answer in load_run(run_dir) if answer.variant in variants]
+    answer_models = sorted({answer.model for answer in answers})
+    _unload(client, [*answer_models, settings.models.embedding])  # RAM for the judge (ISS-043)
+    truth = load_ground_truth(settings.ground_truth_file)
+    judge = RagasJudge(settings, judge_model)
+    manifest = _read_manifest(run_dir)
+    manifest["ragas"] = {
+        "judge": judge_model,
+        "judge_num_ctx": settings.evaluation.judge_num_ctx,
+        "judge_max_tokens": settings.evaluation.judge_max_tokens,
+        "metrics": list(args.metrics),
+    }
+    _write_manifest(run_dir, manifest)
+
+    def report(score: RagasScore) -> None:
+        value = "" if score.value is None else f" {score.value:.2f}"
+        print(
+            f"   {VARIANT_LABELS[score.variant]} {score.question_id} "
+            f"{RAGAS_LABELS[score.metric]}: {score.status}{value} ({score.seconds} s) "
+            f"{score.detail}",
+            file=sys.stderr,
+        )
+
+    try:
+        asyncio.run(
+            evaluate_run(
+                answers,
+                {question.id: question for question in truth.questions},
+                judge,
+                settings,
+                ragas_path(run_dir),
+                metrics=args.metrics,
+                retry_errors=args.retry_errors,
+                on_score=report,
+            )
+        )
+    finally:
+        _unload(client, [judge_model])
+    return _score(settings, args.run_id)
 
 
 def _unload(client: Client, models: list[str]) -> None:
@@ -180,6 +252,8 @@ def main() -> int:
         if args.command == "score":
             return _score(settings, args.run_id)
         client = Client(host=settings.ollama_host, timeout=settings.ollama_timeout_s)
+        if args.command == "ragas":
+            return _ragas(args, settings, client)
         try:
             return _generate(args, settings, client)
         finally:
