@@ -217,3 +217,24 @@
 - **Grenzen der Messung:** wie RUN-005 (4 Fragen, ein Lauf, ein Modell, Antworten von Hand gelesen).
 - **Meine Deutung (eigene Worte):**
 - **Konsequenz / nächster Schritt:** Die Technik (Schleife, Argumentprüfung, Log, Oberfläche) steht; die Antwortqualität von `llama3.1:8b` bei Tool-Wahl und Filtern nicht (2 von 4). Weitere Prompt-Arbeit an vier Fragen wäre Anpassen an den Test. M6 misst alle 12 Fragen mit `llama3.1:8b` und `qwen2.5:7b` und prüft Gegenmaßnahmen: gemeinsames Suchwerkzeug (ISS-006), Filter nur durch Code statt durch das Modell (ISS-007), Beispiele im Prompt.
+
+### RUN-007 – Testmodul M6a, erster Probelauf B0/P1/P2 (3 Fragen, `llama3.1:8b`, abgebrochen)
+- **Datum / Commit:** 2026-11-14 · Branch `feat/m6a-eval-harness`, Stand `docs: record evaluation harness (ADR-0011) …`
+- **Varianten:** B0 (Volltext), P1 (Pipeline), P2 (Agent)
+- **Konfiguration:** `llama3.1:8b`, `num_ctx` 8192, Temperatur 0; B0 mit Dateien 01–08 (ca. 6.900 geschätzte Token); P1 Top-5 ohne Filter mit Boost; P2 wie RUN-006; Fragen S2, G1, N1; Befehl `uv run python -m audit_agent.evaluation generate --run-id run-007 --ids S2 G1 N1`
+- **Dauer:** ca. 16 Minuten bis zum Abbruch; B0 je Frage rund 300 s, P1 31–60 s, P2/S2 207 s
+- **Abbruch:** Bei P2/G1 war Ollama nicht mehr erreichbar (`ConnectionError`); 7 von 9 Antworten gespeichert. Ursache offen (Journal in `ollama-journal.txt`). Der CLI fing den Fehler nicht ab und schrieb `manifest.json` erst am Ende (ISS-042, behoben).
+- **Rohdaten:** `data/eval/run-007/` (`answers-*.jsonl`, `p2-S2.jsonl`, `report.md`, `scores.json`), `data/eval/run-007.log`
+
+| Frage | B0 Volltext | P1 Pipeline | P2 Agent |
+|---|---|---|---|
+| S2 | falsch: 33,19 ct/kWh und 10,84 EUR netto (Werte der Rechnung 2025, als „Vertrag [1]“ zitiert) | „keine Angaben“; Vertrag nicht unter den Top-5 | richtig (34,80 ct/kWh, 11,50 EUR brutto), ohne Belegnummer |
+| G1 | Urteil „nicht angewendet“, aber Begründung falsch (vergleicht mit dem Gaspreis) | „keine Angaben“, obwohl 03 und 06 unter den Top-5 waren | nicht gelaufen |
+| N1 | ehrlich („keine Informationen“) | ehrlich („keine Angaben“) | nicht gelaufen |
+
+- **Wichtigster Befund (ISS-041):** Alle drei B0-Aufrufe melden genau 4.098 Prompt-Token, obwohl die Fragen verschieden lang sind und der Kontext auf ca. 5.000–6.900 Token geschätzt war. Die B0-Antworten zitieren Werte aus den hinteren Dateien (06 Rechnung 2025, 07 Gasvertrag) und nicht aus Datei 01 am Anfang. Das spricht dafür, dass Ollama den Prompt auf 4.096 Token kürzt und den Anfang verwirft, obwohl `num_ctx` 8192 übergeben wird. Damit ist der B0-Teil dieses Laufs nicht verwertbar. Messung mit `scripts/probe_context.py` läuft.
+- **P1:** Die Suche mit der ganzen Frage findet für S2 den Vertrag nicht (Top-5: Preisanpassungen 03/09 und Rechnung 04); für G1 waren die richtigen Dokumente dabei, das Modell antwortete trotzdem „keine Angaben“. P1 rät nie, beantwortet aber auch nichts: 2 von 3 Antworten „keine Angaben“.
+- **Metrik-Korrekturen nach dem Lesen:** B0/N1 („Ich habe keine Informationen …“) wurde zuerst nicht als ehrliche Lücke erkannt, B0/G1 nicht als „nein“ (Schluss im letzten Satz). Beides angepasst (ISS-038); B0/G1 zählt jetzt als „Fehler erkannt“, obwohl die Begründung falsch ist: Das Urteil allein ist kein Beleg für eine richtige Prüfung.
+- **Grenzen der Messung:** 3 Fragen, ein Lauf, P2 nur 1 Frage, B0 vermutlich abgeschnitten.
+- **Meine Deutung (eigene Worte):**
+- **Konsequenz / nächster Schritt:** Erst Kontextlänge klären (ISS-041), dann RUN-007 mit demselben Befehl fortsetzen oder neu starten.

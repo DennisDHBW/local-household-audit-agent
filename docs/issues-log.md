@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-042 – Evaluations-CLI fing einen Verbindungsabbruch nicht ab
+- **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Als Ollama während RUN-007 nicht mehr erreichbar war, endete `generate` mit einem Python-Traceback. `manifest.json` (welche Dateien im B0-Kontext waren) fehlte, weil es erst am Ende geschrieben wurde; auch das Entladen der Modelle im `finally` hätte erneut eine Ausnahme geworfen.
+- **Ursache:** Von Claude nur für `ResponseError` geplant, nicht für `ConnectionError`; Manifest als „Abschlussdatei“ gedacht statt als Beschreibung des Laufs.
+- **Lösung / Workaround:** `ConnectionError` wird abgefangen (Hinweis: derselbe Befehl setzt fort), das Entladen ignoriert ihn, das Manifest wird vor der ersten Antwort geschrieben. Die gespeicherten Antworten blieben dank JSON-Zeilen erhalten.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-041 – Verdacht: Ollama kürzt Prompts auf 4.096 Token trotz `num_ctx` 8192
+- **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
+- **Kategorie:** llm
+- **Status:** offen
+- **Symptom:** Alle drei B0-Aufrufe in RUN-007 melden `prompt_eval_count` = 4.098, obwohl die Fragen verschieden lang sind und der Kontext auf 5.000–6.900 Token geschätzt war. Die Antworten nutzen nur Werte aus den hinteren Dateien (06, 07); Datei 01 am Anfang fehlt offenbar.
+- **Ursache:** noch offen. Möglich: Ollama übernimmt `num_ctx` aus den Optionen nicht (Dienst-Einstellung oder Modellgrenze) und schneidet den Anfang ab. Falls ja, betrifft das auch den Agenten: Sein Kontextwächter rechnet mit 8.192 Token, längere Läufe (G1, S4 in RUN-005/006) könnten unbemerkt gekürzt worden sein (vgl. ISS-036).
+- **Lösung / Workaround:** Messung mit `scripts/probe_context.py` (drei Prompts mit ca. 1.500/3.000/6.000 Token, Frage nach Zeile 0, `ollama ps`).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Hardware/Betrieb, Evaluation (Grenzen)
+
 ### ISS-040 – Fehlererkennung misst nur einen der drei eingebauten Fehler
 - **Datum / Meilenstein:** 2026-11-14 / M6a
 - **Kategorie:** evaluation
@@ -50,7 +70,7 @@
 - **Status:** akzeptiert
 - **Symptom:** (1) Eine erwartete Zahl gilt als gefunden, wenn sie irgendwo in der Antwort steht, auch in einem falschen Zusammenhang. (2) Textfakten werden als ganzes Wort gesucht; „31. Dezember 2025“ trifft „31.12.2025“ nicht. (3) Das Urteil ja/nein wird aus dem ersten Satz gelesen (führendes Ja/Nein, sonst Signalwörter wie „nicht“, „abweich“, „stimmt“); Sätze wie „weicht nicht ab“ werden falsch eingeordnet. (4) Vorher zählte ein Textfakt „ja“ als gefunden, sobald „Jahresabrechnung“ in der Antwort stand, und eine Belegnummer `[25]` als Zahl 25; beides ist behoben.
 - **Ursache:** Deterministische Prüfung ohne LLM-Bewerter (ADR-0011).
-- **Lösung / Workaround:** `report.md` zeigt jede Antwort mit erkanntem Urteil und fehlenden Fakten, Fehlurteile werden beim Auswerten von Hand korrigiert und hier notiert. RAGAS (M6b) als zweite Sicht.
+- **Lösung / Workaround:** `report.md` zeigt jede Antwort mit erkanntem Urteil und fehlenden Fakten, Fehlurteile werden beim Auswerten von Hand korrigiert und hier notiert. RAGAS (M6b) als zweite Sicht. Nach RUN-007: „keine Informationen“ zählt als ehrliche Lücke; das Urteil wird auch aus dem letzten Satz gelesen. Ein richtiges Ja/Nein kann eine falsche Begründung haben (B0/G1); deshalb zählt eine Antwort nur mit allen Fakten als richtig.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Evaluation (Metriken, Grenzen)
 
