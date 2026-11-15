@@ -1,6 +1,6 @@
 """Retrieval comparison for ADR-0002: metadata filter and hierarchy boost on or off.
 
-Runs the 12 questions of the ground truth against several search configurations and checks
+Runs the questions of the ground truth against several search configurations and checks
 the top hits against the expected sources. The ground truth is used only here, never by
 index or search. The filters stand for what a correct agent would pass for each question.
 """
@@ -22,6 +22,8 @@ QUESTION_FILTERS: dict[str, MetadataFilter] = {
     "S5": MetadataFilter(utility_type=UtilityType.ELECTRICITY),
     "G1": MetadataFilter(utility_type=UtilityType.ELECTRICITY),
     "G2": MetadataFilter.for_year(2025, utility_type=UtilityType.SERVICE_CHARGES),
+    "G3": MetadataFilter(utility_type=UtilityType.GAS),
+    "G4": MetadataFilter.for_year(2026, utility_type=UtilityType.SERVICE_CHARGES),
     "N1": MetadataFilter(utility_type=UtilityType.ELECTRICITY),
     "N2": MetadataFilter(utility_type=UtilityType.DISTRICT_HEATING),
     "Z1": MetadataFilter.for_year(2025, utility_type=UtilityType.GAS),

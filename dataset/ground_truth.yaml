@@ -1,4 +1,4 @@
-# Ground Truth: 12-Fragen-Katalog (concept.md, Abschnitt 11.2), eingebaute Fehler und erwartete Prüfurteile.
+# Ground Truth: 14-Fragen-Katalog (concept.md, Abschnitt 11.2), eingebaute Fehler und erwartete Prüfurteile.
 # Struktur siehe audit_agent.corpus.models. Beträge in EUR brutto, Preise in ct/kWh, falls nicht anders angegeben.
 # Dateipfade relativ zu dataset/, Seiten ab 1.
 
@@ -77,6 +77,7 @@ questions:
       - { file: 01_electricity_suedvolt/03_Strom_Preisanpassung_SuedVolt_2025.pdf, page: 1 }
       - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
     expected_tools: [search_tables, calculate]
+    planted_error: E1
     tests: Multi-Hop über zwei Dokumente, Fehlererkennung
 
   - id: G2
@@ -92,6 +93,36 @@ questions:
       - { file: 04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf, page: 1 }
     expected_tools: [search_tables, calculate]
     tests: Mietvertrag gegen Abrechnung, keine Fehlalarme
+
+  - id: G3
+    category: edge_case
+    question: Ist die Gasabrechnung 2026 korrekt?
+    expected_answer: Nein. Abgerechnet wurde mit z-Zahl 1,0000 statt 0,9560 (wie 2024 und 2025); richtig wären 1.060 m³ × 0,9560 × 11,150 kWh/m³ = 11.299 kWh statt 11.819 kWh, das sind 51,74 EUR zu viel.
+    facts:
+      - { label: Korrekte z-Zahl, value: 0.9560, tolerance: 0 }
+      - { label: Korrekte Energiemenge, value: 11299, unit: kWh, tolerance: 1 }
+      - { label: Zu viel berechnet, value: 51.74, unit: EUR }
+    sources:
+      - { file: 02_gas_neckarenergie/29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf, page: 1 }
+      - { file: 02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf, page: 1 }
+    expected_tools: [search_tables, calculate]
+    planted_error: E2
+    tests: Fehlererkennung durch Vergleich mit dem Vorjahr, Rechnen mit Umrechnungsfaktoren
+
+  - id: G4
+    category: edge_case
+    question: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+    expected_answer: Nein. Abgerechnet wurden 82 m² (26,28 %) statt der im Mietvertrag vereinbarten 78 m² (25 %); richtig wären 25 % von 7.470,00 EUR = 1.867,50 EUR statt 1.963,28 EUR.
+    facts:
+      - { label: Wohnfläche laut Mietvertrag, value: 78, unit: m², tolerance: 0 }
+      - { label: Abgerechnete Wohnfläche, value: 82, unit: m², tolerance: 0 }
+      - { label: Korrekter Anteil, value: 1867.50, unit: EUR }
+    sources:
+      - { file: 04_housing_utilities_contractors/16_Mietvertrag_Hauptstrasse42_2023.pdf, page: 1 }
+      - { file: 04_housing_utilities_contractors/30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf, page: 1 }
+    expected_tools: [search_tables, calculate]
+    planted_error: E3
+    tests: Mietvertrag gegen Abrechnung, Fehlererkennung
 
   - id: N1
     category: negative

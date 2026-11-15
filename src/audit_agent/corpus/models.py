@@ -50,10 +50,11 @@ class QuestionCategory(StrEnum):
 
 REQUIRED_QUESTION_COUNTS: dict[QuestionCategory, int] = {
     QuestionCategory.STANDARD: 5,
-    QuestionCategory.EDGE_CASE: 2,
+    QuestionCategory.EDGE_CASE: 4,
     QuestionCategory.NEGATIVE: 2,
     QuestionCategory.ADDITIONAL: 3,
 }
+"""Lecture minimum 5/2/2 plus 3 additional questions; G3 and G4 cover the errors E2/E3 (ISS-040)."""
 
 
 class _Frozen(BaseModel):
@@ -131,6 +132,8 @@ class Question(_Frozen):
     sources: tuple[SourceRef, ...] = ()
     expected_tools: tuple[str, ...] = ()
     is_answerable: bool = True
+    planted_error: str | None = None
+    """Id of the built-in error this question should uncover (``E1`` …), if any."""
     tests: str
 
     @model_validator(mode="after")
@@ -197,6 +200,11 @@ class GroundTruth(_Frozen):
         for error in self.planted_errors:
             if error.file not in checks:
                 raise ValueError(f"{error.id}: faulty document missing in audit_checks")
+        asked = [q.planted_error for q in self.questions if q.planted_error]
+        if sorted(asked) != sorted(error_ids):
+            raise ValueError(
+                f"every planted error needs exactly one question; questions cover {sorted(asked)}"
+            )
         return self
 
     def referenced_files(self) -> set[str]:

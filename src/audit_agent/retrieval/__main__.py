@@ -44,7 +44,7 @@ def _parser() -> argparse.ArgumentParser:
     search.add_argument("--require-heading", action="store_true")
     search.add_argument("--top-k", type=int)
 
-    compare = commands.add_parser("compare", help="compare filter/boost on the 12 questions")
+    compare = commands.add_parser("compare", help="compare filter/boost on the question catalog")
     compare.add_argument("--run-id", default="retrieval", help="folder name under data/eval/")
     return parser
 

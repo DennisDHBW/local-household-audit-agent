@@ -61,7 +61,7 @@ def _parser() -> argparse.ArgumentParser:
         "--variants", nargs="+", choices=VARIANT_NAMES, default=list(VARIANT_NAMES)
     )
     generate.add_argument("--ids", nargs="+", default=list(DEFAULT_QUESTION_IDS))
-    generate.add_argument("--all", action="store_true", help="all 12 questions")
+    generate.add_argument("--all", action="store_true", help="all questions of the catalog")
     generate.add_argument("--model", help="answer model (default: AUDIT_MODEL_AGENT)")
 
     score = commands.add_parser("score", help="score stored answers (no Ollama needed)")
