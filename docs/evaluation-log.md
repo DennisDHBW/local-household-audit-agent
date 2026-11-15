@@ -288,3 +288,66 @@
 - **Grenzen der Messung:** 2 Fragen, ein Lauf, ein Modell; RAGAS-Werte auf 1–2 Antworten je Zelle.
 - **Meine Deutung (eigene Worte):**
 - **Konsequenz / nächster Schritt:** Der Ablauf funktioniert von der Antwort bis zum RAGAS-Report. Die neuen Prüffragen bestätigen ISS-007/036: Der selbst gesetzte Filter des Agenten schließt das Vergleichsdokument aus. Nachtläufe mit 14 Fragen: Antworten ca. 1,5–2 h je Modell, RAGAS ca. 2 h je Modell (28 Antworten P1/P2 à ca. 4,5 min, B0 wird übersprungen).
+
+### RUN-010 / RUN-011 – M6b/M6c, Nachtläufe mit 14 Fragen (`llama3.1:8b` und `qwen2.5:7b`), RAGAS, Fehleranalyse
+- **Datum / Commit:** 2026-11-15 · Code-Stand `f46e50e` (Merge `fix/ollama-oom-night-run`); von RUN-010 entstanden B0, P1 und P2 bis Z2 schon am Vormittag vor diesem Fix (Abbruch bei P2/Z3, ISS-043), der Rest im Nachtlauf
+- **Varianten:** B0 (Volltext), P1 (Pipeline), P2 (Agent); danach RAGAS Faithfulness und Context Recall
+- **Konfiguration:** Antwortmodell RUN-010 `llama3.1:8b`, RUN-011 `qwen2.5:7b`; `num_ctx` 8192, Temperatur 0; B0 mit Dateien 01–06 (ca. 6.730 von 6.961 Token); P1 Top-5 ohne Filter mit Boost; P2 höchstens 6 Werkzeugaufrufe; Entladen nach jeder P1/P2-Antwort; Bewerter `audit-judge` (= `qwen2.5:7b`), `max_tokens` 2048; alle 14 Fragen; Befehl `scripts/night_eval.sh`
+- **Dauer:** Nachtlauf 13:32–22:06. Antworten RUN-010 71 min (B0 26, P1 13, P2 32), RUN-011 109 min (B0 21, P1 18, P2 69); RAGAS 2,7 h (RUN-010) und 4,0 h (RUN-011) für je 28 bewertbare Antworten
+- **Rohdaten:** `data/eval/run-010/`, `data/eval/run-011/` (`report.md`, `scores.json`, `ragas.jsonl`, `answers-*.jsonl`, `p2-*.jsonl`, `manifest.json`, `evidence.json`), `data/eval/night-m6b.log`, `data/eval/night-m6b-journal.txt`
+
+| Metrik | llama B0 | llama P1 | llama P2 | qwen B0 | qwen P1 | qwen P2 |
+|---|---|---|---|---|---|---|
+| Richtig laut Metrik (von 14) | 5 | 5 | 3 | 4 | 6 | 4 |
+| Richtig nach Handprüfung (von 14) | 5 | 5 | 3 | 3 | 5 | 2 |
+| Fakten gefunden (von 27) | 5 | 9 | 6 | 6 | 10 | 8 |
+| Erwartete Quellen zitiert (von 18) | 7 | 7 | 2 | 3 | 8 | 6 |
+| Negativfragen erkannt (von 2) | 2 | 2 | 1 | 2 | 2 | 1 |
+| Fehler erkannt, nur Urteil (von 3) | 1 | 0 | 0 | 0 | 0 | 0 |
+| Fehlalarme (von 3 richtigen Abrechnungen) | 0 | 0 | 1 | 0 | 0 | 0 |
+| Tool-Wahl korrekt (von 14) | – | – | 7 | – | – | 5 |
+| Suchen mit eigenem Filter / schließen Quelle aus | – | – | 19 / 9 | – | – | 19 / 9 |
+| Ungültige Werkzeugaufrufe | – | – | 13 von 37 | – | – | 2 von 31 |
+| Abbruch am Werkzeug-Limit | – | – | 3 | – | – | 0 |
+| Sekunden je Frage (Mittel) | 113 | 56 | 136 | 90 | 78 | 298 |
+| Prompt-Token je Frage (Mittel) | 6.608 | 891 | 5.624 | 7.699 | 975 | 10.515 |
+| RAGAS Faithfulness (14 von 14 bewertet) | zu lang | 0,71 | 0,68 | zu lang | 0,74 | 0,69 |
+| RAGAS Faithfulness ohne reine Lückenantworten | – | 0,86 (n = 8) | 0,66 (n = 13) | – | 0,82 (n = 9) | 0,64 (n = 12) |
+| RAGAS Context Recall (12 von 14 bewertet) | zu lang | 0,33 | 0,50 | zu lang | 0,33 | 0,58 |
+
+- **Technik:** Im Nachtlauf kein OOM-Kill und keine Kürzung (`truncated = 0` in allen 440 Journalzeilen). Der einzige `oom-kill` im Journal (12:28) liegt vor dem Fix „Entladen nach jeder Antwort“ und vor dem Start des Nachtlaufs (ISS-043). Kein RAGAS-Fehlschlag, B0 wie erwartet „zu lang“ (ISS-046).
+- **Handprüfung der Metrik (alle 84 Antworten gelesen):** Vier Antworten zählen laut Metrik als richtig, ihre Begründung trägt aber nicht; alle stammen von `qwen2.5:7b` und enden auf „Ja“ (ISS-050):
+  - B0/S5: rechnet mit dem Prognoseverbrauch 3.300 kWh statt 3.250 kWh, und die eigene Summe stimmt nicht (138,00 + 1.148,40 − 80,00 ergibt 1.206,40, nicht 1.189,00).
+  - P1/S5: zieht nur die Abschläge vom Rechnungsbetrag ab; der Vertrag mit den Preisen war nicht unter den Treffern.
+  - P2/S5: vergleicht nur den Grundpreis (11,50 × 12 = 138,00) mit der Rechnung selbst; der Vertrag wurde nie gesucht.
+  - P2/G2: nennt alle drei Sollzahlen, rechnet aber „1.830,00 − 1.920,00 − 90,00 = −100,00“ und begründet das Ja mit einem Guthaben von 100 EUR.
+  - Grenzfälle, nicht umgewertet: qwen B0/S2 nennt den Grundpreis als 138,00 EUR für 12 Monate statt 11,50 EUR/Monat (inhaltlich gleich, zählt als falsch); llama P1/Z1 nennt Volumen und Energiemenge richtig, aber nicht die z-Zahl (zählt als falsch).
+  - `qwen2.5:7b` fällte in den drei Varianten 14 Urteile, alle „ja“; `llama3.1:8b` fällte nur 5 Urteile bei 18 Prüffragen-Antworten.
+- **Fehleranalyse (61 falsche von 84 Antworten, je eine Hauptursache, von Hand zugeordnet):**
+
+| Hauptursache | Bedeutung | B0 | P1 | P2 | Summe |
+|---|---|---|---|---|---|
+| Kontextbudget | Dokument oder Diagrammwert nicht im Volltext-Kontext (ISS-039) | 14 | – | – | 14 |
+| Retrieval | erwarteter Beleg nicht unter den Top-5 | – | 12 | – | 12 |
+| Tool-Wahl | Werkzeug durchsucht den Chunk-Typ mit dem Fakt nicht (ISS-006, ISS-052) | – | – | 8 | 8 |
+| Filter | eigener Filter schließt das nötige Dokument aus (ISS-007) oder Suche ohne Filter liefert Ablenker (ISS-051) | – | – | 10 | 10 |
+| Argumente | ungültige `calculate`-Aufrufe bis zum Limit (ISS-036) | – | – | 1 | 1 |
+| Synthese | Beleg war im Kontext, Antwort trotzdem falsch | 6 | 6 | 4 | 16 |
+| Parser | Fakt fehlt oder ist entstellt in den Chunks | 0 | 0 | 0 | 0 |
+
+  - **B0:** 7 von 14 Fragen je Modell sind nicht beantwortbar: bei 6 fehlt das Dokument, weil nur die Stromdokumente 01–06 in den Kontext passen, bei S4 steht der Wert nur im Diagramm. B0 antwortet dort meist ehrlich „keine Angaben“. Bei G2 und G4 rechnet es stattdessen mit der Stromrechnung.
+  - **P1:** Alle 7 reinen Lückenantworten auf beantwortbare Fragen (llama: S2, S4, S5, G1; qwen: S2, S4, G1) sind berechtigt: Die gesuchten Werte (bei S5 die Vertragspreise) standen nicht in den fünf Treffern (`evidence.json`). Bei G1 waren zwar beide Dokumente dabei, aber nicht die Zeilen mit 38,20 und 39,50 ct/kWh. Das korrigiert die Deutung aus RUN-007/008 (ISS-055). Für G3 und G4 fehlt das Vergleichsdokument (Abrechnung 2025, Mietvertrag); eine einzelne Suche mit der Frage holt es nicht. Synthesefehler: Z2 (beide nennen 115,00 EUR aus dem älteren Dokument, obwohl 120,00 EUR ab 15.02.2026 unter den Treffern stand), G2, Z1.
+  - **P2:** 18 von 23 Fehlschlägen entstehen, bevor das Modell die Antwort schreibt. `search_documents` liefert nur Fließtext; Kündigungsfristen stehen aber in Tabellenzeilen (S1, Z3). Dort ist `search_documents` sogar das „erwartete“ Werkzeug (ISS-052). In beiden Läufen schließen 9 von 19 gefilterten Suchen eine erwartete Quelle aus: Bei S5, G1, G3 und G4 sucht der Agent nur in der Rechnung des gefragten Jahres und nie im Vertrag, in der Preisanpassung, in der Vorjahresabrechnung oder im Mietvertrag. `search_images` wird bei S4 nie gerufen, obwohl die Bildbeschreibung mit 3.480 und 3.390 kWh im Index steht.
+  - **N2 (Fernwärme):** Beide Modelle filtern richtig auf `district_heating`, die Suche findet nichts und wiederholt sich ohne Filter. Zurück kommen Strom- und Gaspreise, und beide Modelle geben einen davon als Fernwärme-Grundpreis aus (ISS-051). B0 und P1 antworten hier richtig.
+  - **Eingebaute Fehler:** E2 (G3) und E3 (G4) erkennt keine Variante; fünf Antworten nennen die fehlerhafte Abrechnung ausdrücklich „korrekt“ (llama P2/G3, qwen P1 und P2 je G3 und G4). Bei llama P1/G3 liest die Metrik fälschlich ein „ja“, die Antwort sagt „können wir nicht bestätigen“ (ISS-050). Die Abrechnungen sind in sich stimmig (1.060 m³ × 11,150 = 11.819 kWh), der Fehler zeigt sich erst im Vergleich mit einem zweiten Dokument. E1 (G1) erkennt nur llama B0 im Urteil, mit falschem Preis (32,10 statt 38,20 ct/kWh).
+  - **Parser:** Kein Fehlschlag geht auf fehlende oder entstellte Chunks zurück. Auffällig ist aber, dass bei S1 und Z3 Grußformeln und Briefkopfzeilen als Treffer oben stehen, weil sie die Kapitelüberschrift „… Kündigungsfrist …“ tragen (ISS-027).
+- **Modellvergleich P2:** `llama3.1:8b` ist gut doppelt so schnell (136 s gegen 298 s je Frage) und braucht halb so viele Prompt-Token. `qwen2.5:7b` ruft 10-mal `list_documents` (bei 9 von 14 Fragen, 7-mal ohne Filter und damit mit der ganzen Dokumentliste), macht kaum ungültige Aufrufe (2 gegen 13) und zitiert Belege (19 Zitate gegen 2). `llama3.1:8b` ruft `calculate` 13-mal, davon 11-mal mit ungültigen Argumenten (`input` oder `a` bis `e` statt `expression`, trotz Fehlermeldung mit dem richtigen Aufruf) und zweimal mit sinnlosen Summen; `qwen2.5:7b` ruft `calculate` nie und rechnet im Kopf, zum Teil falsch. Einmal erfand `qwen2.5:7b` ein Argument `toolbench_rapidapi_key` mit einer schlüsselähnlichen Zeichenkette (ISS-054).
+- **RAGAS-Stichprobe (12 Antworten von Hand gegen die Belegtexte geprüft, 6 je Lauf):**
+  - Nachvollziehbar: 9 von 12 Faithfulness-Werten. Erfundene Angaben bekommen 0,00 (llama P2/S1 „2 Monate zum Kalendervierteljahr“, llama P2/Z3 „14 Tage“, qwen P2/N2 Fernwärme). Belegte, aber falsche Antworten bekommen 1,00 (llama P2/G4 mit 859,26 EUR aus der eigenen Rechnung, qwen P2/G3 „korrekt“, qwen P2/Z2 mit dem alten Abschlag).
+  - Nicht nachvollziehbar: llama P1/S4 (berechtigte Lückenantwort, 0,00), qwen P1/Z3 (Antwort fast wörtlich aus der Tabellenzeile, 0,50), qwen P2/Z3 (zitiert das Sonderkündigungsrecht wörtlich aus dem Beleg, 0,00).
+  - Der Satz „Dazu liegen in den Unterlagen keine Angaben vor.“ allein erhält in 5 von 14 Fällen 0,00 und in 9 Fällen 1,00, ohne erkennbare Regel (ISS-053). Ohne diese Antworten liegt P1 bei 0,86 / 0,82 und P2 bei 0,66 / 0,64.
+  - Context Recall: Bei Z3 ist der Wert genau verkehrt. P1 hat die Zeile „Kündigungsfrist: 1 Monat …“ im Kontext und bekommt 0,00 (beide Läufe); llama P2 hat sie nicht und bekommt 1,00. Insgesamt widersprechen 13 von 48 Werten dem Abgleich „alle Sollfakten im Kontext“ (`scripts/check_evidence.py`).
+  - Ein Bonus für die eigenen Antworten des Bewerters ist nicht zu sehen (qwen-Lauf 0,74 / 0,69 gegen 0,71 / 0,68; ISS-045).
+- **Grenzen der Messung:** 14 Fragen, ein Lauf je Modell, Temperatur 0 (keine Streuung gemessen); Unterschiede von ein bis zwei Fragen zwischen den Modellen sind nicht belastbar. Handprüfung und Ursachenzuordnung stammen von einer Person (Claude) und wurden nicht gegengelesen; je Antwort ist nur die Hauptursache gezählt, viele haben eine zweite. Der Abgleich „Fakt im Kontext“ nutzt dieselbe Zahlensuche wie die Metrik (ISS-050). B0 sieht nur Stromdokumente.
+- **Meine Deutung (eigene Worte):**
+- **Konsequenz / nächster Schritt:** Der Agent (P2) ist in beiden Läufen schlechter als die einfache Pipeline (P1), und die Ursache liegt überwiegend im Werkzeugentwurf, nicht im Modell. Gegenmaßnahmen für M6d, nach Zahl der betroffenen Fehlschläge: (1) Filter nicht mehr dem Modell überlassen bzw. bei Prüffragen Vergleichsdokumente mitsuchen (ISS-007, 10 Fälle); (2) ein Suchwerkzeug über Text und Tabellen (ISS-006/052, 8 Fälle); (3) bei leerer gefilterter Suche „keine Treffer“ melden statt ungefiltert zu wiederholen, wenn es die Sparte nicht gibt (ISS-051); (4) P1: mehr Treffer oder gezieltere Suchanfrage (12 Fälle). Agent-Modell: ADR-0013.

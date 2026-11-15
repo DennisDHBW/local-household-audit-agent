@@ -383,6 +383,8 @@ Umsetzung (M6a): Zahlen gelten als gefunden, wenn sie irgendwo in der Antwort st
 
 Umsetzung RAGAS (M6b, ADR-0012): Faithfulness und Context Recall mit dem lokalen Bewerter `audit-judge` (`qwen2.5:7b`, `num_ctx` 8192) auf den gespeicherten Antworten und deren Belegtexten; Answer Relevancy, Context Precision und die Testset-Generierung entfallen aus Zeitgründen. Prompts, die nicht in den Kontext passen, werden nicht bewertet statt still gekürzt (betrifft vor allem B0, ISS-046); beim `qwen2.5:7b`-Lauf bewertet das Modell sich selbst (ISS-045).
 
+Auswertung (M6c): Jede Antwort wird zusätzlich von Hand gelesen; der evaluation-log führt „richtig laut Metrik“ und „richtig nach Handprüfung“ getrennt (ISS-050) und ordnet jedem Fehlschlag eine Hauptursache zu (Kontextbudget, Retrieval, Tool-Wahl, Filter, Argumente, Synthese, Parser). `scripts/check_evidence.py` prüft deterministisch, ob die Sollfakten im Kontext des Modells standen. RAGAS-Werte gelten nur als zweite Sicht, weil der lokale Bewerter im Einzelfall unzuverlässig ist (ISS-053).
+
 **Laufzeit der Evaluation realistisch planen:** 14 Fragen × 3 Varianten bei 1–7 Minuten pro Antwort (B0 mit langem Volltext-Prompt am langsamsten) ergeben grob 1–3 Stunden. RAGAS braucht pro Frage mehrere zusätzliche LLM-Aufrufe für die Bewertung. Deshalb:
 - Antworten erzeugen und bewerten in **getrennten Schritten**; Antworten als JSON speichern, damit die Bewertung wiederholt werden kann, ohne neu zu generieren
 - Komplettläufe über Nacht, als `slow` markiert (`pytest -m slow`)

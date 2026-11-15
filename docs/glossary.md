@@ -143,3 +143,7 @@
 | Faithfulness | `faithfulness` | Anteil der Aussagen einer Antwort, die durch die gezeigten Belege gedeckt sind (0–1) | |
 | Context Recall | `context_recall` | Anteil der Aussagen der erwarteten Antwort, die in den gezeigten Belegen stehen (0–1) | |
 | RAGAS-Status | `RagasStatus` | `ok`, `too_long` (Prompt passt nicht, nicht gekürzt), `no_context`, `not_applicable`, `no_statements`, `error` | |
+| Belegabgleich | `scripts/check_evidence.py`, `evidence.json` | Prüft je gespeicherter Antwort, ob die Sollfakten im Kontext des Modells standen und ob die erwarteten Quellen gezeigt wurden; trennt „Beleg kam nie an“ von „Beleg da, Antwort falsch“ | |
+| Reine Lückenantwort | `is_gap_only`, `GAP_ANSWER` | Antwort, die nur aus dem Satz „Dazu liegen in den Unterlagen keine Angaben vor.“ besteht | |
+| Hauptursache eines Fehlschlags | – | Von Hand vergebene Klasse je falscher Antwort: Kontextbudget, Retrieval, Tool-Wahl, Filter, Argumente, Synthese, Parser (evaluation-log, RUN-010/011) | |
+| Handprüfung | – | Lesen jeder Antwort gegen Ground Truth und Belege; korrigiert „richtig laut Metrik“ zu „richtig nach Handprüfung“ (ISS-050) | |

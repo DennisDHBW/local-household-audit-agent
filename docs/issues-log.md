@@ -24,6 +24,76 @@
 
 ## Einträge
 
+### ISS-056 – Zwei Commits vor dem vollständigen Quality Gate (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-15 / M6c
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Claude committete die Rohdaten der Nachtläufe und `scripts/check_evidence.py`, nachdem nur `ruff check` und `ruff format --check` auf dem Skript gelaufen waren; `pytest -m "not slow"` lief erst danach.
+- **Ursache:** Das Skript wurde als „nur Auswertung“ eingeordnet und die Regel „Gate vor jedem Commit“ verkürzt.
+- **Lösung / Workaround:** Gate direkt danach vollständig ausgeführt: grün (272 Tests). Kein Nachbessern nötig. Das Gate läuft wieder vor jedem Commit, auch bei reinen Daten- und Skript-Commits.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-055 – Fehldeutung in RUN-007/008: „P1 antwortet trotz vorhandener Belege mit keine Angaben“
+- **Datum / Meilenstein:** 2026-11-15 / M6c
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Im evaluation-log zu RUN-007 und RUN-008 hatte Claude geschrieben, P1 antworte bei G1 „keine Angaben“, obwohl Preisanpassung 03 und Rechnung 06 unter den Top-5 waren, und daraus eine Schwäche der Synthese abgeleitet.
+- **Ursache:** Geprüft wurde nur, ob das richtige Dokument unter den Treffern ist, nicht ob der Treffer den gesuchten Wert enthält. Bei G1 sind zwar beide Dokumente dabei, aber Chunks ohne die Preise 38,20 und 39,50 ct/kWh.
+- **Lösung / Workaround:** `scripts/check_evidence.py` prüft je Antwort, ob die Sollfakten im Kontext standen (`evidence.json`). Ergebnis für RUN-010/011: Alle 7 reinen Lückenantworten von P1 auf beantwortbare Fragen sind berechtigt; die Ursache ist das Retrieval. Die alten Einträge bleiben stehen, der neue Eintrag RUN-010/011 verweist auf die Korrektur.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Fehleranalyse: Dokument gefunden heißt nicht Beleg gefunden)
+
+### ISS-054 – Modellverhalten in den Nachtläufen: qwen stimmt immer zu, llama scheitert an `calculate`
+- **Datum / Meilenstein:** 2026-11-15 / M6c (RUN-010, RUN-011)
+- **Kategorie:** llm
+- **Status:** offen
+- **Symptom:** (1) `qwen2.5:7b` fällt in B0, P1 und P2 zusammen 14 Urteile, alle „ja“, auch bei den fehlerhaften Abrechnungen G3 und G4; „0 Fehlalarme“ ist deshalb keine Stärke. (2) `llama3.1:8b` ruft `calculate` 13-mal, davon 11-mal mit ungültigen Argumenten (`input`, `unit` oder `a` bis `e` statt `expression`) und wiederholt denselben Aufruf bis zu fünfmal, obwohl die Fehlermeldung den richtigen Aufruf nennt; drei Fragen enden am Werkzeug-Limit. Die zwei gültigen Aufrufe addieren unpassende Beträge. (3) `qwen2.5:7b` ruft `calculate` nie und rechnet im Kopf, zum Teil falsch (B0/S5, P2/G2). (4) `qwen2.5:7b` ruft 10-mal `list_documents`, 7-mal ohne Filter; die lange Liste verdoppelt die Prompt-Länge (10.515 gegen 5.624 Token) und die Zeit je Frage. (5) Bei P2/S5 erfand `qwen2.5:7b` ein Argument `toolbench_rapidapi_key` mit einer schlüsselähnlichen Zeichenkette.
+- **Ursache:** (1) bis (4) Modellverhalten bei Temperatur 0; die Abrechnungen sind in sich stimmig, ein „Nachrechnen“ bestätigt sie. (5) Die Zeichenkette steht in keinem Prompt, keiner Konfiguration und keinem Dokument des Projekts, sie kommt also aus dem Modell (vermutlich Trainingsdaten für Tool-Aufrufe; Herkunft nicht nachgeprüft). Überzählige Argumente werden absichtlich ignoriert (`extra="ignore"`), der Aufruf zählt deshalb als gültig.
+- **Lösung / Workaround:** Noch keine. Für M6d: Prüffragen brauchen einen festen Ablauf (Vergleichsdokument holen, dann rechnen), nicht nur ein Urteil. Die Zeichenkette steht in den versionierten Rohdaten (`run-011/answers-p2.jsonl`, `run-011/p2-S5.jsonl`); sie ist kein Zugang des Projekts, könnte aber von Schlüssel-Scannern gemeldet werden.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Modellvergleich), Reflexion (Grenzen kleiner Modelle)
+
+### ISS-053 – RAGAS-Werte des lokalen Bewerters sind im Einzelfall nicht verlässlich
+- **Datum / Meilenstein:** 2026-11-15 / M6c (RUN-010, RUN-011)
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** (1) Die reine Lückenantwort „Dazu liegen in den Unterlagen keine Angaben vor.“ bekommt Faithfulness 0,00 in 5 und 1,00 in 9 von 14 Fällen; in mindestens 4 der 5 Null-Fälle fehlten die gesuchten Werte tatsächlich im Kontext. (2) Context Recall bei Z3: P1 hat die Zeile „Kündigungsfrist: 1 Monat …“ im Kontext und bekommt 0,00 (beide Läufe), llama P2 hat sie nicht und bekommt 1,00. (3) 13 von 48 Context-Recall-Werten widersprechen dem Abgleich „alle Sollfakten im Kontext“ (7-mal 1,00 ohne die Fakten, 6-mal 0,00 mit den Fakten). (4) Wörtlich belegte Antworten bekommen zum Teil 0,00 oder 0,50 (qwen P2/Z3, qwen P1/Z3).
+- **Ursache:** Ein 7B-Bewerter auf der CPU; RAGAS zerlegt die Referenz in Sätze, und die Referenzsätze mischen Fakten mit Hinweisen („die Fristen von Internet- und Mobilfunkvertrag gehören nicht dazu“), die in keinem Beleg stehen. Für Lückenantworten gibt es keine prüfbare Aussage. Die Einzelurteile gibt RAGAS nicht aus, die Ursache je Fall ist deshalb nur vermutet.
+- **Lösung / Workaround:** RAGAS bleibt als zweite Sicht im Report, trägt aber keine Aussage allein. Die Tabelle nennt Faithfulness zusätzlich ohne reine Lückenantworten. Für „Beleg im Kontext?“ zählt der deterministische Abgleich aus `scripts/check_evidence.py`. Ergänzt ISS-047.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen von LLM-Bewertern auf kleiner Hardware)
+
+### ISS-052 – `search_documents` findet keine Tabellenzeilen, ist bei S1 und Z3 aber das erwartete Werkzeug
+- **Datum / Meilenstein:** 2026-11-15 / M6c (RUN-010, RUN-011)
+- **Kategorie:** tools
+- **Status:** offen
+- **Symptom:** Bei S1 und Z3 (Kündigungsfristen) rufen beide Modelle `search_documents`, wie in `ground_truth.yaml` erwartet. Zurück kommen nur Fließtext-Chunks: Grußformel, Briefkopf, Hinweis auf das Sonderkündigungsrecht. Die Frist steht in einer Tabellenzeile („Kündigungsfrist: 1 Monat …“), die nur `search_tables` liefert. Alle vier P2-Antworten sind falsch, zwei davon erfunden („2 Monate zum Kalendervierteljahr“, „14 Tage“). Die Metrik „Tool-Wahl korrekt“ zählt diese Aufrufe als richtig.
+- **Ursache:** Die Werkzeuge trennen nach Chunk-Typ, nicht nach Inhalt. Ob ein Fakt im Fließtext oder in einer Tabelle steht, kann weder das Modell noch der Fragenkatalog vorher wissen; der Katalog hat hier selbst falsch geraten. Die Kapitelüberschrift im Chunk-Text hebt zudem inhaltsleere Zeilen nach oben (ISS-027).
+- **Lösung / Workaround:** Noch keine. Für M6d: ein Suchwerkzeug über Text und Tabellen (ISS-006), danach `expected_tools` im Katalog anpassen. Bis dahin ist „Tool-Wahl korrekt“ (7/14 bzw. 5/14) nur eingeschränkt aussagekräftig.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Agent (Werkzeugentwurf), Evaluation (Grenzen der Tool-Wahl-Metrik)
+
+### ISS-051 – Leere gefilterte Suche wird ohne Filter wiederholt und liefert Ablenker
+- **Datum / Meilenstein:** 2026-11-15 / M6c (RUN-010, RUN-011)
+- **Kategorie:** tools
+- **Status:** offen
+- **Symptom:** Bei N2 („Grundpreis für Fernwärme“) filtern beide Modelle richtig auf `district_heating`. Die Suche findet nichts, meldet „Keine Treffer mit Filter …; Wiederholung ohne Filter“ und liefert Grundpreise aus Strom- und Gasdokumenten (bei `llama3.1:8b` auch eine Internetrechnung). `llama3.1:8b` nennt daraufhin 12,90 EUR/Monat, `qwen2.5:7b` 13,45 EUR/Monat als Fernwärme-Grundpreis. B0 und P1 beantworten N2 richtig.
+- **Ursache:** Die Wiederholung ohne Filter war als Schutz gegen zu enge Filter des Modells gedacht (ISS-007). Bei einer Sparte, die es im Bestand nicht gibt, ist „keine Treffer“ aber genau die richtige Auskunft; die Wiederholung macht daraus scheinbar passende Belege.
+- **Lösung / Workaround:** Noch keine. Für M6d: bei leerem Ergebnis nicht ungefiltert wiederholen, sondern melden, welche Sparten und Jahre es gibt, oder nur den Filter lockern, der nicht die Sparte betrifft.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Agent (Werkzeugentwurf), Evaluation (Negativfragen)
+
+### ISS-050 – Die Metrik wertet zustimmende Urteile zu großzügig
+- **Datum / Meilenstein:** 2026-11-15 / M6c (RUN-010, RUN-011)
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** (1) Vier Antworten von `qwen2.5:7b` zählen als richtig, obwohl die Begründung nicht trägt (B0/S5, P1/S5, P2/S5, P2/G2; Einzelheiten im evaluation-log). Nach Handprüfung hat `qwen2.5:7b` 3 / 5 / 2 statt 4 / 6 / 4 richtige Antworten, `llama3.1:8b` unverändert 5 / 5 / 3. (2) Bei llama P1/G3 liest die Metrik ein „ja“, die Antwort sagt „können wir nicht bestätigen“. (3) Die Zahlensuche akzeptiert auch das Hundertfache und ein Hundertstel (für ct und EUR); „34,80 ct“ trifft dadurch den Sollwert 3.480 kWh. In den gelesenen Antworten wurde kein Fakt deshalb falsch gutgeschrieben, im Kontextabgleich (`evidence.json`, B0/S4) aber schon.
+- **Ursache:** Bei Fragen mit erwartetem „ja“ stehen die Sollzahlen in der Abrechnung selbst. Wer sie abschreibt und „Ja“ sagt, erfüllt die Prüfung, ohne den Vertrag gelesen zu haben. Ergänzt ISS-038.
+- **Lösung / Workaround:** Die Metrik bleibt unverändert, damit die Läufe vergleichbar sind. Der evaluation-log führt „richtig laut Metrik“ und „richtig nach Handprüfung“ getrennt; jede Umwertung ist dort begründet. Später möglich: den Einheitenfaktor nur bei Fakten mit Einheit ct oder EUR anwenden.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Metriken, Grenzen)
+
 ### ISS-049 – Abbruch mitten in einer Anfrage endete mit Traceback, Folgeschritte liefen ins Leere
 - **Datum / Meilenstein:** 2026-11-15 / M6b (RUN-010)
 - **Kategorie:** ki-assistent
@@ -70,7 +140,7 @@
 - **Status:** akzeptiert
 - **Symptom:** RAGAS-Bewerter ist für beide Läufe `audit-judge` (= `qwen2.5:7b`). Im Lauf mit `qwen2.5:7b` als Antwortmodell beurteilt dasselbe Modell seine eigenen Antworten; LLM-Bewerter neigen dazu, eigene Formulierungen milder zu bewerten. Dazu kommen englische RAGAS-Prompts auf deutschen Texten und ein kleines 7B-Modell als Bewerter.
 - **Ursache:** Auf der Hardware ist kein größeres oder drittes gleich starkes Modell sinnvoll (≤ 8B, 9 GB RAM); ein fester Bewerter hält die Werte beider Läufe vergleichbar (ADR-0012).
-- **Lösung / Workaround:** RAGAS nur als zweite Sicht neben den deterministischen Metriken; Stichproben von Hand prüfen und Fehlurteile hier notieren; die Abweichung zwischen den Läufen nicht allein dem Antwortmodell zuschreiben.
+- **Lösung / Workaround:** RAGAS nur als zweite Sicht neben den deterministischen Metriken; Stichproben von Hand prüfen und Fehlurteile hier notieren; die Abweichung zwischen den Läufen nicht allein dem Antwortmodell zuschreiben. RUN-010/011: kein Bonus für die eigenen Antworten erkennbar (Faithfulness P1 / P2 im qwen-Lauf 0,74 / 0,69, im llama-Lauf 0,71 / 0,68); die Werte sind aber ohnehin wenig verlässlich (ISS-053).
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen)
 
@@ -97,7 +167,7 @@
 ### ISS-043 – Ollama vom Kernel wegen Speichermangel beendet (RUN-007)
 - **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
 - **Kategorie:** hardware
-- **Status:** wieder aufgetreten in RUN-010, Gegenmaßnahme erweitert (weiter beobachten)
+- **Status:** gelöst (nach „Entladen nach jeder Antwort“ lief der Nachtlauf am 15.11. 8,5 h ohne OOM-Kill; weiter beobachten)
 - **Symptom:** Nach B0 (3 lange Prompts), P1 und dem ersten P2-Lauf meldet das Journal um 23:37 `ollama.service: The kernel OOM killer killed some processes` und `Failed with result 'oom-kill'`; systemd startet Ollama neu, der Evaluationslauf bricht mit `ConnectionError` ab.
 - **Ursache:** Nicht sicher belegt. Geladen waren `llama3.1:8b` (6,2 GB laut `ollama ps`, mit 8.192 Token KV-Cache) und `nomic-embed-text` unter `MemoryMax=9G`. Der llama-server meldet `idle slots will be saved to prompt cache` und `context checkpoints enabled, max = 32`; Vermutung: Der Prompt-Cache der langen B0-Prompts wuchs im RAM, bis die Grenze erreicht war.
 - **Lösung / Workaround:** Vor jeder Variante entlädt `generate` die Modelle (`keep_alive=0`), damit Modell und Prompt-Cache neu beginnen (kostet ca. 10 s Ladezeit je Variante). Tritt der Fehler wieder auf: Speicher während des Laufs mit `systemctl status ollama` beobachten.
