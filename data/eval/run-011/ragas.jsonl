@@ -1,0 +1,84 @@
+{"variant":"b0","question_id":"S1","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10155,"seconds":0.0,"detail":"ca. 10155 > 8192 Token"}
+{"variant":"b0","question_id":"S1","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11277,"seconds":0.0,"detail":"ca. 11277 > 8192 Token"}
+{"variant":"b0","question_id":"S2","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10208,"seconds":0.0,"detail":"ca. 10208 > 8192 Token"}
+{"variant":"b0","question_id":"S2","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11262,"seconds":0.0,"detail":"ca. 11262 > 8192 Token"}
+{"variant":"b0","question_id":"S3","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10155,"seconds":0.0,"detail":"ca. 10155 > 8192 Token"}
+{"variant":"b0","question_id":"S3","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11260,"seconds":0.0,"detail":"ca. 11260 > 8192 Token"}
+{"variant":"b0","question_id":"S4","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10155,"seconds":0.0,"detail":"ca. 10155 > 8192 Token"}
+{"variant":"b0","question_id":"S4","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11256,"seconds":0.0,"detail":"ca. 11256 > 8192 Token"}
+{"variant":"b0","question_id":"S5","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10494,"seconds":0.0,"detail":"ca. 10494 > 8192 Token"}
+{"variant":"b0","question_id":"S5","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11277,"seconds":0.0,"detail":"ca. 11277 > 8192 Token"}
+{"variant":"b0","question_id":"G1","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10308,"seconds":0.0,"detail":"ca. 10308 > 8192 Token"}
+{"variant":"b0","question_id":"G1","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11287,"seconds":0.0,"detail":"ca. 11287 > 8192 Token"}
+{"variant":"b0","question_id":"G2","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10338,"seconds":0.0,"detail":"ca. 10338 > 8192 Token"}
+{"variant":"b0","question_id":"G2","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11296,"seconds":0.0,"detail":"ca. 11296 > 8192 Token"}
+{"variant":"b0","question_id":"G3","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10155,"seconds":0.0,"detail":"ca. 10155 > 8192 Token"}
+{"variant":"b0","question_id":"G3","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11298,"seconds":0.0,"detail":"ca. 11298 > 8192 Token"}
+{"variant":"b0","question_id":"G4","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10344,"seconds":0.0,"detail":"ca. 10344 > 8192 Token"}
+{"variant":"b0","question_id":"G4","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11301,"seconds":0.0,"detail":"ca. 11301 > 8192 Token"}
+{"variant":"b0","question_id":"N1","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10155,"seconds":0.0,"detail":"ca. 10155 > 8192 Token"}
+{"variant":"b0","question_id":"N1","metric":"context_recall","judge":"audit-judge","status":"not_applicable","value":null,"estimated_tokens":0,"seconds":0.0,"detail":"Negativfrage: Referenz enthält keine Fakten"}
+{"variant":"b0","question_id":"N2","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10155,"seconds":0.0,"detail":"ca. 10155 > 8192 Token"}
+{"variant":"b0","question_id":"N2","metric":"context_recall","judge":"audit-judge","status":"not_applicable","value":null,"estimated_tokens":0,"seconds":0.0,"detail":"Negativfrage: Referenz enthält keine Fakten"}
+{"variant":"b0","question_id":"Z1","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10155,"seconds":0.0,"detail":"ca. 10155 > 8192 Token"}
+{"variant":"b0","question_id":"Z1","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11268,"seconds":0.0,"detail":"ca. 11268 > 8192 Token"}
+{"variant":"b0","question_id":"Z2","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10173,"seconds":0.0,"detail":"ca. 10173 > 8192 Token"}
+{"variant":"b0","question_id":"Z2","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11258,"seconds":0.0,"detail":"ca. 11258 > 8192 Token"}
+{"variant":"b0","question_id":"Z3","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10277,"seconds":0.0,"detail":"ca. 10277 > 8192 Token"}
+{"variant":"b0","question_id":"Z3","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":11286,"seconds":0.0,"detail":"ca. 11286 > 8192 Token"}
+{"variant":"p1","question_id":"S1","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.75,"estimated_tokens":4247,"seconds":262.6,"detail":""}
+{"variant":"p1","question_id":"S1","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":5241,"seconds":181.8,"detail":""}
+{"variant":"p1","question_id":"S2","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":4090,"seconds":149.8,"detail":""}
+{"variant":"p1","question_id":"S2","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5196,"seconds":183.7,"detail":""}
+{"variant":"p1","question_id":"S3","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4051,"seconds":230.2,"detail":""}
+{"variant":"p1","question_id":"S3","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":5089,"seconds":170.9,"detail":""}
+{"variant":"p1","question_id":"S4","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":3946,"seconds":142.9,"detail":""}
+{"variant":"p1","question_id":"S4","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5048,"seconds":173.2,"detail":""}
+{"variant":"p1","question_id":"S5","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.4,"estimated_tokens":3988,"seconds":305.1,"detail":""}
+{"variant":"p1","question_id":"S5","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4921,"seconds":154.7,"detail":""}
+{"variant":"p1","question_id":"G1","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4094,"seconds":177.0,"detail":""}
+{"variant":"p1","question_id":"G1","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5226,"seconds":189.8,"detail":""}
+{"variant":"p1","question_id":"G2","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4000,"seconds":257.6,"detail":""}
+{"variant":"p1","question_id":"G2","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5057,"seconds":188.7,"detail":""}
+{"variant":"p1","question_id":"G3","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.75,"estimated_tokens":4568,"seconds":549.0,"detail":""}
+{"variant":"p1","question_id":"G3","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5171,"seconds":216.3,"detail":""}
+{"variant":"p1","question_id":"G4","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4004,"seconds":260.1,"detail":""}
+{"variant":"p1","question_id":"G4","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5062,"seconds":194.7,"detail":""}
+{"variant":"p1","question_id":"N1","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":3786,"seconds":143.0,"detail":""}
+{"variant":"p1","question_id":"N1","metric":"context_recall","judge":"audit-judge","status":"not_applicable","value":null,"estimated_tokens":0,"seconds":0.0,"detail":"Negativfrage: Referenz enthält keine Fakten"}
+{"variant":"p1","question_id":"N2","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4071,"seconds":200.5,"detail":""}
+{"variant":"p1","question_id":"N2","metric":"context_recall","judge":"audit-judge","status":"not_applicable","value":null,"estimated_tokens":0,"seconds":0.0,"detail":"Negativfrage: Referenz enthält keine Fakten"}
+{"variant":"p1","question_id":"Z1","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4246,"seconds":382.7,"detail":""}
+{"variant":"p1","question_id":"Z1","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":5233,"seconds":191.9,"detail":""}
+{"variant":"p1","question_id":"Z2","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4165,"seconds":183.7,"detail":""}
+{"variant":"p1","question_id":"Z2","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5251,"seconds":220.2,"detail":""}
+{"variant":"p1","question_id":"Z3","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.5,"estimated_tokens":4219,"seconds":235.3,"detail":""}
+{"variant":"p1","question_id":"Z3","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5230,"seconds":185.2,"detail":""}
+{"variant":"p2","question_id":"S1","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.5,"estimated_tokens":5803,"seconds":430.0,"detail":""}
+{"variant":"p2","question_id":"S1","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":6806,"seconds":372.6,"detail":""}
+{"variant":"p2","question_id":"S2","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":5413,"seconds":346.0,"detail":""}
+{"variant":"p2","question_id":"S2","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":6468,"seconds":299.4,"detail":""}
+{"variant":"p2","question_id":"S3","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4011,"seconds":182.3,"detail":""}
+{"variant":"p2","question_id":"S3","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":5104,"seconds":180.8,"detail":""}
+{"variant":"p2","question_id":"S4","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.1667,"estimated_tokens":5505,"seconds":520.6,"detail":""}
+{"variant":"p2","question_id":"S4","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":6419,"seconds":312.3,"detail":""}
+{"variant":"p2","question_id":"S5","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.5,"estimated_tokens":4472,"seconds":433.8,"detail":""}
+{"variant":"p2","question_id":"S5","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":5377,"seconds":187.3,"detail":""}
+{"variant":"p2","question_id":"G1","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":6319,"seconds":568.9,"detail":""}
+{"variant":"p2","question_id":"G1","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":7368,"seconds":422.8,"detail":""}
+{"variant":"p2","question_id":"G2","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.5,"estimated_tokens":5127,"seconds":378.0,"detail":""}
+{"variant":"p2","question_id":"G2","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":5685,"seconds":258.7,"detail":""}
+{"variant":"p2","question_id":"G3","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4553,"seconds":357.4,"detail":""}
+{"variant":"p2","question_id":"G3","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5518,"seconds":264.5,"detail":""}
+{"variant":"p2","question_id":"G4","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4398,"seconds":435.5,"detail":""}
+{"variant":"p2","question_id":"G4","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5213,"seconds":213.4,"detail":""}
+{"variant":"p2","question_id":"N1","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":6205,"seconds":380.5,"detail":""}
+{"variant":"p2","question_id":"N1","metric":"context_recall","judge":"audit-judge","status":"not_applicable","value":null,"estimated_tokens":0,"seconds":0.0,"detail":"Negativfrage: Referenz enthält keine Fakten"}
+{"variant":"p2","question_id":"N2","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":4229,"seconds":255.6,"detail":""}
+{"variant":"p2","question_id":"N2","metric":"context_recall","judge":"audit-judge","status":"not_applicable","value":null,"estimated_tokens":0,"seconds":0.0,"detail":"Negativfrage: Referenz enthält keine Fakten"}
+{"variant":"p2","question_id":"Z1","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":4052,"seconds":375.4,"detail":""}
+{"variant":"p2","question_id":"Z1","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":5003,"seconds":197.8,"detail":""}
+{"variant":"p2","question_id":"Z2","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":6315,"seconds":532.9,"detail":""}
+{"variant":"p2","question_id":"Z2","metric":"context_recall","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":7267,"seconds":410.0,"detail":""}
+{"variant":"p2","question_id":"Z3","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":4087,"seconds":213.2,"detail":""}
+{"variant":"p2","question_id":"Z3","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":5150,"seconds":178.3,"detail":""}

@@ -1,0 +1,787 @@
+
+== B0 Volltext S1: Welche Kündigungsfrist gilt für den Gasvertrag und bis wann läuft die Erstlaufzeit?
+   455.0 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   111.3 s: Laut Auszug [1] gelten folgende Preise:
+
+* Arbeitspreis (verbrauchsabhängig): 34,80 ct/kWh (Brutto, inkl. 19 % USt.)
+* Grundpreis (verbrauchsabhängig): 11,50 EUR/Monat (Brutto, inkl. 19 % USt.)
+
+Laut 
+
+== B0 Volltext S3: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
+   15.9 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext S4: Wie hoch war der Stromverbrauch 2022 und 2023?
+   13.6 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext S5: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
+   182.6 s: Die Stromabrechnung 2024 (Auszug [4]) und die Vertragsbedingungen (Auszug [1]) zeigen folgende Preise:
+
+Vertragspreise (Auszug [1]):
+- Arbeitspreis (verbrauchsabhängig): 29,24 ct/kWh (Netto)
+- Grundpr
+
+== B0 Volltext G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   56.4 s: [3] besagt, dass der Arbeitspreis ab 01.01.2025 32,10 ct/kWh brutto (neu) ist, aber in der Abrechnung 2025 [7] wird ein Arbeitspreis von 39,50 ct/kWh brutto (alt) angegeben. Der neue Arbeitspreis wurd
+
+== B0 Volltext G2: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
+   254.9 s: Um die Frage zu beantworten, müssen wir die Betriebskosten 2025 ermitteln und dann den Anteil des Kunden ermitteln.
+
+Aus [7] 06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, S. 1 können wir die folgenden 
+
+== B0 Volltext G3: Ist die Gasabrechnung 2026 korrekt?
+   14.2 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   344.0 s: Um die Frage zu beantworten, müssen wir die Betriebskosten 2026 ermitteln und dann den Anteil des Kunden ermitteln.
+
+Aus [7] 06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, S. 1 können wir die Rechnungsb
+
+== B0 Volltext N1: Wie hoch war meine Stromrechnung 2023?
+   13.8 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext N2: Welchen Grundpreis zahle ich für Fernwärme?
+   14.4 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+   17.4 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+   37.6 s: Laut [2] beträgt der monatliche Abschlag 105,00 EUR brutto. Laut [7] beträgt der neue monatliche Abschlag ab 15.02.2026 120,00 EUR brutto.
+
+== B0 Volltext Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+   47.6 s: Laut Auszug [1] ist die Kündigungsfrist 1 Monat zum Ablauf der Erstvertragslaufzeit in Textform. Da die Vertragslaufzeit 12 Monate beträgt, kann der Vertrag also zum Ablauf des 31.12.2024 gekündigt we
+
+== P1 Pipeline S1: Welche Kündigungsfrist gilt für den Gasvertrag und bis wann läuft die Erstlaufzeit?
+   79.9 s: Laut Auszug [1] gilt für den Gasvertrag eine Kündigungsfrist von 6 Wochen zum Ablauf der Erstvertragslaufzeit in Textform, anschließend unbefristet mit 1 Monat Kündigungsfrist.
+
+Die Erstvertragslaufze
+
+== P1 Pipeline S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   38.1 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline S3: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
+   46.2 s: Laut [1] beträgt der Anfangsstand am 01.01.2025 312 m³. Laut [3] beträgt der Zählerstand am 31.12.2025 386 m³. Der Verbrauch 2025 beträgt also 386 m³ - 312 m³ = 74 m³.
+
+== P1 Pipeline S4: Wie hoch war der Stromverbrauch 2022 und 2023?
+   31.7 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline S5: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
+   27.8 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   32.6 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline G2: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
+   58.9 s: Laut [1] beträgt mein Anteil an den Betriebskosten 2025 1.830,00 EUR (25,00 % von 7.320,00 EUR).
+
+Laut [2] beträgt mein Anteil an den Betriebskosten 2025 -1.920,00 EUR (25,00 % von 12 × 160,00 EUR).
+
+
+
+== P1 Pipeline G3: Ist die Gasabrechnung 2026 korrekt?
+   130.5 s: Um die Korrektheit der Gasabrechnung 2026 zu überprüfen, müssen wir die in den Auszügen bereitgestellten Informationen analysieren.
+
+Zunächst ist der Rechnungsbetrag Erdgaslieferung 2026 (inkl. 19 % U
+
+== P1 Pipeline G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   71.7 s: Um dies zu überprüfen, müssen wir die Gesamtkosten 2026 und den Anteil berechnen.
+
+[1] 30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf: Gesamtkosten Objekt: 7.470,00 EUR, Ihr Anteil: 1.963,28 EUR
+
+[2
+
+== P1 Pipeline N1: Wie hoch war meine Stromrechnung 2023?
+   26.6 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline N2: Welchen Grundpreis zahle ich für Fernwärme?
+   41.8 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+   106.6 s: Um die Frage zu beantworten, müssen wir die Zählerstände 2025 aus [1] und [2] sowie den abgerechneten Gasverbrauch 2025 aus [4] vergleichen.
+
+Zählerstand 01.01.2025: 8.120 m³ (K) [1]
+Zählerstand 31.12
+
+== P1 Pipeline Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+   44.8 s: Laut Auszug [2] beträgt der aktuelle monatliche Abschlag 115,00 EUR brutto.
+
+== P1 Pipeline Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+   41.3 s: Laut [2] und [3] kann der Stromvertrag kündbar sein mit einer Frist von 1 Monat zum Ablauf der Erstvertragslaufzeit in Textform, danach unbefristet mit 1 Monat Frist kündbar.
+
+== P2 Agent S1: Welche Kündigungsfrist gilt für den Gasvertrag und bis wann läuft die Erstlaufzeit?
+   173.3 s: Die Kündigungsfrist für den Gasvertrag beträgt 2 Monate zum Ablauf eines Kalendervierteljahres. Die Erstlaufzeit läuft bis 31.12.2025.
+
+== P2 Agent S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   63.1 s: Der Arbeitspreis beträgt 34,80 ct/kWh (Brutto) und der Grundpreis 11,50 EUR/Monat (Brutto).
+
+== P2 Agent S3: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
+   57.6 s: Der Wasserverbrauch 2025 laut Zählerständen beträgt 74 m³.
+
+== P2 Agent S4: Wie hoch war der Stromverbrauch 2022 und 2023?
+   298.4 s: Es tut mir leid, aber ich konnte keine Informationen über den Stromverbrauch 2022 und 2023 finden. Die Belege, die ich hatte, beziehen sich auf die Jahre 2024 und 2025. Es scheint, dass die Unterlagen
+
+== P2 Agent S5: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
+   83.3 s: Die Stromabrechnung 2024 stimmt nicht mit den Vertragspreisen überein.
+
+Der Rechnungsbetrag für die Stromlieferung 2024 beträgt 1.189,00 EUR (inkl. 19 % USt. & Neukundenbonus), während der Preis Netto
+
+== P2 Agent G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   243.1 s: Es gibt eine Stromabrechnung für 2025. Der neue monatliche Abschlag beträgt ab 15.02.2026 jeweils 120,00 EUR brutto.
+
+== P2 Agent G2: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
+   71.2 s: Ihr Anteil an den Betriebskosten 2025 beträgt 540,00 EUR.
+
+== P2 Agent G3: Ist die Gasabrechnung 2026 korrekt?
+   146.0 s: Die Gasabrechnung 2026 ist korrekt. Der Verbrauch beträgt 1.060 m³, der Grundpreis beträgt 16,00 EUR/Monat, der Arbeitspreis beträgt 9,95 ct/kWh und der Rechnungsbetrag inkl. 19 % Umsatzsteuer beträgt
+
+== P2 Agent G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   72.6 s: Ihr Anteil an den Betriebskosten 2026 beträgt 859,26 EUR.
+
+== P2 Agent N1: Wie hoch war meine Stromrechnung 2023?
+   32.9 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent N2: Welchen Grundpreis zahle ich für Fernwärme?
+   158.3 s: Der Grundpreis für Fernwärme beträgt 10,84 EUR/Monat (Netto) bzw. 12,90 EUR/Monat (Brutto) ab 01.01.2025.
+
+== P2 Agent Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+   165.6 s: Der abgerechnete Gasverbrauch 2025 beträgt 1.200 m³ (Treffer [1]). Der Zählerstand am 01.01.2025 beträgt 8.120 m³ (Treffer [1]) und am 31.12.2025 9.320 m³ (Treffer [1]). Der Gesamtverbrauch kann also 
+
+== P2 Agent Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+   186.6 s: Ich entschuldige mich für die vorherigen Fehler. Basierend auf den vorhandenen Belegen kann ich folgende Antwort geben:
+
+Der aktuelle monatliche Stromabschlag beträgt 115,42 EUR (Treffer [2]).
+
+Bitte 
+
+== P2 Agent Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+could not unload llama3.1:8b: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+could not unload nomic-embed-text: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Traceback (most recent call last):
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+        pool_request.request
+    )
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpcore/_sync/connection.py", line 103, in handle_request
+    return self._connection.handle_request(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 136, in handle_request
+    raise exc
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 106, in handle_request
+    ) = self._receive_response_headers(**kwargs)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 177, in _receive_response_headers
+    event = self._receive_event(timeout=timeout)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 231, in _receive_event
+    raise RemoteProtocolError(msg)
+httpcore.RemoteProtocolError: Server disconnected without sending a response.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 274, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 258, in main
+    return _generate(args, settings, client)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 145, in _generate
+    answer = variant.answer(question, model)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/variants.py", line 286, in answer
+    run = self._agent.run(question.question, model=model, on_step=log)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/agent/loop.py", line 158, in run
+    response, model_step = self._call_model(
+                           ~~~~~~~~~~~~~~~~^
+        model, messages, len(steps), offer_tools=forced is None
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/agent/loop.py", line 227, in _call_model
+    response = self._client.chat(**arguments)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/ollama/_client.py", line 391, in chat
+    return self._request(
+           ~~~~~~~~~~~~~^
+      ChatResponse,
+      ^^^^^^^^^^^^^
+    ...<14 lines>...
+      stream=stream,
+      ^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/ollama/_client.py", line 203, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/ollama/_client.py", line 143, in _request_raw
+    r = self._client.request(*args, **kwargs)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+        request,
+    ...<2 lines>...
+        history=[],
+    )
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+        request,
+        follow_redirects=follow_redirects,
+        history=history,
+    )
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/usr0/.local/share/uv/python/cpython-3.13.15-linux-x86_64-gnu/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/.venv/lib/python3.13/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.RemoteProtocolError: Server disconnected without sending a response.
+could not unload qwen2.5:7b: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+could not unload nomic-embed-text: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+ERROR: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Fertige Antworten sind gespeichert; nach dem Neustart von Ollama setzt derselbe Befehl den Lauf fort.
+ERROR: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Fertige Antworten sind gespeichert; nach dem Neustart von Ollama setzt derselbe Befehl den Lauf fort.
+ERROR: Failed to connect to Ollama. Please check that Ollama is downloaded, running and accessible. https://ollama.com/download
+Fertige Antworten sind gespeichert; nach dem Neustart von Ollama setzt derselbe Befehl den Lauf fort.
+== Nachtlauf gestartet: 2026-11-15 13:32:16
+B0 Volltext: alle Fragen schon beantwortet
+P1 Pipeline: alle Fragen schon beantwortet
+
+== P2 Agent Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+   155.5 s: Die Kündigungsfrist für Ihren Stromvertrag beträgt 14 Tage zum Ablauf der Vertragslaufzeit.
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-010/report.md
+
+== B0 Volltext S1: Welche Kündigungsfrist gilt für den Gasvertrag und bis wann läuft die Erstlaufzeit?
+   493.0 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   45.0 s: Der Arbeits- und Grundpreis lautet wie folgt:
+
+- Arbeitspreis: 34,80 ct/kWh (brutto, inkl. 19 % USt.) [3]
+- Grundpreis (12 Monate): 138,00 EUR (brutto, inkl. 19 % USt.) [1]
+
+== B0 Volltext S3: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
+   14.9 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext S4: Wie hoch war der Stromverbrauch 2022 und 2023?
+   13.5 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext S5: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
+   214.0 s: Ja, die Stromabrechnung 2024 stimmt mit den Vertragspreisen überein.
+
+Rechnungsbetrag Stromlieferung 2024 (inkl. 19 % USt. & Neukundenbonus): 1.189,00 EUR
+
+Zusammengefasst:
+- Grundpreis (12 Monate): 1
+
+== B0 Volltext G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   88.2 s: Ja, in der Stromabrechnung 2025 wurde der angekündigte neue Arbeitspreis angewendet. Dies ist im Auszug [7] unter dem Punkt "Detailberechnung der Energiekosten" zu sehen, wo der Arbeitspreis von 33,19
+
+== B0 Volltext G2: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
+   125.4 s: Ja, der Anteil an den Betriebskosten (Netzentgelte) für 2025 ist korrekt berechnet. 
+
+Gemäß Auszug [7] beträgt der Netzentgelbetragsanteil für 2025 289,40 EUR. Dies entspricht dem 20,51 % der Gesamtre
+
+== B0 Volltext G3: Ist die Gasabrechnung 2026 korrekt?
+   13.2 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   111.5 s: Ja, der Anteil an den Betriebskosten (Netzentgelte) für 2026 ist korrekt berechnet. 
+
+Gemäß Auszug [8] beträgt der Netzentgelbetragsanteil für 2025 (und damit auch 2026, da sich die Netzentgelte in de
+
+== B0 Volltext N1: Wie hoch war meine Stromrechnung 2023?
+   13.0 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext N2: Welchen Grundpreis zahle ich für Fernwärme?
+   13.1 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+   16.1 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+   23.9 s: Der aktuelle monatliche Stromabschlag beträgt 115,00 EUR brutto (gemäß Auszug [4] und [6]).
+
+== B0 Volltext Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+   72.5 s: Die Kündigungsfrist beträgt 1 Monat zum Ablauf der Erstvertragslaufzeit, danach ist der Vertrag unbefristet und kann mit 1 Monat Frist kündbar. Da der Erstvertragslaufzeit vom 01.01.2024 bis 31.12.202
+
+== P1 Pipeline S1: Welche Kündigungsfrist gilt für den Gasvertrag und bis wann läuft die Erstlaufzeit?
+   82.2 s: Für den Gasvertrag gilt eine Kündigungsfrist von 6 Wochen zum Ablauf der Erstvertragslaufzeit in Textform; anschließend unbefristet mit 1 Monat Kündigungsfrist. Die Erstvertragslaufzeit beträgt 24 Mon
+
+== P1 Pipeline S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   61.5 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline S3: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
+   70.1 s: Der Wasserverbrauch 2025 laut den Zählerständen beträgt 74 m³. Dies kann aus dem Auszug [3] entnommen werden, der den Zählerstand am 31.12.2025 mit 386 m³ anzeigt und den Verbrauch von 74 m³ im Jahr 2
+
+== P1 Pipeline S4: Wie hoch war der Stromverbrauch 2022 und 2023?
+   54.8 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline S5: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
+   87.4 s: Ja, die Stromabrechnung 2024 stimmt mit den Vertragspreisen überein.
+
+Rechnungsbetrag Stromlieferung 2024 (inkl. 19 % USt. & Neukundenbonus): 1.189,00 EUR [1]
+
+Abzüglich geleistete Abschlagszahlungen 
+
+== P1 Pipeline G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   62.0 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline G2: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
+   75.2 s: Ja, der Anteil an den Betriebskosten 2025 ist korrekt berechnet.
+
+Rechnung:
+1. Gesamtkosten Objekt: 7.320,00 EUR
+2. Ihr Anteil (25,00 %): 7.320,00 EUR × 25,00 % = 1.830,00 EUR
+
+Die Berechnung entspric
+
+== P1 Pipeline G3: Ist die Gasabrechnung 2026 korrekt?
+   163.2 s: Um die Korrektheit der Gasabrechnung 2026 zu prüfen, betrachten wir die relevanten Informationen aus den Auszügen:
+
+1. **Rechnungsbetrag Erdgaslieferung 2026 (inkl. 19 % USt.): 1.367,99 EUR** [1]
+
+2. 
+
+== P1 Pipeline G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   75.5 s: Ja, der Anteil an den Betriebskosten 2026 ist korrekt berechnet. 
+
+Rechnung:
+1. Gesamtkosten Objekt: 7.470,00 EUR
+2. Ihr Anteil (26,28 %): 7.470,00 EUR × 26,28 % = 1.963,28 EUR
+
+Die Berechnung stimmt 
+
+== P1 Pipeline N1: Wie hoch war meine Stromrechnung 2023?
+   49.8 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline N2: Welchen Grundpreis zahle ich für Fernwärme?
+   66.5 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+   97.4 s: Ja, der abgerechnete Gasverbrauch 2025 passt zu den Zählerständen.
+
+Rechnungsbetrag:
+1. Zählerstand am 01.01.2025: 8.120 m³
+2. Zählerstand am 31.12.2025: 9.320 m³
+3. Volumen: 9.320 m³ - 8.120 m³ = 1.2
+
+== P1 Pipeline Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+   69.1 s: Der aktuelle monatliche Stromabschlag beträgt 115,00 EUR brutto, wie aus [2] hervorgeht.
+
+== P1 Pipeline Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+   72.7 s: Ihre Kündigungsfrist für den Stromvertrag lautet 1 Monat zum Ablauf der Erstvertragslaufzeit in Textform. Danach ist der Vertrag unbefristet kündigbar mit einer Kündigungsfrist von 1 Monat. Dies ist g
+
+== P2 Agent S1: Welche Kündigungsfrist gilt für den Gasvertrag und bis wann läuft die Erstlaufzeit?
+   348.5 s: Die Kündigungsfrist für den Gasvertrag lautet nicht explizit in den Dokumenten fest. Allerdings ist die Erstlaufzeit des Vertrags ab dem 01.01.2024 gültig.
+
+Zu Ihrer Frage, bis wann die Erstlaufzeit l
+
+== P2 Agent S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   282.5 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+Bitte überprüfen Sie die Suchanfrage oder stellen Sie die Frage erneut, falls Sie spezifischere Informationen benötigen.
+
+== P2 Agent S3: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
+   170.4 s: Der Wasserverbrauch laut den Zählerständen für das Jahr 2025 beträgt 74 m³ [4].
+
+== P2 Agent S4: Wie hoch war der Stromverbrauch 2022 und 2023?
+   364.8 s: Der Stromverbrauch 2022 und 2023 ist nicht direkt in den Tabellen aufgeführt. Allerdings können wir die Rechnungsbeträge für die jeweiligen Jahre berechnen:
+
+2022: 1.189,00 EUR (ohne Nachzahlungsbetra
+
+== P2 Agent S5: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
+   299.4 s: Lass uns die Grundpreise aus der Abrechnung mit den Vertragspreisen vergleichen. 
+
+[1] Grundpreis: 11,50 EUR/ Mon. (Brutto)
+
+[4] Rechnungsbetrag Stromlieferung 2024 (inkl. 19 % USt. & Neukundenbonus):
+
+== P2 Agent G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   430.7 s: In der Stromabrechnung 2025 wurde der neue Arbeitspreis von 39,50 ct/kWh angewendet. Dies ist deutlich erkennbar in der Tabellenzeile [6], die den Arbeitspreis für die Energiekosten des Zeitraums 01.0
+
+== P2 Agent G2: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
+   388.0 s: Betrachten wir die relevanten Tabellenzeilen aus der Nebenkostenabrechnung 2025:
+
+1. **Summe umlagefähige Betriebskosten 2025**:
+   - Gesamtkosten Objekt: 7.320,00 EUR
+   - Ihr Anteil (25,00 %): 1.830
+
+== P2 Agent G3: Ist die Gasabrechnung 2026 korrekt?
+   254.5 s: Der monatliche Abschlag für 2026 beträgt 125,00 EUR brutto, wie in der Gasabrechnung 2026 [1, 2, 3, 6] deutlich wird.
+
+Zur Kontrolle: Die Berechnung ergibt:
+\[ 125,00 \, \text{EUR} \times 11 \, \text{
+
+== P2 Agent G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   257.3 s: Betrachten wir die Berechnung des Anteils an den Betriebskosten für 2026:
+
+1. **Nachzahlung zu Ihren Lasten (Zahlung bis 31.03.2027)**: Ihr Anteil beträgt 43,28 EUR.
+2. **Summe umlagefähige Betriebsko
+
+== P2 Agent N1: Wie hoch war meine Stromrechnung 2023?
+   373.8 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent N2: Welchen Grundpreis zahle ich für Fernwärme?
+   189.0 s: Der Grundpreis für Fernwärme beträgt [5] 13,45 EUR pro Monat brutto (inkl. 19 % USt.), ab dem 01.01.2026. Dieser Wert basiert auf dem Preisanpassungsschreiben von NeckarEnergie [4].
+
+== P2 Agent Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+   205.7 s: Der abgerechnete Gasverbrauch für 2025 beträgt 1.200 m³, was sich aus den Zählerständen ergibt:
+
+- Stand 01.01.2025: 8.120 m³
+- Stand 31.12.2025: 9.320 m³
+
+Die Differenz ist 9.320 m³ - 8.120 m³ = 1.20
+
+== P2 Agent Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+   438.0 s: Basierend auf den gefundenen Dokumenten ist der aktuelle monatliche Stromabschlag ab Februar 2025 auf 115,00 EUR brutto (96,64 EUR netto zzgl. 18,36 EUR USt.) angepasst. Dieser Wert gilt für die Zeit 
+
+== P2 Agent Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+   163.7 s: Die Kündigungsfrist für Ihren Stromvertrag lautet 31.12.2024, da Sie das Recht haben, den Vertrag ohne Einhaltung einer Kündigungsfrist zum Zeitpunkt des Wirksamwerdens der Preisänderung in Textform z
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-011/report.md
+   B0 Volltext S1 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext S1 Context Recall: too_long (0.0 s) ca. 11277 > 8192 Token
+   B0 Volltext S2 Faithfulness: too_long (0.0 s) ca. 10337 > 8192 Token
+   B0 Volltext S2 Context Recall: too_long (0.0 s) ca. 11262 > 8192 Token
+   B0 Volltext S3 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext S3 Context Recall: too_long (0.0 s) ca. 11260 > 8192 Token
+   B0 Volltext S4 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext S4 Context Recall: too_long (0.0 s) ca. 11256 > 8192 Token
+   B0 Volltext S5 Faithfulness: too_long (0.0 s) ca. 10497 > 8192 Token
+   B0 Volltext S5 Context Recall: too_long (0.0 s) ca. 11277 > 8192 Token
+   B0 Volltext G1 Faithfulness: too_long (0.0 s) ca. 10229 > 8192 Token
+   B0 Volltext G1 Context Recall: too_long (0.0 s) ca. 11287 > 8192 Token
+   B0 Volltext G2 Faithfulness: too_long (0.0 s) ca. 10610 > 8192 Token
+   B0 Volltext G2 Context Recall: too_long (0.0 s) ca. 11296 > 8192 Token
+   B0 Volltext G3 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext G3 Context Recall: too_long (0.0 s) ca. 11298 > 8192 Token
+   B0 Volltext G4 Faithfulness: too_long (0.0 s) ca. 10738 > 8192 Token
+   B0 Volltext G4 Context Recall: too_long (0.0 s) ca. 11301 > 8192 Token
+   B0 Volltext N1 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext N1 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+   B0 Volltext N2 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext N2 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+   B0 Volltext Z1 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext Z1 Context Recall: too_long (0.0 s) ca. 11268 > 8192 Token
+   B0 Volltext Z2 Faithfulness: too_long (0.0 s) ca. 10193 > 8192 Token
+   B0 Volltext Z2 Context Recall: too_long (0.0 s) ca. 11258 > 8192 Token
+   B0 Volltext Z3 Faithfulness: too_long (0.0 s) ca. 10221 > 8192 Token
+   B0 Volltext Z3 Context Recall: too_long (0.0 s) ca. 11286 > 8192 Token
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S1 Faithfulness: ok 1.00 (318.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S1 Context Recall: ok 1.00 (151.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S2 Faithfulness: ok 0.00 (144.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S2 Context Recall: ok 0.00 (160.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S3 Faithfulness: ok 1.00 (202.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S3 Context Recall: ok 1.00 (139.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S4 Faithfulness: ok 0.00 (137.6 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S4 Context Recall: ok 0.00 (140.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S5 Faithfulness: ok 0.00 (139.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S5 Context Recall: ok 1.00 (138.6 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G1 Faithfulness: ok 1.00 (147.6 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G1 Context Recall: ok 0.00 (155.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G2 Faithfulness: ok 0.50 (252.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G2 Context Recall: ok 0.00 (148.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G3 Faithfulness: ok 0.80 (536.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G3 Context Recall: ok 0.00 (164.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G4 Faithfulness: ok 0.57 (267.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G4 Context Recall: ok 0.00 (156.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline N1 Faithfulness: ok 1.00 (130.1 s) 
+   P1 Pipeline N1 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline N2 Faithfulness: ok 1.00 (149.9 s) 
+   P1 Pipeline N2 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z1 Faithfulness: ok 1.00 (405.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z1 Context Recall: ok 1.00 (163.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z2 Faithfulness: ok 1.00 (157.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z2 Context Recall: ok 0.00 (163.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z3 Faithfulness: ok 1.00 (183.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z3 Context Recall: ok 0.00 (145.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S1 Faithfulness: ok 0.00 (163.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S1 Context Recall: ok 0.00 (131.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S2 Faithfulness: ok 1.00 (172.1 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S2 Context Recall: ok 1.00 (151.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S3 Faithfulness: ok 1.00 (145.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S3 Context Recall: ok 1.00 (144.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S4 Faithfulness: ok 1.00 (271.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S4 Context Recall: ok 0.00 (234.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S5 Faithfulness: ok 0.80 (257.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S5 Context Recall: ok 1.00 (155.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G1 Faithfulness: ok 1.00 (229.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G1 Context Recall: ok 0.00 (212.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G2 Faithfulness: ok 1.00 (146.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G2 Context Recall: ok 1.00 (159.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G3 Faithfulness: ok 0.40 (274.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G3 Context Recall: ok 0.00 (219.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G4 Faithfulness: ok 1.00 (147.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G4 Context Recall: ok 0.00 (163.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent N1 Faithfulness: ok 1.00 (109.2 s) 
+   P2 Agent N1 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent N2 Faithfulness: ok 0.00 (192.4 s) 
+   P2 Agent N2 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z1 Faithfulness: ok 0.83 (270.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z1 Context Recall: ok 1.00 (147.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z2 Faithfulness: ok 0.50 (165.1 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z2 Context Recall: ok 0.00 (153.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z3 Faithfulness: ok 0.00 (138.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z3 Context Recall: ok 1.00 (146.5 s) 
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-010/report.md
+   B0 Volltext S1 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext S1 Context Recall: too_long (0.0 s) ca. 11277 > 8192 Token
+   B0 Volltext S2 Faithfulness: too_long (0.0 s) ca. 10208 > 8192 Token
+   B0 Volltext S2 Context Recall: too_long (0.0 s) ca. 11262 > 8192 Token
+   B0 Volltext S3 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext S3 Context Recall: too_long (0.0 s) ca. 11260 > 8192 Token
+   B0 Volltext S4 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext S4 Context Recall: too_long (0.0 s) ca. 11256 > 8192 Token
+   B0 Volltext S5 Faithfulness: too_long (0.0 s) ca. 10494 > 8192 Token
+   B0 Volltext S5 Context Recall: too_long (0.0 s) ca. 11277 > 8192 Token
+   B0 Volltext G1 Faithfulness: too_long (0.0 s) ca. 10308 > 8192 Token
+   B0 Volltext G1 Context Recall: too_long (0.0 s) ca. 11287 > 8192 Token
+   B0 Volltext G2 Faithfulness: too_long (0.0 s) ca. 10338 > 8192 Token
+   B0 Volltext G2 Context Recall: too_long (0.0 s) ca. 11296 > 8192 Token
+   B0 Volltext G3 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext G3 Context Recall: too_long (0.0 s) ca. 11298 > 8192 Token
+   B0 Volltext G4 Faithfulness: too_long (0.0 s) ca. 10344 > 8192 Token
+   B0 Volltext G4 Context Recall: too_long (0.0 s) ca. 11301 > 8192 Token
+   B0 Volltext N1 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext N1 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+   B0 Volltext N2 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext N2 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+   B0 Volltext Z1 Faithfulness: too_long (0.0 s) ca. 10155 > 8192 Token
+   B0 Volltext Z1 Context Recall: too_long (0.0 s) ca. 11268 > 8192 Token
+   B0 Volltext Z2 Faithfulness: too_long (0.0 s) ca. 10173 > 8192 Token
+   B0 Volltext Z2 Context Recall: too_long (0.0 s) ca. 11258 > 8192 Token
+   B0 Volltext Z3 Faithfulness: too_long (0.0 s) ca. 10277 > 8192 Token
+   B0 Volltext Z3 Context Recall: too_long (0.0 s) ca. 11286 > 8192 Token
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S1 Faithfulness: ok 0.75 (262.6 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S1 Context Recall: ok 1.00 (181.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S2 Faithfulness: ok 0.00 (149.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S2 Context Recall: ok 0.00 (183.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S3 Faithfulness: ok 1.00 (230.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S3 Context Recall: ok 1.00 (170.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S4 Faithfulness: ok 0.00 (142.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S4 Context Recall: ok 0.00 (173.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S5 Faithfulness: ok 0.40 (305.1 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S5 Context Recall: ok 1.00 (154.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G1 Faithfulness: ok 1.00 (177.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G1 Context Recall: ok 0.00 (189.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G2 Faithfulness: ok 1.00 (257.6 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G2 Context Recall: ok 0.00 (188.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G3 Faithfulness: ok 0.75 (549.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G3 Context Recall: ok 0.00 (216.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G4 Faithfulness: ok 1.00 (260.1 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G4 Context Recall: ok 0.00 (194.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline N1 Faithfulness: ok 1.00 (143.0 s) 
+   P1 Pipeline N1 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline N2 Faithfulness: ok 1.00 (200.5 s) 
+   P1 Pipeline N2 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z1 Faithfulness: ok 1.00 (382.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z1 Context Recall: ok 1.00 (191.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z2 Faithfulness: ok 1.00 (183.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z2 Context Recall: ok 0.00 (220.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z3 Faithfulness: ok 0.50 (235.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z3 Context Recall: ok 0.00 (185.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S1 Faithfulness: ok 0.50 (430.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S1 Context Recall: ok 1.00 (372.6 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S2 Faithfulness: ok 1.00 (346.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S2 Context Recall: ok 1.00 (299.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S3 Faithfulness: ok 1.00 (182.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S3 Context Recall: ok 1.00 (180.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S4 Faithfulness: ok 0.17 (520.6 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S4 Context Recall: ok 0.00 (312.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S5 Faithfulness: ok 0.50 (433.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S5 Context Recall: ok 1.00 (187.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G1 Faithfulness: ok 1.00 (568.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G1 Context Recall: ok 0.00 (422.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G2 Faithfulness: ok 0.50 (378.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G2 Context Recall: ok 1.00 (258.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G3 Faithfulness: ok 1.00 (357.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G3 Context Recall: ok 0.00 (264.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G4 Faithfulness: ok 1.00 (435.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G4 Context Recall: ok 0.00 (213.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent N1 Faithfulness: ok 1.00 (380.5 s) 
+   P2 Agent N1 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent N2 Faithfulness: ok 0.00 (255.6 s) 
+   P2 Agent N2 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z1 Faithfulness: ok 1.00 (375.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z1 Context Recall: ok 1.00 (197.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z2 Faithfulness: ok 1.00 (532.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z2 Context Recall: ok 1.00 (410.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z3 Faithfulness: ok 0.00 (213.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z3 Context Recall: ok 0.00 (178.3 s) 
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-011/report.md
+== Nachtlauf beendet: 2026-11-15 22:06:13
