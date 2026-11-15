@@ -24,11 +24,21 @@
 
 ## Einträge
 
+### ISS-047 – RAGAS im Probelauf: Abbruch bei langer Antwort, Context Recall durchweg 0, nachsichtige Faithfulness
+- **Datum / Meilenstein:** 2026-11-15 / M6b (RUN-009)
+- **Kategorie:** evaluation
+- **Status:** teilweise gelöst (Punkt 1), Punkte 2 und 3 akzeptiert
+- **Symptom:** (1) P1/G3 Faithfulness: `IncompleteOutputException` nach 499 s, die Aussagenliste der langen Antwort (ca. 1.100 Zeichen) überschritt `max_tokens` 1024. (2) Context Recall ist für alle vier bewerteten Antworten 0,00. (3) P2/G3 behauptet „Die Gasabrechnung 2026 ist korrekt“ und bekommt Faithfulness 1,00; P2/G4 nennt 859,26 EUR aus einer sinnlosen Rechnung (`1963,28 − 1920,00 + 43,28 + 341,67 + 431,03`) und bekommt ebenfalls 1,00.
+- **Ursache:** (1) Antwortbudget zu klein bzw. Wiederholungen des Bewerters. (2) Die Referenzantworten von G3/G4 bestehen aus Vergleichen und berechneten Werten (11.299 kWh, 1.867,50 EUR) und brauchen ein zweites Dokument (Vorjahresabrechnung, Mietvertrag), das keine Variante gefunden hat; plausibel, aber nicht von Hand am Bewerter-Output geprüft, weil RAGAS die Einzelurteile nicht zurückgibt. (3) Faithfulness misst nur, ob Aussagen in den Belegen stehen, nicht ob sie richtig sind; die Zahl 859,26 steht in der Beobachtung des Rechners. Das Urteil „korrekt“ hat der Bewerter offenbar als gedeckt gewertet.
+- **Lösung / Workaround:** (1) `judge_max_tokens` = 2048; der Fehlschlag lässt sich mit `ragas --retry-errors` wiederholen. (2)/(3) In der Ausarbeitung RAGAS ausdrücklich als Maß für Belegtreue und Belegabdeckung deuten, nicht für Richtigkeit; Richtigkeit und Fehlererkennung kommen aus den eigenen Metriken. Context Recall bei Prüffragen ist systematisch niedrig, weil berechnete Werte nie wörtlich in Belegen stehen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Metriken, Grenzen)
+
 ### ISS-046 – RAGAS bewertet B0 praktisch nicht, und die Längenschätzung ist grob
 - **Datum / Meilenstein:** 2026-11-15 / M6b
 - **Kategorie:** evaluation
 - **Status:** akzeptiert
-- **Symptom:** (1) Der B0-Kontext hat geschätzt ca. 6.700 Token (RUN-008); zusammen mit dem RAGAS-Prompt und 1.024 Token Antwortbudget passt er nicht in die 8.192 Token des Bewerters. B0 erhält deshalb (fast) nur den Status „zu lang“. (2) Wie lang der zweite Faithfulness-Prompt wird, hängt von den Aussagen ab, die der Bewerter erst im ersten Aufruf erzeugt; geschätzt wird mit der Antwort als Ersatz. (3) Die Schätzung 2,4 Zeichen/Token ist für deutsche Zahlentabellen gemessen; der englische RAGAS-Prompttext ist günstiger, die Schätzung also eher zu hoch. Dadurch können auch lange P2-Antworten (viele Tool-Aufrufe) übersprungen werden.
+- **Symptom:** (1) Der B0-Kontext hat geschätzt ca. 6.700 Token (RUN-008); zusammen mit dem RAGAS-Prompt und dem Antwortbudget (2.048 Token) passt er nicht in die 8.192 Token des Bewerters. B0 erhält deshalb nur den Status „zu lang“ (RUN-009: geschätzt 9.100–10.300 Token schon mit 1.024 Token Budget). (2) Wie lang der zweite Faithfulness-Prompt wird, hängt von den Aussagen ab, die der Bewerter erst im ersten Aufruf erzeugt; geschätzt wird mit der Antwort als Ersatz. (3) Die Schätzung 2,4 Zeichen/Token ist für deutsche Zahlentabellen gemessen; der englische RAGAS-Prompttext ist günstiger, die Schätzung also eher zu hoch. Dadurch können auch lange P2-Antworten (viele Tool-Aufrufe) übersprungen werden.
 - **Ursache:** Kontextgrenze von 8.192 Token bei nur CPU und 9 GB RAM; RAGAS fügt alle Belege in einen Prompt ein.
 - **Lösung / Workaround:** Übersprungene Antworten werden gezählt, nicht als 0 gewertet; der Report nennt „x/y bewertet, z zu lang“. B0 wird über die eigenen Metriken verglichen. Ob gekürzt wurde, zeigt nach jedem Lauf das Journal (`truncat`).
 - **Gelernt:**

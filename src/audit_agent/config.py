@@ -139,8 +139,8 @@ class EvaluationSettings(BaseModel):
 
     Ollama's OpenAI endpoint takes no per-request ``num_ctx``, so the model alias fixes it.
     """
-    judge_max_tokens: int = Field(default=1024, ge=64)
-    """Generation limit of one judge call (statements, verdicts, classifications)."""
+    judge_max_tokens: int = Field(default=2048, ge=64)
+    """Output limit of one judge call; 1024 cut the statement list of a long answer (RUN-009)."""
 
 
 class Settings(BaseModel):

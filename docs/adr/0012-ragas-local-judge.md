@@ -1,6 +1,6 @@
 # ADR-0012: RAGAS mit lokalem Bewertermodell
 
-- **Status:** vorgeschlagen (Technik mit Fakes getestet; erster echter Lauf im Probelauf RUN-009)
+- **Status:** akzeptiert (Probelauf RUN-009: gültiges JSON in 7 von 8 Aufrufen, keine Kürzung im Journal)
 - **Datum:** 2026-11-15
 - **Meilenstein:** M6b
 
@@ -30,8 +30,8 @@ Ein eigener Schritt `ragas` bewertet die gespeicherten Antworten nachträglich, 
 
 ## Konsequenzen
 - Positiv: RAGAS-Werte ohne Neugenerieren der Antworten; nichts verlässt den Rechner; keine stillen Kürzungen; Kern und Quality Gate bleiben ohne LangChain.
-- Negativ / Preis: Ein 7B-Bewerter ist selbst fehleranfällig, die RAGAS-Prompts sind englisch, die Texte deutsch; beim `qwen2.5:7b`-Lauf bewertet das Modell seine eigenen Antworten (ISS-045). B0 ist mit ca. 6.700 Token Belegen fast immer „zu lang“ und bekommt keine RAGAS-Werte (ISS-046). Laufzeit grob 3 Bewerteraufrufe à 1–3 Minuten je Antwort.
-- Zu testen: RUN-009 (Probelauf G3/G4): liefert `audit-judge` gültiges JSON, wie lange dauert ein Aufruf, meldet das Journal Kürzungen? Danach Stichproben von Hand gegen die Urteile prüfen.
+- Negativ / Preis: Ein 7B-Bewerter ist selbst fehleranfällig, die RAGAS-Prompts sind englisch, die Texte deutsch; beim `qwen2.5:7b`-Lauf bewertet das Modell seine eigenen Antworten (ISS-045). B0 ist mit ca. 6.700 Token Belegen fast immer „zu lang“ und bekommt keine RAGAS-Werte (ISS-046). Laufzeit in RUN-009 ca. 70–190 s je Metrik, also ca. 4–5 Minuten je Antwort (beide Metriken). Faithfulness misst Belegtreue, nicht Richtigkeit; Context Recall ist bei Prüffragen mit berechneten Werten systematisch niedrig (ISS-047).
+- Getestet in RUN-009: `audit-judge` liefert gültiges JSON (ein Abbruch wegen `max_tokens` 1024, danach 2048); das Journal zeigt `truncated = 0`. Offen: Stichproben der Urteile in den Nachtläufen von Hand prüfen.
 
 ## Belege
-ISS-040, ISS-041, ISS-044 bis ISS-046; RAGAS-Quelltext 0.4.4 (`ragas/metrics/collections/faithfulness`, `context_recall`, `_analytics.py`); RAGAS-Doku „LLM adapters“ (Abschnitt Ollama).
+ISS-040, ISS-041, ISS-044 bis ISS-047; RUN-009; RAGAS-Quelltext 0.4.4 (`ragas/metrics/collections/faithfulness`, `context_recall`, `_analytics.py`); RAGAS-Doku „LLM adapters“ (Abschnitt Ollama).

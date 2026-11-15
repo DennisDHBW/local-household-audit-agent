@@ -264,3 +264,27 @@
 - **Grenzen der Messung:** 3 Fragen, ein Lauf, ein Modell; B0 sieht nur Stromdokumente (begünstigt bei S2, G1, ISS-039); „Fehler erkannt“ misst nur das Urteil (ISS-038, ISS-040).
 - **Meine Deutung (eigene Worte):**
 - **Konsequenz / nächster Schritt:** Das Testmodul läuft stabil. M6b: alle 12 Fragen mit `llama3.1:8b` und `qwen2.5:7b` (über Nacht), dann Gegenmaßnahmen messen (Filter durch Code, gemeinsames Suchwerkzeug, Zitierpflicht für P2) und RAGAS. Auffällig für die Auswertung: P1 antwortet bei vorhandenen Belegen „keine Angaben“ (2 von 3), B0 ist bei Stromfragen konkurrenzfähig, solange alles in den Kontext passt.
+
+### RUN-009 – M6b, Probelauf neue Prüffragen G3/G4 und erster RAGAS-Lauf (`llama3.1:8b`, Bewerter `audit-judge`)
+- **Datum / Commit:** 2026-11-15 · Branch `feat/m6b-ragas-catalog`, Stand `docs: record RAGAS judge (ADR-0012), questions G3/G4 and ISS-044 to ISS-046`
+- **Varianten:** B0 (Volltext), P1 (Pipeline), P2 (Agent); danach RAGAS Faithfulness und Context Recall
+- **Konfiguration:** Antwortmodell `llama3.1:8b`, `num_ctx` 8192, B0 mit Dateien 01–06 (ca. 6.730 Token); Bewerter `audit-judge` (= `qwen2.5:7b`, `num_ctx` 8192, Temperatur 0), `max_tokens` 1024; Befehle `generate --run-id run-009 --ids G3 G4` und `ragas --run-id run-009`
+- **Dauer:** ca. 47 Minuten (10:00–10:47): Antworten ca. 25 min (B0 452 / 271 s, P1 173 / 71 s, P2 263 / 72 s), RAGAS ca. 23 min für 4 bewertbare Antworten (70–190 s je Metrik, ein Abbruch nach 499 s)
+- **Rohdaten:** `data/eval/run-009/` (`report.md`, `scores.json`, `ragas.jsonl`, `answers-*.jsonl`, `p2-*.jsonl`, `manifest.json`, `ollama-journal.txt`), `data/eval/run-009.log`
+
+| Metrik | B0 | P1 | P2 |
+|---|---|---|---|
+| Richtig | 0/2 | 0/2 | 0/2 |
+| Fakten gefunden | 0/6 | 0/6 | 0/6 |
+| Fehler erkannt (E2, E3) | 0/2 | 0/2 | 0/2 |
+| Suchen mit eigenem Filter / schließen Quelle aus | – | – | 3 / 3 |
+| RAGAS Faithfulness | zu lang (2) | 0,57 (1 von 2, 1 Fehler) | 1,00 (2 von 2) |
+| RAGAS Context Recall | zu lang (2) | 0,00 (2 von 2) | 0,00 (2 von 2) |
+
+- **Technik:** Journal ohne Kürzung (`truncated = 0` in allen 54 Zeilen) und ohne OOM. `audit-judge` lieferte in 7 von 8 Aufrufen gültiges JSON; P1/G3 Faithfulness brach mit `IncompleteOutputException` ab (`max_tokens` 1024 zu klein für die lange Antwort, danach auf 2048 erhöht; ISS-047). B0 wurde wie erwartet nicht bewertet (geschätzt 9.100–10.300 Token, ISS-046).
+- **G3 (Gas 2026, Fehler E2):** B0 „keine Angaben“ (Rechnung 29 nicht im Kontext, ISS-039). P1 liest den Rechnungsbetrag 1.367,99 EUR richtig, fällt aber kein Urteil. P2 urteilt „korrekt“ (Fehlurteil): Alle Suchen sind auf Gas/Rechnung/2026 gefiltert, die Abrechnung 2025 mit z-Zahl 0,9560 kommt nie in den Kontext.
+- **G4 (Nebenkosten 2026, Fehler E3):** B0 rechnet mit einer Stromrechnung (falsches Dokument). P1 findet 7.470,00 und 1.963,28 EUR, verrechnet sie mit den Vorauszahlungen und antwortet „keine Angaben“. P2 sucht nur in Nebenkosten/2026 (Mietvertrag mit 78 m² ausgeschlossen) und addiert unpassende Beträge zu 859,26 EUR.
+- **RAGAS-Deutung:** Faithfulness 1,00 bei P2 trotz falscher Antworten: Die Aussagen stehen in den Belegen bzw. in der Rechner-Beobachtung, richtig sind sie deshalb nicht. Context Recall 0,00 überall passt dazu, dass keine Variante das zweite Dokument (Vorjahr, Mietvertrag) im Kontext hatte; die Einzelurteile gibt RAGAS nicht aus (ISS-047).
+- **Grenzen der Messung:** 2 Fragen, ein Lauf, ein Modell; RAGAS-Werte auf 1–2 Antworten je Zelle.
+- **Meine Deutung (eigene Worte):**
+- **Konsequenz / nächster Schritt:** Der Ablauf funktioniert von der Antwort bis zum RAGAS-Report. Die neuen Prüffragen bestätigen ISS-007/036: Der selbst gesetzte Filter des Agenten schließt das Vergleichsdokument aus. Nachtläufe mit 14 Fragen: Antworten ca. 1,5–2 h je Modell, RAGAS ca. 2 h je Modell (28 Antworten P1/P2 à ca. 4,5 min, B0 wird übersprungen).
