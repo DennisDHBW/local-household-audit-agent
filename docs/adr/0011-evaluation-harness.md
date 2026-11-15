@@ -18,7 +18,7 @@ Paket `audit_agent.evaluation` mit getrennten Schritten `generate` (braucht Olla
 6. **Speicher:** Vor jeder Variante werden die Modelle entladen (Modell und Prompt-Cache beginnen neu; ISS-043).
 7. **Speicherung:** `data/eval/<run>/answers-<variante>.jsonl`, eine Zeile je Antwort, sofort geschrieben. Ein abgebrochener Lauf wird mit demselben Befehl fortgesetzt; ein Lauf darf nur ein Modell enthalten (Fail fast).
 8. **Eigene Metriken (deterministisch):** Fakten (Zahl in der Antwort, Belegnummern vorher entfernt; Text als ganzes Wort), Quellen-Präzision und -Recall auf Datei + Seite über die zitierten `[n]`, erfundene Belegnummern, Ablenker in Zitaten und im Kontext (`is_noise_document`), Tool-Wahl (gültige Aufrufe), Filterwahl (eigener Filter schließt eine erwartete Quelle aus, nach den Regeln der Tools), Negativerkennung (`is_gap_answer`), Prüfurteil ja/nein aus dem ersten Satz → Fehlererkennung und Fehlalarm, Latenz und Prompt-Token. Ergebnis: `scores.json` und `report.md` (Tabelle Variante × Metrik, Matrix Frage × Variante, alle Antworten).
-9. **RAGAS** folgt in M6b auf denselben gespeicherten Antworten.
+9. **RAGAS** folgt in M6b auf denselben gespeicherten Antworten (umgesetzt in ADR-0012).
 
 ## Verworfene Alternativen
 | Alternative | Warum nicht? |

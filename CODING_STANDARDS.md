@@ -61,7 +61,7 @@ Dieses Dokument definiert die verbindlichen IT- und Software-Engineering-Standar
 - **Testpyramide / Testing Trophy:**
   - *Breite Basis (Unit-Tests):* Schnelle, CPU-schonende Tests ohne laufendes LLM für Parser, Zahlennormalisierung, Chunking, deterministische Rechner-Tools und Hybrid-Retrieval.
   - *Mitte (Integrationstests):* Zusammenspiel von Ingestion -> Vektorspeicher -> Tool-Ausführung auf Beispieldokumenten.
-  - *Spitze (End-to-End & RAGAS):* Vollständige Agenten-Evaluation über den verbindlichen 12-Fragen-Katalog.
+  - *Spitze (End-to-End & RAGAS):* Vollständige Agenten-Evaluation über den verbindlichen Fragenkatalog (12 Fragen, seit M6b 14).
 - **AAA-Pattern:** Jeder Test ist klar in **Arrange** (Testdaten/Mocks vorbereiten), **Act** (Funktion ausführen) und **Assert** (Ergebnis prüfen) gegliedert.
 - **FIRST-Prinzipien:** Unit-Tests sind **F**ast (Millisekunden statt LLM-Wartezeit), **I**ndependent (isolierte `tmp_path`-Verzeichnisse), **R**epeatable (deterministische Mocks/Fixtures), **S**elf-Validating (eindeutige Assertions) und **T**imely (direkt mit jedem Modul geschrieben).
 - **Shift-Left-Testing & Quality Gates:** Linter (`ruff check`), Formatter (`ruff format --check`) und schnelle Unit-Tests (`pytest -m "not slow"`) werden vor jedem Commit lokal ausgeführt, um Fehler sofort abzufangen.

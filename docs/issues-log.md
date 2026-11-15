@@ -24,6 +24,36 @@
 
 ## Einträge
 
+### ISS-046 – RAGAS bewertet B0 praktisch nicht, und die Längenschätzung ist grob
+- **Datum / Meilenstein:** 2026-11-15 / M6b
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** (1) Der B0-Kontext hat geschätzt ca. 6.700 Token (RUN-008); zusammen mit dem RAGAS-Prompt und 1.024 Token Antwortbudget passt er nicht in die 8.192 Token des Bewerters. B0 erhält deshalb (fast) nur den Status „zu lang“. (2) Wie lang der zweite Faithfulness-Prompt wird, hängt von den Aussagen ab, die der Bewerter erst im ersten Aufruf erzeugt; geschätzt wird mit der Antwort als Ersatz. (3) Die Schätzung 2,4 Zeichen/Token ist für deutsche Zahlentabellen gemessen; der englische RAGAS-Prompttext ist günstiger, die Schätzung also eher zu hoch. Dadurch können auch lange P2-Antworten (viele Tool-Aufrufe) übersprungen werden.
+- **Ursache:** Kontextgrenze von 8.192 Token bei nur CPU und 9 GB RAM; RAGAS fügt alle Belege in einen Prompt ein.
+- **Lösung / Workaround:** Übersprungene Antworten werden gezählt, nicht als 0 gewertet; der Report nennt „x/y bewertet, z zu lang“. B0 wird über die eigenen Metriken verglichen. Ob gekürzt wurde, zeigt nach jedem Lauf das Journal (`truncat`).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen)
+
+### ISS-045 – Bewertermodell bewertet beim qwen-Lauf seine eigenen Antworten
+- **Datum / Meilenstein:** 2026-11-15 / M6b
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** RAGAS-Bewerter ist für beide Läufe `audit-judge` (= `qwen2.5:7b`). Im Lauf mit `qwen2.5:7b` als Antwortmodell beurteilt dasselbe Modell seine eigenen Antworten; LLM-Bewerter neigen dazu, eigene Formulierungen milder zu bewerten. Dazu kommen englische RAGAS-Prompts auf deutschen Texten und ein kleines 7B-Modell als Bewerter.
+- **Ursache:** Auf der Hardware ist kein größeres oder drittes gleich starkes Modell sinnvoll (≤ 8B, 9 GB RAM); ein fester Bewerter hält die Werte beider Läufe vergleichbar (ADR-0012).
+- **Lösung / Workaround:** RAGAS nur als zweite Sicht neben den deterministischen Metriken; Stichproben von Hand prüfen und Fehlurteile hier notieren; die Abweichung zwischen den Läufen nicht allein dem Antwortmodell zuschreiben.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen)
+
+### ISS-044 – RAGAS sendet standardmäßig Nutzungsdaten an den Hersteller
+- **Datum / Meilenstein:** 2026-11-15 / M6b
+- **Kategorie:** llm
+- **Status:** gelöst
+- **Symptom:** Beim Lesen des Quelltexts von RAGAS 0.4.4 fiel auf, dass jede Bewertung ein Nutzungsereignis an einen Server des Herstellers schickt (`ragas/_analytics.py`, `track(...)` in `InstructorLLM.agenerate`), solange `RAGAS_DO_NOT_TRACK` nicht auf `true` steht. Das widerspricht dem Grundsatz „nichts verlässt den Rechner“ (ADR-0001), auch wenn laut Quelltext nur Metadaten wie Anbieter und Modellname gesendet werden.
+- **Ursache:** Opt-out-Telemetrie der Bibliothek; der Wert wird beim ersten Aufruf gelesen und zwischengespeichert.
+- **Lösung / Workaround:** `RagasJudge` setzt `RAGAS_DO_NOT_TRACK=true`, bevor RAGAS importiert wird; ein Unit-Test prüft das.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Datenschutz / lokale Architektur (kurz)
+
 ### ISS-042 – Evaluations-CLI fing einen Verbindungsabbruch nicht ab
 - **Datum / Meilenstein:** 2026-11-14 / M6a (RUN-007)
 - **Kategorie:** ki-assistent
@@ -57,7 +87,7 @@
 ### ISS-040 – Fehlererkennung misst nur einen der drei eingebauten Fehler
 - **Datum / Meilenstein:** 2026-11-14 / M6a
 - **Kategorie:** evaluation
-- **Status:** offen
+- **Status:** gelöst (M6b: Fragen G3 zu E2 und G4 zu E3; `Question.planted_error`, Validierung „jeder eingebaute Fehler hat genau eine Frage“)
 - **Symptom:** Die Metriken „Fehler erkannt“ und „Fehlalarm“ zählen Fragen, deren erwartete Antwort mit „Ja“ oder „Nein“ beginnt (S5, G1, G2, Z1). Nur G1 enthält einen eingebauten Fehler (E1). E2 (z-Zahl Gas 2026) und E3 (Wohnfläche Nebenkosten 2026) kommen in keiner Frage vor; `audit_checks` mit 10 Abrechnungen wird nicht genutzt.
 - **Ursache:** Der 12-Fragen-Katalog ist aus M1 übernommen; die Prüffragen zu den Abrechnungen 29 und 30 wurden nie formuliert.
 - **Lösung / Workaround:** In M6b entweder zwei Reservefragen zu E2/E3 ergänzen oder einen eigenen Prüflauf „Prüfe die Abrechnung X“ über `audit_checks` bauen. Bis dahin die Rate als „1 von 1“ und nicht als Prozentwert berichten.
