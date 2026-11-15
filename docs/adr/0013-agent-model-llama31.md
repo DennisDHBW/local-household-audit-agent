@@ -1,6 +1,6 @@
 # ADR-0013: Agent-Modell `llama3.1:8b`
 
-- **Status:** vorgeschlagen
+- **Status:** akzeptiert (vom Nutzer am 2026-11-15 bestätigt; Gegenprobe mit `qwen2.5:7b` nach den Gegenmaßnahmen)
 - **Datum:** 2026-11-15
 - **Meilenstein:** M6 (M6c)
 

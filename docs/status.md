@@ -2,9 +2,9 @@
 
 > Diese Datei liest Claude zu Beginn jeder Sitzung. Kurz halten (max. 1 Seite). Alte Einträge überschreiben; die Historie steht in `dev-journal.md` und in Git.
 
-**Letzte Aktualisierung:** 2026-11-15 (M6b-1, Nachbesserung OOM)
+**Letzte Aktualisierung:** 2026-11-15 (M6c)
 **Phase:** 1 – Umsetzung
-**Aktueller Meilenstein:** M6 – Testmodul & Evaluation (M6a, M6b-1 fertig; Nachtläufe und Auswertung offen)
+**Aktueller Meilenstein:** M6 – Testmodul & Evaluation (M6a, M6b, M6c fertig; Gegenmaßnahmen M6d offen)
 **Version:** v0.2.0 (nach M5)
 
 ## Meilensteine
@@ -17,48 +17,44 @@
 | M3 | Enrichment & Cache | fertig (Reverse-Engineering-Fragen offen) | – |
 | M4 | Embedding & Retrieval (P1) + Evidenz (CLI) | fertig (Reverse-Engineering-Fragen offen) | – |
 | M5 | Agent (P2) mit Tools + Streamlit-Evidenz | fertig (Reverse-Engineering Runde 1 vorbereitet) | v0.2.0 |
-| M6 | Testmodul & Evaluation | M6a + M6b-1 fertig (14 Fragen, RAGAS); Nachtläufe 2 Modelle + Auswertung offen | v1.0.0 |
+| M6 | Testmodul & Evaluation | M6a–M6c fertig (Nachtläufe ausgewertet); M6d Gegenmaßnahmen offen | v1.0.0 |
 | M7 | Ausarbeitung (Phase 2, Vorlage unter `paper/`) | offen | – |
 
-## Zuletzt erledigt (M6b-1)
-- Katalog 14 Fragen: G3 (E2, z-Zahl Gas 2026) und G4 (E3, Wohnfläche Nebenkosten 2026); `Question.planted_error`, jeder Fehler hat genau eine Frage (ISS-040 gelöst)
-- `VariantAnswer.contexts`: Belegtexte, wie das Modell sie sah (B0 Seiten, P1 Treffer, P2 Tool-Beobachtungen)
-- RAGAS 0.4.4 (Gruppe `ragas`): Befehl `ragas`, Faithfulness + Context Recall, Bewerter `audit-judge` (= `qwen2.5:7b`, `num_ctx` 8192, Modelfile), keine stille Kürzung (zu lange Prompts → „zu lang“), fortsetzbar, Telemetrie aus (ISS-044); ADR-0012; 270 Tests
-- RUN-009 (G3/G4, `llama3.1:8b`): alle Varianten 0/2; P2 urteilt bei G3 „korrekt“, eigene Filter schließen Vorjahr/Mietvertrag aus (3/3). RAGAS läuft: P2 Faithfulness 1,00 trotz falscher Antworten, Context Recall überall 0; B0 immer „zu lang“; `max_tokens` auf 2048 erhöht (ISS-045 bis ISS-047)
+## Zuletzt erledigt (M6c)
+- RUN-010 (`llama3.1:8b`) und RUN-011 (`qwen2.5:7b`) vollständig, 8,5 h ohne OOM und ohne Kürzung (ISS-043 gelöst)
+- Alle 84 Antworten gelesen. Richtig nach Handprüfung (B0 / P1 / P2): llama 5 / 5 / 3, qwen 3 / 5 / 2 von 14; kein eingebauter Fehler erkannt
+- Fehleranalyse je Fehlschlag (61): Kontextbudget 14, Retrieval 12, Filter 10, Tool-Wahl 8, Argumente 1, Synthese 16, Parser 0. P2 ist schlechter als P1, 18 von 23 P2-Fehlschlägen kommen aus Werkzeugentwurf und Filtern
+- `scripts/check_evidence.py` (`evidence.json`): standen die Sollfakten im Kontext?
+- RAGAS-Stichprobe (12 Antworten): im Einzelfall unzuverlässig (ISS-053); Metrik bei „ja“-Urteilen zu großzügig (ISS-050)
+- ADR-0013: Agent-Modell `llama3.1:8b` (akzeptiert), `qwen2.5:7b` bleibt Bewerter
 
 ## Nächstes Arbeitspaket
-M6c – Nachtläufe auswerten. **Vorher (vom Nutzer, über Nacht, ca. 7–8 h):** den Nachtlauf-Befehl unten ausführen. Dann in der Sitzung: Ergebnisse von RUN-010 (`llama3.1:8b`) und RUN-011 (`qwen2.5:7b`) lesen, RAGAS-Stichproben von Hand prüfen, evaluation-log, Fehleranalyse je Fehlschlag (Parser/Retrieval/Tool-Wahl/Synthese), Agent-Modell entscheiden. Zuerst Plan vorlegen.
+M6d – Gegenmaßnahmen für P2 bauen und messen. Reihenfolge nach Wirkung: (1) Filter nicht mehr dem Modell überlassen bzw. bei Prüffragen Vergleichsdokumente mitsuchen (ISS-007), (2) ein Suchwerkzeug über Text und Tabellen, danach `expected_tools` im Katalog anpassen (ISS-006/052), (3) leere gefilterte Suche meldet „keine Treffer“ statt ungefiltert zu wiederholen (ISS-051). Danach ein P2-Lauf mit `llama3.1:8b` auf 14 Fragen (ca. 35 min, vom Nutzer) und Vergleich mit RUN-010. Zuerst Plan vorlegen, auch zur Frage, ob (1) bis (3) in ein Paket passen.
 
-**Empfohlenes Modell:** Opus 5.5, Effort High (Auswertung der Evaluation)
-
-Nachtlauf-Befehl:
-```bash
-/home/usr0/PycharmProjects/local-household-audit-agent/scripts/night_eval.sh
-```
-Wartet vor jedem Schritt auf Ollama und wiederholt einen abgebrochenen Schritt einmal; erneuter Aufruf setzt fort. Stand 15.11.: RUN-010 hat B0 und P1 mit 14 Fragen, P2 mit 13 (Abbruch durch OOM bei Z3, ISS-043); RUN-011 und RAGAS leer.
+**Empfohlenes Modell:** Sonnet 5.5, Effort High (anspruchsvoller Code: Werkzeuge, ReAct-Schleife)
 
 ## Nächste Schritte
-1. Nachtlauf, dann M6c (Auswertung)
-2. Gegenmaßnahmen messen (Filter durch Code ISS-007, gemeinsames Suchtool ISS-006, Zitierpflicht P2, P1-Suchanfrage), Hierarchie-Boost entscheiden; Reverse-Engineering M6, Tag v1.0.0
-3. Reverse-Engineering zu M2 bis M5 beantworten, O-Ton für M0 bis M5 nachtragen
+1. M6d (Gegenmaßnahmen P2), danach Gegenprobe P2 mit `qwen2.5:7b` (ca. 70 min, ADR-0013)
+2. P1: mehr Treffer oder gezieltere Suchanfrage (12 Retrieval-Fehlschläge), Zitierpflicht P2, Hierarchie-Boost entscheiden; Reverse-Engineering M6, Tag v1.0.0
+3. Reverse-Engineering zu M2 bis M5 beantworten, O-Ton für M0 bis M6c nachtragen
 
 ## Offene Entscheidungen / Fragen
-- Endgültiges Agent-Modell (`llama3.1:8b` vs. `qwen2.5:7b`): nach M6c
-- Gegenmaßnahmen für ISS-006/007/036 erst nach dem 14-Fragen-Lauf wählen
-- Hierarchie-Boost behalten? (ISS-027); Summaries für den Agenten wieder an? (ISS-035)
-- Wie RAGAS in der Ausarbeitung gedeutet wird: Belegtreue/-abdeckung, nicht Richtigkeit (ISS-047)
+- Welche Gegenmaßnahmen kommen in den Prototyp, welche nur als Ausblick in die Ausarbeitung (Zeit)?
+- Hierarchie-Boost behalten? (ISS-027: hebt Grußformeln mit Kapitelüberschrift nach oben); Summaries für den Agenten wieder an? (ISS-035)
+- Einheitenfaktor der Zahlensuche einschränken? (ISS-050, erst nach den Vergleichsläufen)
 - Titelblatt-Angaben für `paper/` (Name, Matrikelnummer, Kurs, Dozent)
 
 ## Bekannte Probleme / Risiken (Details in `issues-log.md`)
-- ISS-036/006/007: Agent wählt Tools und Filter unzuverlässig (G1, G3, G4)
-- ISS-043: OOM-Kill in P2 trotz Entladen je Variante (RUN-010); jetzt Entladen je Frage, beobachten
-- ISS-045/046/047: RAGAS-Bewerter bewertet beim qwen-Lauf sich selbst, B0 nicht bewertbar, Context Recall bei Prüffragen systematisch niedrig
-- ISS-038: eigene Metriken sind Heuristiken; ISS-039: B0 sieht nur Stromdokumente (01–06)
-- ISS-030/031/032/033, ISS-025/027/028/029, ISS-010, ISS-015/016/019, ISS-022/023, ISS-001/002/003: wie bisher
+- ISS-051/052/006/007/036: Agent verliert Belege durch Werkzeugtrennung, eigene Filter und Wiederholung ohne Filter
+- ISS-054: `qwen2.5:7b` sagt immer „ja“, `llama3.1:8b` scheitert an `calculate` und zitiert kaum
+- ISS-050/038: „richtig laut Metrik“ nur mit Handprüfung verwenden; ISS-053/047/046/045: RAGAS nur als zweite Sicht
+- ISS-039: B0 sieht nur Stromdokumente (01–06); ISS-029: S4 (Diagramm) findet keine Variante
+- ISS-030/031/032/033, ISS-025/027/028, ISS-010, ISS-015/016/019, ISS-022/023, ISS-001/002/003: wie bisher
 
 ## Hinweise für die nächste Sitzung
 - Git: Branch pro Arbeitspaket, `merge --no-ff` in main, keine Claude-Hinweise in Commits; Löschrecht für den Projektordner zu Beginn anfragen (sonst bleiben `.git/*.lock` liegen)
-- Claudes Shell: `export UV_PROJECT_ENVIRONMENT=$HOME/.venvs/audit` vor `uv`-Befehlen (ISS-009); Quality Gate `./scripts/check.sh` nie hinter eine Pipe vor `&&` (ISS-048)
-- Evaluation: `generate` → `score` (ohne Ollama) → `ragas` (`uv run --group ragas …`, Bewerter einmalig mit `ollama create audit-judge -f scripts/audit-judge.Modelfile`); `--retry-errors` wiederholt RAGAS-Fehlschläge; ein Lauf = ein Antwortmodell
-- Nach jedem Lauf Journal sichern (`truncat|oom`); Token-Schätzung 2,4 Zeichen/Token (`CHARS_PER_TOKEN`)
+- Claudes Shell: `export UV_PROJECT_ENVIRONMENT=$HOME/.venvs/audit` vor `uv`-Befehlen, in neuer Sitzung zuerst `uv sync` (ISS-009); Quality Gate `./scripts/check.sh` vor jedem Commit, auch bei Daten und Skripten (ISS-056), nie hinter eine Pipe vor `&&` (ISS-048)
+- Evaluation: `generate` → `score` (ohne Ollama) → `ragas` (`uv run --group ragas …`); ein Lauf = ein Antwortmodell; für Vergleichsläufe nur P2: `generate --variants p2 --all`
+- Nach jedem Lauf `uv run python scripts/check_evidence.py --run-id <id>` und die Antworten von Hand lesen; Journal sichern (`truncat|oom`)
+- Die Zeichenkette `toolbench_rapidapi_key` in `run-011` ist vom Modell erfunden und bleibt in den Rohdaten (ISS-054); meldet GitHub sie beim Push, ist das ein Fehlalarm
 - Reihenfolge nach neuer Ingestion: Ingestion → Enrichment (Cache) → `retrieval index`; `data/processed/`, `.cache/`, `data/vectors/` sind nicht versioniert

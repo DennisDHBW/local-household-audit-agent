@@ -281,7 +281,7 @@ Modelle aus den Folien wie `phi3:medium` (14B) oder `qwen2.5:32b` scheiden aus.
 | Embeddings | `nomic-embed-text` | < 0,5 GB | 768 Dimensionen, Standard der Vorlesung; Präfixe `search_document:` / `search_query:` |
 | Bild-Captions (Ingest) | `gemma3:4b` | 4,0 GB | multimodal, ca. 8–9 Tokens/s |
 | Tabellen-Summaries (Ingest) | `llama3.2` (3B) | 3,1 GB | schnell, einfache Zusammenfassungsaufgabe |
-| Agent, Tool-Calling, Antwort (Query) | `qwen2.5:7b` **oder** `llama3.1:8b` | 5,5 bzw. 6,3 GB | beide gut bei strukturierter Ausgabe/Tool-Calling; in RUN-000 gleichauf; vorläufig `llama3.1:8b`, Endentscheidung im Testmodul (ADR-0004) |
+| Agent, Tool-Calling, Antwort (Query) | `qwen2.5:7b` **oder** `llama3.1:8b` | 5,5 bzw. 6,3 GB | beide gut bei strukturierter Ausgabe/Tool-Calling; in RUN-000 gleichauf; nach RUN-010/011 `llama3.1:8b` (ADR-0013), `qwen2.5:7b` bleibt RAGAS-Bewerter |
 
 `qwen3` (bis 8B) höchstens mit abgeschaltetem Thinking-Modus testen: Denk-Tokens kosten bei 5 Tokens/s zu viel Zeit.
 
@@ -448,7 +448,7 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 - [x] Python-Umgebung: `uv`, Python 3.13 (laut `pyproject.toml`)
 - [x] Zwei weitere eingebaute Fehler in M1 ergänzt (Abschnitt 4.3)
 - [x] Keine Literatur in der Ausarbeitung
-- [x] Agent-Modell: vorläufig `llama3.1:8b` (RUN-000: gleiche Trefferquote wie `qwen2.5:7b`, ca. 18 % schnellere Generierung); Endentscheidung im Testmodul M6 (ADR-0004)
+- [x] Agent-Modell: `llama3.1:8b` (RUN-010/011: Richtigkeit trennt die Modelle nicht, `llama3.1:8b` ist in P2 gut doppelt so schnell und stimmt nicht jeder Abrechnung zu; ADR-0013, Gegenprobe mit `qwen2.5:7b` nach den Gegenmaßnahmen)
 - [x] Tool-Calling: natives Ollama-Tool-Calling (ADR-0006), Bestätigung in M5
 - [ ] Referenzprototyp als Basis oder eigener Aufbau? (Code liegt nicht im Repo)
 - [ ] UI: Streamlit (Evidence-First wie Referenz) + CLI für Tests (Empfehlung)
