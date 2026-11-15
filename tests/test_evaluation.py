@@ -485,3 +485,8 @@ def test_score_writes_scores_and_report_without_ollama(tmp_path):
     assert "| S2 | ✓ 2/2 | ✗ 0/2 |" in report
     assert "B0-Kontext: 1 Dateien vollständig" in report
     assert "[1] 01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf S. 1" in report
+
+
+def test_token_estimate_uses_the_measured_ratio():
+    # 2.4 characters per token (RUN-007, ISS-041); higher than the old estimate of 3
+    assert estimate_tokens("x" * 2400) == 1001

@@ -35,8 +35,13 @@ from audit_agent.agent.tools import AgentTool, ToolError, clean_arguments
 from audit_agent.config import Settings
 
 NANOSECONDS_PER_SECOND = 1_000_000_000
-CHARS_PER_TOKEN = 3
-"""Conservative estimate for German text; used only for the context guard."""
+CHARS_PER_TOKEN = 2.4
+"""Characters per token of ``llama3.1:8b`` on our German texts, rounded down from measurements.
+
+RUN-007: the B0 prompt (tables with many numbers) had 2.5 characters per token, the probe
+text 2.8 (``scripts/probe_context.py``). The former value 3 underestimated the prompt, and
+Ollama cut it to half of ``num_ctx`` (ISS-041).
+"""
 LIMIT_OBSERVATION = (
     "FEHLER: Das Limit der Werkzeugaufrufe ist erreicht. Antworte mit den vorhandenen Belegen."
 )
@@ -49,8 +54,8 @@ class ChatClient(Protocol):
 
 
 def estimate_tokens(text: str) -> int:
-    """Rough token count of a text (characters / 3)."""
-    return len(text) // CHARS_PER_TOKEN + 1
+    """Rough, deliberately high token count of a text (characters / ``CHARS_PER_TOKEN``)."""
+    return int(len(text) / CHARS_PER_TOKEN) + 1
 
 
 def _seconds(nanoseconds: int | None) -> float | None:

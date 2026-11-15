@@ -167,7 +167,8 @@ def build_full_text_context(settings: Settings, catalog: DocumentCatalog) -> Ful
     """Fill the budget with whole pages, file by file in catalog order; stop at the first miss.
 
     Fails fast if a processed file is missing (run the ingestion first). The token count is
-    the conservative estimate of the agent (characters / 3), so Ollama never cuts the prompt.
+    the deliberately high estimate of the agent (``CHARS_PER_TOKEN``): a prompt longer than
+    ``num_ctx`` is silently cut to half by Ollama (ISS-041).
     """
     budget = full_text_budget(settings)
     blocks: list[str] = []

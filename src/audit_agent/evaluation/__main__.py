@@ -97,8 +97,8 @@ def _build_variant(
 def _generate(args: argparse.Namespace, settings: Settings, client: Client) -> int:
     model = args.model or settings.models.agent
     variants: list[VariantName] = list(dict.fromkeys(args.variants))
-    required = [model, settings.models.embedding] if needs_index(variants) else [model]
-    ensure_models_available(installed_models(client), required)
+    used_models = [model, settings.models.embedding] if needs_index(variants) else [model]
+    ensure_models_available(installed_models(client), used_models)
     truth = load_ground_truth(settings.ground_truth_file)
     questions = select_questions(truth, None if args.all else args.ids)
     run_dir = settings.eval_dir / args.run_id
@@ -114,6 +114,8 @@ def _generate(args: argparse.Namespace, settings: Settings, client: Client) -> i
         if not todo:
             print(f"{VARIANT_LABELS[name]}: alle Fragen schon beantwortet", file=sys.stderr)
             continue
+        # Free the RAM (model and Ollama's prompt cache) before each variant (ISS-043).
+        _unload(client, used_models)
         variant = _build_variant(name, settings, client, run_dir, manifest)
         _write_manifest(run_dir, manifest)
         for question in todo:
