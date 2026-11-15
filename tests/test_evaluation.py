@@ -104,7 +104,7 @@ def _audit_question(**overrides) -> Question:
         "expected_answer": "Nein. Angekündigt 38,20, abgerechnet 39,50 ct/kWh.",
         "facts": (ExpectedFact(label="Abgerechnet", value=Decimal("39.50"), unit="ct/kWh"),),
         "sources": (SourceRef(file=NOTICE_FILE, page=1), SourceRef(file=BILL_FILE, page=1)),
-        "expected_tools": ("search_tables", "calculate"),
+        "expected_tools": ("search", "calculate"),
         "tests": "Fehlererkennung",
     }
     return Question(**{**values, **overrides})
@@ -216,11 +216,11 @@ def test_score_of_an_agent_answer():
         variant="p2",
         tool_uses=(
             ToolUse(
-                name="search_tables",
+                name="search",
                 arguments={"query": "a", "doc_type": "contract"},
                 is_valid=True,
             ),
-            ToolUse(name="search_tables", arguments={"query": "b"}, is_valid=True),
+            ToolUse(name="search", arguments={"query": "b"}, is_valid=True),
             ToolUse(name="calculate", arguments={"expression": "1"}, is_valid=False),
         ),
     )
@@ -233,7 +233,7 @@ def test_score_of_an_agent_answer():
     assert (score.cited_count, score.invalid_citations) == (2, 1)
     assert (score.cited_expected, score.expected_cited, score.expected_count) == (1, 1, 2)
     assert (score.cited_distractors, score.shown_distractors, score.shown_count) == (1, 1, 3)
-    assert score.called_tools == ("search_tables", "search_tables")
+    assert score.called_tools == ("search", "search")
     assert score.are_tools_ok is False  # calculate was invalid
     assert (score.filtered_searches, score.filter_misses) == (1, 1)
     assert score.answer_verdict == "nein"
@@ -437,7 +437,7 @@ def test_agent_variant_translates_the_run_and_logs_every_step(tmp_path):
     settings = Settings(project_root=tmp_path)
     backend = FakeBackend(lambda query, options: [make_hit()])
     chat = ScriptedChat(
-        [tool_reply(("search_tables", {"query": "Arbeitspreis"})), answer_reply("34,80 [1].")]
+        [tool_reply(("search", {"query": "Arbeitspreis"})), answer_reply("34,80 [1].")]
     )
     loop = AgentLoop(settings, chat, ToolBox(settings, backend, make_catalog()).tools())
 
@@ -447,7 +447,7 @@ def test_agent_variant_translates_the_run_and_logs_every_step(tmp_path):
     # Assert
     assert answer.variant == "p2" and answer.answer == "34,80 [1]."
     assert answer.tool_uses == (
-        ToolUse(name="search_tables", arguments={"query": "Arbeitspreis"}, is_valid=True),
+        ToolUse(name="search", arguments={"query": "Arbeitspreis"}, is_valid=True),
     )
     assert [s.filename for s in answer.sources] == [BILL_FILE]
     assert len(answer.model_calls) == 2

@@ -1,6 +1,4 @@
-"""Calculator, tool schemas, argument cleaning and the six tools without Ollama."""
-
-from datetime import date
+"""Calculator, tool schemas, argument cleaning and the five tools without Ollama."""
 
 import pytest
 from pydantic import ValidationError
@@ -93,14 +91,16 @@ def test_normalize_expression_changes_only_decimal_commas_and_currency():
 def test_tool_parameters_are_flat_json_schema():
     # Act
     schema = tool_parameters(SearchArguments)
+    list_schema = tool_parameters(FilterArguments)
 
     # Assert
-    text = str(schema)
+    text = str(schema) + str(list_schema)
     assert "$ref" not in text and "$defs" not in text and "'title'" not in text
     assert schema["required"] == ["query"]
-    assert schema["properties"]["doc_type"]["enum"] == [d.value for d in DocType]
     assert schema["properties"]["utility_type"]["type"] == "string"
-    assert schema["properties"]["year"]["type"] == "integer"
+    assert schema["properties"]["include_counterpart"]["type"] == "boolean"
+    assert list_schema["properties"]["doc_type"]["enum"] == [d.value for d in DocType]
+    assert list_schema["properties"]["year"]["type"] == "integer"
 
 
 def test_clean_arguments_drops_empty_values_and_flattens_filter():
@@ -114,9 +114,10 @@ def test_clean_arguments_drops_empty_values_and_flattens_filter():
 
 
 def test_arguments_are_validated_and_liberal():
-    assert SearchArguments.model_validate({"query": "Preis", "year": "2024", "x": 1}).year == 2024
-    with pytest.raises(ValidationError):
-        SearchArguments.model_validate({"query": "Preis", "doc_type": "Rechnung"})
+    assert FilterArguments.model_validate({"year": "2024", "x": 1}).year == 2024
+    # filters the search no longer offers are ignored, not rejected (ADR-0014)
+    ignored = SearchArguments.model_validate({"query": "Preis", "doc_type": "bill", "year": 2024})
+    assert not hasattr(ignored, "doc_type") and not hasattr(ignored, "year")
     with pytest.raises(ValidationError):
         SearchArguments.model_validate({"doc_type": "bill"})
 
@@ -127,30 +128,28 @@ def _toolbox(tmp_path, backend=None, **agent_options):
     return ToolBox(settings, backend, make_catalog()), backend, settings
 
 
-def test_toolbox_offers_the_six_tools_with_specs(tmp_path):
+def test_toolbox_offers_the_five_tools_with_specs(tmp_path):
     # Act
     tools = _toolbox(tmp_path)[0].tools()
 
     # Assert
     assert list(tools) == [
         "list_documents",
-        "search_documents",
-        "search_tables",
+        "search",
         "search_images",
         "get_document_outline",
         "calculate",
     ]
-    spec = tools["search_tables"].spec()
+    spec = tools["search"].spec()
     assert spec["type"] == "function"
-    assert spec["function"]["name"] == "search_tables"
+    assert spec["function"]["name"] == "search"
     assert spec["function"]["parameters"]["required"] == ["query"]
 
 
 @pytest.mark.parametrize(
     ("tool", "expected_types"),
     [
-        ("search_documents", {ChunkType.TEXT}),
-        ("search_tables", {ChunkType.TABLE_ROW}),
+        ("search", {ChunkType.TEXT, ChunkType.TABLE_ROW}),
         ("search_images", {ChunkType.IMAGE}),
     ],
 )
@@ -170,10 +169,14 @@ def test_table_summaries_reach_the_model_only_when_switched_on(tmp_path):
     toolbox, backend, _ = _toolbox(tmp_path, include_table_summaries=True)
 
     # Act
-    toolbox.tools()["search_tables"].run(SearchArguments(query="Preis"), EvidenceBook())
+    toolbox.tools()["search"].run(SearchArguments(query="Preis"), EvidenceBook())
 
     # Assert
-    assert backend.calls[0][1].chunk_types == {ChunkType.TABLE_ROW, ChunkType.TABLE_SUMMARY}
+    assert backend.calls[0][1].chunk_types == {
+        ChunkType.TEXT,
+        ChunkType.TABLE_ROW,
+        ChunkType.TABLE_SUMMARY,
+    }
 
 
 def test_usage_shows_the_call_shape_with_required_arguments(tmp_path):
@@ -182,13 +185,13 @@ def test_usage_shows_the_call_shape_with_required_arguments(tmp_path):
 
     # Assert
     assert tools["calculate"].usage() == "calculate(expression*)"
-    assert tools["search_tables"].usage() == "search_tables(utility_type, doc_type, year, query*)"
+    assert tools["search"].usage() == "search(query*, utility_type, include_counterpart)"
 
 
 def test_search_result_text_numbers_hits_and_registers_them(tmp_path):
     # Arrange
     toolbox, _, _ = _toolbox(tmp_path)
-    tool, book = toolbox.tools()["search_tables"], EvidenceBook()
+    tool, book = toolbox.tools()["search"], EvidenceBook()
 
     # Act
     first = tool.run(SearchArguments(query="Arbeitspreis"), book)
@@ -208,7 +211,7 @@ def test_model_generated_hits_are_labelled_as_no_evidence(tmp_path):
     toolbox, _, _ = _toolbox(tmp_path, FakeBackend(lambda q, o: [summary]))
 
     # Act
-    result = toolbox.tools()["search_tables"].run(SearchArguments(query="Preise"), EvidenceBook())
+    result = toolbox.tools()["search"].run(SearchArguments(query="Preise"), EvidenceBook())
 
     # Assert
     assert "KI-Zusammenfassung, kein Beleg" in result.text
@@ -221,7 +224,7 @@ def test_long_hits_are_shortened_for_the_model_but_not_in_the_book(tmp_path):
     book = EvidenceBook()
 
     # Act
-    result = toolbox.tools()["search_documents"].run(SearchArguments(query="Kündigung"), book)
+    result = toolbox.tools()["search"].run(SearchArguments(query="Kündigung"), book)
 
     # Assert
     content_line = result.text.splitlines()[-1]
@@ -229,68 +232,77 @@ def test_long_hits_are_shortened_for_the_model_but_not_in_the_book(tmp_path):
     assert book.numbered_hits[0].hit.content == long_hit.content
 
 
-def test_year_filter_is_ignored_without_a_document_type_with_billing_period(tmp_path):
-    # Arrange
-    toolbox, backend, _ = _toolbox(tmp_path)
-    tool = toolbox.tools()["search_tables"]
-
+def test_search_offers_the_sparte_filter_but_neither_document_type_nor_year():
     # Act
-    result = tool.run(
-        SearchArguments(query="Preis", year=2025, doc_type=DocType.CONTRACT), EvidenceBook()
-    )
+    fields = set(SearchArguments.model_fields)
 
     # Assert
-    assert backend.calls[0][1].metadata_filter.period_start is None
-    assert backend.calls[0][1].metadata_filter.doc_type is DocType.CONTRACT
-    assert "Jahresfilter ignoriert" in result.text
+    assert fields == {"query", "utility_type", "include_counterpart"}
 
 
-def test_year_filter_is_applied_together_with_bill(tmp_path):
+def test_search_filters_by_utility_type_only(tmp_path):
     # Arrange
     toolbox, backend, _ = _toolbox(tmp_path)
 
     # Act
-    toolbox.tools()["search_tables"].run(
-        SearchArguments(query="Preis", year=2024, doc_type=DocType.BILL), EvidenceBook()
+    toolbox.tools()["search"].run(
+        SearchArguments(query="Preis", utility_type=UtilityType.GAS), EvidenceBook()
     )
 
     # Assert
-    selected = backend.calls[0][1].metadata_filter
-    assert (selected.period_start, selected.period_end) == (date(2024, 1, 1), date(2024, 12, 31))
+    assert backend.calls[0][1].metadata_filter == MetadataFilter(utility_type=UtilityType.GAS)
 
 
-def test_search_without_hits_repeats_without_filters(tmp_path):
-    # Arrange
-    def responder(query, options):
-        return [] if options.metadata_filter != MetadataFilter() else [make_hit()]
-
-    toolbox, backend, _ = _toolbox(tmp_path, FakeBackend(responder))
-
-    # Act
-    result = toolbox.tools()["search_tables"].run(
-        SearchArguments(query="Preis", utility_type=UtilityType.WATER), EvidenceBook()
-    )
-
-    # Assert
-    assert len(backend.calls) == 2
-    assert backend.calls[1][1].metadata_filter == MetadataFilter()
-    assert "Wiederholung ohne Filter" in result.text
-    assert result.hit_numbers == (1,)
-
-
-def test_search_with_year_filter_and_no_hits_is_a_real_negative(tmp_path):
+def test_empty_filtered_search_is_not_repeated_and_names_the_inventory(tmp_path):
     # Arrange
     toolbox, backend, _ = _toolbox(tmp_path, FakeBackend(lambda q, o: []))
 
     # Act
-    result = toolbox.tools()["search_tables"].run(
-        SearchArguments(query="Preis", year=2023, doc_type=DocType.BILL), EvidenceBook()
+    result = toolbox.tools()["search"].run(
+        SearchArguments(query="Grundpreis", utility_type=UtilityType.DISTRICT_HEATING),
+        EvidenceBook(),
     )
 
     # Assert
     assert len(backend.calls) == 1
-    assert "Keine Treffer" in result.text and "list_documents" in result.text
-    assert result.hit_numbers == ()
+    assert "Keine Treffer" in result.text
+    assert "Vorhanden sind Unterlagen zu: electricity" in result.text
+    assert "gas" in result.text and result.hit_numbers == ()
+
+
+def _by_doc_type(options):
+    """Bill hits for a bill search, contract hits for a contract search, else a bill hit."""
+    if options.metadata_filter.doc_type is DocType.CONTRACT:
+        return [make_hit("k1", filename=CONTRACT_FILE)]
+    return [make_hit("b1", filename=BILL_FILE)]
+
+
+def test_counterpart_search_adds_the_contract_to_a_bill_hit(tmp_path):
+    # Arrange
+    toolbox, backend, _ = _toolbox(tmp_path, FakeBackend(lambda q, o: _by_doc_type(o)))
+
+    # Act
+    result = toolbox.tools()["search"].run(
+        SearchArguments(query="Arbeitspreis", include_counterpart=True), EvidenceBook()
+    )
+
+    # Assert
+    doc_types = [call[1].metadata_filter.doc_type for call in backend.calls]
+    assert doc_types[0] is None and DocType.CONTRACT in doc_types
+    assert DocType.BILL not in doc_types
+    assert result.hit_numbers == (1, 2)
+    assert "Gegenstück" in result.text
+
+
+def test_counterpart_search_is_off_by_default(tmp_path):
+    # Arrange
+    toolbox, backend, _ = _toolbox(tmp_path, FakeBackend(lambda q, o: _by_doc_type(o)))
+
+    # Act
+    toolbox.tools()["search"].run(SearchArguments(query="Arbeitspreis"), EvidenceBook())
+
+    # Assert
+    assert len(backend.calls) == 1
 
 
 def test_list_documents_filters_by_type_and_year(tmp_path):
