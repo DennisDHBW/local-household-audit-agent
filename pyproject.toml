@@ -18,6 +18,9 @@ dev = [
     "pytest>=8",
     "ruff>=0.6",
 ]
+ragas = [
+    "ragas==0.4.4",
+]
 
 [build-system]
 requires = ["hatchling"]

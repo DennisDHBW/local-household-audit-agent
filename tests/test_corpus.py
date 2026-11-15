@@ -71,7 +71,7 @@ def test_ground_truth_has_required_question_mix(ground_truth: GroundTruth):
     # Assert
     assert counts == {
         QuestionCategory.STANDARD: 5,
-        QuestionCategory.EDGE_CASE: 2,
+        QuestionCategory.EDGE_CASE: 4,
         QuestionCategory.NEGATIVE: 2,
         QuestionCategory.ADDITIONAL: 3,
     }
@@ -188,6 +188,29 @@ def test_wrong_question_mix_is_rejected(tmp_path: Path, ground_truth: GroundTrut
 
     # Act / Assert
     with pytest.raises(ValueError, match="expected 5 questions"):
+        GroundTruth.model_validate(data)
+
+
+def test_every_planted_error_has_one_question(ground_truth: GroundTruth):
+    # Arrange / Act
+    covered = {q.planted_error: q.id for q in ground_truth.questions if q.planted_error}
+
+    # Assert
+    assert covered == {"E1": "G1", "E2": "G3", "E3": "G4"}
+    assert all(
+        q.expected_answer.startswith("Nein") for q in ground_truth.questions if q.planted_error
+    )
+
+
+def test_an_uncovered_planted_error_is_rejected(ground_truth: GroundTruth):
+    # Arrange: G4 no longer points to E3
+    data = ground_truth.model_dump(mode="json")
+    for question in data["questions"]:
+        if question["id"] == "G4":
+            question["planted_error"] = None
+
+    # Act / Assert
+    with pytest.raises(ValueError, match="exactly one question"):
         GroundTruth.model_validate(data)
 
 

@@ -282,7 +282,7 @@ def test_summary_counts_per_variant_in_fixed_order():
 def test_select_questions_keeps_order_and_rejects_unknown_ids():
     truth = load_ground_truth(PROJECT_ROOT / "dataset" / "ground_truth.yaml")
     assert [q.id for q in select_questions(truth, ["N1", "S2", "N1"])] == ["N1", "S2"]
-    assert len(select_questions(truth)) == 12
+    assert len(select_questions(truth)) == 14
     with pytest.raises(CorpusError, match="X9"):
         select_questions(truth, ["X9"])
 
@@ -358,6 +358,7 @@ def test_full_text_context_fills_the_budget_in_catalog_order(tmp_path):
 
     # Assert
     assert context.text == "\n\n".join(blocks[:2])
+    assert context.blocks == tuple(blocks[:2])
     assert "KI-Beschreibung" not in context.text
     assert [s.number for s in context.sources] == [1, 2]
     assert context.complete_files == (contract.file,)
@@ -390,6 +391,7 @@ def test_full_text_variant_sends_the_context_as_system_prompt(tmp_path):
     assert "tools" not in request
     assert (answer.variant, answer.question_id, answer.prompt_tokens) == ("b0", "S2", 900)
     assert answer.sources == context.sources
+    assert answer.contexts == context.blocks
 
 
 def test_pipeline_variant_searches_once_without_filter_and_numbers_the_hits(tmp_path):
@@ -412,6 +414,9 @@ def test_pipeline_variant_searches_once_without_filter_and_numbers_the_hits(tmp_
     assert "[2] 03_Strom_Preisanpassung_2025.pdf, S. 2, Text" in system
     assert [(s.number, s.filename) for s in answer.sources] == [(1, BILL_FILE), (2, NOTICE_FILE)]
     assert answer.variant == "p1" and answer.answer == "Nein [1][2]."
+    assert len(answer.contexts) == 2
+    assert answer.contexts[1].startswith("[2] 03_Strom_Preisanpassung_2025.pdf, S. 2, Text")
+    assert all(block in system for block in answer.contexts)
 
 
 def test_pipeline_variant_without_hits_still_asks_the_model(tmp_path):
@@ -443,6 +448,8 @@ def test_agent_variant_translates_the_run_and_logs_every_step(tmp_path):
     )
     assert [s.filename for s in answer.sources] == [BILL_FILE]
     assert len(answer.model_calls) == 2
+    assert len(answer.contexts) == 1
+    assert answer.contexts[0].startswith('Treffer für "Arbeitspreis"')
     log_lines = (tmp_path / "p2-S2.jsonl").read_text(encoding="utf-8").splitlines()
     assert json.loads(log_lines[-1])["kind"] == "run"
 

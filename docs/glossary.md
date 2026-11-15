@@ -135,4 +135,11 @@
 | Filterfehler | `filter_misses`, `filter_excludes` | Suche des Agenten, deren selbst gesetzter Filter ein erwartetes Quelldokument ausschließt | |
 | Prüfurteil | `answer_verdict`, `expected_verdict` | Ja/Nein einer Prüffrage (stimmt die Abrechnung?); daraus Fehlererkennung und Fehlalarm | |
 | Fehlererkennung / Fehlalarm | `errors_detected`, `false_alarms` | Erwartet „nein“ und geantwortet „nein“ / erwartet „ja“ und geantwortet „nein“ | |
-| Laufmanifest | `manifest.json` | Modell, `num_ctx` und B0-Kontext (welche Dateien passten) eines Evaluationslaufs | |
+| Laufmanifest | `manifest.json` | Modell, `num_ctx`, B0-Kontext (welche Dateien passten) und RAGAS-Einstellungen eines Evaluationslaufs | |
+| Belegtexte | `VariantAnswer.contexts` | Text der Belege, wie das Modell sie sah (B0 Seitenblöcke, P1 Treffer, P2 Tool-Beobachtungen); Eingabe für RAGAS | |
+| Eingebauter Fehler einer Frage | `Question.planted_error` | Id des eingebauten Fehlers (E1–E3), den eine Prüffrage aufdecken soll (G1, G3, G4) | |
+| RAGAS | `ragas_eval`, Befehl `ragas` | Framework, das Antworten mit einem LLM als Bewerter benotet; hier lokal mit `audit-judge` | |
+| Bewertermodell | `audit-judge`, `RagasJudge` | Alias von `qwen2.5:7b` mit festem `num_ctx` 8192, bewertet für RAGAS | |
+| Faithfulness | `faithfulness` | Anteil der Aussagen einer Antwort, die durch die gezeigten Belege gedeckt sind (0–1) | |
+| Context Recall | `context_recall` | Anteil der Aussagen der erwarteten Antwort, die in den gezeigten Belegen stehen (0–1) | |
+| RAGAS-Status | `RagasStatus` | `ok`, `too_long` (Prompt passt nicht, nicht gekürzt), `no_context`, `not_applicable`, `no_statements`, `error` | |

@@ -1,0 +1,52 @@
+
+== B0 Volltext G3: Ist die Gasabrechnung 2026 korrekt?
+   451.5 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   271.0 s: Um die Frage zu beantworten, müssen wir die Betriebskosten 2026 ermitteln und dann den Anteil des Kunden ermitteln.
+
+Aus [7] 06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, S. 1 können wir die Rechnungsb
+
+== P1 Pipeline G3: Ist die Gasabrechnung 2026 korrekt?
+   172.7 s: Um die Korrektheit der Gasabrechnung 2026 zu überprüfen, müssen wir die in den Auszügen bereitgestellten Informationen analysieren.
+
+Zunächst ist der Rechnungsbetrag Erdgaslieferung 2026 (inkl. 19 % U
+
+== P1 Pipeline G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   71.4 s: Um dies zu überprüfen, müssen wir die Gesamtkosten 2026 und den Anteil berechnen.
+
+[1] 30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf: Gesamtkosten Objekt: 7.470,00 EUR, Ihr Anteil: 1.963,28 EUR
+
+[2
+
+== P2 Agent G3: Ist die Gasabrechnung 2026 korrekt?
+   262.9 s: Die Gasabrechnung 2026 ist korrekt. Der Verbrauch beträgt 1.060 m³, der Grundpreis beträgt 16,00 EUR/Monat, der Arbeitspreis beträgt 9,95 ct/kWh und der Rechnungsbetrag inkl. 19 % Umsatzsteuer beträgt
+
+== P2 Agent G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   72.4 s: Ihr Anteil an den Betriebskosten 2026 beträgt 859,26 EUR.
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-009/report.md
+   B0 Volltext G3 Faithfulness: too_long (0.0 s) ca. 9131 > 8192 Token
+   B0 Volltext G3 Context Recall: too_long (0.0 s) ca. 10274 > 8192 Token
+   B0 Volltext G4 Faithfulness: too_long (0.0 s) ca. 9632 > 8192 Token
+   B0 Volltext G4 Context Recall: too_long (0.0 s) ca. 10277 > 8192 Token
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G3 Faithfulness: error (499.0 s) IncompleteOutputException: The output is incomplete due to a max_tokens length limit.
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G3 Context Recall: ok 0.00 (162.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G4 Faithfulness: ok 0.57 (188.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G4 Context Recall: ok 0.00 (79.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G3 Faithfulness: ok 1.00 (190.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G3 Context Recall: ok 0.00 (134.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G4 Faithfulness: ok 1.00 (69.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G4 Context Recall: ok 0.00 (82.7 s) 
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-009/report.md

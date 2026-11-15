@@ -115,7 +115,7 @@ Der Korpus liegt vollständig synthetisch unter `dataset/` (30 PDFs, erzeugt mit
 
 Die Dokumente 29 und 30 stammen aus `scripts/generate_error_documents.py`. Alle Beträge dort werden berechnet, sodass nur der eingebaute Fehler stimmt, nicht aber Summen oder Rundung. Der Generator läuft mit WeasyPrint in einer eigenen Umgebung (keine Projektabhängigkeit). Layout und Datenmodell: einseitig ohne Diagramm, im Stil von 10 bzw. 19 nachgebaut.
 
-`dataset/documents.yaml` enthält die Metadaten aller 30 PDFs, `dataset/ground_truth.yaml` den 12-Fragen-Katalog, die drei eingebauten Fehler sowie `audit_checks`, die erwarteten Urteile zu den zehn Abrechnungen (7 korrekt, 3 fehlerhaft) für Fehlererkennungs- und Fehlalarmrate. Beide Dateien werden von `audit_agent.corpus` validiert.
+`dataset/documents.yaml` enthält die Metadaten aller 30 PDFs, `dataset/ground_truth.yaml` den Fragenkatalog (14 Fragen, seit M6b), die drei eingebauten Fehler sowie `audit_checks`, die erwarteten Urteile zu den zehn Abrechnungen (7 korrekt, 3 fehlerhaft) für Fehlererkennungs- und Fehlalarmrate. Beide Dateien werden von `audit_agent.corpus` validiert.
 
 ## 5. Vorverarbeitung & Datenstrukturen
 
@@ -334,9 +334,9 @@ Daraus folgt: keine Bildanalyse zur Abfragezeit (nur gecachte Captions) und kein
 
 Der Vergleich mit B0 und P1 belegt messbar, ob RAG und Agentik hier nötig sind. Damit wird der Einwand „ein einfacher Volltext-Prompt reicht“ mit Daten beantwortet.
 
-### 11.2 Verbindlicher 12-Fragen-Katalog
+### 11.2 Verbindlicher Fragenkatalog (14 Fragen)
 
-Mindestens 5 Standardfragen, 2 komplexe Grenzfälle und 2 Negativfragen (Vorlesung) plus 3 Zusatzfragen (CODING_STANDARDS.md: 12-Fragen-Katalog). Die erwarteten Antworten stammen aus dem Korpus und stehen in `dataset/ground_truth.yaml` (Stand M1).
+Mindestens 5 Standardfragen, 2 komplexe Grenzfälle und 2 Negativfragen (Vorlesung) plus 3 Zusatzfragen (CODING_STANDARDS.md: 12-Fragen-Katalog). In M6b kamen die Grenzfälle G3 und G4 dazu, damit jeder eingebaute Fehler (E1–E3) genau eine Prüffrage hat (ISS-040); Prüffragen mit „Ja“ (S5, G2, Z1) messen Fehlalarme. Die erwarteten Antworten stammen aus dem Korpus und stehen in `dataset/ground_truth.yaml`.
 
 | ID | Kategorie | Testfrage | Erwartete Antwort (Quelle) | Prüft vor allem |
 |---|---|---|---|---|
@@ -347,6 +347,8 @@ Mindestens 5 Standardfragen, 2 komplexe Grenzfälle und 2 Negativfragen (Vorlesu
 | S5 | Standard (Multi-Hop + Rechnen) | Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein? | Ja, 1.189,00 EUR (01, 04) | ReAct, `calculate`, keine Fehlalarme |
 | G1 | Grenzfall (Fehler) | Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet? | Nein: 39,50 statt 38,20 ct/kWh, 40,30 EUR zu viel (03, 06) | Multi-Hop über 2 Dokumente, Fehlererkennung |
 | G2 | Grenzfall (Querbezug) | Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet? | Ja: 78/312 m² = 25 %, 7.320 × 25 % = 1.830 EUR, Guthaben 90 EUR (16, 19) | Mietvertrag ↔ Abrechnung, keine Fehlalarme |
+| G3 | Grenzfall (Fehler E2) | Ist die Gasabrechnung 2026 korrekt? | Nein: z-Zahl 1,0000 statt 0,9560; 1.060 × 0,9560 × 11,150 = 11.299 statt 11.819 kWh, 51,74 EUR zu viel (29, 10) | Vergleich mit dem Vorjahr, Umrechnung |
+| G4 | Grenzfall (Fehler E3) | Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet? | Nein: 82 statt 78 m²; 25 % von 7.470 EUR = 1.867,50 statt 1.963,28 EUR (16, 30) | Mietvertrag ↔ Abrechnung, Fehlererkennung |
 | N1 | Negativ | Wie hoch war meine Stromrechnung 2023? | Liegt nicht vor (Belieferung ab 01.01.2024); nur der Verbrauch 2023 ist aus dem Diagramm bekannt | keine erfundene Zahl |
 | N2 | Negativ | Welchen Grundpreis zahle ich für Fernwärme? | Kein Fernwärmevertrag vorhanden (Gasetagenheizung, 07/16) | Ablenker nicht verwechseln |
 | Z1 | Zusatz (Umrechnung) | Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen? | Ja: 1.200 m³ × 0,9560 × 11,150 = 12.791 kWh (10) | Rechnen mit Umrechnungsfaktoren |
@@ -377,9 +379,11 @@ Weitere mögliche Fragen (Reserve): Gas-„Preissenkung“ 2026 (Arbeitspreis si
 | Negativ-Erkennung | N-Fragen korrekt als „nicht vorhanden“ beantwortet |
 | Latenz | Sekunden pro Frage je Variante (B0/P1/P2) |
 
-Umsetzung (M6a): Zahlen gelten als gefunden, wenn sie irgendwo in der Antwort stehen (Belegnummern ausgenommen); Quellen werden über die zitierten `[n]` auf Datei + Seite geprüft; Tool- und Filterwahl nur für P2; Fehlererkennung und Fehlalarm über das Ja/Nein-Urteil der Prüffragen S5, G1, G2, Z1. Das sind bewusst einfache Heuristiken (ISS-038); der Bericht zeigt jede Antwort zur Kontrolle. Die Fehlererkennung deckt bisher nur E1 ab (ISS-040).
+Umsetzung (M6a): Zahlen gelten als gefunden, wenn sie irgendwo in der Antwort stehen (Belegnummern ausgenommen); Quellen werden über die zitierten `[n]` auf Datei + Seite geprüft; Tool- und Filterwahl nur für P2; Fehlererkennung und Fehlalarm über das Ja/Nein-Urteil der Prüffragen S5, G1, G2, Z1. Das sind bewusst einfache Heuristiken (ISS-038); der Bericht zeigt jede Antwort zur Kontrolle. Seit M6b deckt die Fehlererkennung E1–E3 ab (G1, G3, G4).
 
-**Laufzeit der Evaluation realistisch planen:** 12 Fragen × 3 Varianten bei 1–7 Minuten pro Antwort (B0 mit langem Volltext-Prompt am langsamsten) ergeben grob 1–3 Stunden. RAGAS braucht pro Frage mehrere zusätzliche LLM-Aufrufe für die Bewertung. Deshalb:
+Umsetzung RAGAS (M6b, ADR-0012): Faithfulness und Context Recall mit dem lokalen Bewerter `audit-judge` (`qwen2.5:7b`, `num_ctx` 8192) auf den gespeicherten Antworten und deren Belegtexten; Answer Relevancy, Context Precision und die Testset-Generierung entfallen aus Zeitgründen. Prompts, die nicht in den Kontext passen, werden nicht bewertet statt still gekürzt (betrifft vor allem B0, ISS-046); beim `qwen2.5:7b`-Lauf bewertet das Modell sich selbst (ISS-045).
+
+**Laufzeit der Evaluation realistisch planen:** 14 Fragen × 3 Varianten bei 1–7 Minuten pro Antwort (B0 mit langem Volltext-Prompt am langsamsten) ergeben grob 1–3 Stunden. RAGAS braucht pro Frage mehrere zusätzliche LLM-Aufrufe für die Bewertung. Deshalb:
 - Antworten erzeugen und bewerten in **getrennten Schritten**; Antworten als JSON speichern, damit die Bewertung wiederholt werden kann, ohne neu zu generieren
 - Komplettläufe über Nacht, als `slow` markiert (`pytest -m slow`)
 - Für schnelle Iterationen eine Teilmenge (z. B. 3 Fragen) nutzen
@@ -430,7 +434,7 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 | 2. Datenbasis & Vorverarbeitung | Korpus, Strukturelemente, Parsing, Chunk-Typen, Metadaten, JSON-Format | 15 % |
 | 3. Architektur | Gesamtbild, P1 vs. P2, Tools, ReAct-Beispiel, Modellwahl & Hardware | 25 % |
 | 4. RAG- & Retrieval-Konzept | Hierarchie-Prefix, Score-Formel, Metadatenfilter, Evidence-First, GraphRAG-Entscheidung | 20 % |
-| 5. Testmodul & Evaluation | 12-Fragen-Katalog (5/2/2 + 3), RAGAS + eigene Metriken, Baselines, Ergebnisse, Fehleranalyse | 15 % |
+| 5. Testmodul & Evaluation | 14-Fragen-Katalog (5/4/2 + 3), RAGAS + eigene Metriken, Baselines, Ergebnisse, Fehleranalyse | 15 % |
 | 6. Reflexion und Ausblick | Grenzen, Erkenntnisse aus Tests und Issues, Ausblick (ohne Literatur) | 10 % |
 
 ---

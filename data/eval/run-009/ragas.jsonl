@@ -1,0 +1,12 @@
+{"variant":"b0","question_id":"G3","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":9131,"seconds":0.0,"detail":"ca. 9131 > 8192 Token"}
+{"variant":"b0","question_id":"G3","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10274,"seconds":0.0,"detail":"ca. 10274 > 8192 Token"}
+{"variant":"b0","question_id":"G4","metric":"faithfulness","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":9632,"seconds":0.0,"detail":"ca. 9632 > 8192 Token"}
+{"variant":"b0","question_id":"G4","metric":"context_recall","judge":"audit-judge","status":"too_long","value":null,"estimated_tokens":10277,"seconds":0.0,"detail":"ca. 10277 > 8192 Token"}
+{"variant":"p1","question_id":"G3","metric":"faithfulness","judge":"audit-judge","status":"error","value":null,"estimated_tokens":3687,"seconds":499.0,"detail":"IncompleteOutputException: The output is incomplete due to a max_tokens length limit."}
+{"variant":"p1","question_id":"G3","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":4147,"seconds":162.4,"detail":""}
+{"variant":"p1","question_id":"G4","metric":"faithfulness","judge":"audit-judge","status":"ok","value":0.5714,"estimated_tokens":3127,"seconds":188.9,"detail":""}
+{"variant":"p1","question_id":"G4","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":4038,"seconds":79.0,"detail":""}
+{"variant":"p2","question_id":"G3","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":3633,"seconds":190.3,"detail":""}
+{"variant":"p2","question_id":"G3","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":4707,"seconds":134.9,"detail":""}
+{"variant":"p2","question_id":"G4","metric":"faithfulness","judge":"audit-judge","status":"ok","value":1.0,"estimated_tokens":2989,"seconds":69.9,"detail":""}
+{"variant":"p2","question_id":"G4","metric":"context_recall","judge":"audit-judge","status":"ok","value":0.0,"estimated_tokens":4131,"seconds":82.7,"detail":""}

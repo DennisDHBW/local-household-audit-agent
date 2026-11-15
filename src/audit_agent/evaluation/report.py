@@ -12,8 +12,26 @@ from audit_agent.evaluation.models import (
     VARIANT_LABELS,
     AnswerScore,
     VariantAnswer,
+    VariantName,
     VariantSummary,
 )
+from audit_agent.evaluation.ragas_eval import (
+    RAGAS_LABELS,
+    RAGAS_METRICS,
+    RagasScore,
+    RagasStatus,
+    RagasSummary,
+    summarize_ragas,
+)
+
+RAGAS_STATUS_LABELS: dict[RagasStatus, str] = {
+    "ok": "",
+    "too_long": "zu lang",
+    "no_context": "ohne Belege",
+    "not_applicable": "entfällt",
+    "no_statements": "keine Aussagen",
+    "error": "Fehler",
+}
 
 
 def ratio(part: int, total: int) -> str:
@@ -80,6 +98,7 @@ def render_report(
     scores: Sequence[AnswerScore],
     summaries: Sequence[VariantSummary],
     manifest: Mapping[str, object] | None = None,
+    ragas: Sequence[RagasScore] = (),
 ) -> str:
     """The whole report; every answer is printed so wrong checks can be found by hand."""
     variants = [s.variant for s in summaries]
@@ -105,6 +124,8 @@ def render_report(
         "|---|" + "---|" * len(variants),
     ]
     lines += [f"| {name} | {' | '.join(values)} |" for name, values in _metric_rows(summaries)]
+    if ragas:
+        lines += _ragas_table(variants, ragas)
 
     by_key = {(s.question_id, s.variant): s for s in scores}
     lines += [
@@ -149,7 +170,54 @@ def render_report(
             cited = _cited_files(answer)
             if cited:
                 lines.append(f"- Zitiert: {cited}")
+            judged = _ragas_line(ragas, variant, question.id)
+            if judged:
+                lines.append(f"- RAGAS: {judged}")
     return "\n".join(lines) + "\n"
+
+
+def _ragas_cell(summary: RagasSummary | None) -> str:
+    if summary is None:
+        return "-"
+    value = "-" if summary.mean is None else f"{summary.mean:.2f}"
+    notes = [f"{summary.scored}/{summary.total} bewertet"]
+    if summary.too_long:
+        notes.append(f"{summary.too_long} zu lang")
+    if summary.errors:
+        notes.append(f"{summary.errors} Fehler")
+    return f"{value} ({', '.join(notes)})"
+
+
+def _ragas_table(variants: Sequence[VariantName], scores: Sequence[RagasScore]) -> list[str]:
+    """Means over the answers the judge could score; skipped ones are counted, not zeroed."""
+    by_key = {(s.variant, s.metric): s for s in summarize_ragas(scores)}
+    judges = sorted({score.judge for score in scores})
+    lines = [
+        "",
+        f"RAGAS (ADR-0012), Bewerter {', '.join(f'`{j}`' for j in judges)}; Mittel über die "
+        "bewerteten Antworten, Stichproben von Hand prüfen.",
+        "",
+        "| RAGAS | " + " | ".join(VARIANT_LABELS[v] for v in variants) + " |",
+        "|---|" + "---|" * len(variants),
+    ]
+    for metric in RAGAS_METRICS:
+        cells = [_ragas_cell(by_key.get((v, metric))) for v in variants]
+        if any(cell != "-" for cell in cells):
+            lines.append(f"| {RAGAS_LABELS[metric]} | {' | '.join(cells)} |")
+    return lines
+
+
+def _ragas_line(scores: Sequence[RagasScore], variant: VariantName, question_id: str) -> str:
+    parts = []
+    for score in scores:
+        if score.variant != variant or score.question_id != question_id:
+            continue
+        if score.status == "ok" and score.value is not None:
+            shown = f"{score.value:.2f}"
+        else:
+            shown = RAGAS_STATUS_LABELS[score.status]
+        parts.append(f"{RAGAS_LABELS[score.metric]} {shown}")
+    return ", ".join(sorted(parts))
 
 
 def _cited_files(answer: VariantAnswer) -> str:

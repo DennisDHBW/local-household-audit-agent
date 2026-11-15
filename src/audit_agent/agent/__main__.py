@@ -37,7 +37,7 @@ def _parser() -> argparse.ArgumentParser:
 
     run_set = commands.add_parser("run-set", help="answer questions of the ground truth")
     run_set.add_argument("--ids", nargs="+", default=list(DEFAULT_QUESTION_IDS))
-    run_set.add_argument("--all", action="store_true", help="all 12 questions")
+    run_set.add_argument("--all", action="store_true", help="all questions of the catalog")
     run_set.add_argument("--model", help="agent model (default: AUDIT_MODEL_AGENT)")
     run_set.add_argument("--run-id", default="agent", help="folder name under data/eval/")
     return parser

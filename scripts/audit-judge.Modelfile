@@ -1,0 +1,7 @@
+# RAGAS judge for the evaluation (ADR-0012). Create once:
+#   ollama create audit-judge -f scripts/audit-judge.Modelfile
+# Ollama's OpenAI-compatible endpoint takes no per-request num_ctx, so the alias fixes it.
+# num_ctx must equal EvaluationSettings.judge_num_ctx (checked by a unit test).
+FROM qwen2.5:7b
+PARAMETER num_ctx 8192
+PARAMETER temperature 0

@@ -63,6 +63,12 @@ class VariantAnswer(_Frozen):
     sources: tuple[ShownSource, ...]
     tool_uses: tuple[ToolUse, ...] = ()
     model_calls: tuple[ModelCallStep, ...]
+    contexts: tuple[str, ...] = ()
+    """Evidence text exactly as the model saw it, the input of RAGAS (ADR-0012).
+
+    B0: one block per page; P1: one block per hit; P2: the observation of each valid tool
+    call (search hits, document lists, calculations). Empty in runs before M6b.
+    """
 
     @property
     def prompt_tokens(self) -> int:
