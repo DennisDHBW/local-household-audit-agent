@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-048 – Commit trotz rotem Quality Gate (Exit-Code durch Pipe verdeckt)
+- **Datum / Meilenstein:** 2026-11-15 / M6b
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Claude rief `./scripts/check.sh | tail -1 && git commit …` auf. `ruff` meldete eine zu lange Zeile, der Commit lief trotzdem durch.
+- **Ursache:** Der Exit-Code einer Pipe ist der des letzten Befehls (`tail`), nicht der von `check.sh`.
+- **Lösung / Workaround:** Zeile gekürzt, den noch nicht gepushten Commit nachgebessert (`--amend`); Gate seitdem ohne Pipe vor `&&` (Ausgabe in eine Datei, Exit-Code prüfen).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
 ### ISS-047 – RAGAS im Probelauf: Abbruch bei langer Antwort, Context Recall durchweg 0, nachsichtige Faithfulness
 - **Datum / Meilenstein:** 2026-11-15 / M6b (RUN-009)
 - **Kategorie:** evaluation
