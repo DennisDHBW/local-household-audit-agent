@@ -289,6 +289,15 @@ class AgentVariant:
         return answer_from_run(question, run)
 
 
+def unloads_after_each_question(name: VariantName) -> bool:
+    """P1 and P2 free Ollama's RAM after every question; RUN-010 died of OOM in P2 (ISS-043).
+
+    B0 keeps its model loaded: every question shares the same long prefix, and Ollama's prompt
+    cache turns its 430 s prefill into about 10 s (RUN-008).
+    """
+    return name != "b0"
+
+
 def needs_index(names: Sequence[VariantName]) -> bool:
     """P1 and P2 search the vector index (and therefore need the embedding model)."""
     return any(name in ("p1", "p2") for name in names)

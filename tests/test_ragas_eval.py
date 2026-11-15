@@ -288,3 +288,25 @@ def test_ragas_judge_disables_tracking_and_measures_its_prompts(monkeypatch):
     long = judge.prompt_chars("faithfulness", "Frage?", "Antwort.", ["lang " * 500], "Ref.")
     recall = judge.prompt_chars("context_recall", "Frage?", "", ["lang " * 500], "Ref.")
     assert long - short >= 2400 and recall > 2500
+
+
+def test_the_judge_is_unloaded_only_after_answers_it_judged(tmp_path):
+    # Arrange: G1 is judged twice, the N1 answer without evidence is skipped by the pre-checks
+    questions = {"G1": _question(), "N1": _negative()}
+    answers = [_answer(), _answer("N1", text="Liegt nicht vor.", contexts=())]
+    unloaded: list[str] = []
+
+    # Act
+    _run(
+        evaluate_run(
+            answers,
+            questions,
+            FakeJudge(),
+            Settings(),
+            ragas_path(tmp_path),
+            after_judged=lambda answer: unloaded.append(answer.question_id),
+        )
+    )
+
+    # Assert
+    assert unloaded == ["G1"]

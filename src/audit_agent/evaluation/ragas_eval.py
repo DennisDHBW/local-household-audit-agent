@@ -39,6 +39,8 @@ RagasStatus = Literal["ok", "too_long", "no_context", "not_applicable", "no_stat
 ``no_context``: the model saw no evidence; ``not_applicable``: empty answer, or context recall
 of a negative question (its reference states a gap, not facts); ``no_statements``: the judge
 extracted nothing to check (RAGAS returns NaN)."""
+JUDGE_ASKED: frozenset[RagasStatus] = frozenset({"ok", "no_statements", "error"})
+"""Statuses that mean the judge model was really called."""
 OPENAI_PATH = "/v1"
 TRACKING_ENV = "RAGAS_DO_NOT_TRACK"
 
@@ -211,13 +213,19 @@ async def evaluate_run(
     metrics: Sequence[RagasMetric] = RAGAS_METRICS,
     retry_errors: bool = False,
     on_score: Callable[[RagasScore], None] | None = None,
+    after_judged: Callable[[VariantAnswer], None] | None = None,
 ) -> list[RagasScore]:
-    """Score every answer with every metric, skipping keys already in ``path``."""
+    """Score every answer with every metric, skipping keys already in ``path``.
+
+    ``after_judged`` runs after each answer the judge was actually asked about; the CLI
+    unloads the judge there so Ollama's RAM cannot grow over a night run (ISS-043).
+    """
     done = {score.key: score for score in load_ragas_scores(path)}
     for answer in answers:
         question = questions.get(answer.question_id)
         if question is None:
             raise EvaluationError(f"answer for unknown question {answer.question_id}")
+        judged = False
         for metric in metrics:
             previous = done.get((answer.variant, answer.question_id, metric))
             if previous is not None and not (retry_errors and previous.status == "error"):
@@ -225,8 +233,11 @@ async def evaluate_run(
             score = await score_answer_ragas(metric, question, answer, judge, settings)
             _append(path, score)
             done[score.key] = score
+            judged = judged or score.status in JUDGE_ASKED
             if on_score is not None:
                 on_score(score)
+        if judged and after_judged is not None:
+            after_judged(answer)
     return load_ragas_scores(path)
 
 
