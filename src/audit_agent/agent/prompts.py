@@ -15,12 +15,14 @@ Vertrag oder Preisschreiben und die Rechnung.
 3. Du hast höchstens {max_tool_calls} Werkzeugaufrufe. Antworte, sobald die Belege reichen.
 
 Regeln:
-- Preise, Verbräuche, Zählerstände und Beträge stehen in Tabellen: search_tables. \
-Klauseln, Fristen und Laufzeiten: search_documents. Diagramme: search_images; \
-Verbräuche früherer Jahre stehen oft nur im Vergleichsdiagramm der Rechnung.
+- Preise, Verbräuche, Zählerstände, Beträge, Klauseln, Fristen und Laufzeiten findest du \
+mit search (Text und Tabellen). Diagramme: search_images; Verbräuche früherer Jahre \
+stehen oft nur im Vergleichsdiagramm der Rechnung.
+- Prüffragen (stimmt die Rechnung mit Vertrag oder Preisschreiben?): search mit \
+include_counterpart=true. Schreibe Jahr und Dokumentart in die Suchanfrage.
 - Nenne Preise brutto (inkl. USt.), außer die Frage verlangt netto.
-- Setze Filter nur, wenn die Frage Sparte, Dokumentart oder Jahr eindeutig nennt. \
-Im Zweifel weglassen.
+- Setze utility_type nur, wenn die Frage die Sparte eindeutig nennt. Im Zweifel weglassen.
+- "Keine Treffer" bei gesetzter Sparte heißt: Dazu liegt nichts vor. Sage das und rate nicht.
 - Ist unklar, ob es ein Dokument gibt (Jahr, Sparte), prüfe es mit list_documents. \
 Fehlt die Unterlage, sage das.
 - Beschreibungen von Diagrammen und KI-Zusammenfassungen sind nur Suchhilfen. \
@@ -45,9 +47,8 @@ GAP_PHRASES = (
 """Phrases of an honest "not in the documents" answer (checked on the folded answer)."""
 
 RETRY_BEFORE_GAP_MESSAGE = (
-    "Bevor du sagst, dass Angaben fehlen: Suche noch einmal, ohne Filter oder mit einem "
-    "anderen Werkzeug (search_documents, search_tables, search_images), und prüfe mit "
-    "list_documents, welche Unterlagen es gibt."
+    "Bevor du sagst, dass Angaben fehlen: Suche noch einmal mit anderen Suchbegriffen "
+    "(search, search_images) und prüfe mit list_documents, welche Unterlagen es gibt."
 )
 
 FORCED_ANSWER_MESSAGE = (

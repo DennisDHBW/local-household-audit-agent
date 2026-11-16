@@ -1,0 +1,4 @@
+{
+  "model": "llama3.1:8b",
+  "num_ctx": 8192
+}

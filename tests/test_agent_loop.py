@@ -42,7 +42,7 @@ from tests.agent_fakes import (
     tool_reply,
 )
 
-SEARCH = ("search_tables", {"query": "Arbeitspreis"})
+SEARCH = ("search", {"query": "Arbeitspreis"})
 CALCULATE = ("calculate", {"expression": "2*3"})
 
 
@@ -65,7 +65,7 @@ def test_direct_answer_without_tools():
     assert run.answer == "Das weiß ich nicht."
     assert run.stop_reason == "answer" and run.tool_call_count == 0
     assert [type(step) for step in run.steps] == [ModelCallStep]
-    assert len(chat.requests[0]["tools"]) == 6
+    assert len(chat.requests[0]["tools"]) == 5
     assert chat.requests[0]["messages"][0]["role"] == "system"
     assert chat.requests[0]["messages"][1] == {"role": "user", "content": "Frage?"}
 
@@ -102,7 +102,7 @@ def test_search_hits_become_numbered_sources():
 def test_invalid_arguments_and_unknown_tools_become_error_observations():
     # Arrange
     replies = [
-        tool_reply(("search_tables", {"doc_type": "Rechnung"})),
+        tool_reply(("search", {"doc_type": "Rechnung"})),
         tool_reply(("make_coffee", {})),
         answer_reply("Fertig."),
     ]
@@ -113,9 +113,9 @@ def test_invalid_arguments_and_unknown_tools_become_error_observations():
 
     # Assert
     first, second = run.steps[1], run.steps[3]
-    assert not first.is_valid and "Ungültige Argumente für search_tables" in first.observation
-    assert "query" in first.observation and "doc_type" in first.observation
-    assert "Richtiger Aufruf: search_tables(" in first.observation
+    assert not first.is_valid and "Ungültige Argumente für search" in first.observation
+    assert "query" in first.observation and "Pflicht" in first.observation
+    assert "Richtiger Aufruf: search(" in first.observation
     assert not second.is_valid and "Unbekanntes Werkzeug 'make_coffee'" in second.observation
     assert run.tool_call_count == 2  # invalid calls count against the limit
     assert chat.requests[1]["messages"][-1]["content"] == first.observation
@@ -327,13 +327,13 @@ def _question(**overrides):
         "expected_answer": "34,80 ct/kWh",
         "facts": (ExpectedFact(label="Arbeitspreis", value=Decimal("34.80"), unit="ct/kWh"),),
         "sources": (SourceRef(file=BILL_FILE, page=1),),
-        "expected_tools": ("search_tables",),
+        "expected_tools": ("search",),
         "tests": "Tabellensuche",
     }
     return Question(**{**values, **overrides})
 
 
-def _run(answer, sources=(), tools=("search_tables",)):
+def _run(answer, sources=(), tools=("search",)):
     steps = tuple(
         ToolCallStep(index=i, tool=tool, arguments={}, is_valid=True, observation="", seconds=0.1)
         for i, tool in enumerate(tools)
@@ -371,7 +371,7 @@ def test_evaluate_run_for_an_answerable_question():
 
     # Act
     good = evaluate_run(_question(), _run("34,80 ct/kWh [1]", [found]))
-    bad = evaluate_run(_question(), _run("Keine Ahnung", [], tools=("search_documents",)))
+    bad = evaluate_run(_question(), _run("Keine Ahnung", [], tools=("search_images",)))
 
     # Assert
     assert good.are_tools_ok and not good.missing_files and not good.missing_facts
@@ -411,9 +411,9 @@ def test_render_markdown_has_summary_tool_steps_and_prefill_rate():
 
     # Assert
     assert "Modell: `llama3.1:8b`" in markdown
-    assert "| S2 | search_tables | search_tables | ja |" in markdown
+    assert "| S2 | search | search | ja |" in markdown
     assert "## S2: Arbeitspreis?" in markdown
-    assert "- search_tables(" in markdown
+    assert "- search(" in markdown
     assert "| 2 | 360 | 2.0 | 180 |" in markdown  # 360 tokens / 2 s
 
 

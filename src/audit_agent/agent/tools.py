@@ -1,14 +1,15 @@
-"""The six agent tools (concept.md, 7.2; ADR-0010).
+"""The agent tools (five after ADR-0014) (concept.md, 7.2; ADR-0010).
 
 Every tool is a small unit: a pydantic model for its arguments (validated, and the source of
 the JSON schema that Ollama shows to the model), a description that says *when* to use it, and
 a function that returns text for the model. Search tools wrap the ``Retriever`` of M4 and
 register every hit in the run's ``EvidenceBook``, so the model can cite hits as ``[3]``.
 
-Two rules of the issues log are enforced in code and not only in the prompt:
-- ISS-025: a year filter only works for documents with a billing period, so it is applied
-  only together with ``bill``, ``notice`` or ``payment_plan``.
-- ISS-007: if a search without year filter finds nothing, it is repeated without filters.
+Rules of the issues log that are enforced in code and not only in the prompt (ADR-0014):
+- ISS-006/052: one ``search`` over text and table chunks; the model cannot guess the chunk type.
+- ISS-007: the model may filter by utility type only; document type and year are not offered.
+  ``include_counterpart`` adds the matching contract or bill for audit questions.
+- ISS-051: an empty filtered search is reported with the inventory, never repeated unfiltered.
 """
 
 from __future__ import annotations
@@ -36,6 +37,10 @@ from audit_agent.retrieval.search import fold
 
 YEAR_FILTER_DOC_TYPES = frozenset({DocType.BILL, DocType.NOTICE, DocType.PAYMENT_PLAN})
 """Document types that have a billing period; only they can be filtered by year (ISS-025)."""
+BASIS_DOC_TYPES = frozenset({DocType.CONTRACT, DocType.PRICE_ADJUSTMENT})
+"""Documents that say what should be charged; the counterpart of a bill (ISS-007)."""
+COUNTERPART_HITS = 2
+"""Hits added by ``include_counterpart`` per missing document family."""
 MAX_AMBIGUOUS_FILES = 5
 _EMPTY_VALUES = frozenset({"", "null", "none"})
 
@@ -90,8 +95,29 @@ class FilterArguments(_Arguments):
     )
 
 
-class SearchArguments(FilterArguments):
-    query: str = Field(min_length=2, description="Suchanfrage auf Deutsch, mit den Fachbegriffen.")
+class SearchArguments(_Arguments):
+    query: str = Field(
+        min_length=2,
+        description=(
+            "Suchanfrage auf Deutsch, mit den Fachbegriffen. Jahr und Dokumentart "
+            "(Vertrag, Rechnung) gehören in die Anfrage, nicht in einen Filter."
+        ),
+    )
+    utility_type: UtilityType | None = Field(
+        default=None,
+        description=(
+            "Sparte. Nur setzen, wenn die Frage sie ausdrücklich nennt "
+            "(Strom = electricity, Gas = gas, Wasser = water, Fernwärme = district_heating, "
+            "Nebenkosten = service_charges)."
+        ),
+    )
+    include_counterpart: bool = Field(
+        default=False,
+        description=(
+            "true bei Prüffragen (stimmt die Rechnung mit Vertrag oder Preisschreiben "
+            "überein?): liefert zusätzlich Treffer aus dem Gegenstück (Vertrag bzw. Rechnung)."
+        ),
+    )
 
 
 class OutlineArguments(_Arguments):
@@ -117,7 +143,7 @@ class AgentTool:
     run: Callable[[Any, EvidenceBook], ToolResult]
 
     def usage(self) -> str:
-        """Call shape such as ``search_tables(query*, doc_type, year)``; ``*`` marks required."""
+        """Call shape such as ``search(query*, utility_type)``; ``*`` marks required."""
         parameters = tool_parameters(self.arguments)
         required = set(parameters.get("required", []))
         names = [f"{name}*" if name in required else name for name in parameters["properties"]]
@@ -217,7 +243,7 @@ class ToolBox:
         self._catalog = catalog
 
     def tools(self) -> dict[str, AgentTool]:
-        """The six tools by name, in the order they are offered to the model."""
+        """The five tools by name, in the order they are offered to the model."""
         tools = [
             AgentTool(
                 "list_documents",
@@ -229,19 +255,12 @@ class ToolBox:
                 self._list_documents,
             ),
             AgentTool(
-                "search_documents",
-                "Durchsucht den Fließtext der Dokumente: Vertragsklauseln, Kündigungsfristen, "
-                "Laufzeiten, Preisanpassungsschreiben, Hinweise. Nicht für Preise, Verbräuche "
-                "und Beträge: Zahlen stehen meist in Tabellen (search_tables).",
+                "search",
+                "Durchsucht Fließtext und Tabellen aller Dokumente: Preise, Verbräuche, "
+                "Beträge, Zählerstände, Vertragsklauseln, Kündigungsfristen, Laufzeiten, "
+                "Preisanpassungsschreiben. Das richtige Werkzeug für fast jede Frage.",
                 SearchArguments,
-                self._search_documents,
-            ),
-            AgentTool(
-                "search_tables",
-                "Durchsucht Tabellenzeilen: Arbeitspreis, Grundpreis, Verbrauch, Zählerstände, "
-                "Kostenarten und Beträge von Verträgen, Rechnungen und Abrechnungen.",
-                SearchArguments,
-                self._search_tables,
+                self._search_text_and_tables,
             ),
             AgentTool(
                 "search_images",
@@ -305,11 +324,8 @@ class ToolBox:
             f"{document.doc_type.value} | {contract} | {when}"
         )
 
-    def _search_documents(self, args: SearchArguments, book: EvidenceBook) -> ToolResult:
-        return self._search(args, book, frozenset({ChunkType.TEXT}))
-
-    def _search_tables(self, args: SearchArguments, book: EvidenceBook) -> ToolResult:
-        types = {ChunkType.TABLE_ROW}
+    def _search_text_and_tables(self, args: SearchArguments, book: EvidenceBook) -> ToolResult:
+        types = {ChunkType.TEXT, ChunkType.TABLE_ROW}
         if self._settings.agent.include_table_summaries:
             types.add(ChunkType.TABLE_SUMMARY)
         return self._search(args, book, frozenset(types))
@@ -320,45 +336,70 @@ class ToolBox:
     def _search(
         self, args: SearchArguments, book: EvidenceBook, chunk_types: frozenset[ChunkType]
     ) -> ToolResult:
-        metadata_filter, notes = self._effective_filter(args)
+        metadata_filter = MetadataFilter(utility_type=args.utility_type)
         hits = self._backend.search(
             args.query, SearchOptions(metadata_filter=metadata_filter, chunk_types=chunk_types)
         )
-        if (
-            not hits
-            and metadata_filter != MetadataFilter()
-            and metadata_filter.period_start is None
-        ):
-            notes.append(
-                f"Keine Treffer mit Filter ({describe_filter(metadata_filter)}); "
-                "Wiederholung ohne Filter."
-            )
-            metadata_filter = MetadataFilter()
-            hits = self._backend.search(args.query, SearchOptions(chunk_types=chunk_types))
+        notes: list[str] = []
+        if hits and args.include_counterpart:
+            extra, note = self._counterpart_hits(args, hits, chunk_types)
+            hits = [*hits, *extra]
+            notes.append(note)
         header = f'Treffer für "{args.query}" (Filter: {describe_filter(metadata_filter)}):'
         if not hits:
-            hint = "Keine Treffer. Prüfe mit list_documents, ob es die Unterlage gibt."
-            return ToolResult(text="\n".join([header, *notes, hint]))
+            return ToolResult(text="\n".join([header, "Keine Treffer.", self._inventory()]))
         numbers = tuple(book.register(hit) for hit in hits)
         limit = self._settings.agent.max_hit_chars
         blocks = [render_numbered_hit(n, hit, limit) for n, hit in zip(numbers, hits, strict=True)]
         return ToolResult(text="\n".join([header, *notes, *blocks]), hit_numbers=numbers)
 
-    @staticmethod
-    def _effective_filter(args: SearchArguments) -> tuple[MetadataFilter, list[str]]:
-        """Filter as the model asked for it, minus a year without a suitable document type."""
-        notes: list[str] = []
-        year = args.year
-        if year is not None and args.doc_type not in YEAR_FILTER_DOC_TYPES:
-            notes.append(
-                "Hinweis: Jahresfilter ignoriert; er gilt nur zusammen mit doc_type=bill, "
-                "notice oder payment_plan."
+    def _counterpart_hits(
+        self, args: SearchArguments, hits: list[SearchHit], chunk_types: frozenset[ChunkType]
+    ) -> tuple[list[SearchHit], str]:
+        """Extra hits from the document family that the first search did not reach (ISS-007)."""
+        found = {self._doc_type_of(hit) for hit in hits}
+        wanted = []
+        if DocType.BILL not in found:
+            wanted.append(DocType.BILL)
+        if not found & BASIS_DOC_TYPES:
+            wanted.extend(sorted(BASIS_DOC_TYPES))
+        seen = {hit.chunk_id for hit in hits}
+        extra: list[SearchHit] = []
+        for doc_type in wanted:
+            options = SearchOptions(
+                metadata_filter=MetadataFilter(utility_type=args.utility_type, doc_type=doc_type),
+                chunk_types=chunk_types,
+                top_k=COUNTERPART_HITS,
             )
-            year = None
-        fields = {"utility_type": args.utility_type, "doc_type": args.doc_type}
-        if year is None:
-            return MetadataFilter(**fields), notes
-        return MetadataFilter.for_year(year, **fields), notes
+            extra += [
+                h for h in self._backend.search(args.query, options) if h.chunk_id not in seen
+            ]
+        if not extra:
+            return [], "Hinweis: Im Gegenstück (Vertrag bzw. Rechnung) gibt es keine Treffer."
+        return (
+            extra,
+            "Hinweis: Die letzten Treffer stammen aus dem Gegenstück (Vertrag bzw. Rechnung).",
+        )
+
+    def _doc_type_of(self, hit: SearchHit) -> DocType | None:
+        for document in self._catalog.documents:
+            if _file_name(document.file) == _file_name(hit.filename):
+                return document.doc_type
+        return None
+
+    def _inventory(self) -> str:
+        """What exists, so that an empty search can be read as "not in the documents" (ISS-051)."""
+        by_utility: dict[str, set[str]] = {}
+        for document in self._catalog.documents:
+            by_utility.setdefault(document.utility_type.value, set()).add(document.doc_type.value)
+        parts = [
+            f"{utility} ({', '.join(sorted(types))})"
+            for utility, types in sorted(by_utility.items())
+        ]
+        return (
+            "Vorhanden sind Unterlagen zu: " + "; ".join(parts) + ". "
+            "Gibt es dazu nichts, sage das; wiederhole die Suche nicht mit anderer Sparte."
+        )
 
     def _outline(self, args: OutlineArguments, book: EvidenceBook) -> ToolResult:
         wanted = fold(args.filename)

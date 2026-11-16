@@ -14,7 +14,7 @@ questions:
     sources:
       - { file: 02_gas_neckarenergie/07_Gas_Liefervertrag_NeckarEnergie_2024.pdf, page: 1 }
       - { file: 02_gas_neckarenergie/09_Gas_Preisanpassung_NeckarEnergie_2026.pdf, page: 1 }
-    expected_tools: [search_documents]
+    expected_tools: [search]
     tests: Text-Retrieval, Hierarchie-Boost
 
   - id: S2
@@ -26,8 +26,8 @@ questions:
       - { label: Grundpreis brutto, value: 11.50, unit: EUR/Monat }
     sources:
       - { file: 01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, page: 1 }
-    expected_tools: [search_tables]
-    tests: search_tables, Metadatenfilter
+    expected_tools: [search]
+    tests: search (Tabellen), Metadatenfilter
 
   - id: S3
     category: standard
@@ -37,7 +37,7 @@ questions:
       - { label: Wasserverbrauch 2025, value: 74, unit: m³, tolerance: 0 }
     sources:
       - { file: 03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf, page: 1 }
-    expected_tools: [search_tables]
+    expected_tools: [search]
     tests: Tabellenzeilen, richtiges Jahr
 
   - id: S4
@@ -62,7 +62,7 @@ questions:
     sources:
       - { file: 01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, page: 1 }
       - { file: 01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, page: 1 }
-    expected_tools: [search_tables, calculate]
+    expected_tools: [search, calculate]
     tests: ReAct, calculate, keine Fehlalarme
 
   - id: G1
@@ -76,7 +76,7 @@ questions:
     sources:
       - { file: 01_electricity_suedvolt/03_Strom_Preisanpassung_SuedVolt_2025.pdf, page: 1 }
       - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
-    expected_tools: [search_tables, calculate]
+    expected_tools: [search, calculate]
     planted_error: E1
     tests: Multi-Hop über zwei Dokumente, Fehlererkennung
 
@@ -91,7 +91,7 @@ questions:
     sources:
       - { file: 04_housing_utilities_contractors/16_Mietvertrag_Hauptstrasse42_2023.pdf, page: 1 }
       - { file: 04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf, page: 1 }
-    expected_tools: [search_tables, calculate]
+    expected_tools: [search, calculate]
     tests: Mietvertrag gegen Abrechnung, keine Fehlalarme
 
   - id: G3
@@ -105,7 +105,7 @@ questions:
     sources:
       - { file: 02_gas_neckarenergie/29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf, page: 1 }
       - { file: 02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf, page: 1 }
-    expected_tools: [search_tables, calculate]
+    expected_tools: [search, calculate]
     planted_error: E2
     tests: Fehlererkennung durch Vergleich mit dem Vorjahr, Rechnen mit Umrechnungsfaktoren
 
@@ -120,7 +120,7 @@ questions:
     sources:
       - { file: 04_housing_utilities_contractors/16_Mietvertrag_Hauptstrasse42_2023.pdf, page: 1 }
       - { file: 04_housing_utilities_contractors/30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf, page: 1 }
-    expected_tools: [search_tables, calculate]
+    expected_tools: [search, calculate]
     planted_error: E3
     tests: Mietvertrag gegen Abrechnung, Fehlererkennung
 
@@ -150,7 +150,7 @@ questions:
       - { label: Energiemenge, value: 12791, unit: kWh, tolerance: 1 }
     sources:
       - { file: 02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf, page: 1 }
-    expected_tools: [search_tables, calculate]
+    expected_tools: [search, calculate]
     tests: Rechnen mit Umrechnungsfaktoren
 
   - id: Z2
@@ -161,7 +161,7 @@ questions:
       - { label: Aktueller Abschlag, value: 120.00, unit: EUR/Monat }
     sources:
       - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
-    expected_tools: [list_documents, search_documents]
+    expected_tools: [list_documents, search]
     tests: neuestes Dokument wählen
 
   - id: Z3
@@ -172,7 +172,7 @@ questions:
       - { label: Kündigungsfrist Strom, value: "1 Monat" }
     sources:
       - { file: 01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, page: 1 }
-    expected_tools: [search_documents]
+    expected_tools: [search]
     tests: Ablenker (Distractor Rate)
 
 planted_errors:

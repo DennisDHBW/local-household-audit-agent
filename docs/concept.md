@@ -204,8 +204,7 @@ Die 5 Werkzeuge des Referenzprototyps bleiben erhalten und werden um Metadatenfi
 | Tool | Zweck | Warum nötig |
 |---|---|---|
 | `list_documents(utility_type?, doc_type?, year?)` | Liefert das Dokumentinventar aus den Metadaten | Agent weiß zuerst, *welche* Unterlagen es gibt (wichtig für Negativfragen: „Für 2022 liegt keine Abrechnung vor“) |
-| `search_documents(query, top_k, filter?)` | Suche in Fließtext und Überschriften | Vertragsklauseln, AGB, Preisänderungsschreiben |
-| `search_tables(query, top_k, filter?)` | Suche in Tabellenzeilen und Tabellen-Summaries | Preise, Zählerstände, Verbräuche, Kostenarten |
+| `search(query, utility_type?, include_counterpart?)` | Suche in Fließtext und Tabellenzeilen (ab M6d, ADR-0014; ursprünglich getrennt als `search_documents` und `search_tables`) | Vertragsklauseln, Fristen, Preise, Zählerstände, Verbräuche, Kostenarten |
 | `search_images(query, top_k, filter?)` | Suche in Grafik-Captions | Vorjahresvergleiche, Verbrauchsverläufe |
 | `get_document_outline(filename_filter)` | Gliederung eines Dokuments | Navigation in Verträgen/AGB (z. B. „Wo steht die Preisanpassung?“) |
 | `calculate(expression)` | Sichere Arithmetik (kein `eval`, z. B. AST-basiert) | Sollbetrag, Differenzen, zeitanteilige Grundpreise, Prozentveränderungen |
@@ -222,6 +221,8 @@ Vor der Final Answer prüft der Agent per Prompt-Regel:
 - Vollständiges Logging von Thought/Action/Observation, als Grundlage für Tests und Reverse Engineering
 
 **Umsetzung in M5 (Stand 2026-11-14):** Paket `audit_agent.agent` (ADR-0010). Die sechs Tools stehen wie oben, aber ohne `top_k` und mit flachen Filterargumenten (`utility_type`, `doc_type`, `year`) statt `filter?`. `search_documents` durchsucht nur `text` (Überschriften sind nicht indiziert, ihr Pfad steckt in den Chunks; die Gliederung liefert `get_document_outline`). Der Jahresfilter gilt nur mit `bill`, `notice` oder `payment_plan` (ISS-025); eine Suche ohne Jahr und ohne Treffer wird ohne Filter wiederholt (ISS-007). Jeder Treffer trägt eine Belegnummer `[n]`, die Antwort zitiert sie. Jeder Aufruf, auch ein ungültiger, zählt gegen das Limit von 6; der Korrekturversuch ist der nächste Modellaufruf nach der Fehlermeldung. Das Log ist eine JSON-Zeile je Schritt unter `data/eval/<run>/`. Die Streamlit-Oberfläche (`agent/app.py`) zeigt die Belege schon während der Suche.
+
+**Änderung in M6d (Stand 2026-11-16, ADR-0014):** Die fünf Werkzeuge sind `list_documents`, `search`, `search_images`, `get_document_outline`, `calculate`. `search` ersetzt `search_documents` und `search_tables`, weil das Modell vorab nicht weiß, ob ein Fakt im Fließtext oder in einer Tabelle steht (ISS-006/052). Das Modell filtert nur nach Sparte; Dokumentart und Jahr stehen in der Suchanfrage (ISS-007). `include_counterpart` holt bei Prüffragen das Gegenstück. Eine leere Suche wird nicht ohne Filter wiederholt, sondern nennt den Bestand (ISS-051). Die Beispiele in Abschnitt 8 behalten die alten Namen als Konzeptstand.
 
 ---
 

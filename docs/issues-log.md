@@ -24,6 +24,36 @@
 
 ## Einträge
 
+### ISS-059 – `check_evidence.py` bricht bei Läufen ohne B0 ab (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-16 / M6d (RUN-012)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** `KeyError: 'b0_context'` beim ersten Aufruf auf RUN-012, das nur P2 enthält.
+- **Ursache:** Das Skript aus M6c setzte voraus, dass jedes Manifest eine B0-Angabe hat; getestet wurde nur an den Läufen mit allen drei Varianten.
+- **Lösung / Workaround:** `manifest.get("b0_context", {})`; das Skript läuft jetzt auch für Läufe mit nur P1 oder P2. Kein eigener Test (Skript, keine Bibliothek).
+- **Gelernt:** Auswerteskripte gegen die kleinste Konfiguration testen, nicht nur gegen den Vollbestand.
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-058 – P2 ruft `calculate` nie auf und findet daher keinen Abrechnungsfehler
+- **Datum / Meilenstein:** 2026-11-16 / M6d (RUN-012)
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** In 24 Werkzeugaufrufen über 14 Fragen kein einziger `calculate`-Aufruf. G3 antwortet „Die Gasabrechnung 2026 ist korrekt“ (E2 übersehen), G4 nennt 1.963,28 EUR statt 1.867,50 EUR (E3 übersehen), G1 endet am Kontextlimit, G2 liefert eine Antwort ohne Zahlen. S5 (richtige Abrechnung) wird fälschlich als Abweichung gemeldet. Fehler erkannt: 0 von 3, Fehlalarm 1 von 3. In G1, G3 und G4 stand keine der Sollzahlen im Kontext; bei G2 standen alle drei im Kontext, die Antwort nennt keine.
+- **Ursache:** Mehrere Gründe zugleich: `llama3.1:8b` beendet nach einer Suche (G3, G4), wiederholt bei G1 und G2 dieselbe Suche mit gleichen Argumenten (2 identische Wiederholungen), und die Suchanfrage („Gasabrechnung 2026“) trifft die Preistabellen nicht. Der Prompt verlangt `calculate` für jede Rechnung, das Modell folgt dem nicht (siehe ISS-054).
+- **Lösung / Workaround:** Noch keine. Kandidaten für das nächste Paket: Wiederholung mit gleichen Argumenten abfangen und dem Modell melden; bei Prüffragen den Ablauf (Sollwerte suchen, Istwerte suchen, rechnen) im Code vorgeben oder eine feste Nachfrage nach `calculate` vor der Antwort einbauen; Anfragetext für Prüffragen verbessern.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Agent (Grenzen kleiner Modelle bei mehrstufigen Prüfungen), Evaluation
+
+### ISS-057 – P2 braucht in RUN-012 fast doppelt so lange, obwohl die Prompt-Token gleich sind
+- **Datum / Meilenstein:** 2026-11-16 / M6d (RUN-012)
+- **Kategorie:** hardware
+- **Status:** offen
+- **Symptom:** 263 s je Frage im Mittel (Median 229 s) gegenüber 136 s in RUN-010, bei gleicher mittlerer Prompt-Token-Zahl (5.582 gegen 5.624). Der Lauf dauerte rund 61 Minuten statt 32.
+- **Ursache:** Nicht geklärt. Mögliche Gründe: mehr Generierungstoken je Antwort, Zusatztreffer verteilen sich auf mehr Modellaufrufe, oder Last auf dem Laptop während des Laufs. Die Rohdaten (`p2-*.jsonl`) enthalten Prefill- und Generierungszeit je Aufruf und lassen sich dazu auswerten.
+- **Lösung / Workaround:** Noch keine; beim nächsten Lauf Prefill- und Generierungszeit trennen und die Laptop-Last notieren.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** eher nein (Randnotiz zur Messunsicherheit)
+
 ### ISS-056 – Zwei Commits vor dem vollständigen Quality Gate (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-15 / M6c
 - **Kategorie:** ki-assistent
@@ -67,20 +97,20 @@
 ### ISS-052 – `search_documents` findet keine Tabellenzeilen, ist bei S1 und Z3 aber das erwartete Werkzeug
 - **Datum / Meilenstein:** 2026-11-15 / M6c (RUN-010, RUN-011)
 - **Kategorie:** tools
-- **Status:** offen
+- **Status:** gelöst (RUN-012, ADR-0014)
 - **Symptom:** Bei S1 und Z3 (Kündigungsfristen) rufen beide Modelle `search_documents`, wie in `ground_truth.yaml` erwartet. Zurück kommen nur Fließtext-Chunks: Grußformel, Briefkopf, Hinweis auf das Sonderkündigungsrecht. Die Frist steht in einer Tabellenzeile („Kündigungsfrist: 1 Monat …“), die nur `search_tables` liefert. Alle vier P2-Antworten sind falsch, zwei davon erfunden („2 Monate zum Kalendervierteljahr“, „14 Tage“). Die Metrik „Tool-Wahl korrekt“ zählt diese Aufrufe als richtig.
 - **Ursache:** Die Werkzeuge trennen nach Chunk-Typ, nicht nach Inhalt. Ob ein Fakt im Fließtext oder in einer Tabelle steht, kann weder das Modell noch der Fragenkatalog vorher wissen; der Katalog hat hier selbst falsch geraten. Die Kapitelüberschrift im Chunk-Text hebt zudem inhaltsleere Zeilen nach oben (ISS-027).
-- **Lösung / Workaround:** Noch keine. Für M6d: ein Suchwerkzeug über Text und Tabellen (ISS-006), danach `expected_tools` im Katalog anpassen. Bis dahin ist „Tool-Wahl korrekt“ (7/14 bzw. 5/14) nur eingeschränkt aussagekräftig.
+- **Lösung / Workaround:** Noch keine. Für M6d: ein Suchwerkzeug über Text und Tabellen (ISS-006), danach `expected_tools` im Katalog anpassen. Bis dahin ist „Tool-Wahl korrekt“ (7/14 bzw. 5/14) nur eingeschränkt aussagekräftig. **M6d:** Ein Werkzeug `search` über Text und Tabellen; Katalog erwartet `search`. S1 und Z3 sind in RUN-012 richtig (RUN-010: beide falsch, zwei Antworten erfunden).
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Agent (Werkzeugentwurf), Evaluation (Grenzen der Tool-Wahl-Metrik)
 
 ### ISS-051 – Leere gefilterte Suche wird ohne Filter wiederholt und liefert Ablenker
 - **Datum / Meilenstein:** 2026-11-15 / M6c (RUN-010, RUN-011)
 - **Kategorie:** tools
-- **Status:** offen
+- **Status:** gelöst (RUN-012, ADR-0014)
 - **Symptom:** Bei N2 („Grundpreis für Fernwärme“) filtern beide Modelle richtig auf `district_heating`. Die Suche findet nichts, meldet „Keine Treffer mit Filter …; Wiederholung ohne Filter“ und liefert Grundpreise aus Strom- und Gasdokumenten (bei `llama3.1:8b` auch eine Internetrechnung). `llama3.1:8b` nennt daraufhin 12,90 EUR/Monat, `qwen2.5:7b` 13,45 EUR/Monat als Fernwärme-Grundpreis. B0 und P1 beantworten N2 richtig.
 - **Ursache:** Die Wiederholung ohne Filter war als Schutz gegen zu enge Filter des Modells gedacht (ISS-007). Bei einer Sparte, die es im Bestand nicht gibt, ist „keine Treffer“ aber genau die richtige Auskunft; die Wiederholung macht daraus scheinbar passende Belege.
-- **Lösung / Workaround:** Noch keine. Für M6d: bei leerem Ergebnis nicht ungefiltert wiederholen, sondern melden, welche Sparten und Jahre es gibt, oder nur den Filter lockern, der nicht die Sparte betrifft.
+- **Lösung / Workaround:** Noch keine. Für M6d: bei leerem Ergebnis nicht ungefiltert wiederholen, sondern melden, welche Sparten und Jahre es gibt, oder nur den Filter lockern, der nicht die Sparte betrifft. **M6d:** Keine Wiederholung ohne Filter; leere Suche nennt den Bestand. N2 ist in RUN-012 richtig („keine Angaben“; RUN-010: 12,90 EUR/Monat erfunden).
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Agent (Werkzeugentwurf), Evaluation (Negativfragen)
 
@@ -523,20 +553,20 @@
 ### ISS-007 – Modelle setzen ungefragt Metadatenfilter
 - **Datum / Meilenstein:** 2026-11-14 / M0
 - **Kategorie:** agent
-- **Status:** offen
+- **Status:** gelöst (RUN-012, ADR-0014)
 - **Symptom:** In RUN-000 setzten beide Modelle bei allen 6 Suchaufrufen selbst einen `doc_type`-Filter (z. B. `contract`, `bill`), obwohl die Frage ihn nicht nannte.
 - **Ursache:** vermutlich die Beschreibung der optionalen Parameter im Tool-Schema; nicht geklärt.
-- **Lösung / Workaround:** In M4/M5: Parameterbeschreibung schärfen („nur setzen, wenn die Frage ihn eindeutig nennt“) und bei null Treffern automatisch ohne Filter wiederholen.
+- **Lösung / Workaround:** In M4/M5: Parameterbeschreibung schärfen („nur setzen, wenn die Frage ihn eindeutig nennt“) und bei null Treffern automatisch ohne Filter wiederholen. **M6d:** Modell filtert nur nach Sparte, `doc_type` und Jahr entfallen; `include_counterpart` holt das Gegenstück. In RUN-012 setzte das Modell in 17 Suchen nie `doc_type` oder Jahr.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Retrieval (Filter-Risiko), Agent (Tool-Beschreibungen)
 
 ### ISS-006 – Verwechslung von `search_documents` und `search_tables`
 - **Datum / Meilenstein:** 2026-11-14 / M0
 - **Kategorie:** tools
-- **Status:** offen
+- **Status:** gelöst (RUN-012, ADR-0014)
 - **Symptom:** Bei „Wie hoch ist der Arbeitspreis laut Stromvertrag?“ wählten beide Modelle `search_documents` (Vertrag, Fließtext) statt `search_tables`. Alle anderen Aufgaben (außer dieser) waren richtig.
 - **Ursache:** Die Frage nennt „Stromvertrag“, das Tool-Schema trennt Fließtext und Tabellen. Preise stehen aber im Vertrag oft in Tabellen. Die Aufgabe war also teilweise mehrdeutig; Stichprobe mit 5 Aufgaben ist zu klein für Aussagen über die Modelle.
-- **Lösung / Workaround:** In M4/M5 prüfen: Tool-Beschreibungen schärfen oder ein gemeinsames Suchwerkzeug mit `chunk_type`-Filter statt zwei getrennter Tools. Im Testmodul die Tool-Wahl-Korrektheit mitmessen.
+- **Lösung / Workaround:** In M4/M5 prüfen: Tool-Beschreibungen schärfen oder ein gemeinsames Suchwerkzeug mit `chunk_type`-Filter statt zwei getrennter Tools. Im Testmodul die Tool-Wahl-Korrektheit mitmessen. **M6d:** gemeinsames Werkzeug `search` (ADR-0014); Verwechslung nicht mehr möglich.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Agent (Werkzeugentwurf), Testmodul (Tool-Wahl-Metrik)
 

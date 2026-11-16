@@ -351,3 +351,31 @@
 - **Grenzen der Messung:** 14 Fragen, ein Lauf je Modell, Temperatur 0 (keine Streuung gemessen); Unterschiede von ein bis zwei Fragen zwischen den Modellen sind nicht belastbar. Handprüfung und Ursachenzuordnung stammen von einer Person (Claude) und wurden nicht gegengelesen; je Antwort ist nur die Hauptursache gezählt, viele haben eine zweite. Der Abgleich „Fakt im Kontext“ nutzt dieselbe Zahlensuche wie die Metrik (ISS-050). B0 sieht nur Stromdokumente.
 - **Meine Deutung (eigene Worte):**
 - **Konsequenz / nächster Schritt:** Der Agent (P2) ist in beiden Läufen schlechter als die einfache Pipeline (P1), und die Ursache liegt überwiegend im Werkzeugentwurf, nicht im Modell. Gegenmaßnahmen für M6d, nach Zahl der betroffenen Fehlschläge: (1) Filter nicht mehr dem Modell überlassen bzw. bei Prüffragen Vergleichsdokumente mitsuchen (ISS-007, 10 Fälle); (2) ein Suchwerkzeug über Text und Tabellen (ISS-006/052, 8 Fälle); (3) bei leerer gefilterter Suche „keine Treffer“ melden statt ungefiltert zu wiederholen, wenn es die Sparte nicht gibt (ISS-051); (4) P1: mehr Treffer oder gezieltere Suchanfrage (12 Fälle). Agent-Modell: ADR-0013.
+
+### RUN-012 – M6d, P2 mit den Gegenmaßnahmen (`llama3.1:8b`, 14 Fragen)
+- **Datum / Commit:** 2026-11-16 · Branch `feat/p2-search-countermeasures`, Commit `feat(agent): merge text and table search, filter by utility type only, report empty searches`
+- **Variante:** nur P2 (`generate --variants p2 --all`); B0 und P1 unverändert aus RUN-010
+- **Konfiguration:** Antwortmodell `llama3.1:8b`, `num_ctx` 8192, Temperatur 0, höchstens 6 Werkzeugaufrufe; Werkzeuge nach ADR-0014 (`search` über Text und Tabellen, Filter nur Sparte, `include_counterpart`, keine Wiederholung ohne Filter); Katalog erwartet `search`; Befehl `uv run python -m audit_agent.evaluation generate --run-id run-012 --variants p2 --all --model llama3.1:8b`; danach `score` und `scripts/check_evidence.py`. Kein RAGAS-Lauf.
+- **Dauer:** ca. 61 Minuten (RUN-010: 32)
+- **Rohdaten:** `data/eval/run-012/` (`report.md`, `scores.json`, `answers-p2.jsonl`, `p2-*.jsonl`, `manifest.json`, `evidence.json`), `data/eval/run-012.log`
+
+| Metrik (P2, llama3.1:8b) | RUN-010 | RUN-012 |
+|---|---|---|
+| Richtig laut Metrik (von 14) | 3 | 7 |
+| Richtig nach Handprüfung (von 14) | 3 | 9 |
+| Fakten gefunden (von 27) | 6 | 11 |
+| Erwartete Quellen zitiert (von 18) | 2 | 3 |
+| Negativfragen erkannt (von 2) | 1 | 2 |
+| Fehler erkannt, nur Urteil (von 3) | 0 | 0 |
+| Fehlalarme (von 3 richtigen Abrechnungen) | 1 | 1 |
+| Tool-Wahl korrekt (von 14) | 7 | 7 |
+| Ungültige Werkzeugaufrufe | 13 von 37 | 0 von 24 |
+| Suchen mit eigenem Filter / schließen Quelle aus | 19 / 9 | 17 / 3 (nur Sparte) |
+| Abbruch (Werkzeug- oder Kontextlimit) | 3 | 1 (Kontext, G1) |
+| Sekunden je Frage (Mittel) | 136 | 263 |
+| Prompt-Token je Frage (Mittel) | 5.624 | 5.582 |
+
+- **Handprüfung (alle 14 Antworten gelesen):** Richtig sind S1, S2, S3, S4, N1, N2, Z1, Z2, Z3. Zwei davon zählt die Metrik als falsch: S2 nennt den Grundpreis als 138,00 EUR brutto pro Jahr statt 11,50 EUR/Monat (gleichwertig), Z1 nennt Volumen 1.200 m³ und das Ergebnis „passt“ richtig, aber nicht die z-Zahl (Grenzfall, hier als richtig gezählt). Falsch sind S5 (richtige Abrechnung als Abweichung gemeldet), G1 (Kontextlimit, keine Antwort), G2 (Antwort ohne Zahlen), G3 („korrekt“, Fehler E2 übersehen), G4 (falscher Betrag, E3 übersehen).
+- **Ursachen der fünf Fehlschläge:** G1, G3, G4: Sollzahlen nie im Kontext (Retrieval/Suchanfrage; G1 wiederholt dieselbe Suche). G2: alle Sollzahlen im Kontext, Antwort ohne Zahlen (Synthese). S5: beide Quellen standen im Kontext, das Urteil ist falsch (Synthese, ohne `calculate`). In keiner Frage wurde `calculate` aufgerufen (ISS-058).
+- **Deutung:** Die vier Gegenmaßnahmen beheben genau die Ursachen, die für sie beschrieben waren (ISS-051, ISS-052, ISS-006, ISS-007): S1, Z3, N2 kippen von falsch auf richtig, ungültige Aufrufe verschwinden. Die Prüffragen mit eingebauten Fehlern (G1, G3, G4) bleiben falsch; dafür braucht es Rechnen und einen festen Prüfablauf (ISS-058). Es ist ein einzelner Lauf bei Temperatur 0, die Streuung ist nicht gemessen; der Anstieg von 3 auf 9 stammt aus allen vier Maßnahmen zusammen und lässt sich nicht einzeln zuordnen. Die Laufzeit stieg stark ohne erklärende Veränderung der Token-Zahl (ISS-057).
+

@@ -31,7 +31,8 @@ CITATION = re.compile(r"\[(\d+(?:\s*[,;]\s*\d+)*)\]")
 """``[3]`` or ``[1, 4]``; the numbers refer to the shown sources of the answer."""
 UNIT_FACTORS = (Decimal(1), Decimal(100), Decimal("0.01"))
 """A fact may be written as EUR or ct, 0.348 or 34,8."""
-SEARCH_TOOLS = frozenset({"search_documents", "search_tables", "search_images"})
+SEARCH_TOOLS = frozenset({"search", "search_documents", "search_tables", "search_images"})
+"""``search_documents`` and ``search_tables`` only appear in runs before ADR-0014."""
 _LEADING_VERDICT = re.compile(r"\W*(ja|nein)\b")
 _SENTENCE_END = re.compile(r"[.!?](?=\s|$)|\n")
 NEUTRAL_PHRASES = ("keine abweichung", "kein fehler", "keine fehler", "nicht zu beanstanden")
