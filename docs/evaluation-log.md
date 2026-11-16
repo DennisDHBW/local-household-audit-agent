@@ -451,3 +451,26 @@
 - **Nicht gefunden:** G1 (neuer Arbeitspreis) und G3 (z-Zahl 1,0000) scheitern bei beiden Modellen daran, dass die Sollzahl nie im Kontext steht (Suchanfrage und Retrieval, ISS-051/052); Rechnen hilft dort nicht.
 - **Laufzeit:** Die Zeit je Frage ist bei beiden Modellen nahezu gleich (301 gegen 320 bis 325 s), in beiden Läufen 0 von 14 ersten Anfragen aus dem Prompt-Cache (ISS-057). Das Ollama-Journal zeigt in keinem der drei Läufe Speichermangel; „truncated = 0“ in allen Anfragen, der Kontext von 8.192 Token reichte außer bei S5 (qwen).
 - **Deutung:** Nach Handprüfung liegen beide Modelle gleichauf (6 von 14), mit verschiedenen Stärken: `qwen2.5:7b` zitiert besser (6 gegen 1 von 18), befolgt die Rechennachfrage und erkennt G4, meldet aber auch richtige Abrechnungen als Abweichung; `llama3.1:8b` hält Format und Filter schlechter und rechnet nicht. Ein Lauf je Modell und 14 Fragen sind eine dünne Basis; die Handprüfung ist von einer Person (Claude) gemacht und nicht gegengelesen.
+
+### RUN-017 – M6g, P2 mit festem Prüfablauf und `qwen2.5:7b` (14 Fragen)
+- **Datum / Commit:** 2026-11-16 · Branch `feat/p2-audit-flow-decision`, Commit `feat(agent): add fixed audit flow for check questions and switch default model to qwen2.5:7b`
+- **Variante:** nur P2; Antwortmodell `qwen2.5:7b`; gegenüber RUN-014 neu: Prüfablauf (ADR-0016) für die 6 Prüffragen G1 bis G4, S5, Z1
+- **Konfiguration:** `num_ctx` 8192, Temperatur 0, `audit_max_checks` 3; Aufruf über `scripts/eval_run.sh run-017:qwen2.5:7b`; Systemlast in `run-017-env.txt`
+- **Dauer:** 89 min (5.338 s); Journal ohne Abschneiden (`truncated = 0`), 70 Modellaufrufe
+- **Rohdaten:** `data/eval/run-017/`, `data/eval/run-017.log`, `run-017-env.txt`, `run-017-journal.txt`
+
+| Metrik (P2) | RUN-014 qwen (ohne Ablauf) | RUN-017 qwen (mit Ablauf) |
+|---|---|---|
+| Richtig laut Metrik (von 14) | 4 | 4 |
+| Richtig nach Handprüfung (von 14) | 6 | 6 (S1, S2, N1, N2, Z1, Z3) |
+| Fakten gefunden (von 27) | 9 | 7 |
+| Erwartete Quellen zitiert (von 18) | 6 | 6 |
+| Fehler erkannt von Hand, tragfähige Begründung (von 3) | 1 (G4) | 0 |
+| Fehlalarme bei richtigen Abrechnungen (von 3) von Hand | 2 (S5, G2) | 0 (aber S5 in chinesischer Sprache, G2 Unsinn) |
+| Sekunden je Frage (Mittel) | 301 | 382 |
+| Prompt-Token je Frage (Mittel) | 9.371 | 11.983 |
+| Abbruch durch Werkzeuglimit | 0 | 1 (G3, 1.291 s) |
+
+- **Prüfablauf in Zahlen:** 6 Prüffragen, 14 geplante Prüfgrößen: 4 Abweichung, 3 gleich, 4 nicht gefunden, 3 nicht belegt. In 4 Prüfgrößen stammen Soll- und Istzahl aus demselben Treffer. 33 Aufrufe des Ablaufs, 1.494 s (25 min) nur im Ablauf, je Prüffrage 113 bis 336 s zusätzlich.
+- **Handprüfung der sechs Prüffragen:** G1: Urteil „Abweichung“ stimmt zufällig, die Begründung ist falsch (Gas-Rechnungsbetrag 1.555,43 EUR gegen Strom-Rechnungsbetrag 1.379,30 EUR, −176,13 EUR; Prüfgröße war „Arbeitspreis“). G2: Unsinn (Verbrauch und „z-Zahl“ einer Stromabrechnung, nichts zu Betriebskosten). G3: Ablauf liest z-Zahl 1,0000 auf beiden Seiten aus demselben Treffer, danach „keine Angaben“, die freie Schleife endet im Werkzeuglimit mit „7,01 EUR Abweichung“ (falsch). G4: sagt „korrekt“, rechnet 11.819 kWh × 13,45 EUR/1.000 kWh; die Wohnflächenabweichung wird nicht gefunden (RUN-014 fand sie). S5: Urteil „stimmt“ richtig, Antwort chinesisch mit erfundenem Stückpreis „1 EUR/kWh“. Z1: Urteil „passt“ und 1.200 m³ richtig, Text widersprüchlich (Soll gleich Ist aus demselben Wert).
+- **Deutung:** Der Prüfablauf bringt in dieser Form keinen Gewinn: gleiche Handpunktzahl (6 von 14) bei 27 % mehr Zeit, G4 geht verloren, und es entstehen neue Fehlerarten (ISS-070, ISS-071). Gut ist nur, dass die Zahlen nachweislich aus Treffern stammen und der Code rechnet; die Treffer sind aber meist die falschen. Die Bedingung aus ADR-0016, den Ablauf zu bestätigen, ist nicht erfüllt.

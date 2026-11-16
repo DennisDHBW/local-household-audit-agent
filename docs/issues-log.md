@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-071 – Prüfablauf: Nachricht des Ablaufs führt zu Lückenantworten und chinesischem Text
+- **Datum / Meilenstein:** 2026-11-16 / M6g (RUN-017)
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** Sind alle Prüfgrößen „nicht gefunden“ oder „nicht belegt“ (G3, G4, Z1), antwortet das Modell sofort „Dazu liegen in den Unterlagen keine Angaben vor“, bekommt die Lücken-Rückfrage und sucht erst dann frei weiter (zwei bis drei Modellaufrufe und rund 2 Minuten verloren). In S5 antwortet `qwen2.5:7b` auf die Nachricht des Ablaufs auf Chinesisch („基线值和实际值一致“) und rechnet einen erfundenen Stückpreis 1 EUR/kWh. In RUN-014 trat das nie auf.
+- **Ursache:** Die Nachricht ist ein langer, formelhafter Block mit „Soll/Ist/ABWEICHUNG“ und endet ohne Sprachvorgabe; bei einem wertlosen Befund („Soll- oder Istwert nicht gefunden“) liest das Modell das als Ergebnis der Suche. Nicht einzeln getestet, was den Sprachwechsel auslöst.
+- **Lösung / Workaround:** Offen. Kandidaten: negative Befunde nicht an das Modell geben (nur Treffer mit Differenz), „Antworte auf Deutsch“ in die Nachricht, Befund als Werkzeug-Antwort statt als Nutzernachricht.
+- **Gelernt:** Eine Zwischennachricht des Loops ist Teil des Prompts und kann Sprache und Verhalten kippen; jede neue Nachrichtenart braucht einen eigenen Test mit dem echten Modell.
+- **Relevant für Ausarbeitung?** ja → Agent (Grenzen kleiner Modelle), Reflexion
+
+### ISS-070 – Prüfablauf: Plan und Lesen ordnen Soll und Ist falsch zu
+- **Datum / Meilenstein:** 2026-11-16 / M6g (RUN-017)
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** Von 14 Prüfgrößen sind nur 4 inhaltlich brauchbar. Beide Suchseiten liefern oft dieselben Treffer (G1: 3, 2; G3: 1, 2, 3, 5), in 4 Prüfgrößen steht Soll und Ist im selben Treffer (S5, G3, G4). G1 vergleicht Rechnungsbetrag Gas mit Rechnungsbetrag Strom; G4 bekommt einen Dateinamen als Wert und 1367 als Trefferzahl; G2 sucht Zustandszahl bei einer Betriebskostenfrage.
+- **Ursache:** (1) Die Suchanfragen des Plans nennen nur „Vertrag oder Preisschreiben“ und „Rechnung“ als Wörter, kein Filter trennt Vertrag und Rechnung (ADR-0014 hält `doc_type` bewusst vom Modell fern). (2) Das Lesen prüft nur die Herkunft der Zahl. (3) Die Beispielliste im Plan-Prompt (z-Zahl, Brennwert, …) wird auch dort gewählt, wo sie nicht passt. (4) Das Schema lässt freie Strings als Wert zu.
+- **Lösung / Workaround:** Offen (Kandidaten in `status.md`): Soll- und Ist-Suche im Code nach Dokumentart trennen (Soll: Vertrag/Preisschreiben, Ist: Rechnung), verlangen, dass beide Zahlen aus verschiedenen Treffern stammen, Größe und Einheit im Treffer abgleichen, Zahlenfelder als Zahl im Schema, Plan-Prompt ohne Beispielliste; oder Ablauf abschalten.
+- **Gelernt:** Ein fester Ablauf ersetzt nicht die Qualität der einzelnen Schritte: Er macht aus einem falschen Suchtreffer eine exakte, belegt wirkende falsche Rechnung.
+- **Relevant für Ausarbeitung?** ja → Agent (Autonomie gegen Zuverlässigkeit), Evaluation (Negativergebnis)
+
 ### ISS-069 – `/tmp/uv-cache` in der VM nicht beschreibbar, Sitzungsplatte wieder fast voll (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-16 / M6g
 - **Kategorie:** ki-assistent
@@ -38,10 +58,10 @@
 - **Datum / Meilenstein:** 2026-11-16 / M6g
 - **Kategorie:** agent
 - **Status:** offen
-- **Symptom:** (erwartet, vor RUN-017 eingetragen) Der Code prüft, dass Soll- und Istzahl im genannten Treffer der richtigen Suchseite stehen, nicht, dass beide dieselbe Größe meinen: Ein Modell kann aus einer Tabelle den falschen Wert (z. B. Nettopreis statt Bruttopreis, Monats- statt Jahresbetrag) lesen und der Code rechnet damit exakt. Vorzeichen gehen verloren (`extract_numbers`: Beträge ohne Vorzeichen, ISS-067 G4). Z1 (Zählerstände: zwei Werte, eine Differenz) passt nicht in das Schema „ein Soll, ein Ist“.
+- **Symptom:** (vor RUN-017 erwartet, in RUN-017 eingetreten: G1 Rechnungsbetrag Gas gegen Strom) Der Code prüft, dass Soll- und Istzahl im genannten Treffer der richtigen Suchseite stehen, nicht, dass beide dieselbe Größe meinen: Ein Modell kann aus einer Tabelle den falschen Wert (z. B. Nettopreis statt Bruttopreis, Monats- statt Jahresbetrag) lesen und der Code rechnet damit exakt. Vorzeichen gehen verloren (`extract_numbers`: Beträge ohne Vorzeichen, ISS-067 G4). Z1 (Zählerstände: zwei Werte, eine Differenz) passt nicht in das Schema „ein Soll, ein Ist“.
 - **Ursache:** Die Zuordnung der Größe ist Leseverständnis des Modells; der Code kennt keine Einheiten und keine Bedeutung der Zeilen.
 - **Lösung / Workaround:** Die Belegzeile steht in der Nachricht an das Modell („Soll 38,2 [1] „Arbeitspreis | 38,20 ct/kWh“…“), das Modell sieht und die Auswertung zeigt, woher die Zahl kommt. RUN-017 von Hand prüfen (Fehlalarme, `not_verified`). Möglich später: Einheit im Treffer mit der angegebenen Einheit abgleichen.
-- **Gelernt:** (nach RUN-017)
+- **Gelernt:** Die Herkunftsprüfung schützt vor erfundenen Zahlen, nicht vor falsch zugeordneten; die Zuordnung gehört mit dem Modell geprüft (Größe und Einheit im Treffer) oder aus der Suche selbst gesichert (Dokumentart je Seite).
 - **Relevant für Ausarbeitung?** ja → Agent (Grenzen der Zuverlässigkeit trotz festem Ablauf), Reflexion
 
 ### ISS-067 – `calculate` wird gültig, aber mit falschen Operanden aufgerufen (Fehlalarme)
