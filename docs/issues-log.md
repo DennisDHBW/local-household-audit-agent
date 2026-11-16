@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-065 – `.venv` des Laptops zerstört und Platte der VM voll (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-16 / M6f
+- **Kategorie:** ki-assistent
+- **Status:** gelöst (nach `uv sync` auf dem Laptop; der Wrapper `scripts/eval_run.sh` ruft es zu Beginn auf)
+- **Symptom:** (1) In Claudes Shell lief ein `uv run` ohne `UV_PROJECT_ENVIRONMENT`; `uv` entfernte das `.venv` im Projektordner („linked to non-existent Python interpreter“) und legte ein leeres, auf VM-Pfade zeigendes an. Das `.venv` des Laptops (PyCharm-Interpreter) war damit weg. (2) `uv sync` in der VM scheiterte mit „No space left on device“: die Sitzungsplatte (`/sessions`) war zu 99 % voll.
+- **Ursache:** (1) Der Hinweis aus ISS-009 stand in `status.md`, aber der Export stand in diesem einen Befehl nicht, weil die Umgebungsvariablen nicht von einem Aufruf zum nächsten gelten. (2) Cache und Umgebung unter `$HOME` liegen auf der kleinen Sitzungsplatte.
+- **Lösung / Workaround:** Den Rest des leeren `.venv` gelöscht; `uv sync` auf dem Laptop baut das echte neu. Für Claudes Shell gilt jetzt `UV_CACHE_DIR=/tmp/uv-cache UV_PROJECT_ENVIRONMENT=/tmp/venvs/audit UV_LINK_MODE=copy` in **jedem** Befehl mit `uv`, am besten als erste Zeile. `status.md` ist angepasst.
+- **Gelernt:** Eine Regel, die nur in der Doku steht, schützt nicht; jeder `uv`-Befehl der VM beginnt mit dem Export, und `uv` nie ohne ihn aufrufen, auch nicht für `--help`.
+- **Relevant für Ausarbeitung?** nein
+
 ### ISS-064 – Zwei kleine eigene Fehler vor dem Commit (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-16 / M6e
 - **Kategorie:** ki-assistent
