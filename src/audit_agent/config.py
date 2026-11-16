@@ -125,6 +125,14 @@ class AgentSettings(BaseModel):
     """Show ``table_summary`` hits to the model; off since RUN-005 (it quoted one as evidence)."""
     min_searches_before_gap: int = Field(default=2, ge=0)
     """Fewer tool calls than this and a "not in the documents" answer is questioned once."""
+    quantity_hits: int = Field(default=2, ge=0)
+    """Extra hits of a second search with the billing quantity only (M6h); 0 switches it off.
+
+    Without it a question with a year and a document word finds the document, not the row with
+    the number (ISS-072). The counterpart search uses the same short query.
+    """
+    require_citation: bool = True
+    """Ask once for hit numbers if an answer with numbers has none (M6h; prompts.py)."""
     audit_flow_enabled: bool = False
     """Run the fixed audit flow (plan, search, read, compute) for check questions (ADR-0016).
 

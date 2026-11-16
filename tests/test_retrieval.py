@@ -37,6 +37,7 @@ from audit_agent.retrieval import (
     get_collection,
     hierarchy_prefix,
     path_matches,
+    quantity_query,
     render_evidence_text,
     tokenize_query,
 )
@@ -539,3 +540,27 @@ def _truth(questions: list[dict]) -> GroundTruth:
 
     parsed = tuple(Question.model_validate(q) for q in questions)
     return GroundTruth.model_construct(questions=parsed, planted_errors=(), audit_checks=())
+
+
+@pytest.mark.parametrize(
+    ("query", "expected"),
+    [
+        ("neuer Arbeitspreis 2025", "Arbeitspreis"),
+        ("Arbeitspreis Strom Rechnung 2025", "Arbeitspreis"),
+        (
+            "Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?",
+            "Arbeitspreis",
+        ),
+        ("z-Zahl Gasabrechnung 2026", "z-Zahl"),
+        ("Grundpreis Vertrag 2024", "Grundpreis"),
+        ("Kündigungsfrist Gasvertrag", "Kündigungsfrist"),
+        ("Brennwert Brennwert 2025", "Brennwert"),
+        ("Gasabrechnung 2026", None),
+        ("Ist die Gasabrechnung 2026 korrekt?", None),
+        ("Arbeitspreis", None),
+        ("Wohnfläche Verbrauch", None),
+        ("", None),
+    ],
+)
+def test_quantity_query_keeps_the_billing_quantity(query, expected):
+    assert quantity_query(query) == expected

@@ -397,7 +397,7 @@ def test_full_text_variant_sends_the_context_as_system_prompt(tmp_path):
     assert answer.contexts == context.blocks
 
 
-def test_pipeline_variant_searches_once_without_filter_and_numbers_the_hits(tmp_path):
+def test_pipeline_variant_searches_without_filter_and_numbers_the_hits(tmp_path):
     # Arrange
     hits = [make_hit("a"), make_hit("b", ChunkType.TEXT, filename=NOTICE_FILE, page_number=2)]
     backend = FakeBackend(lambda query, options: hits)
@@ -420,6 +420,29 @@ def test_pipeline_variant_searches_once_without_filter_and_numbers_the_hits(tmp_
     assert len(answer.contexts) == 2
     assert answer.contexts[1].startswith("[2] 03_Strom_Preisanpassung_2025.pdf, S. 2, Text")
     assert all(block in system for block in answer.contexts)
+
+
+def test_pipeline_variant_adds_the_hits_of_the_quantity_search_last(tmp_path):
+    # Arrange
+    question_hit = make_hit("a", content="Zwischenablesung 2025")
+    row = make_hit("row", content="Arbeitspreis | 38,20 ct")
+
+    def hits(query, options):
+        return [question_hit, row] if query == "Arbeitspreis" else [question_hit]
+
+    backend = FakeBackend(hits)
+    chat = ScriptedChat([answer_reply("Nein [2].")])
+
+    # Act
+    answer = PipelineVariant(Settings(project_root=tmp_path), chat, backend).answer(
+        _audit_question(), "m"
+    )
+
+    # Assert
+    assert [call[0] for call in backend.calls] == [_audit_question().question, "Arbeitspreis"]
+    assert backend.calls[1][1].chunk_types == PIPELINE_CHUNK_TYPES
+    assert [s.number for s in answer.sources] == [1, 2]
+    assert "[2]" in answer.contexts[1] and "38,20 ct" in answer.contexts[1]
 
 
 def test_pipeline_variant_without_hits_still_asks_the_model(tmp_path):
