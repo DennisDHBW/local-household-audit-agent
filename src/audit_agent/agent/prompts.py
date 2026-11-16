@@ -20,6 +20,9 @@ mit search (Text und Tabellen). Diagramme: search_images; Verbräuche früherer 
 stehen oft nur im Vergleichsdiagramm der Rechnung.
 - Prüffragen (stimmt die Rechnung mit Vertrag oder Preisschreiben?): search mit \
 include_counterpart=true. Schreibe Jahr und Dokumentart in die Suchanfrage.
+- Suche je Prüfgröße (Preis, Verbrauch, Fläche, Anteil, Betrag) mit den Begriffen der \
+Unterlagen, getrennt für Sollwert (Vertrag, Preisschreiben) und Istwert (Rechnung). \
+Die Frage selbst ist keine gute Suchanfrage. Wiederhole keine Suche mit gleichen Argumenten.
 - Nenne Preise brutto (inkl. USt.), außer die Frage verlangt netto.
 - Setze utility_type nur, wenn die Frage die Sparte eindeutig nennt. Im Zweifel weglassen.
 - "Keine Treffer" bei gesetzter Sparte heißt: Dazu liegt nichts vor. Sage das und rate nicht.
@@ -51,6 +54,32 @@ RETRY_BEFORE_GAP_MESSAGE = (
     "(search, search_images) und prüfe mit list_documents, welche Unterlagen es gibt."
 )
 
+CALCULATE_BEFORE_ANSWER_MESSAGE = (
+    "Bevor du antwortest: Das ist eine Prüffrage. Rechne die Abweichung oder den Sollwert "
+    "mit calculate nach (Werte aus den Treffern). Fehlt dir ein Wert, suche ihn zuerst."
+)
+
+REPEAT_OBSERVATION = (
+    "WIEDERHOLUNG: Diesen Aufruf mit denselben Argumenten gab es schon, das Ergebnis steht "
+    "weiter oben. Suche mit anderen Begriffen, rechne mit calculate oder antworte mit den "
+    "vorhandenen Belegen."
+)
+
+AUDIT_PHRASES = (
+    "korrekt",
+    "stimmt",
+    "stimmen",
+    "ueberein",
+    "passt",
+    "passen",
+    "angewendet",
+    "abgerechnet",
+    "abweichung",
+    "zu viel",
+    "nachgerechnet",
+)
+"""Phrases of a question that asks to check a bill (checked on the folded question)."""
+
 FORCED_ANSWER_MESSAGE = (
     "Du hast keine Werkzeugaufrufe mehr. Antworte jetzt auf Deutsch mit den vorhandenen "
     "Belegen und nenne die Nummern der Treffer. Fehlt ein Beleg, sage das ehrlich."
@@ -61,6 +90,16 @@ def is_gap_answer(answer: str) -> bool:
     """True if the answer says that the information is not in the documents."""
     folded = fold(answer)
     return any(phrase in folded for phrase in GAP_PHRASES)
+
+
+def is_audit_question(question: str) -> bool:
+    """True if the question asks to check a bill against contract, notice or meter readings.
+
+    Decided on the question text and not on ``include_counterpart``: the model sets that
+    flag in most searches, also for single facts (RUN-012: 12 of 17 searches).
+    """
+    folded = fold(question)
+    return any(phrase in folded for phrase in AUDIT_PHRASES)
 
 
 def system_prompt(max_tool_calls: int) -> str:

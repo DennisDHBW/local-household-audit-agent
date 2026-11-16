@@ -106,13 +106,12 @@ def render_markdown(model: str, results: list[tuple[Question, AgentRun]]) -> str
         lines += ["", "Werkzeugaufrufe:"]
         for step in run.steps:
             if isinstance(step, ToolCallStep):
-                state = "ok" if step.is_valid else "FEHLER"
                 lines.append(
-                    f"- {step.tool}({step.arguments}) → {state}, "
+                    f"- {step.tool}({step.arguments}) → {step.state}, "
                     f"Treffer {list(step.hit_numbers)}, {step.seconds} s"
                 )
             elif isinstance(step, NudgeStep):
-                lines.append("- Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen")
+                lines.append(f"- {step.label}")
         lines += [
             "",
             "| Modellaufruf | Prompt-Token | Prefill s | Token/s | Erzeugt | Gesamt s |",

@@ -22,10 +22,9 @@ from audit_agent.retrieval import RetrievalError
 
 def _step_line(step: AgentStep) -> str:
     if isinstance(step, ToolCallStep):
-        state = "ok" if step.is_valid else "FEHLER"
-        return f"- Werkzeug `{step.tool}` {step.arguments} → {state} ({step.seconds} s)"
+        return f"- Werkzeug `{step.tool}` {step.arguments} → {step.state} ({step.seconds} s)"
     if isinstance(step, NudgeStep):
-        return "- Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen"
+        return f"- {step.label}"
     calls = ", ".join(call.name for call in step.tool_calls) or "Antwort"
     return f"- Modell ({step.seconds} s, {step.prompt_tokens} Prompt-Token) → {calls}"
 

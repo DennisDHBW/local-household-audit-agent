@@ -18,10 +18,14 @@ from audit_agent.agent import (
 from audit_agent.agent.evidence_view import evidence_sections
 from audit_agent.agent.log import RunLog
 from audit_agent.agent.loop import LIMIT_OBSERVATION, estimate_tokens
+from audit_agent.agent.models import NudgeStep
 from audit_agent.agent.prompts import (
+    CALCULATE_BEFORE_ANSWER_MESSAGE,
     FORCED_ANSWER_MESSAGE,
     GAP_ANSWER,
+    REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
+    is_audit_question,
     is_gap_answer,
     system_prompt,
 )
@@ -221,6 +225,135 @@ def test_gap_answer_is_accepted_after_enough_searches_and_not_questioned_twice()
     assert after_two_calls.answer == GAP_ANSWER
     assert [step.kind for step in questioned_once.steps].count("nudge") == 1
     assert questioned_once.answer == GAP_ANSWER
+
+
+AUDIT_QUESTION = "Ist die Gasabrechnung 2026 korrekt?"
+
+
+def test_repeated_call_is_not_run_again_and_counts_against_the_limit():
+    # Arrange: the second call has the same arguments plus an empty filter the model made up
+    first_call = ("search", {"query": "Arbeitspreis", "utility_type": "electricity"})
+    second_call = ("search", {"query": "Arbeitspreis", "utility_type": "electricity", "year": ""})
+    backend = FakeBackend(lambda query, options: [make_hit()])
+    loop, chat = _loop(
+        [tool_reply(first_call), tool_reply(second_call), answer_reply("Fertig.")], backend=backend
+    )
+
+    # Act
+    run = loop.run("Frage?")
+
+    # Assert
+    first, second = run.steps[1], run.steps[3]
+    assert not first.is_repeat and first.state == "ok"
+    assert second.is_repeat and second.is_valid and second.state == "Wiederholung"
+    assert second.observation == REPEAT_OBSERVATION and second.hit_numbers == ()
+    assert len(backend.calls) == 1
+    assert run.tool_call_count == 2
+    assert chat.requests[2]["messages"][-1]["content"] == REPEAT_OBSERVATION
+
+
+def test_other_arguments_or_tools_are_no_repeat():
+    # Arrange
+    replies = [
+        tool_reply(SEARCH),
+        tool_reply(("search", {"query": "Grundpreis"})),
+        tool_reply(("search_images", {"query": "Arbeitspreis"})),
+        answer_reply("Fertig."),
+    ]
+    loop, _ = _loop(replies)
+
+    # Act
+    run = loop.run("Frage?")
+
+    # Assert
+    tool_steps = [step for step in run.steps if isinstance(step, ToolCallStep)]
+    assert [step.is_repeat for step in tool_steps] == [False, False, False]
+
+
+def test_audit_question_answered_without_calculate_is_questioned_once():
+    # Arrange
+    replies = [
+        tool_reply(SEARCH),
+        answer_reply("Die Abrechnung ist korrekt."),
+        tool_reply(CALCULATE),
+        answer_reply("Abweichung 6 EUR [1]."),
+    ]
+    loop, chat = _loop(replies)
+
+    # Act
+    run = loop.run(AUDIT_QUESTION)
+
+    # Assert
+    nudges = [step for step in run.steps if isinstance(step, NudgeStep)]
+    assert [nudge.reason for nudge in nudges] == ["calculate"]
+    assert nudges[0].label == "Rückfrage: Prüffrage ohne calculate beantwortet"
+    assert chat.requests[2]["messages"][-1]["content"] == CALCULATE_BEFORE_ANSWER_MESSAGE
+    assert run.answer == "Abweichung 6 EUR [1]." and run.tool_call_count == 2
+
+
+def test_calculate_nudge_is_not_repeated_and_the_second_answer_is_accepted():
+    # Arrange
+    replies = [tool_reply(SEARCH), answer_reply("Korrekt."), answer_reply("Wirklich korrekt.")]
+    loop, _ = _loop(replies)
+
+    # Act
+    run = loop.run(AUDIT_QUESTION)
+
+    # Assert
+    assert [step.kind for step in run.steps].count("nudge") == 1
+    assert run.answer == "Wirklich korrekt." and run.stop_reason == "answer"
+
+
+def test_calculate_nudge_is_skipped_when_it_would_not_help():
+    # Arrange
+    calculated = [tool_reply(SEARCH), tool_reply(CALCULATE), answer_reply("Abweichung 6 EUR.")]
+    single_fact = [tool_reply(SEARCH), answer_reply("34,80 ct/kWh [1].")]
+    no_search = [answer_reply("Das weiß ich nicht.")]
+    gap = [tool_reply(SEARCH), tool_reply(("list_documents", {})), answer_reply(GAP_ANSWER)]
+
+    # Act
+    runs = [
+        _loop(calculated)[0].run(AUDIT_QUESTION),
+        _loop(single_fact)[0].run("Wie hoch ist der Arbeitspreis?"),
+        _loop(no_search)[0].run(AUDIT_QUESTION),
+        _loop(gap)[0].run(AUDIT_QUESTION),
+    ]
+
+    # Assert
+    for run in runs:
+        assert "nudge" not in [step.kind for step in run.steps]
+
+
+def test_repeated_calculate_does_not_count_as_calculated():
+    # Arrange: the first calculate counts, the identical second one is blocked, no nudge follows
+    replies = [tool_reply(CALCULATE), tool_reply(CALCULATE), answer_reply("Ergebnis 6.")]
+    loop, _ = _loop(replies)
+
+    # Act
+    run = loop.run(AUDIT_QUESTION)
+
+    # Assert
+    assert "nudge" not in [step.kind for step in run.steps]
+    assert run.steps[3].is_repeat
+
+
+@pytest.mark.parametrize(
+    ("question", "expected"),
+    [
+        ("Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?", True),
+        ("Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?", True),
+        ("Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?", True),
+        ("Ist die Gasabrechnung 2026 korrekt?", True),
+        ("Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?", True),
+        ("Welche Kündigungsfrist gilt für den Gasvertrag?", False),
+        ("Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?", False),
+        ("Welchen Grundpreis zahle ich für Fernwärme?", False),
+        ("Wie hoch ist mein aktueller monatlicher Stromabschlag?", False),
+        ("Wie hoch war meine Stromrechnung 2023?", False),
+    ],
+)
+def test_is_audit_question(question, expected):
+    assert is_audit_question(question) is expected
 
 
 def test_is_gap_answer_and_system_prompt_use_the_same_sentence():

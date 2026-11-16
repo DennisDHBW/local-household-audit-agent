@@ -267,7 +267,7 @@ def answer_from_run(question: Question, run: AgentRun) -> VariantAnswer:
         contexts=tuple(
             step.observation
             for step in run.steps
-            if isinstance(step, ToolCallStep) and step.is_valid
+            if isinstance(step, ToolCallStep) and step.is_valid and not step.is_repeat
         ),
     )
 

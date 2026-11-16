@@ -442,7 +442,8 @@ def test_agent_variant_translates_the_run_and_logs_every_step(tmp_path):
     loop = AgentLoop(settings, chat, ToolBox(settings, backend, make_catalog()).tools())
 
     # Act
-    answer = AgentVariant(loop, log_dir=tmp_path).answer(_audit_question(id="S2"), "m")
+    question = _audit_question(id="S2", question="Welcher Arbeitspreis gilt?")
+    answer = AgentVariant(loop, log_dir=tmp_path).answer(question, "m")
 
     # Assert
     assert answer.variant == "p2" and answer.answer == "34,80 [1]."

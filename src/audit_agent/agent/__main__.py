@@ -46,10 +46,12 @@ def _parser() -> argparse.ArgumentParser:
 def _print_step(step: AgentStep, book: EvidenceBook) -> None:
     """Live progress on stderr: one line per step (a question takes minutes)."""
     if isinstance(step, ToolCallStep):
-        state = "ok" if step.is_valid else "FEHLER"
-        print(f"  Tool {step.tool} {step.arguments} -> {state} ({step.seconds} s)", file=sys.stderr)
+        print(
+            f"  Tool {step.tool} {step.arguments} -> {step.state} ({step.seconds} s)",
+            file=sys.stderr,
+        )
     elif isinstance(step, NudgeStep):
-        print("  Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen", file=sys.stderr)
+        print(f"  {step.label}", file=sys.stderr)
     else:
         calls = ", ".join(call.name for call in step.tool_calls) or "Antwort"
         print(
