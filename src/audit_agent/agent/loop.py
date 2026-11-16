@@ -9,15 +9,17 @@ from __future__ import annotations
 
 import json
 import time
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from typing import Any, Protocol
 
 from ollama import Message
 from pydantic import ValidationError
 
+from audit_agent.agent.audit_flow import run_audit_flow
 from audit_agent.agent.models import (
     AgentRun,
     AgentStep,
+    AuditFlowStep,
     EvidenceBook,
     ModelCallStep,
     NudgeReason,
@@ -185,6 +187,12 @@ class AgentLoop:
         memory = _CallMemory()
         answer = ""
         stop_reason: StopReason = "answer"
+
+        if is_audit and agent.audit_flow_enabled:
+            is_calculated = self._run_audit_flow(
+                question, model, messages, book, memory, emit, lambda: len(steps)
+            )
+
         while True:
             if forced is not None:
                 messages.append({"role": "user", "content": FORCED_ANSWER_MESSAGE})
@@ -257,6 +265,61 @@ class AgentLoop:
             sources=book.numbered_hits,
         )
 
+    def _run_audit_flow(
+        self,
+        question: str,
+        model: str,
+        messages: list[Any],
+        book: EvidenceBook,
+        memory: _CallMemory,
+        emit: Callable[[AgentStep], None],
+        next_index: Callable[[], int],
+    ) -> bool:
+        """Run the fixed audit flow (ADR-0016); True if it computed a difference.
+
+        The flow's model calls and tool calls are logged like any other step. Its findings
+        go to the model as one message; without findings the loop continues as before.
+        """
+        started = time.perf_counter()
+
+        def ask_model(flow_messages: list[dict[str, str]], schema: dict[str, Any]) -> str:
+            response, step = self._call_model(
+                model, flow_messages, next_index(), offer_tools=False, output_format=schema
+            )
+            emit(step)
+            return str(response.message.content or "")
+
+        def run_tool(name: str, arguments: dict[str, object]) -> ToolCallStep:
+            call = Message.ToolCall(
+                function=Message.ToolCall.Function(name=name, arguments=arguments)
+            )
+            step = self._execute(call, book, memory, next_index(), False, is_flow_call=True)
+            emit(step)
+            return step
+
+        def hit_content(number: int) -> str:
+            hits = book.numbered_hits
+            return hits[number - 1].hit.content if 1 <= number <= len(hits) else ""
+
+        checks, finding = run_audit_flow(
+            question,
+            ask_model,
+            run_tool,
+            hit_content,
+            self._settings.agent.audit_max_checks,
+        )
+        emit(
+            AuditFlowStep(
+                index=next_index(),
+                checks=checks,
+                message=finding,
+                seconds=round(time.perf_counter() - started, 1),
+            )
+        )
+        if finding:
+            messages.append({"role": "user", "content": finding})
+        return any(check.difference is not None for check in checks)
+
     def _is_context_full(self, messages: list[Any]) -> bool:
         """True if one more observation and the answer would not fit into the context.
 
@@ -269,11 +332,18 @@ class AgentLoop:
         return used > free
 
     def _call_model(
-        self, model: str, messages: list[Any], index: int, offer_tools: bool
+        self,
+        model: str,
+        messages: list[Any],
+        index: int,
+        offer_tools: bool,
+        output_format: dict[str, Any] | None = None,
     ) -> tuple[Any, ModelCallStep]:
         arguments = chat_arguments(self._settings, model, messages)
         if offer_tools:
             arguments["tools"] = self._specs
+        if output_format is not None:
+            arguments["format"] = output_format
         started = time.perf_counter()
         response = self._client.chat(**arguments)
         step = model_call_step(
@@ -286,7 +356,13 @@ class AgentLoop:
         return response, step
 
     def _execute(
-        self, call: Any, book: EvidenceBook, memory: _CallMemory, index: int, is_text_call: bool
+        self,
+        call: Any,
+        book: EvidenceBook,
+        memory: _CallMemory,
+        index: int,
+        is_text_call: bool,
+        is_flow_call: bool = False,
     ) -> ToolCallStep:
         """Validate the arguments and run the tool; every failure becomes an observation.
 
@@ -344,4 +420,5 @@ class AgentLoop:
             hit_numbers=hit_numbers,
             is_repeat=is_repeat,
             is_text_call=is_text_call,
+            is_flow_call=is_flow_call,
         )

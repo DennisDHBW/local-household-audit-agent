@@ -153,5 +153,8 @@
 | Wiederholungssperre | `seen_calls`, `REPEAT_OBSERVATION`, `ToolCallStep.is_repeat` | Ein Aufruf mit gleichem Werkzeug und gleichen (bereinigten) Argumenten wird in derselben Frage nicht erneut ausgeführt; das Modell bekommt einen Hinweis, der Aufruf zählt zum Limit (ADR-0015) | |
 | Prüffrage | `is_audit_question` | Frage, die eine Rechnung gegen Vertrag, Preisschreiben oder Zählerstände prüfen lässt; erkannt am Wortlaut (korrekt, stimmt, passt, …) | |
 | Rechennachfrage | `CALCULATE_BEFORE_ANSWER_MESSAGE`, `NudgeStep.reason` | Einmalige Rückfrage des Loops, wenn eine Prüffrage ohne `calculate` beantwortet werden soll (ISS-058, ADR-0015) | |
+| Prüfablauf | `agent/audit_flow.py`, `run_audit_flow`, `AuditFlowStep` | Fester Ablauf für Prüffragen: Modell plant Prüfgrößen und Suchanfragen, Code sucht, Modell liest Soll- und Istzahl, Code prüft die Herkunft und rechnet die Differenz (ADR-0016) | |
+| Prüfgröße | `PlannedCheck`, `AuditCheckResult.quantity` | Eine Größe, die der Prüfablauf vergleicht (Arbeitspreis, Wohnfläche, z-Zahl, …) mit Sollwert (Vertrag, Preisschreiben) und Istwert (Rechnung) | |
+| Strukturierte Ausgabe | `format` (JSON-Schema) im Ollama-Chat-Aufruf | Das Modell darf nur JSON nach einem Schema erzeugen; der Prüfablauf nutzt sie für Plan und Lesen | |
 | Laufzeitauswertung | `scripts/analyze_timing.py` | Zerlegt die P2-Zeit eines Laufs in Prefill und Dekodieren, erste und spätere Modellaufrufe (ISS-057) | |
 | Entladen je Frage | `unloads_after_each_question`, `_unload` | Die Auswertung gibt Chat- und Embedding-Modell nach jeder P1/P2-Frage frei (Schutz vor OOM, ISS-043); führt in RUN-012 und RUN-013 zu rund 90 s Prefill für die erste Anfrage je Frage (ISS-057) | |

@@ -58,6 +58,8 @@ class ToolCallStep(_Frozen):
     """The same call (valid or failed) was made before; it was not run again (ISS-058, ISS-063)."""
     is_text_call: bool = False
     """The model wrote the call as text in its message, not as a native tool call (ISS-061)."""
+    is_flow_call: bool = False
+    """The call was made by the audit flow (code), not chosen by the model (ADR-0016)."""
 
     @property
     def state(self) -> str:
@@ -93,7 +95,49 @@ class NudgeStep(_Frozen):
         return NUDGE_LABELS[self.reason]
 
 
-AgentStep = ModelCallStep | ToolCallStep | NudgeStep
+CheckStatus = Literal["equal", "deviation", "not_found", "not_verified"]
+
+
+class AuditCheckResult(_Frozen):
+    """One checked quantity of the audit flow: target and actual value with their sources.
+
+    ``not_found``: a value is missing in the hits; ``not_verified``: the model named a value
+    that does not stand in the hit it cited (the flow does not use it).
+    """
+
+    quantity: str
+    status: CheckStatus
+    unit: str = ""
+    target_value: float | None = None
+    target_hit: int | None = None
+    target_line: str = ""
+    actual_value: float | None = None
+    actual_hit: int | None = None
+    actual_line: str = ""
+    difference: str | None = None
+    """Actual minus target as ``calculate`` printed it."""
+
+
+class AuditFlowStep(_Frozen):
+    """The fixed audit flow of one check question: result per quantity and the message."""
+
+    kind: Literal["audit_flow"] = "audit_flow"
+    index: int
+    checks: tuple[AuditCheckResult, ...]
+    message: str
+    """What the model gets to read (empty if the flow found no quantity to check)."""
+    seconds: float
+
+    @property
+    def label(self) -> str:
+        deviations = sum(1 for check in self.checks if check.status == "deviation")
+        return (
+            f"Prüfablauf: {len(self.checks)} Prüfgrößen, {deviations} mit Abweichung "
+            f"({self.seconds} s)"
+        )
+
+
+AgentStep = ModelCallStep | ToolCallStep | NudgeStep | AuditFlowStep
 
 
 class NumberedHit(_Frozen):

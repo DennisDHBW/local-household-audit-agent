@@ -51,8 +51,11 @@ SEARCH = ("search", {"query": "Arbeitspreis"})
 CALCULATE = ("calculate", {"expression": "2*3"})
 
 
-def _loop(replies, backend=None, **settings_options):
-    settings = Settings(**settings_options)
+def _loop(replies, backend=None, is_flow_enabled=False, **settings_options):
+    """Loop with scripted replies; the audit flow is off unless a test asks for it (ADR-0016)."""
+    agent = settings_options.pop("agent", AgentSettings())
+    agent = agent.model_copy(update={"audit_flow_enabled": is_flow_enabled})
+    settings = Settings(agent=agent, **settings_options)
     backend = backend or FakeBackend(lambda query, options: [make_hit()])
     chat = ScriptedChat(replies)
     tools = ToolBox(settings, backend, make_catalog()).tools()

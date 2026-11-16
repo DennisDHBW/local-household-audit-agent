@@ -6,6 +6,7 @@ from audit_agent.agent.loop import AgentLoop
 from audit_agent.agent.models import (
     AgentRun,
     AgentStep,
+    AuditFlowStep,
     EvidenceBook,
     ModelCallStep,
     NumberedHit,
@@ -18,6 +19,7 @@ __all__ = [
     "AgentRun",
     "AgentStep",
     "AgentTool",
+    "AuditFlowStep",
     "CalculationError",
     "EvidenceBook",
     "ModelCallStep",

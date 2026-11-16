@@ -10,7 +10,13 @@ from datetime import date
 
 from pydantic import BaseModel, ConfigDict
 
-from audit_agent.agent.models import AgentRun, ModelCallStep, NudgeStep, ToolCallStep
+from audit_agent.agent.models import (
+    AgentRun,
+    AuditFlowStep,
+    ModelCallStep,
+    NudgeStep,
+    ToolCallStep,
+)
 from audit_agent.agent.prompts import is_gap_answer
 from audit_agent.corpus import Question
 from audit_agent.evaluation.metrics import is_fact_in_answer
@@ -110,7 +116,7 @@ def render_markdown(model: str, results: list[tuple[Question, AgentRun]]) -> str
                     f"- {step.tool}({step.arguments}) → {step.state}, "
                     f"Treffer {list(step.hit_numbers)}, {step.seconds} s"
                 )
-            elif isinstance(step, NudgeStep):
+            elif isinstance(step, NudgeStep | AuditFlowStep):
                 lines.append(f"- {step.label}")
         lines += [
             "",

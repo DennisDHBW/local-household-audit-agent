@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-16 – M6g: Fester Prüfablauf und Modellwechsel (Negativergebnis)
+**Ziel der Sitzung:** Prüfablauf (Soll suchen, Ist suchen, Code rechnet) und Modell für P2 entscheiden, umsetzen und mit RUN-017 messen (ISS-066, ISS-067).
+**Was wurde gemacht:**
+- Entscheidungen des Nutzers: fester Prüfablauf ja, `qwen2.5:7b` als P2-Modell; später nach RUN-017: Ablauf abschalten, als Negativergebnis behalten
+- `agent/audit_flow.py`: Plan (JSON-Schema), Suchen über das normale `search`-Werkzeug, Lesen je Prüfgröße, Herkunftsprüfung der Zahlen im Treffer der richtigen Seite, Differenz mit `calculate`; Einbindung in `AgentLoop`, neue Schritte `AuditFlowStep` und `is_flow_call` in Log, CLI, UI und Report
+- 15 neue Tests (`tests/test_audit_flow.py`), bestehende Loop-Tests auf abgeschalteten Ablauf umgestellt; Quality Gate grün (335 Tests)
+- RUN-017 (89 min) ausgewertet: Schrittdateien aller 6 Prüffragen gelesen, alle 14 Antworten von Hand bewertet, Ollama-Journal geprüft (kein Abschneiden)
+- Doku: ADR-0016 (mit Ergebnis und Folge), ADR-0013/0015 Status, ISS-066/067 Status, ISS-068 bis ISS-071, evaluation-log, Glossar, README, concept.md
+**Gelieferte Dateien / Funktionen:** `agent/audit_flow.py`, `agent/loop.py` (`_run_audit_flow`), `agent/models.py` (`AuditFlowStep`, `AuditCheckResult`), `agent/prompts.py`, `config.py` (`audit_flow_enabled`, `audit_max_checks`, Standardmodell), `tests/test_audit_flow.py`, `data/eval/run-017/`
+**Entscheidungen:** ADR-0016 (akzeptiert für das Modell; Ablauf umgesetzt, nicht bestätigt, abgeschaltet)
+**Probleme / Überraschungen:** ISS-070 (Soll und Ist falsch zugeordnet, gleiche Treffer auf beiden Seiten), ISS-071 (Nachricht des Ablaufs führt zu Lückenantworten und chinesischem Text), ISS-068 (Herkunft gesichert, Vergleichbarkeit nicht), ISS-069 (VM-Platte voll, Cache-Ordner einer alten Sitzung; mein Löschversuch wurde abgelehnt, ohne Löschen gelöst). Ein fester Ablauf machte aus falschen Suchtreffern exakte, belegt wirkende falsche Rechnungen.
+**Offen / unklar:** Warum G4 ohne Ablauf (RUN-014) gefunden wurde und mit Ablauf nicht (nur ein Lauf je Zustand, Streuung bei gleichem Code 0); ob eine Überarbeitung (Dokumentart je Seite trennen) den Ablauf rettet; G1 und G3 scheitern weiter am Retrieval der Sollzahl
+**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**Zeitaufwand:** Sitzung ca. 2 h, Lauf 89 min Rechenzeit · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `feat(agent)`, `test(evaluation)`, `docs` ×3, `feat(agent)` (Ablauf aus)
+
 ### 2026-11-16 – M6f: Format-Toleranz, Gegenprobe `qwen2.5:7b`, Streuungsmessung
 **Ziel der Sitzung:** Prüfablauf von P2 stabilisieren (Aufruf als Text, `calculate`), Gegenprobe mit `qwen2.5:7b` und Streuung bei gleichem Code messen (ISS-061 bis ISS-063).
 **Was wurde gemacht:**
