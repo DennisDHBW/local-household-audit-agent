@@ -1,6 +1,7 @@
 # ADR-0013: Agent-Modell `llama3.1:8b`
 
 - **Status:** akzeptiert (vom Nutzer am 2026-11-15 bestätigt; Gegenprobe mit `qwen2.5:7b` nach den Gegenmaßnahmen)
+- **Nachtrag 2026-11-16 (RUN-014 bis RUN-016):** Gegenprobe gemacht. Handrichtig 6 von 14 bei beiden Modellen; `qwen2.5:7b` zitiert besser, befolgt die Rechennachfrage und erkennt G4, meldet aber zwei richtige Abrechnungen als Abweichung. Der Zeitgrund (136 gegen 298 s) gilt nicht mehr: 320 bis 325 gegen 301 s. Der Status bleibt, bis der Nutzer über die Modellwahl entschieden hat (ISS-066, ADR-0015).
 - **Datum:** 2026-11-15
 - **Meilenstein:** M6 (M6c)
 

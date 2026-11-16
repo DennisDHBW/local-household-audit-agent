@@ -409,3 +409,45 @@
 - **Was die neuen Maßnahmen taten:** Die Wiederholungssperre griff viermal wie vorgesehen (Observation 191 Zeichen statt je 1.500 bis 3.000). Die Rechennachfrage kam viermal, G4 rechnete danach zweimal mit erfundenen Argumenten (`a`, `b` statt `expression`), G3, S5 und Z1 suchten weiter oder erzählten. Kein gültiger `calculate`-Aufruf, keine erkannten Fehler mit tragfähiger Begründung.
 - **Laufzeit (`scripts/analyze_timing.py`):** Erste Modellanfrage je Frage 1.286 s (RUN-012) gegen 1.379 s (RUN-013), in beiden Läufen 0 von 14 aus dem Prompt-Cache; spätere Aufrufe 1.602 s gegen 2.147 s bei 54.071 gegen 94.313 Prompt-Token; Dekodieren 610 s gegen 722 s. Das Ollama-Journal zeigt 28 Ladevorgänge (je 14 für Chat- und Embedding-Modell): Die Auswertung entlädt beide Modelle nach jeder Frage (`unloads_after_each_question`, Commit `92fed4d`, ISS-043) und mit ihnen den Prompt-Cache. Damit beginnt jede Frage mit kaltem Cache; das erklärt die langsame erste Anfrage in RUN-012 und RUN-013. Warum RUN-010 trotz demselben Code meist aus dem Cache startete, ist nicht geklärt, der Zeitvergleich mit RUN-010 ist deshalb nicht belastbar (ISS-057).
 - **Deutung:** Die Maßnahmen von M6e haben das Ziel (Rechnen und Fehler erkennen) bei `llama3.1:8b` nicht erreicht, und der Lauf ist nach Handprüfung schlechter als RUN-012 (6 gegen 9). Ob die Rückschritte bei S2, S4 und N2 von den Änderungen kommen oder Streuung sind, ist nicht bekannt: Temperatur 0, aber der Prompt ist ein anderer, ein Wiederholungslauf mit unverändertem Code wurde nicht gemacht (ISS-062). Gesichert ist nur: Die Wiederholungssperre funktioniert mechanisch, die Rechennachfrage bewirkt bei diesem Modell nichts, und Prüffragen ohne festen Ablauf bleiben ungelöst (ISS-058, ADR-0015).
+
+### RUN-014 – M6f, P2 mit `qwen2.5:7b` (Gegenprobe, 14 Fragen)
+- **Datum / Commit:** 2026-11-16 · Branch `feat/p2-format-tolerance`, Commit `feat(scripts): add wrapper for P2 evaluation runs` (davor `feat(agent): run tool calls written as text and block repeated failed calls`, `feat(agent): accept operands and German thousands separators in calculate`)
+- **Variante:** nur P2; Antwortmodell `qwen2.5:7b` (ADR-0013: Gegenprobe nach den Gegenmaßnahmen), sonst Code und Prompt wie RUN-015
+- **Konfiguration:** `num_ctx` 8192, Temperatur 0; Aufruf über `scripts/eval_run.sh` (generate, score, `check_evidence.py`, `analyze_timing.py`, Ollama-Journal); Systemlast vor dem Lauf in `run-014-env.txt`
+- **Dauer:** 70 min (4.208 s)
+- **Rohdaten:** `data/eval/run-014/`, `data/eval/run-014.log`, `run-014-env.txt`, `run-014-journal.txt`
+
+### RUN-015 / RUN-016 – M6f, P2 mit `llama3.1:8b`, gleicher Code zweimal (Streuungsmessung, 14 Fragen)
+- **Datum / Commit:** 2026-11-16 · gleicher Stand wie RUN-014
+- **Variante:** nur P2; `llama3.1:8b`; RUN-016 ist die unveränderte Wiederholung von RUN-015 (ISS-062)
+- **Dauer:** 76 min (4.543 s) und 75 min (4.476 s)
+- **Rohdaten:** `data/eval/run-015/`, `data/eval/run-016/` und je `.log`, `-env.txt`, `-journal.txt`
+
+| Metrik (P2) | RUN-013 llama (M6e-Code) | RUN-014 qwen | RUN-015 = RUN-016 llama |
+|---|---|---|---|
+| Richtig laut Metrik (von 14) | 5 | 4 | 5 |
+| Richtig nach Handprüfung (von 14) | 6 | 6 | 6 |
+| Fakten gefunden (von 27) | 7 | 9 | 8 |
+| Erwartete Quellen zitiert (von 18) | 1 | 6 | 1 |
+| Negativfragen erkannt (von 2) | 1 | 2 | 1 |
+| Fehler erkannt laut Metrik (von 3) | 2 | 2 | 2 |
+| Fehler erkannt von Hand, tragfähige Begründung (von 3) | 0 | 1 (G4) | 0 (G3: Urteil richtig, Begründung Unsinn) |
+| Fehlalarme bei richtigen Abrechnungen (von 3) von Hand | 0 | 2 (S5, G2) | 1 (S5) |
+| Rechennachfragen | 4 | 4 (G2, G3, G4, S5) | 4 (G3, G4, S5, Z1) |
+| Gültige `calculate`-Aufrufe | 0 (2 Versuche) | 3 von 3, alle nach Nachfrage | 1 von 2 (G4, sinnlose Rechnung) |
+| Wiederholungen blockiert / Aufrufe als Text erkannt | 4 / – | 0 / 0 | 4 / 1 (S5) |
+| Ungültige Werkzeugaufrufe | 2 von 35 | 1 von 25 | 1 von 36 |
+| Suchen mit eigenem Filter / schließen Quelle aus | 23 / 5 | 11 / 0 | 24 / 5 |
+| Abbruch | 1 (Werkzeuglimit, G4) | 1 (Kontext, S5) | 1 (Werkzeuglimit, G4) |
+| Modellaufrufe | 59 | 47 | 60 |
+| Sekunden je Frage (Mittel) | 314 | 301 | 325 / 320 |
+| Prompt-Token je Frage (Mittel) | 8.536 | 9.371 | 8.819 |
+
+- **Streuung (ISS-062):** RUN-015 und RUN-016 sind bis auf die Zeiten identisch: gleiche 60 Modellaufrufe, gleiche 2.908 erzeugte und 98.271 Prompt-Token, gleiche Antworttexte, gleiche Metrik. Die Zeit je Frage streut um 1,5 % (325 gegen 320 s). Bei gleichem Code, Temperatur 0 und demselben Rechner ist `llama3.1:8b` hier deterministisch; Unterschiede zwischen Läufen mit verschiedenem Code kommen also vom Code, nicht vom Zufall. Einschränkung: eine Wiederholung auf einem Rechner; Ollama-Version und Lastzustand blieben gleich.
+- **Handprüfung RUN-015/016 (alle 14 Antworten gelesen):** Richtig sind S1, S3, N1, Z1 (Grenzfall: Ergebnis „passt“ und 1.200 m³ stimmen, die z-Zahl fehlt; wie in RUN-012/013 gezählt), Z2, Z3. Falsch: S2 (nur Nettopreise, dazu ein zweiter Grundpreis), S4 und G1, G2 (Lückenantwort), S5 (richtige Abrechnung als Abweichung gemeldet, 34,00 EUR ohne `calculate` gerechnet), G3 (Urteil „stimmt nicht“ richtig, Begründung Unsinn: „1,00 EUR (1.367,99 − 1.367,99)“; z-Zahl nie gefunden), G4 (Werkzeuglimit nach `calculate("1.963,28 - -1.920,00")`, Antwort 3.883,28 EUR), N2 (Fernwärme-Grundpreis aus einem Ablenker).
+- **Handprüfung RUN-014 (qwen):** Richtig sind S1, S2 (brutto 34,80 ct/kWh und 138,00 EUR/Jahr = 11,50 EUR/Monat genannt, daneben die Nettowerte), G4 (Soll 1.867,50 EUR mit `calculate(7470 * 0.25)`, Ist 1.963,28 EUR, Abweichung 95,78 EUR; die Ursache 82 statt 78 m² wird nicht genannt), N1, N2, Z3. Falsch: S3 (Zählerstand 386 m³ statt Verbrauch 74 m³), S4 (Lückenantwort mit Teilangaben), S5 (Kontextlimit, Abweichung 1.074 EUR aus 1.189 − 115 gemeldet), G1 (Lücke), G2 (Sollwert 1.830 EUR richtig, Istwert 1.870 EUR falsch, daher „−40,00 EUR“ als Abweichung), G3 (kündigt Rechnung an, rechnet nicht, Ergebnis „stimmt“), Z1 (richtiges Ergebnis, aber widersprüchlich mit „keine Angaben“), Z2 (115 statt 120 EUR).
+- **Was die Änderungen von M6f bewirkten (RUN-013 gegen RUN-015, gleiches Modell):** Aufruf als Text wird erkannt und ausgeführt (S5: dritte Suche), `calculate` akzeptiert deutsche Zahlen (G4: zweiter Aufruf gültig). Handrichtig bleibt bei 6, die Rückschritte S2/S4/N2 gegenüber RUN-012 bleiben: Sie stammen also nicht aus Streuung, sondern aus dem Code oder Prompt von M6e (welche der drei Änderungen, ist nicht getrennt gemessen).
+- **Rechennachfrage nach Modell:** Bei `qwen2.5:7b` folgt auf 3 von 4 Nachfragen ein gültiger `calculate`-Aufruf, bei `llama3.1:8b` auf 1 von 4 (und der ist sinnlos). Gültig heißt nicht richtig: In G2 und G4 (RUN-015) stimmen die Operanden nicht, G2 wird dadurch zum Fehlalarm. Der einzige sauber erkannte Fehler im ganzen Material ist G4 mit `qwen2.5:7b`.
+- **Nicht gefunden:** G1 (neuer Arbeitspreis) und G3 (z-Zahl 1,0000) scheitern bei beiden Modellen daran, dass die Sollzahl nie im Kontext steht (Suchanfrage und Retrieval, ISS-051/052); Rechnen hilft dort nicht.
+- **Laufzeit:** Die Zeit je Frage ist bei beiden Modellen nahezu gleich (301 gegen 320 bis 325 s), in beiden Läufen 0 von 14 ersten Anfragen aus dem Prompt-Cache (ISS-057). Das Ollama-Journal zeigt in keinem der drei Läufe Speichermangel; „truncated = 0“ in allen Anfragen, der Kontext von 8.192 Token reichte außer bei S5 (qwen).
+- **Deutung:** Nach Handprüfung liegen beide Modelle gleichauf (6 von 14), mit verschiedenen Stärken: `qwen2.5:7b` zitiert besser (6 gegen 1 von 18), befolgt die Rechennachfrage und erkennt G4, meldet aber auch richtige Abrechnungen als Abweichung; `llama3.1:8b` hält Format und Filter schlechter und rechnet nicht. Ein Lauf je Modell und 14 Fragen sind eine dünne Basis; die Handprüfung ist von einer Person (Claude) gemacht und nicht gegengelesen.
