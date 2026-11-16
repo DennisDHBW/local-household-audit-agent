@@ -24,6 +24,7 @@ _BINARY: dict[type[ast.operator], Callable[[Decimal, Decimal], Decimal]] = {
     ast.Mult: operator.mul,
     ast.Div: operator.truediv,
 }
+_GERMAN_THOUSANDS = re.compile(r"\b\d{1,3}(?:\.\d{3})+(?=,\d)")
 _GERMAN_DECIMAL = re.compile(r"(?<=\d),(?=\d)")
 _CURRENCY = re.compile(r"€|\bEUR\b", re.IGNORECASE)
 
@@ -33,8 +34,13 @@ class CalculationError(ValueError):
 
 
 def normalize_expression(expression: str) -> str:
-    """Be liberal in what is accepted (Postel): ``3,5 * 2 €`` -> ``3.5 * 2``."""
+    """Be liberal in what is accepted (Postel): ``3,5 * 2 €`` -> ``3.5 * 2``.
+
+    A point is a thousands separator only before a decimal comma (``1.963,28`` -> ``1963.28``);
+    ``1.963`` alone stays a decimal number, because it could be either.
+    """
     text = _CURRENCY.sub("", expression).strip()
+    text = _GERMAN_THOUSANDS.sub(lambda match: match.group().replace(".", ""), text)
     return _GERMAN_DECIMAL.sub(".", text)
 
 

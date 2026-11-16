@@ -1,6 +1,6 @@
 # ADR-0015: Wiederholungssperre und Rechennachfrage im Agent-Loop
 
-- **Status:** vorgeschlagen (RUN-013: Sperre wirkt wie vorgesehen, Rechennachfrage bei `llama3.1:8b` ohne Wirkung; Entscheidung 2 bleibt bis zur Gegenprobe mit `qwen2.5:7b` offen)
+- **Status:** vorgeschlagen (RUN-013: Sperre wirkt wie vorgesehen, Rechennachfrage bei `llama3.1:8b` ohne Wirkung; RUN-014: bei `qwen2.5:7b` wirkt die Nachfrage; Entscheidung 2 und die Modellwahl warten auf die Entscheidung des Nutzers, siehe unten)
 - **Datum:** 2026-11-16
 - **Meilenstein:** M6 (M6e)
 
@@ -32,5 +32,11 @@ RUN-012 (ADR-0014) fand keinen der drei eingebauten Abrechnungsfehler (0 von 3) 
 - Entscheidung 3 (Prompt): Nach Handprüfung 6 statt 9 richtige Antworten; ob das an der Änderung liegt oder an der Streuung, ist offen (ISS-062).
 - Folge für die Entscheidung: Die Nachfrage bleibt vorläufig im Code, bis `qwen2.5:7b` mit demselben Loop gemessen ist; zeigt auch dieses Modell keinen Effekt, wird sie entfernt. Der feste Prüfablauf im Code, hier als verworfene Alternative geführt, wird als offene Entscheidung in `status.md` geführt.
 
+## Ergebnis M6f (RUN-014 bis RUN-016)
+- **Streuung:** RUN-015 und RUN-016 (gleicher Code, `llama3.1:8b`) liefern identische Antworten; Unterschiede zwischen Läufen kommen vom Code, nicht vom Zufall (ISS-062).
+- **Entscheidung 1 (Sperre):** unverändert wirksam (4 Sperren in RUN-015, 0 bei `qwen2.5:7b`); bleibt.
+- **Entscheidung 2 (Nachfrage):** `qwen2.5:7b`: 3 von 4 Nachfragen führen zu einem gültigen `calculate`-Aufruf, G4 wird erkannt (Soll 1.867,50 EUR, Abweichung 95,78 EUR), aber G2 und S5 werden durch falsche Operanden zu Fehlalarmen. `llama3.1:8b`: 1 von 4, ohne Nutzen (ISS-066, ISS-067). Die Bedingung aus diesem ADR („zeigt auch `qwen2.5:7b` keinen Effekt, wird die Nachfrage entfernt“) ist damit nicht erfüllt: Sie bleibt im Code.
+- **Offen, für den Nutzer:** (a) fester Prüfablauf im Code (Soll suchen, Ist suchen, Code bildet die Differenz) ja oder nein; er würde ISS-067 beseitigen und die Modellwahl entlasten, macht aber die Werkzeugwahl zur Pipeline (verworfene Alternative oben). (b) Modell für P2: `llama3.1:8b` behalten (ADR-0013) oder `qwen2.5:7b`; der Zeitgrund aus ADR-0013 gilt nicht mehr (320 gegen 301 s je Frage).
+
 ## Belege
-RUN-012, RUN-013 (`docs/evaluation-log.md`), ISS-054, ISS-057, ISS-058, ISS-060 bis ISS-063; ADR-0010 (Werkzeuge), ADR-0014 (Suchwerkzeug), `scripts/analyze_timing.py`.
+RUN-012 bis RUN-016 (`docs/evaluation-log.md`), ISS-054, ISS-057, ISS-058, ISS-060 bis ISS-063; ADR-0010 (Werkzeuge), ADR-0014 (Suchwerkzeug), `scripts/analyze_timing.py`.

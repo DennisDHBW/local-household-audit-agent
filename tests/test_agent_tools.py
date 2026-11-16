@@ -419,6 +419,75 @@ def test_calculate_tool_returns_expression_and_result_or_error(tmp_path):
         tool.run(CalculateArguments(expression="abs(1)"), EvidenceBook())
 
 
+@pytest.mark.parametrize(
+    ("expression", "expected"),
+    [
+        ("1.963,28 - 1.920,00", "43.28"),
+        ("12.345.678,5 + 0,5", "12345679"),
+        ("1.963 + 1", "2.963"),
+        ("1,5 + 2.250,25 EUR", "2251.75"),
+    ],
+)
+def test_calculate_reads_german_thousands_separators_only_before_a_decimal_comma(
+    expression, expected
+):
+    # Arrange / Act
+    result = format_result(calculate(expression))
+
+    # Assert
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    ("arguments", "expression"),
+    [
+        ({"a": "1.963,28", "b": "1.920,00", "operator": "-"}, "1.963,28 - 1.920,00"),
+        ({"a": 3250, "b": 0.348, "op": "mal"}, "3250 * 0.348"),
+        ({"x": "10", "y": "4", "operation": "Minus"}, "10 - 4"),
+        ({"left": "7", "right": "2", "operator": "/"}, "7 / 2"),
+        ({"a": "5", "b": "-3", "operator": "+"}, "5 + (-3)"),
+        ({"expression": "2*3", "a": "1", "b": "2", "operator": "+"}, "2*3"),
+    ],
+)
+def test_calculate_arguments_build_the_expression_from_operands(arguments, expression):
+    # Arrange / Act
+    parsed = CalculateArguments.model_validate(arguments)
+
+    # Assert
+    assert parsed.expression == expression
+
+
+def test_calculate_operands_without_an_operator_are_not_guessed():
+    # Arrange: G4 of RUN-013 sent two numbers and no operator
+    arguments = {"a": "1.963,28", "b": "-1.920,00"}
+
+    # Act
+    with pytest.raises(ValidationError) as error:
+        CalculateArguments.model_validate(arguments)
+
+    # Assert: the message names the argument and shows the shape with the model's own numbers
+    assert "expression" in str(error.value)
+    assert 'expression="1.963,28 - -1.920,00"' in str(error.value)
+
+
+def test_calculate_without_operands_still_reports_the_missing_expression():
+    with pytest.raises(ValidationError, match="expression"):
+        CalculateArguments.model_validate({"foo": "1"})
+    with pytest.raises(ValidationError, match="expression"):
+        CalculateArguments.model_validate({"a": "1"})
+
+
+def test_operands_are_not_part_of_the_schema_shown_to_the_model(tmp_path):
+    # Arrange
+    tool = _toolbox(tmp_path)[0].tools()["calculate"]
+
+    # Act
+    properties = tool.spec()["function"]["parameters"]["properties"]
+
+    # Assert
+    assert list(properties) == ["expression"]
+
+
 def test_helpers_describe_filter_shorten_and_match_year():
     catalog = make_catalog()
     assert describe_filter(MetadataFilter()) == "keine"

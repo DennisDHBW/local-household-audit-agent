@@ -24,6 +24,36 @@
 
 ## Einträge
 
+### ISS-067 – `calculate` wird gültig, aber mit falschen Operanden aufgerufen (Fehlalarme)
+- **Datum / Meilenstein:** 2026-11-16 / M6f (RUN-014, RUN-015)
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** `qwen2.5:7b` rechnet in G2 `1830 - 1870` (Sollwert minus falscher Istwert) und meldet „−40,00 EUR“ bei einer richtigen Abrechnung; in S5 rechnet es `1189 - 115` (Rechnungsbetrag minus Monatsabschlag) und meldet 1.074 EUR Abweichung. `llama3.1:8b` rechnet in G4 `1.963,28 - -1.920,00` = 3.883,28 EUR (Istwert minus negative Vorauszahlung).
+- **Ursache:** Die Nachfrage erzwingt einen Rechenaufruf, aber nicht die richtigen Operanden; die Modelle wählen Zahlen aus dem Kontext, die nicht zusammengehören (ISS-054). `calculate` prüft nur die Form, nicht den Sinn.
+- **Lösung / Workaround:** Keine. Kandidaten: fester Prüfablauf im Code (Soll- und Istwert als benannte Felder, Code bildet die Differenz); sonst nur als Grenze dokumentieren.
+- **Gelernt:** Ein gültiger Werkzeugaufruf ist kein Beleg für eine richtige Rechnung; „calculate-Aufrufe“ allein sind als Metrik ungeeignet, die Operanden müssen von Hand gelesen werden.
+- **Relevant für Ausarbeitung?** ja → Evaluation (Gültigkeit gegen Richtigkeit), Reflexion (Grenzen kleiner Modelle)
+
+### ISS-066 – Rechennachfrage wirkt bei `qwen2.5:7b`, nicht bei `llama3.1:8b`
+- **Datum / Meilenstein:** 2026-11-16 / M6f (RUN-014 bis RUN-016)
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** Nach der Nachfrage ruft `qwen2.5:7b` in 3 von 4 Fällen `calculate` gültig auf (G2, G4, S5), `llama3.1:8b` in 1 von 4 (G4, sinnlos). Dafür zitiert `llama3.1:8b` 1 von 18 erwarteten Quellen, `qwen2.5:7b` 6 von 18. Handrichtig liegen beide bei 6 von 14.
+- **Ursache:** Modellunterschied bei Werkzeug-Format und Befolgung von Anweisungen; nicht weiter untersucht. Der Zeitvorteil von `llama3.1:8b` aus ADR-0013 (136 gegen 298 s je Frage) besteht nicht mehr: 320 bis 325 gegen 301 s.
+- **Lösung / Workaround:** Entscheidung offen (ADR-0013, ADR-0015): `llama3.1:8b` behalten, auf `qwen2.5:7b` wechseln oder den Prüfablauf fest im Code verdrahten, damit die Modellwahl weniger zählt.
+- **Gelernt:** Modellvergleiche nach Handprüfung sagen wenig, wenn die Profile verschieden sind; erst die Einzelmetriken (Zitate, Rechnen, Format) zeigen den Unterschied.
+- **Relevant für Ausarbeitung?** ja → Evaluation, Reflexion (Modellwahl auf CPU-Hardware)
+
+### ISS-065 – `.venv` des Laptops zerstört und Platte der VM voll (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-16 / M6f
+- **Kategorie:** ki-assistent
+- **Status:** gelöst (nach `uv sync` auf dem Laptop; der Wrapper `scripts/eval_run.sh` ruft es zu Beginn auf)
+- **Symptom:** (1) In Claudes Shell lief ein `uv run` ohne `UV_PROJECT_ENVIRONMENT`; `uv` entfernte das `.venv` im Projektordner („linked to non-existent Python interpreter“) und legte ein leeres, auf VM-Pfade zeigendes an. Das `.venv` des Laptops (PyCharm-Interpreter) war damit weg. (2) `uv sync` in der VM scheiterte mit „No space left on device“: die Sitzungsplatte (`/sessions`) war zu 99 % voll.
+- **Ursache:** (1) Der Hinweis aus ISS-009 stand in `status.md`, aber der Export stand in diesem einen Befehl nicht, weil die Umgebungsvariablen nicht von einem Aufruf zum nächsten gelten. (2) Cache und Umgebung unter `$HOME` liegen auf der kleinen Sitzungsplatte.
+- **Lösung / Workaround:** Den Rest des leeren `.venv` gelöscht; `uv sync` auf dem Laptop baut das echte neu. Für Claudes Shell gilt jetzt `UV_CACHE_DIR=/tmp/uv-cache UV_PROJECT_ENVIRONMENT=/tmp/venvs/audit UV_LINK_MODE=copy` in **jedem** Befehl mit `uv`, am besten als erste Zeile. `status.md` ist angepasst.
+- **Gelernt:** Eine Regel, die nur in der Doku steht, schützt nicht; jeder `uv`-Befehl der VM beginnt mit dem Export, und `uv` nie ohne ihn aufrufen, auch nicht für `--help`.
+- **Relevant für Ausarbeitung?** nein
+
 ### ISS-064 – Zwei kleine eigene Fehler vor dem Commit (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-16 / M6e
 - **Kategorie:** ki-assistent
@@ -37,30 +67,30 @@
 ### ISS-063 – G4 ruft `calculate` zweimal mit erfundenen Argumenten auf und verbraucht damit das Limit
 - **Datum / Meilenstein:** 2026-11-16 / M6e (RUN-013)
 - **Kategorie:** agent
-- **Status:** offen
+- **Status:** offen (teilweise behoben in M6f)
 - **Symptom:** G4 ruft nach der Rechennachfrage zweimal `calculate {"a": "1.963,28", "b": "-1.920,00"}` auf (Pflichtargument `expression` fehlt). Beide Aufrufe sind ungültig und zählen zum Limit von 6; die Antwort entschuldigt sich, dass nicht gerechnet werden konnte. Die Wiederholungssperre greift nur bei gültigen Aufrufen, der zweite identische ungültige Aufruf wird noch einmal als Fehler beantwortet.
 - **Ursache:** `llama3.1:8b` folgt dem Format von `calculate` nicht (siehe ISS-054); die Fehlermeldung mit dem richtigen Aufruf ändert bei Temperatur 0 nichts. Ob eine Sperre auch für identische ungültige Aufrufe sinnvoll ist, ist nicht geprüft.
-- **Lösung / Workaround:** Keine. Kandidaten: identische ungültige Aufrufe ebenfalls sperren; die Argumente von `calculate` verzeihender machen (z. B. zwei Zahlen und Operator akzeptieren); Gegenprobe mit `qwen2.5:7b`.
+- **Lösung / Workaround:** Keine. Kandidaten: identische ungültige Aufrufe ebenfalls sperren; die Argumente von `calculate` verzeihender machen (z. B. zwei Zahlen und Operator akzeptieren); Gegenprobe mit `qwen2.5:7b`. Stand M6f: `calculate` akzeptiert Operanden und deutsche Tausendertrennzeichen; in RUN-015 ist der zweite G4-Aufruf gültig, das Limit von 6 Aufrufen wird trotzdem erreicht und die Rechnung ist sinnlos (ISS-067). Gegenprobe `qwen2.5:7b`: 3 von 3 `calculate`-Aufrufen gültig (ISS-066).
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Agent (Format-Treue kleiner Modelle bei Werkzeugargumenten)
 
 ### ISS-062 – RUN-013 schlechter als RUN-012 bei S2, S4 und N2, Ursache unklar
 - **Datum / Meilenstein:** 2026-11-16 / M6e (RUN-013)
 - **Kategorie:** evaluation
-- **Status:** offen
+- **Status:** gelöst (Streuung gemessen; Ursache im Code noch nicht getrennt)
 - **Symptom:** Nach Handprüfung 6 richtig statt 9. S2 nennt Nettopreise statt der geforderten Bruttopreise, S4 antwortet mit der Lückenantwort, N2 nennt einen Grundpreis aus einem Ablenker, weil das Modell im zweiten Versuch den Sparten-Filter wegließ. Dieselben Fragen waren in RUN-012 richtig.
 - **Ursache:** Nicht geklärt. Mögliche Gründe: der längere Systemprompt (263 Zeichen mehr), die geänderte Aufruffolge durch Nachfrage und Sperre, oder Streuung zwischen Läufen (Temperatur 0 schließt sie nicht aus, weil Ollama bei Prompt-Änderungen und Cache-Zuständen anders rechnen kann). Ein Lauf mit unverändertem Code wurde nicht gemacht.
-- **Lösung / Workaround:** Noch keine. Messen: den Lauf mit demselben Code wiederholen und die Differenz zwischen den Läufen als Streuung angeben; Vergleiche zwischen Läufen nur mit diesem Vorbehalt verwenden.
+- **Lösung / Workaround:** RUN-015 und RUN-016 (gleicher Code, `llama3.1:8b`) sind bis auf die Zeiten identisch (gleiche Antworten, Token, Metrik; Zeit je Frage 325 gegen 320 s). Bei Temperatur 0 und gleichem Rechner gibt es hier keine Streuung der Antworten. Die Rückschritte S2/S4/N2 gegenüber RUN-012 bleiben auch in RUN-015 und stammen damit aus dem Code oder Prompt von M6e. Welche der drei Änderungen (Prompt, Sperre, Nachfrage) die Ursache ist, wurde nicht einzeln gemessen. Einschränkung: eine Wiederholung, ein Rechner.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen von Einzelläufen)
 
 ### ISS-061 – Antwort besteht aus einem Werkzeugaufruf als Text (S5)
 - **Datum / Meilenstein:** 2026-11-16 / M6e (RUN-013)
 - **Kategorie:** agent
-- **Status:** offen
+- **Status:** gelöst (Erkennung); die Antwort von S5 bleibt falsch (ISS-058, ISS-067)
 - **Symptom:** Auf die Rechennachfrage hin schreibt `llama3.1:8b` bei S5 „Ich benötige den Wert für die geleisteten Abschlagszahlungen. Ich werde nach diesem Wert suchen.“ und danach `{"name": "search", "parameters": {...}}` als Text statt als Werkzeugaufruf. Der Loop sieht keinen Aufruf, hält den Text für die Antwort und beendet die Frage mit `stop_reason=answer`.
 - **Ursache:** Das Modell gibt den Aufruf im Fließtext aus; Ollamas natives Tool-Calling erkennt ihn nicht. Der Loop prüft Antworten nur auf die Lückenformel (ADR-0010).
-- **Lösung / Workaround:** Noch keine. Kandidat: Antworttext, der als JSON mit `name` und `parameters` lesbar ist, als Werkzeugaufruf behandeln oder einmal nachfragen.
+- **Lösung / Workaround:** Umgesetzt in M6f (`agent/text_calls.py`): Antworttext, der als JSON mit `name` und `parameters` lesbar ist, wird als Werkzeugaufruf ausgeführt (`ToolCallStep.is_text_call`). RUN-015: S5 führt die dritte Suche daraus aus (1 Erkennung in 36 Aufrufen). Ursprünglicher Kandidat: Antworttext, der als JSON mit `name` und `parameters` lesbar ist, als Werkzeugaufruf behandeln oder einmal nachfragen.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Agent (Tool-Calling kleiner Modelle)
 
@@ -90,7 +120,7 @@
 - **Status:** offen
 - **Symptom:** In 24 Werkzeugaufrufen über 14 Fragen kein einziger `calculate`-Aufruf. G3 antwortet „Die Gasabrechnung 2026 ist korrekt“ (E2 übersehen), G4 nennt 1.963,28 EUR statt 1.867,50 EUR (E3 übersehen), G1 endet am Kontextlimit, G2 liefert eine Antwort ohne Zahlen. S5 (richtige Abrechnung) wird fälschlich als Abweichung gemeldet. Fehler erkannt: 0 von 3, Fehlalarm 1 von 3. In G1, G3 und G4 stand keine der Sollzahlen im Kontext; bei G2 standen alle drei im Kontext, die Antwort nennt keine.
 - **Ursache:** Mehrere Gründe zugleich: `llama3.1:8b` beendet nach einer Suche (G3, G4), wiederholt bei G1 und G2 dieselbe Suche mit gleichen Argumenten (2 identische Wiederholungen), und die Suchanfrage („Gasabrechnung 2026“) trifft die Preistabellen nicht. Der Prompt verlangt `calculate` für jede Rechnung, das Modell folgt dem nicht (siehe ISS-054).
-- **Lösung / Workaround:** In M6e umgesetzt und mit RUN-013 gemessen (ADR-0015): Die Wiederholungssperre funktioniert (4 Sperren), die Rechennachfrage bewirkt bei `llama3.1:8b` nichts (4 Nachfragen, 0 gültige `calculate`-Aufrufe; ISS-060, ISS-063), erkannte Fehler 0 von 3 mit tragfähiger Begründung. Offen bleibt die Wahl zwischen einem festen Prüfablauf im Code (bisher verworfen) und einem anderen Modell (`qwen2.5:7b`, ADR-0013). Status bleibt `offen`.
+- **Lösung / Workaround:** In M6e umgesetzt und mit RUN-013 gemessen (ADR-0015): Die Wiederholungssperre funktioniert (4 Sperren), die Rechennachfrage bewirkt bei `llama3.1:8b` nichts (4 Nachfragen, 0 gültige `calculate`-Aufrufe; ISS-060, ISS-063), erkannte Fehler 0 von 3 mit tragfähiger Begründung. Offen bleibt die Wahl zwischen einem festen Prüfablauf im Code (bisher verworfen) und einem anderen Modell (`qwen2.5:7b`, ADR-0013). Status bleibt `offen`. Ergebnis M6f (RUN-014 bis RUN-016): Mit `qwen2.5:7b` folgt auf 3 von 4 Nachfragen ein gültiger `calculate`-Aufruf und G4 wird erkannt (ISS-066); die Operanden stimmen nicht immer (ISS-067).
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Agent (Grenzen kleiner Modelle bei mehrstufigen Prüfungen), Evaluation
 

@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-16 – M6f: Format-Toleranz, Gegenprobe `qwen2.5:7b`, Streuungsmessung
+**Ziel der Sitzung:** Prüfablauf von P2 stabilisieren (Aufruf als Text, `calculate`), Gegenprobe mit `qwen2.5:7b` und Streuung bei gleichem Code messen (ISS-061 bis ISS-063).
+**Was wurde gemacht:**
+- Code (frühere Sitzung): Aufruf als Text erkennen und ausführen, `calculate` akzeptiert Operanden und deutsche Zahlen, Wrapper `scripts/eval_run.sh`
+- Drei Läufe auf dem Laptop: RUN-014 (`qwen2.5:7b`), RUN-015 und RUN-016 (`llama3.1:8b`, derselbe Code)
+- Alle 42 Antworten gelesen und von Hand bewertet; Rechennachfrage, Sperre und Textaufrufe je Lauf aus den Schrittdateien gezählt; Ollama-Journale auf Speichermangel und Abschneiden geprüft (keins)
+- Doku: evaluation-log, ISS-061/062/063/058 aktualisiert, ISS-066/067 neu, ADR-0015 und ADR-0013 ergänzt
+**Gelieferte Dateien / Funktionen:** `agent/text_calls.py`, `agent/calculator.py`, `agent/loop.py`, `scripts/eval_run.sh`, `data/eval/run-014/` bis `run-016/`
+**Entscheidungen:** keine neue; ADR-0015 (vorgeschlagen) und ADR-0013 warten auf deine Entscheidung zu Modell und festem Prüfablauf
+**Probleme / Überraschungen:** RUN-015 und RUN-016 sind bis auf die Zeiten identisch (Streuung 0, ISS-062); die Nachfrage wirkt bei `qwen2.5:7b`, nicht bei `llama3.1:8b` (ISS-066); gültige `calculate`-Aufrufe mit falschen Operanden erzeugen Fehlalarme (ISS-067); beide Modelle 6 von 14 nach Handprüfung
+**Offen / unklar:** fester Prüfablauf ja oder nein; Modell für P2; welche M6e-Änderung S2/S4/N2 verschlechtert hat; G1 und G3 scheitern am Retrieval der Sollzahl
+**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**Zeitaufwand:** Auswertung und Doku ca. 1 h, Läufe 3 h 41 min Rechenzeit (70 + 76 + 75 min) · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `feat(agent)`, `feat(scripts)`, `test(evaluation)`, `docs`
+
 ### 2026-11-16 – M6e: P2 rechnen und prüfen lassen (Wiederholungssperre, Rechennachfrage)
 **Ziel der Sitzung:** Der Agent soll bei Prüffragen rechnen (ISS-058) und nicht mehr dieselbe Suche wiederholen; Laufzeitursache klären (ISS-057); mit RUN-013 messen.
 **Was wurde gemacht:**

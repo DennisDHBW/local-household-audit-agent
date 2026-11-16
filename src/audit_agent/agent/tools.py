@@ -19,7 +19,7 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any, Protocol
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from audit_agent.agent.calculator import (
     CalculationError,
@@ -126,11 +126,68 @@ class OutlineArguments(_Arguments):
     )
 
 
+_OPERAND_PAIRS = (("a", "b"), ("x", "y"), ("left", "right"))
+_OPERATOR_KEYS = ("operator", "op", "operation")
+_OPERATORS = {
+    "+": "+",
+    "plus": "+",
+    "add": "+",
+    "-": "-",
+    "minus": "-",
+    "subtract": "-",
+    "*": "*",
+    "mal": "*",
+    "times": "*",
+    "multiply": "*",
+    "/": "/",
+    "durch": "/",
+    "divide": "/",
+}
+
+
+def _expression_from_operands(data: Mapping[str, Any]) -> str | None:
+    """``a``, ``b`` and an operator written as separate arguments -> one expression.
+
+    ``llama3.1:8b`` calls ``calculate`` with ``{"a": ..., "b": ...}`` (ISS-063). Without an
+    operator the intended calculation is unknown; then the error shows the right shape with
+    the model's own numbers and the model has to choose the operator.
+    """
+    for first, second in _OPERAND_PAIRS:
+        if first not in data or second not in data:
+            continue
+        left, right = str(data[first]).strip(), str(data[second]).strip()
+        operator = next(
+            (
+                _OPERATORS.get(str(data[key]).strip().lower())
+                for key in _OPERATOR_KEYS
+                if key in data
+            ),
+            None,
+        )
+        if operator is None:
+            raise ValueError(
+                f"Es fehlt expression. Schreibe die ganze Rechnung in dieses eine Argument, "
+                f'z. B. expression="{left} - {right}" (Operator + - * / nach Bedarf).'
+            )
+        wrapped = [f"({v})" if v.startswith("-") else v for v in (left, right)]
+        return f"{wrapped[0]} {operator} {wrapped[1]}"
+    return None
+
+
 class CalculateArguments(_Arguments):
     expression: str = Field(
         min_length=1,
         description="Rechenausdruck mit Zahlen und + - * / **, z. B. '3100 * (0.395 - 0.382)'.",
     )
+
+    @model_validator(mode="before")
+    @classmethod
+    def _accept_operands(cls, data: Any) -> Any:
+        """Be liberal (Postel): build ``expression`` from operands if it is missing."""
+        if not isinstance(data, Mapping) or str(data.get("expression") or "").strip():
+            return data
+        expression = _expression_from_operands(data)
+        return data if expression is None else {**data, "expression": expression}
 
 
 @dataclass(frozen=True)
