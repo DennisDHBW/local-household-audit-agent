@@ -24,13 +24,53 @@
 
 ## Einträge
 
+### ISS-064 – Zwei kleine eigene Fehler vor dem Commit (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-16 / M6e
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** (1) Die Prüfphrase „überein“ stand als `uberein` in `AUDIT_PHRASES`, `fold` macht aber `ue` daraus; die Frage S5 wäre nicht erkannt worden. (2) Der Zuwachs des Systemprompts war im ADR mit „rund 70 Token“ angegeben, gemessen sind 263 Zeichen, also rund 110 Token. Außerdem scheiterte `test_agent_variant_translates_the_run_and_logs_every_step`, weil seine Frage jetzt eine Prüffrage war.
+- **Ursache:** (1) Faltungsregel nicht nachgesehen. (2) Schätzung statt Messung. (3) Test setzte eine Prüffrage voraus, ohne dass es für ihn wichtig war.
+- **Lösung / Workaround:** (1) beim Durchlesen vor den Tests bemerkt und korrigiert, `test_is_audit_question` deckt S5 ab. (2) ADR korrigiert, nachdem der Unterschied gemessen war. (3) Frage im Test durch eine Einzelfrage ersetzt.
+- **Gelernt:** Größen messen statt schätzen, und Faltung und Normalisierung im Code nachlesen, bevor man Vergleichswörter schreibt.
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-063 – G4 ruft `calculate` zweimal mit erfundenen Argumenten auf und verbraucht damit das Limit
+- **Datum / Meilenstein:** 2026-11-16 / M6e (RUN-013)
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** G4 ruft nach der Rechennachfrage zweimal `calculate {"a": "1.963,28", "b": "-1.920,00"}` auf (Pflichtargument `expression` fehlt). Beide Aufrufe sind ungültig und zählen zum Limit von 6; die Antwort entschuldigt sich, dass nicht gerechnet werden konnte. Die Wiederholungssperre greift nur bei gültigen Aufrufen, der zweite identische ungültige Aufruf wird noch einmal als Fehler beantwortet.
+- **Ursache:** `llama3.1:8b` folgt dem Format von `calculate` nicht (siehe ISS-054); die Fehlermeldung mit dem richtigen Aufruf ändert bei Temperatur 0 nichts. Ob eine Sperre auch für identische ungültige Aufrufe sinnvoll ist, ist nicht geprüft.
+- **Lösung / Workaround:** Keine. Kandidaten: identische ungültige Aufrufe ebenfalls sperren; die Argumente von `calculate` verzeihender machen (z. B. zwei Zahlen und Operator akzeptieren); Gegenprobe mit `qwen2.5:7b`.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Agent (Format-Treue kleiner Modelle bei Werkzeugargumenten)
+
+### ISS-062 – RUN-013 schlechter als RUN-012 bei S2, S4 und N2, Ursache unklar
+- **Datum / Meilenstein:** 2026-11-16 / M6e (RUN-013)
+- **Kategorie:** evaluation
+- **Status:** offen
+- **Symptom:** Nach Handprüfung 6 richtig statt 9. S2 nennt Nettopreise statt der geforderten Bruttopreise, S4 antwortet mit der Lückenantwort, N2 nennt einen Grundpreis aus einem Ablenker, weil das Modell im zweiten Versuch den Sparten-Filter wegließ. Dieselben Fragen waren in RUN-012 richtig.
+- **Ursache:** Nicht geklärt. Mögliche Gründe: der längere Systemprompt (263 Zeichen mehr), die geänderte Aufruffolge durch Nachfrage und Sperre, oder Streuung zwischen Läufen (Temperatur 0 schließt sie nicht aus, weil Ollama bei Prompt-Änderungen und Cache-Zuständen anders rechnen kann). Ein Lauf mit unverändertem Code wurde nicht gemacht.
+- **Lösung / Workaround:** Noch keine. Messen: den Lauf mit demselben Code wiederholen und die Differenz zwischen den Läufen als Streuung angeben; Vergleiche zwischen Läufen nur mit diesem Vorbehalt verwenden.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen von Einzelläufen)
+
+### ISS-061 – Antwort besteht aus einem Werkzeugaufruf als Text (S5)
+- **Datum / Meilenstein:** 2026-11-16 / M6e (RUN-013)
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** Auf die Rechennachfrage hin schreibt `llama3.1:8b` bei S5 „Ich benötige den Wert für die geleisteten Abschlagszahlungen. Ich werde nach diesem Wert suchen.“ und danach `{"name": "search", "parameters": {...}}` als Text statt als Werkzeugaufruf. Der Loop sieht keinen Aufruf, hält den Text für die Antwort und beendet die Frage mit `stop_reason=answer`.
+- **Ursache:** Das Modell gibt den Aufruf im Fließtext aus; Ollamas natives Tool-Calling erkennt ihn nicht. Der Loop prüft Antworten nur auf die Lückenformel (ADR-0010).
+- **Lösung / Workaround:** Noch keine. Kandidat: Antworttext, der als JSON mit `name` und `parameters` lesbar ist, als Werkzeugaufruf behandeln oder einmal nachfragen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Agent (Tool-Calling kleiner Modelle)
+
 ### ISS-060 – Prüffragen-Erkennung nach Stichwörtern und einmalige Rechennachfrage sind grobe Mittel
 - **Datum / Meilenstein:** 2026-11-16 / M6e
 - **Kategorie:** agent
 - **Status:** offen
 - **Symptom:** Ob eine Frage eine Prüffrage ist, entscheidet `is_audit_question` am Wortlaut (korrekt, stimmt, passt, angewendet, abgerechnet, …). Eine Frage wie „Stimmt es, dass die Frist 6 Wochen beträgt?“ würde ebenfalls erkannt, eine Prüffrage ohne diese Wörter nicht. Die Nachfrage „rechne mit `calculate` nach“ kommt höchstens einmal je Frage; das Modell kann sie ignorieren oder falsch rechnen (`llama3.1:8b` scheiterte in RUN-010 an den Argumenten von `calculate`, ISS-054).
 - **Ursache:** Der Loop kennt den Fragetyp nicht. Der Plan sah bewusst keinen festen Prüfablauf im Code vor (ADR-0015), damit der Agent die Werkzeugwahl behält.
-- **Lösung / Workaround:** Keine. Wirkung wird in RUN-013 gemessen (Anzahl `calculate`-Aufrufe, erkannte Fehler, Fehlalarme). Die Erkennung nutzt bewusst nicht `include_counterpart`, weil das Modell dieses Flag in 12 von 17 Suchen auch bei Einzelfragen setzt (RUN-012).
+- **Lösung / Workaround:** Keine. Ergebnis RUN-013: Die Nachfrage kam bei G3, G4, S5 und Z1; in keinem Fall folgte ein gültiger `calculate`-Aufruf (ISS-058, ISS-063). Ursprünglich geplante Messung: Wirkung wird in RUN-013 gemessen (Anzahl `calculate`-Aufrufe, erkannte Fehler, Fehlalarme). Die Erkennung nutzt bewusst nicht `include_counterpart`, weil das Modell dieses Flag in 12 von 17 Suchen auch bei Einzelfragen setzt (RUN-012).
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Agent (Grenzen von Nachfragen als Steuerung eines kleinen Modells)
 
@@ -50,19 +90,19 @@
 - **Status:** offen
 - **Symptom:** In 24 Werkzeugaufrufen über 14 Fragen kein einziger `calculate`-Aufruf. G3 antwortet „Die Gasabrechnung 2026 ist korrekt“ (E2 übersehen), G4 nennt 1.963,28 EUR statt 1.867,50 EUR (E3 übersehen), G1 endet am Kontextlimit, G2 liefert eine Antwort ohne Zahlen. S5 (richtige Abrechnung) wird fälschlich als Abweichung gemeldet. Fehler erkannt: 0 von 3, Fehlalarm 1 von 3. In G1, G3 und G4 stand keine der Sollzahlen im Kontext; bei G2 standen alle drei im Kontext, die Antwort nennt keine.
 - **Ursache:** Mehrere Gründe zugleich: `llama3.1:8b` beendet nach einer Suche (G3, G4), wiederholt bei G1 und G2 dieselbe Suche mit gleichen Argumenten (2 identische Wiederholungen), und die Suchanfrage („Gasabrechnung 2026“) trifft die Preistabellen nicht. Der Prompt verlangt `calculate` für jede Rechnung, das Modell folgt dem nicht (siehe ISS-054).
-- **Lösung / Workaround:** In M6e umgesetzt, Wirkung noch nicht gemessen (ADR-0015, vorgeschlagen): (1) identische Aufrufe werden nicht ausgeführt, das Modell bekommt `REPEAT_OBSERVATION`; (2) eine Prüffrage ohne `calculate`-Aufruf wird vor der Antwort einmal nachgefragt; (3) der Prompt nennt je Prüfgröße getrennte Suchen für Sollwert und Istwert. Ein fester Ablauf im Code wurde bewusst nicht gebaut (ADR-0015). Status bleibt `offen` bis RUN-013 ausgewertet ist.
+- **Lösung / Workaround:** In M6e umgesetzt und mit RUN-013 gemessen (ADR-0015): Die Wiederholungssperre funktioniert (4 Sperren), die Rechennachfrage bewirkt bei `llama3.1:8b` nichts (4 Nachfragen, 0 gültige `calculate`-Aufrufe; ISS-060, ISS-063), erkannte Fehler 0 von 3 mit tragfähiger Begründung. Offen bleibt die Wahl zwischen einem festen Prüfablauf im Code (bisher verworfen) und einem anderen Modell (`qwen2.5:7b`, ADR-0013). Status bleibt `offen`.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Agent (Grenzen kleiner Modelle bei mehrstufigen Prüfungen), Evaluation
 
 ### ISS-057 – P2 braucht in RUN-012 fast doppelt so lange, obwohl die Prompt-Token gleich sind
 - **Datum / Meilenstein:** 2026-11-16 / M6d (RUN-012)
 - **Kategorie:** hardware
-- **Status:** offen
+- **Status:** offen (teilweise geklärt)
 - **Symptom:** 263 s je Frage im Mittel (Median 229 s) gegenüber 136 s in RUN-010, bei gleicher mittlerer Prompt-Token-Zahl (5.582 gegen 5.624). Der Lauf dauerte rund 61 Minuten statt 32.
-- **Ursache:** Teilweise geklärt mit `scripts/analyze_timing.py` (M6e). Von +1.760 s Gesamtzeit (3.666 s gegen 1.906 s) entfallen +937 s auf die erste Modellanfrage je Frage (Systemprompt und Werkzeugbeschreibungen, rund 1.700 Token): In RUN-010 dauerte ihr Prefill 3–5 s (11 von 14 Fragen aus dem Prompt-Cache von Ollama), in RUN-012 85–94 s (0 von 14, 18 Token/s ohne Cache; 349 s gegen 1.286 s). Weitere +570 s stammen aus späteren Aufrufen (Prefill 1.032 s gegen 1.602 s bei 50.075 gegen 54.071 Token, 49 gegen 34 Token/s), +114 s aus dem Dekodieren (0,22 gegen 0,31 s je Token); der Rest (ca. 140 s) ist Suche und Sonstiges. Warum der Cache in RUN-012 nie griff, ist nicht geklärt; Vermutungen, nicht geprüft: Last oder Wärmedrosselung auf dem Laptop (Dekodieren und spätere Aufrufe wurden auch langsamer), Ollama verwirft den Cache zwischen den Fragen.
-- **Lösung / Workaround:** Noch keine. Für RUN-013 sichert der Befehl Systemlast vor dem Lauf und das Ollama-Journal (Zeilen zu `slot` und Cache); `analyze_timing.py` vergleicht danach die ersten Aufrufe.
+- **Ursache:** Teilweise geklärt (`scripts/analyze_timing.py`, Ollama-Journal von RUN-013). Von +1.760 s Gesamtzeit (RUN-012 gegen RUN-010) entfallen +937 s auf die erste Modellanfrage je Frage (Systemprompt und Werkzeugbeschreibungen, rund 1.700 Token): RUN-010 hatte bei 11 von 14 Fragen 3 bis 5 s Prefill (Prompt-Cache), RUN-012 und RUN-013 bei 0 von 14 rund 93 s (18 Token/s). Belegt für RUN-013: Das Journal zeigt 28 Modellladungen für 14 Fragen (je 14 für Chat- und Embedding-Modell), jede Frage beginnt also mit kaltem Cache, weil die Auswertung beide Modelle nach jeder P1/P2-Frage entlädt (`unloads_after_each_question`, Commit `92fed4d`, Schutz vor OOM, ISS-043). Für RUN-012 ist das aus dem gleichen Zeitmuster geschlossen. Nicht erklärt: RUN-010 lief laut `night-m6b.log` ab 13:32 und damit nach dem Fix-Commit (12:14), hatte aber trotzdem meist eine schnelle erste Anfrage; ein Journal mit den Ladevorgängen von RUN-010 liegt nicht vor (das gefilterte Journal enthält nur `truncat|oom`). Weitere +570 s kommen aus späteren Aufrufen (mehr Prompt-Token je Aufruf), +114 s aus dem Dekodieren.
+- **Lösung / Workaround:** Kein Eingriff: Das Entladen schützt vor OOM (ISS-043) und bleibt. Laufzeiten nur zwischen Läufen mit gleichem Verhalten vergleichen: RUN-012 gegen RUN-013 ist zulässig (beide kalt), der Vergleich mit RUN-010 nicht. Offen: die Frage, warum RUN-010 meist aus dem Cache startete; zu klären nur, wenn die Laufzeit für die Ausarbeitung gebraucht wird (dann Journal ohne Filter mitschreiben).
 - **Gelernt:**
-- **Relevant für Ausarbeitung?** eher nein (Randnotiz zur Messunsicherheit)
+- **Relevant für Ausarbeitung?** eher ja, kurz → Evaluation/Hardware (Prompt-Cache gegen Speichergrenze; Laufzeiten nur bei gleicher Ladepolitik vergleichbar)
 
 ### ISS-056 – Zwei Commits vor dem vollständigen Quality Gate (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-15 / M6c

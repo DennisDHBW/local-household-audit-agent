@@ -1,6 +1,6 @@
 # ADR-0015: Wiederholungssperre und Rechennachfrage im Agent-Loop
 
-- **Status:** vorgeschlagen (Messung RUN-013 steht aus)
+- **Status:** vorgeschlagen (RUN-013: Sperre wirkt wie vorgesehen, Rechennachfrage bei `llama3.1:8b` ohne Wirkung; Entscheidung 2 bleibt bis zur Gegenprobe mit `qwen2.5:7b` offen)
 - **Datum:** 2026-11-16
 - **Meilenstein:** M6 (M6e)
 
@@ -26,5 +26,11 @@ RUN-012 (ADR-0014) fand keinen der drei eingebauten Abrechnungsfehler (0 von 3) 
 - Negativ / Preis der Entscheidung: Die Nachfrage garantiert nichts. Das Modell kann sie ignorieren oder falsch rechnen (ISS-054), und die Stichwort-Erkennung ist grob (ISS-060). Jede nachgefragte Prüffrage kostet einen zusätzlichen Modellaufruf. Der Systemprompt wird länger.
 - Was muss getestet werden, um die Entscheidung zu bestätigen? RUN-013 (P2, 14 Fragen, `llama3.1:8b`) gegen RUN-012: Anzahl `calculate`-Aufrufe, Fehler erkannt (von 3), Fehlalarme (von 3), richtig nach Handprüfung (von 14), Laufzeit. Streuung zwischen zwei Läufen ist weiter nicht gemessen; ein Unterschied von ein oder zwei Fragen gilt nicht als Beleg.
 
+## Ergebnis (RUN-013, einzelner Lauf)
+- Entscheidung 1 (Sperre): 4 Wiederholungen abgefangen (G1, G2, N1, Z1), Observation je 191 Zeichen statt 1.500 bis 3.000. Wirkt wie beabsichtigt, hat aber keine der Antworten verbessert.
+- Entscheidung 2 (Rechennachfrage): 4 Nachfragen (G3, G4, S5, Z1), 0 gültige `calculate`-Aufrufe, 59 statt 44 Modellaufrufe und 73 statt 61 Minuten (ein Teil davon kommt aus dem größeren Kontext, nicht nur aus den Nachfragen). Fehler erkannt: von Hand 0 von 3.
+- Entscheidung 3 (Prompt): Nach Handprüfung 6 statt 9 richtige Antworten; ob das an der Änderung liegt oder an der Streuung, ist offen (ISS-062).
+- Folge für die Entscheidung: Die Nachfrage bleibt vorläufig im Code, bis `qwen2.5:7b` mit demselben Loop gemessen ist; zeigt auch dieses Modell keinen Effekt, wird sie entfernt. Der feste Prüfablauf im Code, hier als verworfene Alternative geführt, wird als offene Entscheidung in `status.md` geführt.
+
 ## Belege
-RUN-012 (`docs/evaluation-log.md`), ISS-057, ISS-058, ISS-060, ISS-054; ADR-0010 (Werkzeuge), ADR-0014 (Suchwerkzeug), `scripts/analyze_timing.py`.
+RUN-012, RUN-013 (`docs/evaluation-log.md`), ISS-054, ISS-057, ISS-058, ISS-060 bis ISS-063; ADR-0010 (Werkzeuge), ADR-0014 (Suchwerkzeug), `scripts/analyze_timing.py`.

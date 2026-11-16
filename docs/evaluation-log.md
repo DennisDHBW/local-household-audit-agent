@@ -379,3 +379,33 @@
 - **Ursachen der fünf Fehlschläge:** G1, G3, G4: Sollzahlen nie im Kontext (Retrieval/Suchanfrage; G1 wiederholt dieselbe Suche). G2: alle Sollzahlen im Kontext, Antwort ohne Zahlen (Synthese). S5: beide Quellen standen im Kontext, das Urteil ist falsch (Synthese, ohne `calculate`). In keiner Frage wurde `calculate` aufgerufen (ISS-058).
 - **Deutung:** Die vier Gegenmaßnahmen beheben genau die Ursachen, die für sie beschrieben waren (ISS-051, ISS-052, ISS-006, ISS-007): S1, Z3, N2 kippen von falsch auf richtig, ungültige Aufrufe verschwinden. Die Prüffragen mit eingebauten Fehlern (G1, G3, G4) bleiben falsch; dafür braucht es Rechnen und einen festen Prüfablauf (ISS-058). Es ist ein einzelner Lauf bei Temperatur 0, die Streuung ist nicht gemessen; der Anstieg von 3 auf 9 stammt aus allen vier Maßnahmen zusammen und lässt sich nicht einzeln zuordnen. Die Laufzeit stieg stark ohne erklärende Veränderung der Token-Zahl (ISS-057).
 
+### RUN-013 – M6e, P2 mit Wiederholungssperre und Rechennachfrage (`llama3.1:8b`, 14 Fragen)
+- **Datum / Commit:** 2026-11-16 · Branch `feat/p2-audit-flow`, Commit `feat(agent): block repeated tool calls and ask for calculate on audit questions`
+- **Variante:** nur P2 (`generate --variants p2 --all`); gleiche Fragen, gleiches Modell wie RUN-012
+- **Konfiguration:** wie RUN-012, dazu ADR-0015 (vorgeschlagen): identische Aufrufe werden nicht ausgeführt, Prüffrage ohne `calculate` wird einmal nachgefragt, Prompt um 263 Zeichen länger (je Prüfgröße getrennt nach Soll- und Istwert suchen); Befehl `uv run python -m audit_agent.evaluation generate --run-id run-013 --variants p2 --all --model llama3.1:8b`, danach `score`, `scripts/check_evidence.py`, `scripts/analyze_timing.py`. Kein RAGAS-Lauf.
+- **Dauer:** ca. 73 Minuten (RUN-012: 61)
+- **Rohdaten:** `data/eval/run-013/` (`report.md`, `scores.json`, `answers-p2.jsonl`, `p2-*.jsonl`, `manifest.json`, `evidence.json`), `data/eval/run-013.log`, `run-013-env.txt` (Systemlast vor dem Lauf), `run-013-journal.txt` (Ollama-Journal)
+
+| Metrik (P2, llama3.1:8b) | RUN-012 | RUN-013 |
+|---|---|---|
+| Richtig laut Metrik (von 14) | 7 | 5 |
+| Richtig nach Handprüfung (von 14) | 9 | 6 |
+| Fakten gefunden (von 27) | 11 | 7 |
+| Erwartete Quellen zitiert (von 18) | 3 | 1 |
+| Negativfragen erkannt (von 2) | 2 | 1 |
+| Fehler erkannt, nur Urteil (von 3) | 0 | 2 laut Metrik, von Hand 0 (siehe unten) |
+| Fehlalarme (von 3 richtigen Abrechnungen) | 1 | 0 (S5 ohne Urteil) |
+| Gültige `calculate`-Aufrufe | 0 | 0 (2 Versuche, beide ungültig) |
+| Rechennachfragen / danach `calculate` | – | 4 (G3, G4, S5, Z1) / 0 gültig |
+| Wiederholungen blockiert | – | 4 (G1, G2, N1, Z1) |
+| Ungültige Werkzeugaufrufe | 0 von 24 | 2 von 35 (beide `calculate`, G4) |
+| Suchen mit eigenem Filter / schließen Quelle aus | 17 / 3 | 23 / 5 |
+| Abbruch (Werkzeug- oder Kontextlimit) | 1 (Kontext, G1) | 1 (Werkzeuglimit, G4) |
+| Modellaufrufe / Werkzeugaufrufe | 44 / 24 | 59 / 35 |
+| Sekunden je Frage (Mittel) | 263 | 314 |
+| Prompt-Token je Frage (Mittel) | 5.582 | 8.536 |
+
+- **Handprüfung (alle 14 Antworten gelesen):** Richtig sind S1, S3, N1, Z1 (Grenzfall wie in RUN-012: Ergebnis „passt“ richtig, z-Zahl fehlt), Z2, Z3. Falsch: S2 (Preise netto statt brutto angegeben; die Nettowerte 29,24 ct/kWh und 115,97 EUR/Jahr sind rechnerisch richtig, ein zweiter Grundpreis „ab 2025“ steht dazu), S4 (Lückenantwort, in RUN-012 richtig), S5 (die Antwort besteht aus einem Werkzeugaufruf als Text, ISS-061), G1 und G2 (Lückenantwort), G3 (Urteil „stimmt nicht“, aber die Begründung ist Unsinn: „1.367,99 − 1.367,99 = 1,00 EUR niedriger als 192,00 EUR“; keine der Sollzahlen), G4 (Werkzeuglimit nach zwei ungültigen `calculate`-Aufrufen, genannter Sollwert falsch), N2 (Fernwärme-Grundpreis aus einem Ablenker genannt: das Modell ließ im zweiten Versuch den Sparten-Filter selbst weg, ISS-051 durch das Modell statt durch den Code).
+- **Was die neuen Maßnahmen taten:** Die Wiederholungssperre griff viermal wie vorgesehen (Observation 191 Zeichen statt je 1.500 bis 3.000). Die Rechennachfrage kam viermal, G4 rechnete danach zweimal mit erfundenen Argumenten (`a`, `b` statt `expression`), G3, S5 und Z1 suchten weiter oder erzählten. Kein gültiger `calculate`-Aufruf, keine erkannten Fehler mit tragfähiger Begründung.
+- **Laufzeit (`scripts/analyze_timing.py`):** Erste Modellanfrage je Frage 1.286 s (RUN-012) gegen 1.379 s (RUN-013), in beiden Läufen 0 von 14 aus dem Prompt-Cache; spätere Aufrufe 1.602 s gegen 2.147 s bei 54.071 gegen 94.313 Prompt-Token; Dekodieren 610 s gegen 722 s. Das Ollama-Journal zeigt 28 Ladevorgänge (je 14 für Chat- und Embedding-Modell): Die Auswertung entlädt beide Modelle nach jeder Frage (`unloads_after_each_question`, Commit `92fed4d`, ISS-043) und mit ihnen den Prompt-Cache. Damit beginnt jede Frage mit kaltem Cache; das erklärt die langsame erste Anfrage in RUN-012 und RUN-013. Warum RUN-010 trotz demselben Code meist aus dem Cache startete, ist nicht geklärt, der Zeitvergleich mit RUN-010 ist deshalb nicht belastbar (ISS-057).
+- **Deutung:** Die Maßnahmen von M6e haben das Ziel (Rechnen und Fehler erkennen) bei `llama3.1:8b` nicht erreicht, und der Lauf ist nach Handprüfung schlechter als RUN-012 (6 gegen 9). Ob die Rückschritte bei S2, S4 und N2 von den Änderungen kommen oder Streuung sind, ist nicht bekannt: Temperatur 0, aber der Prompt ist ein anderer, ein Wiederholungslauf mit unverändertem Code wurde nicht gemacht (ISS-062). Gesichert ist nur: Die Wiederholungssperre funktioniert mechanisch, die Rechennachfrage bewirkt bei diesem Modell nichts, und Prüffragen ohne festen Ablauf bleiben ungelöst (ISS-058, ADR-0015).
