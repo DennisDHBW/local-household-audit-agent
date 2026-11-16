@@ -67,7 +67,7 @@
 ### ISS-067 – `calculate` wird gültig, aber mit falschen Operanden aufgerufen (Fehlalarme)
 - **Datum / Meilenstein:** 2026-11-16 / M6f (RUN-014, RUN-015)
 - **Kategorie:** agent
-- **Status:** offen (Entscheidung 2026-11-16: fester Prüfablauf, ADR-0016; Wirkung mit RUN-017 zu messen)
+- **Status:** akzeptiert (Grenze; fester Prüfablauf in RUN-017 ohne Gewinn und abgeschaltet, ADR-0016, ISS-070)
 - **Symptom:** `qwen2.5:7b` rechnet in G2 `1830 - 1870` (Sollwert minus falscher Istwert) und meldet „−40,00 EUR“ bei einer richtigen Abrechnung; in S5 rechnet es `1189 - 115` (Rechnungsbetrag minus Monatsabschlag) und meldet 1.074 EUR Abweichung. `llama3.1:8b` rechnet in G4 `1.963,28 - -1.920,00` = 3.883,28 EUR (Istwert minus negative Vorauszahlung).
 - **Ursache:** Die Nachfrage erzwingt einen Rechenaufruf, aber nicht die richtigen Operanden; die Modelle wählen Zahlen aus dem Kontext, die nicht zusammengehören (ISS-054). `calculate` prüft nur die Form, nicht den Sinn.
 - **Lösung / Workaround:** Keine. Kandidaten: fester Prüfablauf im Code (Soll- und Istwert als benannte Felder, Code bildet die Differenz); sonst nur als Grenze dokumentieren.
@@ -77,7 +77,7 @@
 ### ISS-066 – Rechennachfrage wirkt bei `qwen2.5:7b`, nicht bei `llama3.1:8b`
 - **Datum / Meilenstein:** 2026-11-16 / M6f (RUN-014 bis RUN-016)
 - **Kategorie:** agent
-- **Status:** offen (Entscheidung 2026-11-16: `qwen2.5:7b`, ADR-0016; Wirkung mit RUN-017 zu messen)
+- **Status:** gelöst (Modell `qwen2.5:7b` seit M6g, ADR-0016; Fehlalarme bleiben als Grenze, ISS-067)
 - **Symptom:** Nach der Nachfrage ruft `qwen2.5:7b` in 3 von 4 Fällen `calculate` gültig auf (G2, G4, S5), `llama3.1:8b` in 1 von 4 (G4, sinnlos). Dafür zitiert `llama3.1:8b` 1 von 18 erwarteten Quellen, `qwen2.5:7b` 6 von 18. Handrichtig liegen beide bei 6 von 14.
 - **Ursache:** Modellunterschied bei Werkzeug-Format und Befolgung von Anweisungen; nicht weiter untersucht. Der Zeitvorteil von `llama3.1:8b` aus ADR-0013 (136 gegen 298 s je Frage) besteht nicht mehr: 320 bis 325 gegen 301 s.
 - **Lösung / Workaround:** Entscheidung offen (ADR-0013, ADR-0015): `llama3.1:8b` behalten, auf `qwen2.5:7b` wechseln oder den Prüfablauf fest im Code verdrahten, damit die Modellwahl weniger zählt.

@@ -125,8 +125,12 @@ class AgentSettings(BaseModel):
     """Show ``table_summary`` hits to the model; off since RUN-005 (it quoted one as evidence)."""
     min_searches_before_gap: int = Field(default=2, ge=0)
     """Fewer tool calls than this and a "not in the documents" answer is questioned once."""
-    audit_flow_enabled: bool = True
-    """Run the fixed audit flow (plan, search, read, compute) for check questions (ADR-0016)."""
+    audit_flow_enabled: bool = False
+    """Run the fixed audit flow (plan, search, read, compute) for check questions (ADR-0016).
+
+    Off by default: RUN-017 showed no gain (ISS-070, ISS-071); the code stays as a documented
+    negative result and for a later revision.
+    """
     audit_max_checks: int = Field(default=3, ge=1)
     """Quantities the flow checks per question; each one costs two searches and a model call."""
 

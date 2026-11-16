@@ -1,6 +1,6 @@
 # ADR-0016: Fester Prüfablauf im Code und Modellwechsel auf `qwen2.5:7b`
 
-- **Status:** akzeptiert für das Modell (`qwen2.5:7b`); der Prüfablauf ist umgesetzt, aber durch RUN-017 nicht bestätigt (Ergebnis unten, Entscheidung über Überarbeitung oder Abschaltung offen)
+- **Status:** akzeptiert für das Modell (`qwen2.5:7b`); Prüfablauf umgesetzt, durch RUN-017 nicht bestätigt und vom Nutzer am 2026-11-16 standardmäßig abgeschaltet (`audit_flow_enabled=False`), Code und Ergebnis bleiben als Negativergebnis
 - **Datum:** 2026-11-16
 - **Meilenstein:** M6 (M6g)
 - **Ersetzt:** ADR-0013 (Modell) und die verworfene Alternative „fester Prüfablauf“ aus ADR-0015; ADR-0015 bleibt für Wiederholungssperre und Rechennachfrage gültig.
@@ -47,3 +47,6 @@ RUN-012 bis RUN-016 (`docs/evaluation-log.md`), ISS-051, ISS-052, ISS-054, ISS-0
   4. „Nicht gefunden“-Nachrichten führen zur Antwort „Dazu liegen keine Angaben vor“ (G3, G4, Z1) und zur Rückfrage, statt dass das Modell frei weitersucht.
   5. Nach der langen Nachricht antwortet `qwen2.5:7b` in S5 auf Chinesisch.
 - **Was gilt weiter:** Strukturierte Ausgabe liefert gültiges JSON (14 von 14 Plänen und Lesungen parsebar bis auf den Wertefehler in G4); die Herkunftsprüfung hat 3 Zahlen abgelehnt, die nicht im Treffer standen; die Rechnung selbst war immer richtig. Das Problem liegt in Suche und Zuordnung, nicht im Rechnen.
+
+## Folge (Entscheidung des Nutzers nach RUN-017)
+Der Ablauf bleibt im Code (`agent/audit_flow.py`, Tests in `tests/test_audit_flow.py`), ist aber standardmäßig aus. P2 läuft wie in RUN-014: `qwen2.5:7b` mit Wiederholungssperre und Rechennachfrage (ADR-0015). Eine Überarbeitung (Soll- und Ist-Suche nach Dokumentart trennen, verschiedene Treffer verlangen, Größe und Einheit abgleichen, kürzere Nachricht mit Sprachvorgabe) wäre ein eigenes Arbeitspaket mit neuem Messlauf; sie ist nicht geplant. Für die Ausarbeitung: Ein fester Ablauf schützt die Herkunft der Zahlen, ersetzt aber nicht die Qualität von Suche und Zuordnung.
