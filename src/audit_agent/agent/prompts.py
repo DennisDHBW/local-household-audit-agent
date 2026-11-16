@@ -2,7 +2,11 @@
 
 from __future__ import annotations
 
+import re
+
 from audit_agent.retrieval.search import fold
+
+_CITATION = re.compile(r"\[\d+(?:\s*[,;]\s*\d+)*\]")
 
 SYSTEM_PROMPT = """\
 Du prüfst Haushaltsdokumente eines Nutzers (Verträge, Rechnungen, Abrechnungen, \
@@ -52,6 +56,11 @@ GAP_PHRASES = (
 RETRY_BEFORE_GAP_MESSAGE = (
     "Bevor du sagst, dass Angaben fehlen: Suche noch einmal mit anderen Suchbegriffen "
     "(search, search_images) und prüfe mit list_documents, welche Unterlagen es gibt."
+)
+
+CITE_BEFORE_ANSWER_MESSAGE = (
+    "Bevor du antwortest: Nenne zu jeder Zahl die Nummer des Treffers, aus dem sie stammt, "
+    "z. B. [2]. Antworte sonst unverändert."
 )
 
 CALCULATE_BEFORE_ANSWER_MESSAGE = (
@@ -122,6 +131,11 @@ def is_gap_answer(answer: str) -> bool:
     """True if the answer says that the information is not in the documents."""
     folded = fold(answer)
     return any(phrase in folded for phrase in GAP_PHRASES)
+
+
+def has_citation(answer: str) -> bool:
+    """True if the answer names a hit number such as ``[2]`` or ``[1, 4]``."""
+    return _CITATION.search(answer) is not None
 
 
 def is_audit_question(question: str) -> bool:
