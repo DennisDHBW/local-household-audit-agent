@@ -150,3 +150,8 @@
 | Suchwerkzeug | `search` | Einziges Textsuchwerkzeug des Agenten; durchsucht Fließtext und Tabellenzeilen, Filter nur `utility_type` (ADR-0014) | |
 | Gegenstück | `include_counterpart` | Parameter von `search` für Prüffragen: ergänzt je bis zu 2 Treffer aus Vertrag/Preisschreiben bzw. Rechnung, falls die erste Suche nur eine Familie trifft | |
 | Bestandsmeldung | `ToolBox._inventory` | Text bei leerer Suche: nennt Sparten und Dokumentarten, zu denen Unterlagen vorliegen (ISS-051) | |
+| Wiederholungssperre | `seen_calls`, `REPEAT_OBSERVATION`, `ToolCallStep.is_repeat` | Ein Aufruf mit gleichem Werkzeug und gleichen (bereinigten) Argumenten wird in derselben Frage nicht erneut ausgeführt; das Modell bekommt einen Hinweis, der Aufruf zählt zum Limit (ADR-0015) | |
+| Prüffrage | `is_audit_question` | Frage, die eine Rechnung gegen Vertrag, Preisschreiben oder Zählerstände prüfen lässt; erkannt am Wortlaut (korrekt, stimmt, passt, …) | |
+| Rechennachfrage | `CALCULATE_BEFORE_ANSWER_MESSAGE`, `NudgeStep.reason` | Einmalige Rückfrage des Loops, wenn eine Prüffrage ohne `calculate` beantwortet werden soll (ISS-058, ADR-0015) | |
+| Laufzeitauswertung | `scripts/analyze_timing.py` | Zerlegt die P2-Zeit eines Laufs in Prefill und Dekodieren, erste und spätere Modellaufrufe (ISS-057) | |
+| Entladen je Frage | `unloads_after_each_question`, `_unload` | Die Auswertung gibt Chat- und Embedding-Modell nach jeder P1/P2-Frage frei (Schutz vor OOM, ISS-043); führt in RUN-012 und RUN-013 zu rund 90 s Prefill für die erste Anfrage je Frage (ISS-057) | |

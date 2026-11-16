@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-16 – M6e: P2 rechnen und prüfen lassen (Wiederholungssperre, Rechennachfrage)
+**Ziel der Sitzung:** Der Agent soll bei Prüffragen rechnen (ISS-058) und nicht mehr dieselbe Suche wiederholen; Laufzeitursache klären (ISS-057); mit RUN-013 messen.
+**Was wurde gemacht:**
+- Laufzeit zuerst ausgewertet: `scripts/analyze_timing.py` trennt Prefill und Dekodieren je Lauf; die erste Anfrage je Frage hatte in RUN-012 keinen Prompt-Cache
+- Loop: identische Aufrufe werden nicht ausgeführt (`REPEAT_OBSERVATION`, `ToolCallStep.is_repeat`); Prüffrage ohne `calculate` wird einmal nachgefragt (`is_audit_question`, `NudgeStep.reason`); Prompt um Soll-/Ist-Suchhinweis ergänzt; CLI, Streamlit und Bericht zeigen den Status
+- 16 neue Tests mit gescriptetem Chat-Client, ein vorhandener Test an die neue Prüffragen-Erkennung angepasst (288 grün)
+- RUN-013 (P2, 14 Fragen, 73 min) ausgewertet: alle 14 Antworten gelesen, 6 richtig nach Handprüfung (RUN-012: 9); Ollama-Journal ausgewertet (28 Modellladungen)
+**Gelieferte Dateien / Funktionen:** `src/audit_agent/agent/loop.py` (`seen_calls`, Nachfrage), `models.py`, `prompts.py` (`is_audit_question`), `scripts/analyze_timing.py`, `docs/adr/0015-repeat-guard-and-calculate-nudge.md`, `data/eval/run-013/`
+**Entscheidungen:** ADR-0015 (vorgeschlagen): Sperre wirkt, Rechennachfrage bei `llama3.1:8b` ohne Wirkung; ein fester Prüfablauf im Code bleibt als offene Entscheidung; Prompt ohne Beispiele aus dem Testkatalog
+**Probleme / Überraschungen:** ISS-060 (Stichwort-Erkennung grob, Nachfrage wirkungslos), ISS-061 (Antwort besteht aus Werkzeugaufruf als Text), ISS-062 (Rückschritte S2/S4/N2, Streuung unbekannt), ISS-063 (`calculate` mit erfundenen Argumenten), ISS-064 (zwei kleine eigene Fehler vor dem Commit); ISS-057 nur teilweise geklärt: meine erste Erklärung (Entladen je Frage) passte nicht zu RUN-010, ich habe sie vor dem Eintragen korrigiert
+**Offen / unklar:** Streuung zwischen Läufen; ob `qwen2.5:7b` die Nachfrage befolgt; fester Prüfablauf ja oder nein; Laufzeit von RUN-010
+**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**Zeitaufwand:** ca. 2 h Sitzung, dazu Lauf ca. 1 h 15 min Rechenzeit · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `feat(scripts)`, `feat(agent)`, `test(evaluation)`, `docs`
+
 ### 2026-11-16 – M6d: Gegenmaßnahmen für P2 (Suchwerkzeug, Filter, leere Suche)
 **Ziel der Sitzung:** Die Werkzeugprobleme aus RUN-010/011 beheben (ISS-006/007/051/052) und mit einem P2-Lauf auf allen 14 Fragen messen.
 **Was wurde gemacht:**

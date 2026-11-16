@@ -19,6 +19,7 @@ from audit_agent.agent.models import (
     AgentStep,
     EvidenceBook,
     ModelCallStep,
+    NudgeReason,
     NudgeStep,
     StepCallback,
     StopReason,
@@ -26,8 +27,11 @@ from audit_agent.agent.models import (
     ToolInvocation,
 )
 from audit_agent.agent.prompts import (
+    CALCULATE_BEFORE_ANSWER_MESSAGE,
     FORCED_ANSWER_MESSAGE,
+    REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
+    is_audit_question,
     is_gap_answer,
     system_prompt,
 )
@@ -147,9 +151,17 @@ class AgentLoop:
             if on_step is not None:
                 on_step(step, book)
 
+        def nudge(message: Any, reason: NudgeReason, text: str) -> None:
+            messages.extend([message, {"role": "user", "content": text}])
+            emit(NudgeStep(index=len(steps), message=text, reason=reason))
+
         tool_call_count = 0
         forced: StopReason | None = None
         is_gap_questioned = False
+        is_calculate_questioned = False
+        is_calculated = False
+        is_audit = is_audit_question(question)
+        seen_calls: set[tuple[str, str]] = set()
         answer = ""
         stop_reason: StopReason = "answer"
         while True:
@@ -170,8 +182,19 @@ class AgentLoop:
                     and is_gap_answer(answer)
                 ):
                     is_gap_questioned = True
-                    messages += [message, {"role": "user", "content": RETRY_BEFORE_GAP_MESSAGE}]
-                    emit(NudgeStep(index=len(steps), message=RETRY_BEFORE_GAP_MESSAGE))
+                    nudge(message, "gap", RETRY_BEFORE_GAP_MESSAGE)
+                    continue
+                if (
+                    forced is None
+                    and is_audit
+                    and not is_calculated
+                    and not is_calculate_questioned
+                    and tool_call_count > 0
+                    and answer
+                    and not is_gap_answer(answer)
+                ):
+                    is_calculate_questioned = True
+                    nudge(message, "calculate", CALCULATE_BEFORE_ANSWER_MESSAGE)
                     continue
                 stop_reason = forced or ("answer" if answer else "empty_answer")
                 break
@@ -185,8 +208,10 @@ class AgentLoop:
                     )
                     continue
                 tool_call_count += 1
-                tool_step = self._execute(call, book, index=len(steps))
+                tool_step = self._execute(call, book, seen_calls, index=len(steps))
                 emit(tool_step)
+                if tool_step.tool == "calculate" and tool_step.is_valid and not tool_step.is_repeat:
+                    is_calculated = True
                 messages.append(
                     {"role": "tool", "tool_name": tool_step.tool, "content": tool_step.observation}
                 )
@@ -234,12 +259,19 @@ class AgentLoop:
         )
         return response, step
 
-    def _execute(self, call: Any, book: EvidenceBook, index: int) -> ToolCallStep:
-        """Validate the arguments and run the tool; every failure becomes an observation."""
+    def _execute(
+        self, call: Any, book: EvidenceBook, seen: set[tuple[str, str]], index: int
+    ) -> ToolCallStep:
+        """Validate the arguments and run the tool; every failure becomes an observation.
+
+        ``seen`` holds the valid calls of this question (name and validated arguments). A call
+        that was made before is not run again: the model gets ``REPEAT_OBSERVATION`` (ISS-058).
+        """
         name = call.function.name
         raw = dict(call.function.arguments or {})
         started = time.perf_counter()
         is_valid = True
+        is_repeat = False
         hit_numbers: tuple[int, ...] = ()
         tool = self._tools.get(name)
         if tool is None:
@@ -257,12 +289,18 @@ class AgentLoop:
                     f"Richtiger Aufruf: {tool.usage()} (* = Pflicht)."
                 )
             else:
-                try:
-                    result = tool.run(arguments, book)
-                    observation, hit_numbers = result.text, result.hit_numbers
-                except ToolError as error:
-                    is_valid = False
-                    observation = f"FEHLER: {error}"
+                key = (name, arguments.model_dump_json())
+                if key in seen:
+                    is_repeat = True
+                    observation = REPEAT_OBSERVATION
+                else:
+                    seen.add(key)
+                    try:
+                        result = tool.run(arguments, book)
+                        observation, hit_numbers = result.text, result.hit_numbers
+                    except ToolError as error:
+                        is_valid = False
+                        observation = f"FEHLER: {error}"
         return ToolCallStep(
             index=index,
             tool=name,
@@ -271,4 +309,5 @@ class AgentLoop:
             observation=observation,
             seconds=round(time.perf_counter() - started, 2),
             hit_numbers=hit_numbers,
+            is_repeat=is_repeat,
         )

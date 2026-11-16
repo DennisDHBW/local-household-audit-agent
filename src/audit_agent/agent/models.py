@@ -54,14 +54,41 @@ class ToolCallStep(_Frozen):
     observation: str
     seconds: float
     hit_numbers: tuple[int, ...] = ()
+    is_repeat: bool = False
+    """The same tool with the same arguments ran before; the tool was not run again (ISS-058)."""
+
+    @property
+    def state(self) -> str:
+        """Short status for the progress lines: ``ok``, ``FEHLER`` or ``Wiederholung``."""
+        if not self.is_valid:
+            return "FEHLER"
+        return "Wiederholung" if self.is_repeat else "ok"
+
+
+NudgeReason = Literal["gap", "calculate"]
+
+NUDGE_LABELS: dict[NudgeReason, str] = {
+    "gap": "Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen",
+    "calculate": "Rückfrage: Prüffrage ohne calculate beantwortet",
+}
 
 
 class NudgeStep(_Frozen):
-    """The loop questioned a "not in the documents" answer that rested on too few searches."""
+    """The loop questioned an answer before accepting it (see ``NudgeReason``).
+
+    ``gap``: a "not in the documents" answer that rested on too few searches.
+    ``calculate``: an audit question answered without a single ``calculate`` call (ISS-058).
+    """
 
     kind: Literal["nudge"] = "nudge"
     index: int
     message: str
+    reason: NudgeReason = "gap"
+    """Old logs have no reason; they only knew the first kind of question."""
+
+    @property
+    def label(self) -> str:
+        return NUDGE_LABELS[self.reason]
 
 
 AgentStep = ModelCallStep | ToolCallStep | NudgeStep
