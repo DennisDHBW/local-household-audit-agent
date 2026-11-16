@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-060 – Prüffragen-Erkennung nach Stichwörtern und einmalige Rechennachfrage sind grobe Mittel
+- **Datum / Meilenstein:** 2026-11-16 / M6e
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** Ob eine Frage eine Prüffrage ist, entscheidet `is_audit_question` am Wortlaut (korrekt, stimmt, passt, angewendet, abgerechnet, …). Eine Frage wie „Stimmt es, dass die Frist 6 Wochen beträgt?“ würde ebenfalls erkannt, eine Prüffrage ohne diese Wörter nicht. Die Nachfrage „rechne mit `calculate` nach“ kommt höchstens einmal je Frage; das Modell kann sie ignorieren oder falsch rechnen (`llama3.1:8b` scheiterte in RUN-010 an den Argumenten von `calculate`, ISS-054).
+- **Ursache:** Der Loop kennt den Fragetyp nicht. Der Plan sah bewusst keinen festen Prüfablauf im Code vor (ADR-0015), damit der Agent die Werkzeugwahl behält.
+- **Lösung / Workaround:** Keine. Wirkung wird in RUN-013 gemessen (Anzahl `calculate`-Aufrufe, erkannte Fehler, Fehlalarme). Die Erkennung nutzt bewusst nicht `include_counterpart`, weil das Modell dieses Flag in 12 von 17 Suchen auch bei Einzelfragen setzt (RUN-012).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Agent (Grenzen von Nachfragen als Steuerung eines kleinen Modells)
+
 ### ISS-059 – `check_evidence.py` bricht bei Läufen ohne B0 ab (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-16 / M6d (RUN-012)
 - **Kategorie:** ki-assistent
@@ -40,7 +50,7 @@
 - **Status:** offen
 - **Symptom:** In 24 Werkzeugaufrufen über 14 Fragen kein einziger `calculate`-Aufruf. G3 antwortet „Die Gasabrechnung 2026 ist korrekt“ (E2 übersehen), G4 nennt 1.963,28 EUR statt 1.867,50 EUR (E3 übersehen), G1 endet am Kontextlimit, G2 liefert eine Antwort ohne Zahlen. S5 (richtige Abrechnung) wird fälschlich als Abweichung gemeldet. Fehler erkannt: 0 von 3, Fehlalarm 1 von 3. In G1, G3 und G4 stand keine der Sollzahlen im Kontext; bei G2 standen alle drei im Kontext, die Antwort nennt keine.
 - **Ursache:** Mehrere Gründe zugleich: `llama3.1:8b` beendet nach einer Suche (G3, G4), wiederholt bei G1 und G2 dieselbe Suche mit gleichen Argumenten (2 identische Wiederholungen), und die Suchanfrage („Gasabrechnung 2026“) trifft die Preistabellen nicht. Der Prompt verlangt `calculate` für jede Rechnung, das Modell folgt dem nicht (siehe ISS-054).
-- **Lösung / Workaround:** Noch keine. Kandidaten für das nächste Paket: Wiederholung mit gleichen Argumenten abfangen und dem Modell melden; bei Prüffragen den Ablauf (Sollwerte suchen, Istwerte suchen, rechnen) im Code vorgeben oder eine feste Nachfrage nach `calculate` vor der Antwort einbauen; Anfragetext für Prüffragen verbessern.
+- **Lösung / Workaround:** In M6e umgesetzt, Wirkung noch nicht gemessen (ADR-0015, vorgeschlagen): (1) identische Aufrufe werden nicht ausgeführt, das Modell bekommt `REPEAT_OBSERVATION`; (2) eine Prüffrage ohne `calculate`-Aufruf wird vor der Antwort einmal nachgefragt; (3) der Prompt nennt je Prüfgröße getrennte Suchen für Sollwert und Istwert. Ein fester Ablauf im Code wurde bewusst nicht gebaut (ADR-0015). Status bleibt `offen` bis RUN-013 ausgewertet ist.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Agent (Grenzen kleiner Modelle bei mehrstufigen Prüfungen), Evaluation
 
@@ -49,8 +59,8 @@
 - **Kategorie:** hardware
 - **Status:** offen
 - **Symptom:** 263 s je Frage im Mittel (Median 229 s) gegenüber 136 s in RUN-010, bei gleicher mittlerer Prompt-Token-Zahl (5.582 gegen 5.624). Der Lauf dauerte rund 61 Minuten statt 32.
-- **Ursache:** Nicht geklärt. Mögliche Gründe: mehr Generierungstoken je Antwort, Zusatztreffer verteilen sich auf mehr Modellaufrufe, oder Last auf dem Laptop während des Laufs. Die Rohdaten (`p2-*.jsonl`) enthalten Prefill- und Generierungszeit je Aufruf und lassen sich dazu auswerten.
-- **Lösung / Workaround:** Noch keine; beim nächsten Lauf Prefill- und Generierungszeit trennen und die Laptop-Last notieren.
+- **Ursache:** Teilweise geklärt mit `scripts/analyze_timing.py` (M6e). Von +1.760 s Gesamtzeit (3.666 s gegen 1.906 s) entfallen +937 s auf die erste Modellanfrage je Frage (Systemprompt und Werkzeugbeschreibungen, rund 1.700 Token): In RUN-010 dauerte ihr Prefill 3–5 s (11 von 14 Fragen aus dem Prompt-Cache von Ollama), in RUN-012 85–94 s (0 von 14, 18 Token/s ohne Cache; 349 s gegen 1.286 s). Weitere +570 s stammen aus späteren Aufrufen (Prefill 1.032 s gegen 1.602 s bei 50.075 gegen 54.071 Token, 49 gegen 34 Token/s), +114 s aus dem Dekodieren (0,22 gegen 0,31 s je Token); der Rest (ca. 140 s) ist Suche und Sonstiges. Warum der Cache in RUN-012 nie griff, ist nicht geklärt; Vermutungen, nicht geprüft: Last oder Wärmedrosselung auf dem Laptop (Dekodieren und spätere Aufrufe wurden auch langsamer), Ollama verwirft den Cache zwischen den Fragen.
+- **Lösung / Workaround:** Noch keine. Für RUN-013 sichert der Befehl Systemlast vor dem Lauf und das Ollama-Journal (Zeilen zu `slot` und Cache); `analyze_timing.py` vergleicht danach die ersten Aufrufe.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** eher nein (Randnotiz zur Messunsicherheit)
 
