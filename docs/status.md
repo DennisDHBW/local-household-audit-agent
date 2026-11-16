@@ -2,9 +2,9 @@
 
 > Diese Datei liest Claude zu Beginn jeder Sitzung. Kurz halten (max. 1 Seite). Alte Einträge überschreiben; die Historie steht in `dev-journal.md` und in Git.
 
-**Letzte Aktualisierung:** 2026-11-15 (M6c)
+**Letzte Aktualisierung:** 2026-11-16 (M6d)
 **Phase:** 1 – Umsetzung
-**Aktueller Meilenstein:** M6 – Testmodul & Evaluation (M6a, M6b, M6c fertig; Gegenmaßnahmen M6d offen)
+**Aktueller Meilenstein:** M6 – Testmodul & Evaluation (M6a bis M6d fertig; Rechnen und Prüfablauf M6e offen)
 **Version:** v0.2.0 (nach M5)
 
 ## Meilensteine
@@ -17,24 +17,22 @@
 | M3 | Enrichment & Cache | fertig (Reverse-Engineering-Fragen offen) | – |
 | M4 | Embedding & Retrieval (P1) + Evidenz (CLI) | fertig (Reverse-Engineering-Fragen offen) | – |
 | M5 | Agent (P2) mit Tools + Streamlit-Evidenz | fertig (Reverse-Engineering Runde 1 vorbereitet) | v0.2.0 |
-| M6 | Testmodul & Evaluation | M6a–M6c fertig (Nachtläufe ausgewertet); M6d Gegenmaßnahmen offen | v1.0.0 |
+| M6 | Testmodul & Evaluation | M6a–M6d fertig (RUN-012: P2 9 von 14 richtig); M6e Rechnen/Prüfablauf offen | v1.0.0 |
 | M7 | Ausarbeitung (Phase 2, Vorlage unter `paper/`) | offen | – |
 
-## Zuletzt erledigt (M6c)
-- RUN-010 (`llama3.1:8b`) und RUN-011 (`qwen2.5:7b`) vollständig, 8,5 h ohne OOM und ohne Kürzung (ISS-043 gelöst)
-- Alle 84 Antworten gelesen. Richtig nach Handprüfung (B0 / P1 / P2): llama 5 / 5 / 3, qwen 3 / 5 / 2 von 14; kein eingebauter Fehler erkannt
-- Fehleranalyse je Fehlschlag (61): Kontextbudget 14, Retrieval 12, Filter 10, Tool-Wahl 8, Argumente 1, Synthese 16, Parser 0. P2 ist schlechter als P1, 18 von 23 P2-Fehlschlägen kommen aus Werkzeugentwurf und Filtern
-- `scripts/check_evidence.py` (`evidence.json`): standen die Sollfakten im Kontext?
-- RAGAS-Stichprobe (12 Antworten): im Einzelfall unzuverlässig (ISS-053); Metrik bei „ja“-Urteilen zu großzügig (ISS-050)
-- ADR-0013: Agent-Modell `llama3.1:8b` (akzeptiert), `qwen2.5:7b` bleibt Bewerter
+## Zuletzt erledigt (M6d)
+- Ein Suchwerkzeug `search` über Text und Tabellen, Filter nur nach Sparte, `include_counterpart` für Prüffragen, leere Suche nennt den Bestand statt ungefiltert zu wiederholen (ADR-0014; ISS-006/007/051/052 gelöst)
+- RUN-012 (P2, `llama3.1:8b`, 14 Fragen, 61 min): richtig nach Handprüfung 9 von 14 (RUN-010: 3), 0 von 24 Werkzeugaufrufen ungültig (13 von 37), Negativfragen 2 von 2; einzelner Lauf, Streuung nicht gemessen
+- Offen geblieben: Fehler erkannt 0 von 3, Fehlalarm 1 von 3 (S5); `calculate` wurde nie aufgerufen (ISS-058); Laufzeit 263 s statt 136 s je Frage (ISS-057)
+- `scripts/check_evidence.py` läuft jetzt auch für reine P2-Läufe (ISS-059)
 
 ## Nächstes Arbeitspaket
-M6d – Gegenmaßnahmen für P2 bauen und messen. Reihenfolge nach Wirkung: (1) Filter nicht mehr dem Modell überlassen bzw. bei Prüffragen Vergleichsdokumente mitsuchen (ISS-007), (2) ein Suchwerkzeug über Text und Tabellen, danach `expected_tools` im Katalog anpassen (ISS-006/052), (3) leere gefilterte Suche meldet „keine Treffer“ statt ungefiltert zu wiederholen (ISS-051). Danach ein P2-Lauf mit `llama3.1:8b` auf 14 Fragen (ca. 35 min, vom Nutzer) und Vergleich mit RUN-010. Zuerst Plan vorlegen, auch zur Frage, ob (1) bis (3) in ein Paket passen.
+M6e – P2 rechnen und prüfen lassen (ISS-058). Plan zuerst vorlegen. Ansatzpunkte: (1) gleiche Suche mit gleichen Argumenten abfangen und dem Modell melden, (2) für Prüffragen einen festen Ablauf im Code (Sollwerte suchen, Istwerte suchen, `calculate`) oder eine Nachfrage nach `calculate` vor der Antwort, (3) bessere Suchanfragen für G1/G3/G4 (Sollzahlen standen nie im Kontext), (4) Laufzeit klären (ISS-057: Prefill gegen Generierung je Aufruf). Danach P2-Lauf auf 14 Fragen (ca. 60 min, vom Nutzer) und Vergleich mit RUN-012.
 
 **Empfohlenes Modell:** Sonnet 5.5, Effort High (anspruchsvoller Code: Werkzeuge, ReAct-Schleife)
 
 ## Nächste Schritte
-1. M6d (Gegenmaßnahmen P2), danach Gegenprobe P2 mit `qwen2.5:7b` (ca. 70 min, ADR-0013)
+1. M6e (Rechnen und Prüfablauf P2), danach Gegenprobe P2 mit `qwen2.5:7b` (ca. 70 min, ADR-0013)
 2. P1: mehr Treffer oder gezieltere Suchanfrage (12 Retrieval-Fehlschläge), Zitierpflicht P2, Hierarchie-Boost entscheiden; Reverse-Engineering M6, Tag v1.0.0
 3. Reverse-Engineering zu M2 bis M5 beantworten, O-Ton für M0 bis M6c nachtragen
 
@@ -45,7 +43,7 @@ M6d – Gegenmaßnahmen für P2 bauen und messen. Reihenfolge nach Wirkung: (1) 
 - Titelblatt-Angaben für `paper/` (Name, Matrikelnummer, Kurs, Dozent)
 
 ## Bekannte Probleme / Risiken (Details in `issues-log.md`)
-- ISS-051/052/006/007/036: Agent verliert Belege durch Werkzeugtrennung, eigene Filter und Wiederholung ohne Filter
+- ISS-058: P2 ruft `calculate` nie auf, Abrechnungsfehler bleiben unerkannt; ISS-057: P2-Laufzeit fast verdoppelt, Ursache offen; ISS-036 wie bisher (ISS-006/007/051/052 gelöst in M6d)
 - ISS-054: `qwen2.5:7b` sagt immer „ja“, `llama3.1:8b` scheitert an `calculate` und zitiert kaum
 - ISS-050/038: „richtig laut Metrik“ nur mit Handprüfung verwenden; ISS-053/047/046/045: RAGAS nur als zweite Sicht
 - ISS-039: B0 sieht nur Stromdokumente (01–06); ISS-029: S4 (Diagramm) findet keine Variante

@@ -102,7 +102,7 @@
 | MRR | `mean_reciprocal_rank` | Mittelwert von 1/Rang der ersten richtigen Quelle; 1.0 heißt immer auf Platz 1 | |
 | Agentenschleife | `AgentLoop` | Ruft das Modell, führt dessen Tool-Aufrufe aus, gibt die Beobachtungen zurück und wiederholt das bis zur Antwort oder zum Limit | |
 | Werkzeug (Agent) | `AgentTool` | Name, Beschreibung, Argumentmodell und Funktion eines Tools; erzeugt auch das JSON-Schema für Ollama | |
-| Werkzeugkasten | `ToolBox` | Baut die sechs Tools aus Einstellungen, Suche und Dokumentkatalog | |
+| Werkzeugkasten | `ToolBox` | Baut die fünf Tools aus Einstellungen, Suche und Dokumentkatalog | |
 | Beobachtung | `observation` | Text, den ein Tool an das Modell zurückgibt (Treffer, Liste, Rechenergebnis oder `FEHLER:`) | |
 | Belegnummer | `EvidenceBook` | Laufende Nummer `[n]` je gefundenem Chunk in einem Lauf; das Modell zitiert sie, die Oberfläche zeigt sie | |
 | Schritt | `ModelCallStep`, `ToolCallStep` | Ein Modellaufruf (mit Token und Zeiten) oder ein Tool-Aufruf (mit Argumenten und Beobachtung) im Log | |
@@ -147,3 +147,6 @@
 | Reine Lückenantwort | `is_gap_only`, `GAP_ANSWER` | Antwort, die nur aus dem Satz „Dazu liegen in den Unterlagen keine Angaben vor.“ besteht | |
 | Hauptursache eines Fehlschlags | – | Von Hand vergebene Klasse je falscher Antwort: Kontextbudget, Retrieval, Tool-Wahl, Filter, Argumente, Synthese, Parser (evaluation-log, RUN-010/011) | |
 | Handprüfung | – | Lesen jeder Antwort gegen Ground Truth und Belege; korrigiert „richtig laut Metrik“ zu „richtig nach Handprüfung“ (ISS-050) | |
+| Suchwerkzeug | `search` | Einziges Textsuchwerkzeug des Agenten; durchsucht Fließtext und Tabellenzeilen, Filter nur `utility_type` (ADR-0014) | |
+| Gegenstück | `include_counterpart` | Parameter von `search` für Prüffragen: ergänzt je bis zu 2 Treffer aus Vertrag/Preisschreiben bzw. Rechnung, falls die erste Suche nur eine Familie trifft | |
+| Bestandsmeldung | `ToolBox._inventory` | Text bei leerer Suche: nennt Sparten und Dokumentarten, zu denen Unterlagen vorliegen (ISS-051) | |

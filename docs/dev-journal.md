@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-16 – M6d: Gegenmaßnahmen für P2 (Suchwerkzeug, Filter, leere Suche)
+**Ziel der Sitzung:** Die Werkzeugprobleme aus RUN-010/011 beheben (ISS-006/007/051/052) und mit einem P2-Lauf auf allen 14 Fragen messen.
+**Was wurde gemacht:**
+- `search_documents` und `search_tables` zu einem Werkzeug `search` zusammengeführt; Katalog und Metrik angepasst
+- Modell filtert nur noch nach Sparte; `doc_type` und Jahr entfallen. Neuer Parameter `include_counterpart` holt bei Prüffragen Vertrag bzw. Rechnung nach
+- Leere Suche wird nicht mehr ohne Filter wiederholt, sondern nennt den Bestand
+- Prompts angepasst, Tests umgeschrieben und ergänzt (272 grün), `check_evidence.py` für reine P2-Läufe repariert
+- RUN-012 (P2, 14 Fragen, 61 min) ausgewertet: alle 14 Antworten gelesen, 9 richtig nach Handprüfung (RUN-010: 3); Ursachen der 5 Fehlschläge zugeordnet
+**Gelieferte Dateien / Funktionen:** `src/audit_agent/agent/tools.py` (`search`, `_counterpart_hits`, `_inventory`), `prompts.py`, `dataset/ground_truth.yaml`, `scripts/check_evidence.py`, `docs/adr/0014-search-tool-and-filter-policy.md`, `data/eval/run-012/`
+**Entscheidungen:** ADR-0014 (ein Suchwerkzeug, Filter nur Sparte, keine Wiederholung ohne Filter); Variante B (Sparte bleibt) statt kein Filter, auf Claudes Vorschlag
+**Probleme / Überraschungen:** ISS-058 (`calculate` wird nie aufgerufen, Abrechnungsfehler bleiben unerkannt), ISS-057 (Laufzeit fast verdoppelt bei gleicher Token-Zahl, Ursache offen), ISS-059 (eigener Fehler: Skript brach bei Läufen ohne B0 ab); beim ersten Umbau gingen `_outline` und `_calculate` durch einen zu weiten Schnitt verloren, die Tests meldeten es sofort
+**Offen / unklar:** Streuung zwischen Läufen; welche der Maßnahmen wie viel bringt; Gegenprobe mit `qwen2.5:7b`; Laufzeitursache
+**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**Zeitaufwand:** ca. 1 h Sitzung, dazu Lauf ca. 1 h Rechenzeit · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `feat(agent)`, `docs`
+
 ### 2026-11-15 – M6c: Nachtläufe RUN-010/011 auswerten
 **Ziel der Sitzung:** Die Nachtläufe mit beiden Modellen auswerten: jede falsche Antwort einer Ursache zuordnen, RAGAS-Stichproben von Hand prüfen, das Agent-Modell entscheiden.
 **Was wurde gemacht:**

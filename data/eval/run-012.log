@@ -1,0 +1,45 @@
+
+== P2 Agent S1: Welche Kündigungsfrist gilt für den Gasvertrag und bis wann läuft die Erstlaufzeit?
+   184.8 s: Die Kündigungsfrist für den Gasvertrag beträgt 6 Wochen zum Ablauf der Erstvertragslaufzeit in Textform, anschließend unbefristet mit 1 Monat Kündigungsfrist. Die Erstvertragslaufzeit beträgt 24 Monat
+
+== P2 Agent S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   193.1 s: Der Arbeitspreis beträgt 29,24 ct/kWh (netto) bzw. 34,80 ct/kWh (brutto) und der Grundpreis beträgt 115,97 EUR (netto) bzw. 138,00 EUR (brutto) pro Jahr.
+
+== P2 Agent S3: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
+   305.3 s: Der Wasserverbrauch 2025 betrug 74 m³.
+
+== P2 Agent S4: Wie hoch war der Stromverbrauch 2022 und 2023?
+   313.2 s: Der Stromverbrauch 2022 betrug 3.480 kWh/Jahr (Balkendiagramm in [2]). Der Stromverbrauch 2023 betrug 3.390 kWh/Jahr (Balkendiagramm in [2]). Der Stromverbrauch im 1. Halbjahr 2025 betrug 1.470 kWh (T
+
+== P2 Agent S5: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
+   224.9 s: Die Stromabrechnung 2024 stimmt nicht mit den Vertragspreisen überein. Der Rechnungsbetrag für die Stromlieferung 2024 beträgt 1.189,00 EUR, während der Vertrag eine eingeschränkte Preisgarantie bis 3
+
+== P2 Agent G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   633.6 s: Es tut mir leid, aber ich kann keine Antwort geben, da ich keine Werkzeugaufrufe mehr habe. Ich bin jedoch bereit, eine Antwort zu geben, wenn du mir erlaubst, die Unterlagen noch einmal zu überprüfen
+
+== P2 Agent G2: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
+   295.9 s: Es gibt Unterlagen für die Jahre 2024, 2025 und 2026. Ich habe bereits alle relevanten Treffer gefunden.
+
+== P2 Agent G3: Ist die Gasabrechnung 2026 korrekt?
+   213.7 s: Die Gasabrechnung 2026 ist korrekt.
+
+Der Rechnungsbetrag für die Erdgaslieferung 2026 beträgt 1.367,99 EUR brutto (Tabelle [2]). Der monatliche Abschlag ab 15.02.2027 beträgt 125,00 EUR brutto (Tabell
+
+== P2 Agent G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   165.8 s: Dein Anteil an den Betriebskosten 2026 beträgt 1.963,28 EUR brutto (26,28 %).
+
+== P2 Agent N1: Wie hoch war meine Stromrechnung 2023?
+   269.9 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent N2: Welchen Grundpreis zahle ich für Fernwärme?
+   297.9 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+   233.0 s: Der abgerechnete Gasverbrauch 2025 ist 1.200 m³, wie in [1] angegeben. Der Zählerstand am 01.01.2025 war 8.120 m³ und am 31.12.2025 war er 9.320 m³, was einem Gesamtverbrauch von 1.200 m³ entspricht. 
+
+== P2 Agent Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+   174.0 s: Dein aktueller monatlicher Stromabschlag beträgt 120,00 EUR brutto (11 Abschläge von Februar bis Dezember 2026, jeweils zum 15. des Monats).
+
+== P2 Agent Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+   170.7 s: Die Kündigungsfrist für den Stromvertrag beträgt 1 Monat zum Ablauf der Erstvertragslaufzeit in Textform, danach unbefristet mit 1 Monat Frist kündbar.
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-012/report.md

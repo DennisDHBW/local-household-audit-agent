@@ -89,7 +89,7 @@ def main(argv: list[str] | None = None) -> int:
     run_dir = settings.eval_dir / args.run_id
     questions = {q.id: q for q in load_ground_truth(settings.ground_truth_file).questions}
     manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
-    full_text_files = set(manifest["b0_context"]["complete_files"])
+    full_text_files = set(manifest.get("b0_context", {}).get("complete_files", []))
     ragas = {score.key: score for score in load_ragas_scores(ragas_path(run_dir))}
 
     rows = []
