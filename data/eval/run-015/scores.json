@@ -1,0 +1,509 @@
+{
+  "summaries": [
+    {
+      "variant": "p2",
+      "question_count": 14,
+      "correct_count": 5,
+      "facts_found": 8,
+      "facts_total": 27,
+      "cited_count": 4,
+      "invalid_citations": 0,
+      "cited_expected": 1,
+      "expected_count": 18,
+      "expected_cited": 1,
+      "cited_distractors": 0,
+      "shown_count": 112,
+      "shown_distractors": 1,
+      "tools_ok_count": 8,
+      "filtered_searches": 24,
+      "filter_misses": 5,
+      "negatives_detected": 1,
+      "negative_count": 2,
+      "errors_detected": 2,
+      "error_count": 3,
+      "false_alarms": 1,
+      "correct_bill_count": 3,
+      "seconds_mean": 325.3,
+      "seconds_median": 299.4,
+      "prompt_tokens_mean": 8819.0
+    }
+  ],
+  "ragas": [],
+  "scores": [
+    {
+      "variant": "p2",
+      "question_id": "S1",
+      "category": "standard",
+      "is_answerable": true,
+      "facts_total": 3,
+      "missing_facts": [],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 2,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 7,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search"
+      ],
+      "called_tools": [
+        "search"
+      ],
+      "filtered_searches": 1,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": null,
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 186.9,
+      "prompt_tokens": 3417
+    },
+    {
+      "variant": "p2",
+      "question_id": "S2",
+      "category": "standard",
+      "is_answerable": true,
+      "facts_total": 2,
+      "missing_facts": [
+        "Arbeitspreis brutto",
+        "Grundpreis brutto"
+      ],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 1,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 7,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search"
+      ],
+      "called_tools": [
+        "search"
+      ],
+      "filtered_searches": 1,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": null,
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 193.6,
+      "prompt_tokens": 3600
+    },
+    {
+      "variant": "p2",
+      "question_id": "S3",
+      "category": "standard",
+      "is_answerable": true,
+      "facts_total": 1,
+      "missing_facts": [],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 1,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 5,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search"
+      ],
+      "called_tools": [
+        "search"
+      ],
+      "filtered_searches": 1,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": null,
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 161.4,
+      "prompt_tokens": 3181
+    },
+    {
+      "variant": "p2",
+      "question_id": "S4",
+      "category": "standard",
+      "is_answerable": true,
+      "facts_total": 2,
+      "missing_facts": [
+        "Stromverbrauch 2022",
+        "Stromverbrauch 2023"
+      ],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 1,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 11,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search_images"
+      ],
+      "called_tools": [
+        "search_images",
+        "list_documents",
+        "list_documents",
+        "search"
+      ],
+      "filtered_searches": 1,
+      "filter_misses": 0,
+      "admits_gap": true,
+      "expected_verdict": null,
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 344.2,
+      "prompt_tokens": 11150
+    },
+    {
+      "variant": "p2",
+      "question_id": "S5",
+      "category": "standard",
+      "is_answerable": true,
+      "facts_total": 2,
+      "missing_facts": [
+        "Abrechnung korrekt"
+      ],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 2,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 14,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search",
+        "calculate"
+      ],
+      "called_tools": [
+        "search",
+        "search",
+        "search"
+      ],
+      "filtered_searches": 3,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": "ja",
+      "answer_verdict": "nein",
+      "stop_reason": "answer",
+      "seconds": 595.7,
+      "prompt_tokens": 13730
+    },
+    {
+      "variant": "p2",
+      "question_id": "G1",
+      "category": "edge_case",
+      "is_answerable": true,
+      "facts_total": 3,
+      "missing_facts": [
+        "Angekündigter Arbeitspreis",
+        "Abgerechneter Arbeitspreis",
+        "Zu viel berechnet"
+      ],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 2,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 14,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search",
+        "calculate"
+      ],
+      "called_tools": [
+        "search",
+        "search",
+        "search_images"
+      ],
+      "filtered_searches": 2,
+      "filter_misses": 0,
+      "admits_gap": true,
+      "expected_verdict": "nein",
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 410.4,
+      "prompt_tokens": 12181
+    },
+    {
+      "variant": "p2",
+      "question_id": "G2",
+      "category": "edge_case",
+      "is_answerable": true,
+      "facts_total": 3,
+      "missing_facts": [
+        "Wohnflächenanteil",
+        "Anteil Betriebskosten 2025",
+        "Guthaben"
+      ],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 2,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 10,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search",
+        "calculate"
+      ],
+      "called_tools": [
+        "search",
+        "search",
+        "search_images",
+        "list_documents"
+      ],
+      "filtered_searches": 2,
+      "filter_misses": 2,
+      "admits_gap": true,
+      "expected_verdict": "ja",
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 367.7,
+      "prompt_tokens": 13275
+    },
+    {
+      "variant": "p2",
+      "question_id": "G3",
+      "category": "edge_case",
+      "is_answerable": true,
+      "facts_total": 3,
+      "missing_facts": [
+        "Korrekte z-Zahl",
+        "Korrekte Energiemenge",
+        "Zu viel berechnet"
+      ],
+      "cited_count": 4,
+      "invalid_citations": 0,
+      "cited_expected": 1,
+      "expected_count": 2,
+      "expected_cited": 1,
+      "cited_distractors": 0,
+      "shown_count": 11,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search",
+        "calculate"
+      ],
+      "called_tools": [
+        "search",
+        "search"
+      ],
+      "filtered_searches": 2,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": "nein",
+      "answer_verdict": "nein",
+      "stop_reason": "answer",
+      "seconds": 446.5,
+      "prompt_tokens": 9524
+    },
+    {
+      "variant": "p2",
+      "question_id": "G4",
+      "category": "edge_case",
+      "is_answerable": true,
+      "facts_total": 3,
+      "missing_facts": [
+        "Wohnfläche laut Mietvertrag",
+        "Abgerechnete Wohnfläche",
+        "Korrekter Anteil"
+      ],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 2,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 6,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search",
+        "calculate"
+      ],
+      "called_tools": [
+        "search",
+        "list_documents",
+        "search",
+        "search",
+        "calculate"
+      ],
+      "filtered_searches": 3,
+      "filter_misses": 3,
+      "admits_gap": false,
+      "expected_verdict": "nein",
+      "answer_verdict": "nein",
+      "stop_reason": "tool_limit",
+      "seconds": 635.7,
+      "prompt_tokens": 22192
+    },
+    {
+      "variant": "p2",
+      "question_id": "N1",
+      "category": "negative",
+      "is_answerable": false,
+      "facts_total": 0,
+      "missing_facts": [],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 0,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 7,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "list_documents"
+      ],
+      "called_tools": [
+        "search",
+        "list_documents",
+        "search",
+        "search_images"
+      ],
+      "filtered_searches": 3,
+      "filter_misses": 0,
+      "admits_gap": true,
+      "expected_verdict": null,
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 290.0,
+      "prompt_tokens": 9880
+    },
+    {
+      "variant": "p2",
+      "question_id": "N2",
+      "category": "negative",
+      "is_answerable": false,
+      "facts_total": 0,
+      "missing_facts": [],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 0,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 5,
+      "shown_distractors": 1,
+      "expected_tools": [
+        "list_documents"
+      ],
+      "called_tools": [
+        "search",
+        "list_documents",
+        "search"
+      ],
+      "filtered_searches": 1,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": null,
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 268.0,
+      "prompt_tokens": 7284
+    },
+    {
+      "variant": "p2",
+      "question_id": "Z1",
+      "category": "additional",
+      "is_answerable": true,
+      "facts_total": 3,
+      "missing_facts": [
+        "z-Zahl",
+        "Energiemenge"
+      ],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 1,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 5,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search",
+        "calculate"
+      ],
+      "called_tools": [
+        "search",
+        "search"
+      ],
+      "filtered_searches": 2,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": "ja",
+      "answer_verdict": "ja",
+      "stop_reason": "answer",
+      "seconds": 308.9,
+      "prompt_tokens": 7602
+    },
+    {
+      "variant": "p2",
+      "question_id": "Z2",
+      "category": "additional",
+      "is_answerable": true,
+      "facts_total": 1,
+      "missing_facts": [],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 1,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 5,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "list_documents",
+        "search"
+      ],
+      "called_tools": [
+        "search"
+      ],
+      "filtered_searches": 1,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": null,
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 173.6,
+      "prompt_tokens": 3279
+    },
+    {
+      "variant": "p2",
+      "question_id": "Z3",
+      "category": "additional",
+      "is_answerable": true,
+      "facts_total": 1,
+      "missing_facts": [],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 1,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 5,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "search"
+      ],
+      "called_tools": [
+        "search"
+      ],
+      "filtered_searches": 1,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": null,
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 171.2,
+      "prompt_tokens": 3165
+    }
+  ]
+}
