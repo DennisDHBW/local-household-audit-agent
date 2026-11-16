@@ -12,6 +12,7 @@ import time
 from collections.abc import Mapping
 from typing import Any, Protocol
 
+from ollama import Message
 from pydantic import ValidationError
 
 from audit_agent.agent.models import (
@@ -29,12 +30,14 @@ from audit_agent.agent.models import (
 from audit_agent.agent.prompts import (
     CALCULATE_BEFORE_ANSWER_MESSAGE,
     FORCED_ANSWER_MESSAGE,
+    REPEAT_FAILED_OBSERVATION,
     REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
     is_audit_question,
     is_gap_answer,
     system_prompt,
 )
+from audit_agent.agent.text_calls import TextCall, parse_text_call
 from audit_agent.agent.tools import AgentTool, ToolError, clean_arguments
 from audit_agent.config import Settings
 
@@ -114,6 +117,24 @@ def model_call_step(
     )
 
 
+def _native_call(call: TextCall) -> Any:
+    """A text call in the shape of a native one, so that the loop treats both the same."""
+    function = Message.ToolCall.Function(name=call.name, arguments=call.arguments)
+    return Message.ToolCall(function=function)
+
+
+class _CallMemory:
+    """The calls of one question: what ran (``valid``) and what failed (``failed``).
+
+    A valid call is identified by its tool and validated arguments, a failed one by its tool
+    and cleaned raw arguments (they never became a validated model). Neither is run twice.
+    """
+
+    def __init__(self) -> None:
+        self.valid: set[tuple[str, str]] = set()
+        self.failed: set[tuple[str, str]] = set()
+
+
 def _validation_summary(error: ValidationError) -> str:
     parts = []
     for item in error.errors():
@@ -161,7 +182,7 @@ class AgentLoop:
         is_calculate_questioned = False
         is_calculated = False
         is_audit = is_audit_question(question)
-        seen_calls: set[tuple[str, str]] = set()
+        memory = _CallMemory()
         answer = ""
         stop_reason: StopReason = "answer"
         while True:
@@ -173,6 +194,11 @@ class AgentLoop:
             emit(model_step)
             message = response.message
             calls = [] if forced is not None else _invocations(message)
+            is_text_call = False
+            if not calls and forced is None:
+                text_call = parse_text_call(message.content or "", self._tools)
+                if text_call is not None:
+                    calls, is_text_call = [_native_call(text_call)], True
             if not calls:
                 answer = (message.content or "").strip()
                 if (
@@ -208,7 +234,7 @@ class AgentLoop:
                     )
                     continue
                 tool_call_count += 1
-                tool_step = self._execute(call, book, seen_calls, index=len(steps))
+                tool_step = self._execute(call, book, memory, len(steps), is_text_call)
                 emit(tool_step)
                 if tool_step.tool == "calculate" and tool_step.is_valid and not tool_step.is_repeat:
                     is_calculated = True
@@ -260,12 +286,13 @@ class AgentLoop:
         return response, step
 
     def _execute(
-        self, call: Any, book: EvidenceBook, seen: set[tuple[str, str]], index: int
+        self, call: Any, book: EvidenceBook, memory: _CallMemory, index: int, is_text_call: bool
     ) -> ToolCallStep:
         """Validate the arguments and run the tool; every failure becomes an observation.
 
-        ``seen`` holds the valid calls of this question (name and validated arguments). A call
-        that was made before is not run again: the model gets ``REPEAT_OBSERVATION`` (ISS-058).
+        A call that ran before, or that failed before with the same arguments, is not run
+        again: the model gets ``REPEAT_OBSERVATION`` or ``REPEAT_FAILED_OBSERVATION``
+        (ISS-058, ISS-063).
         """
         name = call.function.name
         raw = dict(call.function.arguments or {})
@@ -274,32 +301,38 @@ class AgentLoop:
         is_repeat = False
         hit_numbers: tuple[int, ...] = ()
         tool = self._tools.get(name)
+        failed_key = (name, json.dumps(clean_arguments(raw), sort_keys=True, default=str))
         if tool is None:
             is_valid = False
             observation = (
                 f"FEHLER: Unbekanntes Werkzeug {name!r}. Verfügbar: {', '.join(self._tools)}."
             )
+        elif failed_key in memory.failed:
+            is_valid, is_repeat = False, True
+            observation = REPEAT_FAILED_OBSERVATION
         else:
             try:
                 arguments = tool.arguments.model_validate(clean_arguments(raw))
             except ValidationError as error:
                 is_valid = False
+                memory.failed.add(failed_key)
                 observation = (
                     f"FEHLER: Ungültige Argumente für {name}: {_validation_summary(error)}. "
                     f"Richtiger Aufruf: {tool.usage()} (* = Pflicht)."
                 )
             else:
                 key = (name, arguments.model_dump_json())
-                if key in seen:
+                if key in memory.valid:
                     is_repeat = True
                     observation = REPEAT_OBSERVATION
                 else:
-                    seen.add(key)
+                    memory.valid.add(key)
                     try:
                         result = tool.run(arguments, book)
                         observation, hit_numbers = result.text, result.hit_numbers
                     except ToolError as error:
                         is_valid = False
+                        memory.failed.add(failed_key)
                         observation = f"FEHLER: {error}"
         return ToolCallStep(
             index=index,
@@ -310,4 +343,5 @@ class AgentLoop:
             seconds=round(time.perf_counter() - started, 2),
             hit_numbers=hit_numbers,
             is_repeat=is_repeat,
+            is_text_call=is_text_call,
         )

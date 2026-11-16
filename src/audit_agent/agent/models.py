@@ -55,13 +55,15 @@ class ToolCallStep(_Frozen):
     seconds: float
     hit_numbers: tuple[int, ...] = ()
     is_repeat: bool = False
-    """The same tool with the same arguments ran before; the tool was not run again (ISS-058)."""
+    """The same call (valid or failed) was made before; it was not run again (ISS-058, ISS-063)."""
+    is_text_call: bool = False
+    """The model wrote the call as text in its message, not as a native tool call (ISS-061)."""
 
     @property
     def state(self) -> str:
         """Short status for the progress lines: ``ok``, ``FEHLER`` or ``Wiederholung``."""
         if not self.is_valid:
-            return "FEHLER"
+            return "FEHLER (Wiederholung)" if self.is_repeat else "FEHLER"
         return "Wiederholung" if self.is_repeat else "ok"
 
 

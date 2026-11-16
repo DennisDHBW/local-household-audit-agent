@@ -23,6 +23,7 @@ from audit_agent.agent.prompts import (
     CALCULATE_BEFORE_ANSWER_MESSAGE,
     FORCED_ANSWER_MESSAGE,
     GAP_ANSWER,
+    REPEAT_FAILED_OBSERVATION,
     REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
     is_audit_question,
@@ -268,6 +269,120 @@ def test_other_arguments_or_tools_are_no_repeat():
     # Assert
     tool_steps = [step for step in run.steps if isinstance(step, ToolCallStep)]
     assert [step.is_repeat for step in tool_steps] == [False, False, False]
+
+
+TEXT_CALL = 'Ich werde danach suchen. {"name": "search", "parameters": {"query": "Abschlag"}}'
+
+
+def test_tool_call_written_as_text_is_run_like_a_native_call():
+    # Arrange: S5 of RUN-013 ended its message with the call as text
+    backend = FakeBackend(lambda query, options: [make_hit()])
+    loop, chat = _loop(
+        [answer_reply(TEXT_CALL), answer_reply("34,80 ct/kWh [1].")], backend=backend
+    )
+
+    # Act
+    run = loop.run("Wie hoch ist der Arbeitspreis?")
+
+    # Assert
+    tool_step = next(step for step in run.steps if isinstance(step, ToolCallStep))
+    assert tool_step.tool == "search" and tool_step.is_valid and tool_step.is_text_call
+    assert tool_step.arguments == {"query": "Abschlag"} and tool_step.hit_numbers == (1,)
+    assert backend.calls[0][0] == "Abschlag"
+    assert run.tool_call_count == 1 and run.answer == "34,80 ct/kWh [1]."
+    assert run.sources[0].number == 1 and run.stop_reason == "answer"
+    last_message = chat.requests[1]["messages"][-1]
+    assert last_message["role"] == "tool" and last_message["tool_name"] == "search"
+
+
+def test_native_calls_are_no_text_calls():
+    # Arrange
+    loop, _ = _loop([tool_reply(SEARCH), answer_reply("Fertig.")])
+
+    # Act
+    run = loop.run("Frage?")
+
+    # Assert
+    assert [step.is_text_call for step in run.steps if isinstance(step, ToolCallStep)] == [False]
+
+
+def test_text_that_is_no_valid_call_stays_the_answer():
+    # Arrange: unknown tool, and a call text after the tool limit (no tools are offered then)
+    unknown = [answer_reply('{"name": "web_search", "parameters": {"query": "a"}}')]
+    at_limit = [tool_reply(SEARCH), answer_reply(TEXT_CALL)]
+
+    # Act
+    unknown_run = _loop(unknown)[0].run("Frage?")
+    limit_run = _loop(at_limit, agent=AgentSettings(max_tool_calls=1))[0].run("Frage?")
+
+    # Assert
+    assert unknown_run.tool_call_count == 0 and unknown_run.answer.startswith("{")
+    assert limit_run.tool_call_count == 1 and limit_run.answer == TEXT_CALL
+    assert limit_run.stop_reason == "tool_limit"
+
+
+def test_text_call_counts_against_the_limit_and_the_repeat_guard():
+    # Arrange: the same call as native call, then as text
+    replies = [tool_reply(("search", {"query": "Abschlag"})), answer_reply(TEXT_CALL)]
+    replies.append(answer_reply("Fertig."))
+    loop, _ = _loop(replies)
+
+    # Act
+    run = loop.run("Frage?")
+
+    # Assert
+    first, second = [step for step in run.steps if isinstance(step, ToolCallStep)]
+    assert not first.is_repeat and second.is_repeat and second.is_text_call
+    assert run.tool_call_count == 2
+
+
+def test_identical_invalid_call_is_not_answered_with_the_same_error_again():
+    # Arrange: G4 of RUN-013 called calculate twice with the same wrong arguments
+    wrong = ("calculate", {"a": "1.963,28", "b": "-1.920,00"})
+    other_wrong = ("calculate", {"a": "1", "b": "2"})
+    replies = [tool_reply(wrong), tool_reply(wrong), tool_reply(other_wrong), answer_reply("Ok.")]
+    loop, chat = _loop(replies)
+
+    # Act
+    run = loop.run("Frage?")
+
+    # Assert
+    first, second, third = [step for step in run.steps if isinstance(step, ToolCallStep)]
+    assert not first.is_valid and not first.is_repeat and first.state == "FEHLER"
+    assert "expression" in first.observation
+    assert not second.is_valid and second.is_repeat and second.state == "FEHLER (Wiederholung)"
+    assert second.observation == REPEAT_FAILED_OBSERVATION
+    assert not third.is_repeat and "expression" in third.observation
+    assert run.tool_call_count == 3
+    assert chat.requests[2]["messages"][-1]["content"] == REPEAT_FAILED_OBSERVATION
+
+
+def test_repeated_tool_error_is_blocked_and_a_corrected_call_runs():
+    # Arrange
+    missing = ("get_document_outline", {"filename": "gibtesnicht"})
+    calculate_wrong = ("calculate", {"a": "6", "b": "2"})
+    calculate_right = ("calculate", {"a": "6", "b": "2", "operator": "/"})
+    replies = [
+        tool_reply(missing),
+        tool_reply(missing),
+        tool_reply(calculate_wrong),
+        tool_reply(calculate_right),
+        answer_reply("3."),
+    ]
+    loop, _ = _loop(replies)
+
+    # Act
+    run = loop.run("Frage?")
+
+    # Assert
+    steps = [step for step in run.steps if isinstance(step, ToolCallStep)]
+    assert [(s.is_valid, s.is_repeat) for s in steps] == [
+        (False, False),
+        (False, True),
+        (False, False),
+        (True, False),
+    ]
+    assert steps[3].observation == "6 / 2 = 3"
 
 
 def test_audit_question_answered_without_calculate_is_questioned_once():

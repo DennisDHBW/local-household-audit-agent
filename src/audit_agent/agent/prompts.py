@@ -65,6 +65,11 @@ REPEAT_OBSERVATION = (
     "vorhandenen Belegen."
 )
 
+REPEAT_FAILED_OBSERVATION = (
+    "WIEDERHOLUNG: Genau dieser Aufruf war schon fehlerhaft, die Fehlermeldung steht weiter "
+    "oben. Ändere die Argumente entsprechend oder antworte mit den vorhandenen Belegen."
+)
+
 AUDIT_PHRASES = (
     "korrekt",
     "stimmt",
