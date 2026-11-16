@@ -24,10 +24,30 @@
 
 ## Einträge
 
+### ISS-069 – `/tmp/uv-cache` in der VM nicht beschreibbar, Sitzungsplatte wieder fast voll (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-16 / M6g
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** `uv sync` scheiterte erst mit „No space left on device“ (Sitzungsplatte `/sessions` 98 % voll), dann mit „Permission denied“ in `/tmp/uv-cache` (der Ordner stammt aus einer früheren Sitzung). Mein Versuch, die alten Cache-Ordner unter `$HOME` zu löschen, wurde vom Berechtigungsprüfer abgelehnt.
+- **Ursache:** Der feste Name aus ISS-065 kollidiert mit Ordnern anderer Sitzungen; die Regel „am besten `/tmp/uv-cache`“ war zu ungenau.
+- **Lösung / Workaround:** Eigener, frischer Ordnername je Sitzung (`UV_CACHE_DIR=/tmp/uvc-m6g UV_PROJECT_ENVIRONMENT=/tmp/venv-m6g UV_LINK_MODE=copy`), nichts gelöscht. `status.md` angepasst. `/` hat danach nur noch ca. 570 MB frei; schwere Gruppen (`--group ragas`) passen in der VM nicht mehr, RAGAS läuft auf dem Laptop.
+- **Gelernt:** Namen für temporäre Ordner enthalten die Sitzung oder das Paket; vor einem Löschbefehl prüfen, ob er nötig ist, statt ihn zu versuchen.
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-068 – Der Prüfablauf sichert die Herkunft der Zahlen, nicht ihre Vergleichbarkeit
+- **Datum / Meilenstein:** 2026-11-16 / M6g
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** (erwartet, vor RUN-017 eingetragen) Der Code prüft, dass Soll- und Istzahl im genannten Treffer der richtigen Suchseite stehen, nicht, dass beide dieselbe Größe meinen: Ein Modell kann aus einer Tabelle den falschen Wert (z. B. Nettopreis statt Bruttopreis, Monats- statt Jahresbetrag) lesen und der Code rechnet damit exakt. Vorzeichen gehen verloren (`extract_numbers`: Beträge ohne Vorzeichen, ISS-067 G4). Z1 (Zählerstände: zwei Werte, eine Differenz) passt nicht in das Schema „ein Soll, ein Ist“.
+- **Ursache:** Die Zuordnung der Größe ist Leseverständnis des Modells; der Code kennt keine Einheiten und keine Bedeutung der Zeilen.
+- **Lösung / Workaround:** Die Belegzeile steht in der Nachricht an das Modell („Soll 38,2 [1] „Arbeitspreis | 38,20 ct/kWh“…“), das Modell sieht und die Auswertung zeigt, woher die Zahl kommt. RUN-017 von Hand prüfen (Fehlalarme, `not_verified`). Möglich später: Einheit im Treffer mit der angegebenen Einheit abgleichen.
+- **Gelernt:** (nach RUN-017)
+- **Relevant für Ausarbeitung?** ja → Agent (Grenzen der Zuverlässigkeit trotz festem Ablauf), Reflexion
+
 ### ISS-067 – `calculate` wird gültig, aber mit falschen Operanden aufgerufen (Fehlalarme)
 - **Datum / Meilenstein:** 2026-11-16 / M6f (RUN-014, RUN-015)
 - **Kategorie:** agent
-- **Status:** offen
+- **Status:** offen (Entscheidung 2026-11-16: fester Prüfablauf, ADR-0016; Wirkung mit RUN-017 zu messen)
 - **Symptom:** `qwen2.5:7b` rechnet in G2 `1830 - 1870` (Sollwert minus falscher Istwert) und meldet „−40,00 EUR“ bei einer richtigen Abrechnung; in S5 rechnet es `1189 - 115` (Rechnungsbetrag minus Monatsabschlag) und meldet 1.074 EUR Abweichung. `llama3.1:8b` rechnet in G4 `1.963,28 - -1.920,00` = 3.883,28 EUR (Istwert minus negative Vorauszahlung).
 - **Ursache:** Die Nachfrage erzwingt einen Rechenaufruf, aber nicht die richtigen Operanden; die Modelle wählen Zahlen aus dem Kontext, die nicht zusammengehören (ISS-054). `calculate` prüft nur die Form, nicht den Sinn.
 - **Lösung / Workaround:** Keine. Kandidaten: fester Prüfablauf im Code (Soll- und Istwert als benannte Felder, Code bildet die Differenz); sonst nur als Grenze dokumentieren.
@@ -37,7 +57,7 @@
 ### ISS-066 – Rechennachfrage wirkt bei `qwen2.5:7b`, nicht bei `llama3.1:8b`
 - **Datum / Meilenstein:** 2026-11-16 / M6f (RUN-014 bis RUN-016)
 - **Kategorie:** agent
-- **Status:** offen
+- **Status:** offen (Entscheidung 2026-11-16: `qwen2.5:7b`, ADR-0016; Wirkung mit RUN-017 zu messen)
 - **Symptom:** Nach der Nachfrage ruft `qwen2.5:7b` in 3 von 4 Fällen `calculate` gültig auf (G2, G4, S5), `llama3.1:8b` in 1 von 4 (G4, sinnlos). Dafür zitiert `llama3.1:8b` 1 von 18 erwarteten Quellen, `qwen2.5:7b` 6 von 18. Handrichtig liegen beide bei 6 von 14.
 - **Ursache:** Modellunterschied bei Werkzeug-Format und Befolgung von Anweisungen; nicht weiter untersucht. Der Zeitvorteil von `llama3.1:8b` aus ADR-0013 (136 gegen 298 s je Frage) besteht nicht mehr: 320 bis 325 gegen 301 s.
 - **Lösung / Workaround:** Entscheidung offen (ADR-0013, ADR-0015): `llama3.1:8b` behalten, auf `qwen2.5:7b` wechseln oder den Prüfablauf fest im Code verdrahten, damit die Modellwahl weniger zählt.

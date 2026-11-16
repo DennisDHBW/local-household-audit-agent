@@ -1,6 +1,6 @@
 # ADR-0015: Wiederholungssperre und Rechennachfrage im Agent-Loop
 
-- **Status:** vorgeschlagen (RUN-013: Sperre wirkt wie vorgesehen, Rechennachfrage bei `llama3.1:8b` ohne Wirkung; RUN-014: bei `qwen2.5:7b` wirkt die Nachfrage; Entscheidung 2 und die Modellwahl warten auf die Entscheidung des Nutzers, siehe unten)
+- **Status:** teilweise ersetzt durch ADR-0016 (fester Prüfablauf entschieden; Wiederholungssperre und Rechennachfrage bleiben). Vorheriger Stand: vorgeschlagen (RUN-013: Sperre wirkt wie vorgesehen, Rechennachfrage bei `llama3.1:8b` ohne Wirkung; RUN-014: bei `qwen2.5:7b` wirkt die Nachfrage; Entscheidung 2 und die Modellwahl warten auf die Entscheidung des Nutzers, siehe unten)
 - **Datum:** 2026-11-16
 - **Meilenstein:** M6 (M6e)
 
