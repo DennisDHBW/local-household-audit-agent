@@ -85,6 +85,33 @@ AUDIT_PHRASES = (
 )
 """Phrases of a question that asks to check a bill (checked on the folded question)."""
 
+PLAN_SYSTEM_PROMPT = """\
+Du bereitest die Prüfung einer Abrechnung vor. Nenne 1 bis {max_checks} Prüfgrößen, in denen \
+ein Fehler stecken kann, die wichtigste zuerst. Typische Größen in Energie- und \
+Nebenkostenabrechnungen: Arbeitspreis, Grundpreis, Verbrauch (kWh, m³), Zustandszahl \
+(z-Zahl), Brennwert, Energiemenge, Wohnfläche und Umlageanteil, Gesamtkosten der Umlage, \
+Vorauszahlungen, Zählerstände, Rechnungsbetrag.
+Je Prüfgröße: quantity (Name), target_query (Suchanfrage nach dem Sollwert: Vertrag, \
+Preisschreiben, Mietvertrag oder Abrechnung des Vorjahres), actual_query (Suchanfrage nach \
+dem abgerechneten Wert in der Rechnung). Schreibe Jahr und Dokumentart in jede \
+Suchanfrage. Antworte nur mit JSON.\
+"""
+
+READ_SYSTEM_PROMPT = """\
+Lies aus den Treffern zwei Zahlen der genannten Prüfgröße: den Sollwert (Vertrag, \
+Preisschreiben, Mietvertrag oder Abrechnung des Vorjahres) und den abgerechneten Istwert \
+(Rechnung). Schreibe jede Zahl so, wie sie im Treffer steht, und nenne die Nummer des \
+Treffers, aus dem sie stammt. Beide Werte müssen dieselbe Größe in derselben Einheit sein. \
+Ist ein Wert nicht zu finden, schreibe "" und 0. Rechne nicht und rate nicht. \
+Antworte nur mit JSON.\
+"""
+
+AUDIT_FLOW_CLOSING = (
+    "Antworte jetzt anhand dieser Ergebnisse und nenne die Treffernummern. Fehlt eine "
+    "Prüfgröße oder brauchst du Folgebeträge (z. B. Differenz mal Menge), suche weiter und "
+    "rechne mit calculate."
+)
+
 FORCED_ANSWER_MESSAGE = (
     "Du hast keine Werkzeugaufrufe mehr. Antworte jetzt auf Deutsch mit den vorhandenen "
     "Belegen und nenne die Nummern der Treffer. Fehlt ein Beleg, sage das ehrlich."
@@ -110,3 +137,8 @@ def is_audit_question(question: str) -> bool:
 def system_prompt(max_tool_calls: int) -> str:
     """The system prompt with the tool limit of the settings."""
     return SYSTEM_PROMPT.format(max_tool_calls=max_tool_calls, gap_answer=GAP_ANSWER)
+
+
+def plan_prompt(max_checks: int) -> str:
+    """System prompt of the planning call of the audit flow."""
+    return PLAN_SYSTEM_PROMPT.format(max_checks=max_checks)

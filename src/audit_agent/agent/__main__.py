@@ -12,7 +12,14 @@ from ollama import Client, ResponseError
 
 from audit_agent.agent.factory import create_agent
 from audit_agent.agent.log import RunLog
-from audit_agent.agent.models import AgentRun, AgentStep, EvidenceBook, NudgeStep, ToolCallStep
+from audit_agent.agent.models import (
+    AgentRun,
+    AgentStep,
+    AuditFlowStep,
+    EvidenceBook,
+    NudgeStep,
+    ToolCallStep,
+)
 from audit_agent.agent.report import render_markdown
 from audit_agent.config import Settings
 from audit_agent.corpus import CorpusError, Question, load_ground_truth
@@ -50,7 +57,7 @@ def _print_step(step: AgentStep, book: EvidenceBook) -> None:
             f"  Tool {step.tool} {step.arguments} -> {step.state} ({step.seconds} s)",
             file=sys.stderr,
         )
-    elif isinstance(step, NudgeStep):
+    elif isinstance(step, NudgeStep | AuditFlowStep):
         print(f"  {step.label}", file=sys.stderr)
     else:
         calls = ", ".join(call.name for call in step.tool_calls) or "Antwort"
