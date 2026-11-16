@@ -224,6 +224,8 @@ Vor der Final Answer prüft der Agent per Prompt-Regel:
 
 **Änderung in M6d (Stand 2026-11-16, ADR-0014):** Die fünf Werkzeuge sind `list_documents`, `search`, `search_images`, `get_document_outline`, `calculate`. `search` ersetzt `search_documents` und `search_tables`, weil das Modell vorab nicht weiß, ob ein Fakt im Fließtext oder in einer Tabelle steht (ISS-006/052). Das Modell filtert nur nach Sparte; Dokumentart und Jahr stehen in der Suchanfrage (ISS-007). `include_counterpart` holt bei Prüffragen das Gegenstück. Eine leere Suche wird nicht ohne Filter wiederholt, sondern nennt den Bestand (ISS-051). Die Beispiele in Abschnitt 8 behalten die alten Namen als Konzeptstand.
 
+**Änderung in M6h (Stand 2026-11-16, ADR-0017):** Neben der Suchanfrage des Modells (P1: der Frage) läuft eine zweite Suche mit der Größe allein („Arbeitspreis“, ohne Jahr, Dokument- und Fragewörter); bis zu 2 neue Treffer werden angehängt, die Gegenstück-Suche nutzt dieselbe kurze Anfrage (ISS-072). Eine Antwort mit Zahlen ohne Treffernummer wird einmal nachgefragt. Der Einheitenfaktor der Metrik gilt nur noch für ct- und EUR-Fakten (ISS-050). Hierarchie-Boost, Top-5 und der Ausschluss der Tabellen-Zusammenfassungen für den Agenten bleiben (ISS-027, ISS-035).
+
 ---
 
 ## 8. ReAct-Zyklen (Beispiele für die Ausarbeitung)
