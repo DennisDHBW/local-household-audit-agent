@@ -81,18 +81,18 @@ Ohne die Größen-Suche hätte der Agent nur die fünf Treffer aus dem Zwischena
 
 ## 6. Erklär-Test (ohne in den Code zu schauen)
 
-> Fragen am 2026-11-17 im Repo gesichert (ISS-084). Sie sind neu formuliert und nicht wörtlich die aus dem Chat. Antworten ohne Blick in den Code eintragen; „Stimmt?“ füllt Claude beim Abgleich mit dem Code.
+> Fragen am 2026-11-17 im Repo gesichert (ISS-084). Sie sind neu formuliert und nicht wörtlich die aus dem Chat. Antworten ohne Blick in den Code eintragen; „Stimmt?“ füllt Claude beim Abgleich mit dem Code. Auf Wunsch des Nutzers (zu wenig Zeit und Vorwissen, ISS-085) hat Claude am 2026-11-17 Erklärungen in einfacher Sprache ergänzt. Die Spalte „Meine Antwort“ bleibt dem Nutzer vorbehalten.
 
-| Frage | Meine Antwort | Stimmt? |
-|---|---|---|
-| R2-1: Was macht `quantity_query` aus „neuer Arbeitspreis 2025“, und warum gibt es diese zweite Suche überhaupt? | | |
-| R2-2: Warum hängt `new_quantity_hits` die neuen Treffer ans Ende und behält nur Treffer mit noch unbekannter `chunk_id`? | | |
-| R2-3: Woher kommt die Sparte, wenn das Modell keinen `utility_type` mitgibt? Und warum fehlen Nebenkosten in `UTILITY_WORDS`? | | |
-| R2-4: `SearchArguments` hat `extra="ignore"`. Was passiert mit `"year": 2025` im G1-Beispiel, und was folgt daraus für die Suche? | | |
-| R2-5: Warum filtert ChromaDB mit `where` schon in der Suche statt Python danach? Was ginge bei kleinem `top_k` verloren? | | |
-| R2-6: Bei G1 meldet `_counterpart_hits` „keine Treffer im Gegenstück“. Warum ist der Hinweis irreführend (ISS-081)? | | |
-| R2-7: Was macht `CalculateArguments._accept_operands`, und welches Modellverhalten fängt es ab? | | |
-| R2-8: Warum nutzt die Metrik `filter_excludes` dieselbe Klasse `FilterArguments` wie das Werkzeug `list_documents`? | | |
+| Frage | Meine Antwort | Erklärung (Claude) | Stimmt? |
+|---|---|---|---|
+| R2-1: Was macht `quantity_query` aus „neuer Arbeitspreis 2025“, und warum gibt es diese zweite Suche überhaupt? | | Füllwörter („neuer“), Jahreszahlen, Dokument- und Spartenwörter fliegen raus, übrig bleibt „Arbeitspreis“. Die Suche mit der ganzen Frage fand nur Treffer aus einem Schreiben, die Preistabellen fehlten (ISS-072, ADR-0017). | |
+| R2-2: Warum hängt `new_quantity_hits` die neuen Treffer ans Ende und behält nur Treffer mit noch unbekannter `chunk_id`? | | Die Treffer der ersten Suche bleiben vorne und behalten ihre Nummern; die neuen sind nur Ergänzung. Nur unbekannte `chunk_id`s, damit kein Abschnitt doppelt im Kontext steht. Deshalb `top_k = wanted + len(hits)`. | |
+| R2-3: Woher kommt die Sparte, wenn das Modell keinen `utility_type` mitgibt? Und warum fehlen Nebenkosten in `UTILITY_WORDS`? | | `with_query_utility` sucht Spartenwörter wie „Strom“ oder „Stromabrechnung“ (`UTILITY_WORDS`) in der Frage und setzt daraus den Filter. Nebenkosten fehlen absichtlich: die Frage braucht Mietvertrag und Abrechnung zusammen, ein Filter würde eins wegschneiden. | |
+| R2-4: `SearchArguments` hat `extra="ignore"`. Was passiert mit `"year": 2025` im G1-Beispiel, und was folgt daraus für die Suche? | | `year` wird stillschweigend verworfen, kein Fehler. Die Suche läuft ohne Jahresfilter über alle Jahre (nur Strom-Filter), obwohl das Modell glaubt, nach 2025 gefiltert zu haben. | |
+| R2-5: Warum filtert ChromaDB mit `where` schon in der Suche statt Python danach? Was ginge bei kleinem `top_k` verloren? | | Mit `where` liefert ChromaDB die k besten Treffer, die zum Filter passen. Filtert Python erst danach, bleiben von den k besten insgesamt evtl. nur 1 oder 0 passende übrig. | |
+| R2-6: Bei G1 meldet `_counterpart_hits` „keine Treffer im Gegenstück“. Warum ist der Hinweis irreführend (ISS-081)? | | Die Größen-Suche hatte Rechnung und Preisschreiben schon gefunden, es gab nichts mehr zu suchen. Der Code unterscheidet „nichts gefunden“ nicht von „nichts mehr nötig“ und meldet „keine Treffer“; das Modell könnte denken, die Rechnung fehlt. | |
+| R2-7: Was macht `CalculateArguments._accept_operands`, und welches Modellverhalten fängt es ab? | | Kleine Modelle schicken eine Rechnung manchmal als getrennte Teile `a`, `b`, `operator` statt als Ausdruck „39.50 - 38.20“. Der Validator baut daraus den Ausdruck; fehlt der Operator, gibt es eine Fehlermeldung mit den Zahlen des Modells (ISS-063). | |
+| R2-8: Warum nutzt die Metrik `filter_excludes` dieselbe Klasse `FilterArguments` wie das Werkzeug `list_documents`? | | Damit Werkzeug und Messung garantiert dieselben Filterregeln nutzen. Ändert man eine Regel, gilt sie automatisch an beiden Stellen. | |
 
 ## 7. Was ich geändert hätte / Schwächen / offene Fragen
 -

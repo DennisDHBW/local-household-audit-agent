@@ -23,6 +23,19 @@
 
 ## Einträge
 
+### 2026-11-17 – Erklärungen zu den M6-Fragen, RAGAS-Nachtlauf gestartet
+**Ziel der Sitzung:** Nächstes Paket laut status.md: Antworten des Nutzers zu R1-1 bis R3-8 abgleichen.
+**Was wurde gemacht:**
+- Nutzer kann die Fragen mangels Zeit und Vorwissen nicht beantworten; auf seinen Wunsch alle 24 Fragen in einfacher Sprache beantwortet, vorher gegen den Code geprüft (`loop.py`, `prompts.py`, `variants.py`, `store.py`, `quantity.py`, `metrics.py`, `audit_flow.py`, `ragas_eval.py`, `check_evidence.py`)
+- Erklärungen als eigene Spalte „Erklärung (Claude)“ in Abschnitt 6 der drei M6-Notizen; „Meine Antwort“ bleibt leer
+- Befehl für den RAGAS-Nachtlauf auf RUN-020 und RUN-021 übergeben (ISS-082); Log `data/eval/ragas-v1.0.0.log`
+**Gelieferte Dateien / Funktionen:** `docs/reverse-engineering/m6-evaluation.md`, `m6-quantity-retrieval.md`, `m6-agent.md` (Abschnitt 6); kein Code geändert
+**Entscheidungen:** RAGAS-Nachtlauf statt alter RAGAS-Werte (offene Frage aus ISS-082); keine ADR
+**Probleme / Überraschungen:** ISS-085 (Fragen nicht selbst beantwortet)
+**Offen / unklar:** Ergebnis des RAGAS-Nachtlaufs; Abschnitte 5–7 der Notizen M0–M6
+**O-Ton (von mir):** „Ich habe zu wenig wissen um die Fragen beantworten zu können und zu wenig Zeit um mich damit zu beschäftigen.“
+**Zeitaufwand:** ca. 0,4 h · **Modell/Effort:** Opus 5.5 · **Commit(s):** `docs(reverse-engineering)`
+
 ### 2026-11-17 – Reverse-Engineering-Fragen M6 im Repo gesichert
 **Ziel der Sitzung:** Antworten des Nutzers zu den M6-Fragen auswerten (laut status.md).
 **Was wurde gemacht:**
