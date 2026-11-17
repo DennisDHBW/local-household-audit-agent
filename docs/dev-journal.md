@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-17 – M6i: Sparte in der Größen-Anfrage
+**Ziel der Sitzung:** Den Fehler aus M6h beheben, dass die Größen-Anfrage ohne Sparte bei P1 das Gas-Schreiben statt der Strom-Zeile trifft (ISS-077); P1 und P2 neu messen.
+**Was wurde gemacht:**
+- Plan mit Entscheidung des Nutzers: Sparte als Metadaten-Filter statt als Suchwort, nur wenn die Frage genau eine Sparte nennt und kein Filter gesetzt ist; G3 (ISS-074) und leere Antwort (ISS-076) nicht in diesem Paket
+- `utility_in_query`, `with_query_utility`; P1 (Größen-Suche) und P2 (Größen- und Gegenstück-Suche) angepasst; Hinweistext nennt die Sparte; 20 neue Tests (381 insgesamt)
+- Zwei Verbindungsabbrüche zum Laptop; danach war in Claudes Shell keine bleibende Umgebung mehr möglich, Quality Gate lief im Messbefehl auf dem Laptop (ISS-078)
+- RUN-020 (P1, 25 min) und RUN-021 (P2, nach Abbruch fortgesetzt, ISS-079) ausgewertet; alle 14 P1-Antworten von Hand gelesen, P2 gegen RUN-018 verglichen
+**Gelieferte Dateien / Funktionen:** `retrieval/quantity.py` (`utility_in_query`, `with_query_utility`, `UTILITY_WORDS`, `DOCUMENT_WORDS`), `agent/tools.py` (`_search`, `_counterpart_hits` mit Sparte), `evaluation/variants.py` (P1), Tests in `test_retrieval.py`, `test_agent_tools.py`, `test_evaluation.py`
+**Entscheidungen:** ADR-0017, Nachtrag M6i (Sparte als Filter, Suchwort verworfen)
+**Probleme / Überraschungen:** ISS-077 gelöst; ISS-078 (Shell ohne bleibende Umgebung, Gate auf dem Laptop); ISS-079 (RUN-021-Abbruch ungeklärt, Log beim Fortsetzen überschrieben); ISS-076 erneut, aber nur als identische Wiederholung (Temperatur 0)
+**Offen / unklar:** Warum RUN-021 um 13:59 abbrach; G1 bleibt bei P1 und P2 falsch, obwohl die Zahlen im Kontext stehen (Engpass Lesen und Vergleichen); Streuung der Läufe nicht gemessen
+**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**Zeitaufwand:** Arbeit ca. 2,5 h über den Tag verteilt, Läufe 25 + 72 min Rechenzeit · **Modell/Effort:** Fable 5.2, ab der Fortsetzung Opus 5.5 · **Commit(s):** `feat(retrieval)`, `test(evaluation)`, `docs`
+
 ### 2026-11-17 – M6h: Größen-Anfrage, Zitier-Rückfrage und Einheitenfaktor
 **Ziel der Sitzung:** Das Retrieval verbessern, damit die Sollzahl (G1, G3) im Kontext steht; Zitierpflicht für P2; Einheitenfaktor der Metrik einschränken (ISS-050, ISS-051/052).
 **Was wurde gemacht:**

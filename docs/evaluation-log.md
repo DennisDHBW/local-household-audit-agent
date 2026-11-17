@@ -502,3 +502,30 @@
 - **Laufzeit:** 3.773 s gegen 4.207 s; das Ollama-Journal zeigt keine Kürzung. Die Zeit hängt weiter an der Ladepolitik (ISS-057), der Vergleich ist nur ein Hinweis, kein Beleg für Schnelligkeit.
 - **Deutung:** Die Zitier-Rückfrage wirkt wie beabsichtigt (Belegbarkeit), ohne die Genauigkeit zu ändern. Die Größen-Anfrage bringt im Mittel keinen messbaren Gewinn: Sie holt bei P2/G1 die fehlende Zeile, aber das Modell nutzt sie nicht (keine Rechnung, leere Antwort), und bei P1 verfehlt sie die Strom-Zeile, weil die Sparte fehlt. Nach Handprüfung bleibt P2 bei 6 von 14, die eingebauten Fehler (G1, G3, G4) erkennt keine Variante. Einzelne Läufe bei Temperatur 0, Streuung nicht gemessen.
 
+
+### RUN-020 / RUN-021 – M6i, Sparte in der Größen-Anfrage (P1 und P2, `qwen2.5:7b`, 14 Fragen)
+- **Datum / Commit:** 2026-11-17 · Branch `feat/m6i-quantity-utility`, Commit `feat(retrieval): filter the quantity search by the utility the query names`
+- **Variante:** RUN-020 nur P1 (Vergleich RUN-019), RUN-021 nur P2 (Vergleich RUN-018); gleiche Fragen, gleiches Modell, gleiche Einstellungen; neu: Größen- und Gegenstück-Suche filtern nach der Sparte, die die Anfrage nennt (ISS-077, ADR-0017 Nachtrag M6i)
+- **Konfiguration:** `num_ctx` 8192, Temperatur 0, `quantity_hits` 2, `require_citation` an; Quality Gate auf dem Laptop vor dem Lauf (ISS-078); RUN-020 mit `generate --run-id run-020 --variants p1 --all`, `score`, `check_evidence.py`; RUN-021 mit `scripts/eval_run.sh run-021:qwen2.5:7b`
+- **Dauer:** RUN-020 ca. 25 min (107 s je Frage); RUN-021 nach 11 Fragen um 13:59 ohne Meldung abgebrochen, Z1 bis Z3 nach Neustart des Laptops um 17:25 nachgeholt (ISS-079), zusammen ca. 72 min Rechenzeit
+- **Rohdaten:** `data/eval/run-020/`, `data/eval/run-021/`, `run-020.log`, `run-020-env.txt`, `run-020-journal.txt`, `run-021.log` (nur Fortsetzung), `run-021-env.txt` (nur Fortsetzung), `run-021-journal.txt`
+
+| Metrik | RUN-019 P1 | RUN-020 P1 | RUN-018 P2 | RUN-021 P2 |
+|---|---|---|---|---|
+| Richtig laut Metrik (von 14) | 5 | 6 | 4 | 4 |
+| Richtig nach Handprüfung (von 14) | – | 8 (davon 2 Grenzfälle) | 6 | 6 |
+| Fakten in der Antwort (von 27) | 9 | 12 | 8 | 8 |
+| Fakten im Kontext (von 27) | 13 | 16 | 18 | 18 |
+| Erwartete Quellen zitiert (von 18) | 7 | 9 | 8 | 8 |
+| Ablenker im Kontext | 7 von 94 | 4 von 92 | 0 von 105 | 0 von 105 |
+| Fehlalarme laut Metrik (von 3) | 1 (S5) | 0 | 1 | 1 |
+| Fehler erkannt von Hand mit tragfähiger Begründung (von 3) | 0 | 0 | 0 | 0 |
+| Sekunden je Frage (Mittel) | 92 | 107 | 270 | 308 |
+| Prompt-Token je Frage (Mittel) | 1.233 | 1.207 | 9.863 | 9.647 |
+
+- **Wo der Filter greift:** Nach `utility_in_query` nennen 8 der 14 Fragen genau eine Sparte (S1, S2, S5, G1, G3, N1, N2, Z3); eine Größen-Anfrage haben davon 6 (S1, S2, S5, G1, N2, Z3). Bei P1 wirkt er genau dort; bei P2 nur in einer Suche (S5, „Preis Vergleich“), weil der Agent die Sparte meist selbst setzt oder seine Anfragen keine nennen.
+- **P1 je Frage:** G1 0 auf 2 von 3 Sollzahlen im Kontext (Treffer [6] Strom-Preisanpassung, [7] Strom-Abrechnung statt zweier Gas-Treffer); S2 0 auf 1 von 2 (Grundpreis-Zeilen der Strom-Preisanpassung statt Gas-Schreiben); S5 Internet- und Hausrat-Treffer ersetzt durch den Stromvertrag, Antwort wieder „Ja, stimmt“; N2 keine Fernwärme-Dokumente, die Zusatzsuche bringt nichts (5 statt 7 Treffer, alle Fremddokumente weniger); Z3 Strom-Abrechnungen statt Internet- und Gas-Vertrag, Antwort inhaltlich gleich.
+- **Handprüfung RUN-020 (alle 14 Antworten gelesen):** Richtig sind S1, S3 (74 m³), S5, N1, N2, Z3; Grenzfälle G2 („korrekt“, 25 % von 7.320 EUR = 1.830 EUR, Guthaben 90 EUR fehlt) und Z1 („passt“, 1.200 m³, z-Zahl und kWh fehlen), gezählt wie Z1 in RUN-018. Falsch: S2 (nur Grundpreis), S4 (Lückenantwort), G1 („ja, angewendet“, vergleicht 39,50 ct mit dem alten Preis 34,80 ct statt mit 38,20 ct), G3 (rechnet nur die Energiemenge nach, kein Urteil), G4 („korrekt“, eingebauter Fehler nicht erkannt), Z2 (115,00 statt 120,00 EUR). Für RUN-019 gibt es keine Handprüfung; der Vergleich der Handzahl ist daher nur gegen die Metrik möglich.
+- **Handprüfung RUN-021:** 13 von 14 Antworten wortgleich mit RUN-018 (Temperatur 0, gleicher Kontext); S5 hat einen anderen Kontext, bleibt aber eine Lückenantwort. Ergebnis wie RUN-018: 6 von 14, G1 wieder leer (ISS-076, keine unabhängige Wiederholung).
+- **Laufzeit:** P1 +15 s je Frage gegen RUN-019 bei weniger Prompt-Token; P2-Zeiten sind wegen Abbruch und Neustart nicht vergleichbar (ISS-057, ISS-079).
+- **Deutung:** Der Sparten-Filter behebt den Fehler aus M6h für P1: mehr Sollzahlen im Kontext, weniger Fremdtreffer, kein Fehlalarm bei S5. Für P2 ändert er nichts, weil der Agent die Sparte schon übergibt. Bei beiden Varianten liegt der Engpass jetzt beim Lesen und Vergleichen: G1 hat bei P1 und P2 die richtigen Zahlen im Kontext, beide Antworten sind falsch. G3 bleibt ein Retrieval-Problem (ISS-074). Einzelne Läufe, Streuung nicht gemessen.
