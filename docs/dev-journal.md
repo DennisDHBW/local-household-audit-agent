@@ -23,6 +23,19 @@
 
 ## Einträge
 
+### 2026-11-17 – Reverse-Engineering-Fragen M6 im Repo gesichert
+**Ziel der Sitzung:** Antworten des Nutzers zu den M6-Fragen auswerten (laut status.md).
+**Was wurde gemacht:**
+- Festgestellt: Die Fragen standen nur im alten Chat, Abschnitt 6 der Notizen war leer (ISS-084)
+- Nutzer hat aktuell keine Zeit zum Antworten; Auswertung verschoben
+- Je 8 Fragen pro Runde neu formuliert und in Abschnitt 6 der drei M6-Notizen eingetragen (ohne Musterantworten)
+**Gelieferte Dateien / Funktionen:** `docs/reverse-engineering/m6-evaluation.md`, `m6-quantity-retrieval.md`, `m6-agent.md` (Abschnitt 6); kein Code geändert
+**Entscheidungen:** keine
+**Probleme / Überraschungen:** ISS-084 (Fragen nur im Chat; betrifft auch M0, M2–M5)
+**Offen / unklar:** Antworten des Nutzers; RAGAS-Nachtlauf ja oder nein
+**O-Ton (von mir):** (nicht geliefert, Nutzer hatte keine Zeit)
+**Zeitaufwand:** ca. 0,3 h · **Modell/Effort:** Opus 5.5 · **Commit(s):** `docs(reverse-engineering)`
+
 ### 2026-11-17 – Abschluss M6: Reverse Engineering, Abgleich mit den Anforderungen, v1.0.0
 **Ziel der Sitzung:** M6 rückwärts aufarbeiten (Testmodul, Größen-Anfrage, Sparten-Filter, Rückfragen), gegen `requirements.md` prüfen und v1.0.0 taggen.
 **Was wurde gemacht:**

@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-084 – Verständnisfragen zum Reverse Engineering nur im Chat, nicht im Repo
+- **Datum / Meilenstein:** 2026-11-17 / M6 (Reverse Engineering)
+- **Kategorie:** ki-assistent
+- **Status:** teilweise gelöst
+- **Symptom:** Die Fragen aus den Reverse-Engineering-Runden zu M0 und M2–M6 standen nur im jeweiligen Chat. Abschnitt 6 der Notizen war leer. In einem neuen Chat lassen sich Antworten damit nicht gegen die Fragen prüfen.
+- **Ursache:** Claude hat die Fragen nur im Chat gestellt und nicht in die Notizen geschrieben; die Vorlage verlangt das nicht ausdrücklich.
+- **Lösung / Workaround:** Für M6 neu formulierte Fragen (R1-1 bis R3-8) in Abschnitt 6 von `m6-evaluation.md`, `m6-quantity-retrieval.md` und `m6-agent.md` eingetragen. Für M0 und M2–M5 fehlen sie noch; beim Auswerten dieser Runden zuerst die Fragen ins Repo schreiben. Künftig stehen die Fragen immer in Abschnitt 6.
+- **Gelernt:** Was nur im Chat steht, ist für die nächste Sitzung verloren.
+- **Relevant für Ausarbeitung?** ja → Reflexion (Arbeiten mit dem KI-Assistenten)
+
 ### ISS-083 – `is_audit_question` hält reine Nachschlagefragen mit „abgerechnet“ für Prüffragen
 - **Datum / Meilenstein:** 2026-11-17 / M6 (Reverse Engineering)
 - **Kategorie:** agent

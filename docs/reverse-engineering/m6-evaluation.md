@@ -93,9 +93,18 @@ Auffällig an diesem Beispiel: Beide Zitate zeigen auf erwartete Seiten (Präzis
 
 ## 6. Erklär-Test (ohne in den Code zu schauen)
 
+> Fragen am 2026-11-17 im Repo gesichert (ISS-084). Sie sind neu formuliert und nicht wörtlich die aus dem Chat. Antworten ohne Blick in den Code eintragen; „Stimmt?“ füllt Claude beim Abgleich mit dem Code.
+
 | Frage | Meine Antwort | Stimmt? |
 |---|---|---|
-| | | |
+| R1-1: Warum gibt es kein eigenes Testset, und woher kommen die 14 Fragen? | | |
+| R1-2: Ein `generate`-Lauf bricht bei Frage 9 ab. Was passiert, wenn du denselben Befehl erneut startest, und welche Datei macht das möglich? | | |
+| R1-3: Wozu prüft `check_same_model`, dass ein Lauf keine Modelle mischt? | | |
+| R1-4: Wann gilt eine Antwort laut `is_correct` als richtig? Unterscheide Negativfrage, Frage mit erwartetem Urteil und Frage ohne Urteil. | | |
+| R1-5: Bei G1 (P1, RUN-020) ist die Zitat-Präzision 2/2, die Antwort aber falsch. Was misst die Zitat-Metrik, und was misst sie nicht? | | |
+| R1-6: Warum bewertet `metrics.py` deterministisch statt mit einem LLM als Richter? Nenne je einen Vor- und Nachteil. | | |
+| R1-7: Welche zwei Fehlerursachen trennt `scripts/check_evidence.py`, und warum reicht `score` dafür nicht? | | |
+| R1-8: Warum werden P1 und P2 nach jeder Frage entladen, B0 aber nicht? | | |
 
 ## 7. Was ich geändert hätte / Schwächen / offene Fragen
 -
