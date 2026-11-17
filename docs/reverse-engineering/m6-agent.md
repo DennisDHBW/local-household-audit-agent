@@ -86,9 +86,18 @@ AgentLoop.run(question)
 
 ## 6. Erklär-Test (ohne in den Code zu schauen)
 
+> Fragen am 2026-11-17 im Repo gesichert (ISS-084). Sie sind neu formuliert und nicht wörtlich die aus dem Chat. Antworten ohne Blick in den Code eintragen; „Stimmt?“ füllt Claude beim Abgleich mit dem Code.
+
 | Frage | Meine Antwort | Stimmt? |
 |---|---|---|
-| | | |
+| R3-1: Nenne die drei Rückfragen in ihrer Reihenfolge und wann jede ausgelöst wird. Warum jeweils höchstens einmal? | | |
+| R3-2: Was sperrt `_CallMemory`, und warum gibt es zwei Mengen (`valid`, `failed`)? | | |
+| R3-3: Wann erkennt `parse_text_call` einen Werkzeugaufruf im Antworttext, und warum braucht der Agent das (ISS-061)? | | |
+| R3-4: Welche Werte kann `stop_reason` annehmen, und wodurch entsteht jeder? | | |
+| R3-5: Beschreibe den Prüfablauf in vier Schritten. Was prüft `_verified`, und warum ist der Ablauf standardmäßig aus? | | |
+| R3-6: Woran erkennt `is_audit_question` eine Prüffrage, und welche Schwäche hat das (ISS-083)? | | |
+| R3-7: Was misst RAGAS Faithfulness, und warum schätzt der Code vorher die Promptlänge (`too_long`)? | | |
+| R3-8: Warum spricht RAGAS Ollama über den `openai`-Client an? | | |
 
 ## 7. Was ich geändert hätte / Schwächen / offene Fragen
 -

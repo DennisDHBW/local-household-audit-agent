@@ -81,9 +81,18 @@ Ohne die Größen-Suche hätte der Agent nur die fünf Treffer aus dem Zwischena
 
 ## 6. Erklär-Test (ohne in den Code zu schauen)
 
+> Fragen am 2026-11-17 im Repo gesichert (ISS-084). Sie sind neu formuliert und nicht wörtlich die aus dem Chat. Antworten ohne Blick in den Code eintragen; „Stimmt?“ füllt Claude beim Abgleich mit dem Code.
+
 | Frage | Meine Antwort | Stimmt? |
 |---|---|---|
-| | | |
+| R2-1: Was macht `quantity_query` aus „neuer Arbeitspreis 2025“, und warum gibt es diese zweite Suche überhaupt? | | |
+| R2-2: Warum hängt `new_quantity_hits` die neuen Treffer ans Ende und behält nur Treffer mit noch unbekannter `chunk_id`? | | |
+| R2-3: Woher kommt die Sparte, wenn das Modell keinen `utility_type` mitgibt? Und warum fehlen Nebenkosten in `UTILITY_WORDS`? | | |
+| R2-4: `SearchArguments` hat `extra="ignore"`. Was passiert mit `"year": 2025` im G1-Beispiel, und was folgt daraus für die Suche? | | |
+| R2-5: Warum filtert ChromaDB mit `where` schon in der Suche statt Python danach? Was ginge bei kleinem `top_k` verloren? | | |
+| R2-6: Bei G1 meldet `_counterpart_hits` „keine Treffer im Gegenstück“. Warum ist der Hinweis irreführend (ISS-081)? | | |
+| R2-7: Was macht `CalculateArguments._accept_operands`, und welches Modellverhalten fängt es ab? | | |
+| R2-8: Warum nutzt die Metrik `filter_excludes` dieselbe Klasse `FilterArguments` wie das Werkzeug `list_documents`? | | |
 
 ## 7. Was ich geändert hätte / Schwächen / offene Fragen
 -
