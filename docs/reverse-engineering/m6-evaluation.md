@@ -93,18 +93,18 @@ Auffällig an diesem Beispiel: Beide Zitate zeigen auf erwartete Seiten (Präzis
 
 ## 6. Erklär-Test (ohne in den Code zu schauen)
 
-> Fragen am 2026-11-17 im Repo gesichert (ISS-084). Sie sind neu formuliert und nicht wörtlich die aus dem Chat. Antworten ohne Blick in den Code eintragen; „Stimmt?“ füllt Claude beim Abgleich mit dem Code.
+> Fragen am 2026-11-17 im Repo gesichert (ISS-084). Sie sind neu formuliert und nicht wörtlich die aus dem Chat. Antworten ohne Blick in den Code eintragen; „Stimmt?“ füllt Claude beim Abgleich mit dem Code. Auf Wunsch des Nutzers (zu wenig Zeit und Vorwissen, ISS-085) hat Claude am 2026-11-17 Erklärungen in einfacher Sprache ergänzt. Die Spalte „Meine Antwort“ bleibt dem Nutzer vorbehalten.
 
-| Frage | Meine Antwort | Stimmt? |
-|---|---|---|
-| R1-1: Warum gibt es kein eigenes Testset, und woher kommen die 14 Fragen? | | |
-| R1-2: Ein `generate`-Lauf bricht bei Frage 9 ab. Was passiert, wenn du denselben Befehl erneut startest, und welche Datei macht das möglich? | | |
-| R1-3: Wozu prüft `check_same_model`, dass ein Lauf keine Modelle mischt? | | |
-| R1-4: Wann gilt eine Antwort laut `is_correct` als richtig? Unterscheide Negativfrage, Frage mit erwartetem Urteil und Frage ohne Urteil. | | |
-| R1-5: Bei G1 (P1, RUN-020) ist die Zitat-Präzision 2/2, die Antwort aber falsch. Was misst die Zitat-Metrik, und was misst sie nicht? | | |
-| R1-6: Warum bewertet `metrics.py` deterministisch statt mit einem LLM als Richter? Nenne je einen Vor- und Nachteil. | | |
-| R1-7: Welche zwei Fehlerursachen trennt `scripts/check_evidence.py`, und warum reicht `score` dafür nicht? | | |
-| R1-8: Warum werden P1 und P2 nach jeder Frage entladen, B0 aber nicht? | | |
+| Frage | Meine Antwort | Erklärung (Claude) | Stimmt? |
+|---|---|---|---|
+| R1-1: Warum gibt es kein eigenes Testset, und woher kommen die 14 Fragen? | | Die 14 Fragen stehen samt erwarteten Zahlen, Quellen und Werkzeugen schon in `dataset/ground_truth.yaml`. Ein zweites Testset wäre doppelte Pflege (DRY): jede Änderung an zwei Stellen. | |
+| R1-2: Ein `generate`-Lauf bricht bei Frage 9 ab. Was passiert, wenn du denselben Befehl erneut startest, und welche Datei macht das möglich? | | Jede fertige Antwort steht sofort als eine Zeile in `answers-<variante>.jsonl`. Beim Neustart liest `load_answers` die Datei, überspringt die Fragen 1–8 und macht bei 9 weiter. | |
+| R1-3: Wozu prüft `check_same_model`, dass ein Lauf keine Modelle mischt? | | Damit beim Fortsetzen nicht versehentlich ein anderes Modell weitermacht; sonst stünden zwei Modelle in einem Lauf und das Ergebnis wäre nicht vergleichbar. Anderes Modell = neue `--run-id`. | |
+| R1-4: Wann gilt eine Antwort laut `is_correct` als richtig? Unterscheide Negativfrage, Frage mit erwartetem Urteil und Frage ohne Urteil. | | Negativfrage: richtig, wenn das Modell die Lücke zugibt. Frage mit Urteil (G1 „Nein“): alle erwarteten Zahlen in der Antwort und Ja/Nein stimmt. Frage ohne Urteil: alle Zahlen gefunden reicht. | |
+| R1-5: Bei G1 (P1, RUN-020) ist die Zitat-Präzision 2/2, die Antwort aber falsch. Was misst die Zitat-Metrik, und was misst sie nicht? | | Sie prüft nur, ob die Zitate `[n]` auf die erwartete Datei und Seite zeigen, nicht ob die Zahl richtig gelesen wurde. G1: richtige Seiten, aber Spalte „Bisher“ statt „Neu“ gelesen. | |
+| R1-6: Warum bewertet `metrics.py` deterministisch statt mit einem LLM als Richter? Nenne je einen Vor- und Nachteil. | | Vorteil: immer gleiches Ergebnis, schnell, nachvollziehbar, kein Ollama nötig. Nachteil: starrer Textvergleich, eine richtige Antwort mit anders geschriebener Zahl oder Umschreibung zählt als falsch (ISS-038/050). | |
+| R1-7: Welche zwei Fehlerursachen trennt `scripts/check_evidence.py`, und warum reicht `score` dafür nicht? | | (a) Beleg kam nie beim Modell an (Suche, Filter, Kontextgrenze, Werkzeugwahl) gegen (b) Beleg war da, Antwort trotzdem falsch (Lesen). `score` sieht nur die Antwort, `check_evidence.py` zusätzlich den gespeicherten Kontext (`contexts`). | |
+| R1-8: Warum werden P1 und P2 nach jeder Frage entladen, B0 aber nicht? | | P2 ist in RUN-010 am Speicherlimit (9 GB) abgestürzt (ISS-043); Entladen gibt RAM frei. B0 schickt bei jeder Frage denselben langen Volltext; bleibt das Modell geladen, nutzt Ollama den Prompt-Cache (Prefill ca. 430 s → 10 s). | |
 
 ## 7. Was ich geändert hätte / Schwächen / offene Fragen
 -

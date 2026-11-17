@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-085 – Verständnisfragen M6 nicht selbst beantwortet, Erklärungen von Claude eingetragen
+- **Datum / Meilenstein:** 2026-11-17 / M6 (Reverse Engineering)
+- **Kategorie:** konzept
+- **Status:** offen
+- **Symptom:** Der Nutzer kann die 24 Fragen R1-1 bis R3-8 nach eigener Aussage mangels Vorwissen und Zeit nicht beantworten. Auf seinen Wunsch hat Claude die Fragen in einfacher Sprache beantwortet; die Erklärungen stehen in einer eigenen Spalte „Erklärung (Claude)“ in Abschnitt 6 der drei M6-Notizen, „Meine Antwort“ ist leer. Abschnitte 5–7 der Notizen M0–M6 sind ebenfalls noch leer.
+- **Ursache:** Zeitmangel und fehlendes Vorwissen (Aussage des Nutzers).
+- **Lösung / Workaround:** Erklärungen vor Phase 2 lesen; Ausarbeitung in eigener Sprache schreiben; in der Reflexion offen nennen, dass das Reverse Engineering mit KI-Erklärungen erfolgte. Risiko: Verständnis ist laut `requirements.md` (Abschnitt 7) bewertungsrelevant.
+- **Gelernt:** Reverse Engineering gesammelt am Ende ist zu viel auf einmal; besser direkt nach jedem Meilenstein.
+- **Relevant für Ausarbeitung?** ja → Reflexion, Vorgehen
+
 ### ISS-084 – Verständnisfragen zum Reverse Engineering nur im Chat, nicht im Repo
 - **Datum / Meilenstein:** 2026-11-17 / M6 (Reverse Engineering)
 - **Kategorie:** ki-assistent

@@ -86,18 +86,18 @@ AgentLoop.run(question)
 
 ## 6. Erklär-Test (ohne in den Code zu schauen)
 
-> Fragen am 2026-11-17 im Repo gesichert (ISS-084). Sie sind neu formuliert und nicht wörtlich die aus dem Chat. Antworten ohne Blick in den Code eintragen; „Stimmt?“ füllt Claude beim Abgleich mit dem Code.
+> Fragen am 2026-11-17 im Repo gesichert (ISS-084). Sie sind neu formuliert und nicht wörtlich die aus dem Chat. Antworten ohne Blick in den Code eintragen; „Stimmt?“ füllt Claude beim Abgleich mit dem Code. Auf Wunsch des Nutzers (zu wenig Zeit und Vorwissen, ISS-085) hat Claude am 2026-11-17 Erklärungen in einfacher Sprache ergänzt. Die Spalte „Meine Antwort“ bleibt dem Nutzer vorbehalten.
 
-| Frage | Meine Antwort | Stimmt? |
-|---|---|---|
-| R3-1: Nenne die drei Rückfragen in ihrer Reihenfolge und wann jede ausgelöst wird. Warum jeweils höchstens einmal? | | |
-| R3-2: Was sperrt `_CallMemory`, und warum gibt es zwei Mengen (`valid`, `failed`)? | | |
-| R3-3: Wann erkennt `parse_text_call` einen Werkzeugaufruf im Antworttext, und warum braucht der Agent das (ISS-061)? | | |
-| R3-4: Welche Werte kann `stop_reason` annehmen, und wodurch entsteht jeder? | | |
-| R3-5: Beschreibe den Prüfablauf in vier Schritten. Was prüft `_verified`, und warum ist der Ablauf standardmäßig aus? | | |
-| R3-6: Woran erkennt `is_audit_question` eine Prüffrage, und welche Schwäche hat das (ISS-083)? | | |
-| R3-7: Was misst RAGAS Faithfulness, und warum schätzt der Code vorher die Promptlänge (`too_long`)? | | |
-| R3-8: Warum spricht RAGAS Ollama über den `openai`-Client an? | | |
+| Frage | Meine Antwort | Erklärung (Claude) | Stimmt? |
+|---|---|---|---|
+| R3-1: Nenne die drei Rückfragen in ihrer Reihenfolge und wann jede ausgelöst wird. Warum jeweils höchstens einmal? | | 1. gap: Modell sagt „steht nicht drin“ nach weniger als 2 Werkzeugaufrufen → weitersuchen. 2. calculate: Prüffrage, Antwort ohne `calculate` → erst nachrechnen. 3. cite: Zahlen in der Antwort, aber kein `[n]` → Belege angeben. Je einmal, sonst droht eine Endlosschleife und jeder Durchlauf kostet Minuten. | |
+| R3-2: Was sperrt `_CallMemory`, und warum gibt es zwei Mengen (`valid`, `failed`)? | | Dass derselbe Werkzeugaufruf in einer Frage zweimal läuft (kleine Modelle drehen sich im Kreis). `valid`: erfolgreiche Aufrufe mit geprüften Argumenten, so zählen auch anders geschriebene, gleichbedeutende Argumente als Wiederholung. `failed`: ungültige Aufrufe, die keine geprüfte Form haben, daher mit bereinigten Rohargumenten. | |
+| R3-3: Wann erkennt `parse_text_call` einen Werkzeugaufruf im Antworttext, und warum braucht der Agent das (ISS-061)? | | Nur wenn kein nativer `tool_call` kam und die Nachricht mit einem JSON-Objekt endet, das ein bekanntes Werkzeug nennt und `parameters` oder `arguments` als Objekt hat. Modelle schreiben den Aufruf manchmal als Text; ohne Parser würde das JSON als Endantwort gelten. | |
+| R3-4: Welche Werte kann `stop_reason` annehmen, und wodurch entsteht jeder? | | `answer` (normale Antwort), `empty_answer` (leerer Text), `tool_limit` (6 Werkzeugaufrufe erreicht, Antwort wird erzwungen), `context_limit` (Kontextfenster fast voll, Antwort wird erzwungen). | |
+| R3-5: Beschreibe den Prüfablauf in vier Schritten. Was prüft `_verified`, und warum ist der Ablauf standardmäßig aus? | | Planen (Modell nennt Prüfgrößen und Suchanfragen für Soll und Ist) → Suchen (Code) → Lesen (je Seite eine Zahl mit Belegnummer) → Rechnen (Ist minus Soll mit `calculate`). `_verified` prüft, ob die Zahl wirklich in einer Zeile genau dieses Treffers der passenden Suche steht. Aus, weil RUN-017 keine Verbesserung brachte (ISS-070/071, ADR-0016). | |
+| R3-6: Woran erkennt `is_audit_question` eine Prüffrage, und welche Schwäche hat das (ISS-083)? | | Über eine Wortliste (`AUDIT_PHRASES`: „korrekt“, „stimmt“, „passt“, „angewendet“, „abgerechnet“ …) im gefalteten Fragetext. Schwäche: ein Wort verrät nicht die Absicht; „Wie viel wurde 2024 abgerechnet?“ gilt als Prüffrage. | |
+| R3-7: Was misst RAGAS Faithfulness, und warum schätzt der Code vorher die Promptlänge (`too_long`)? | | Anteil der Aussagen der Antwort, die durch die gezeigten Belege gedeckt sind (nichts erfunden), nicht ob die Antwort richtig ist. Der Richter hat 8.192 Token; ein längerer Prompt würde still gekürzt und der Wert falsch, daher vorher schätzen und als „zu lang“ zählen (ISS-041). | |
+| R3-8: Warum spricht RAGAS Ollama über den `openai`-Client an? | | RAGAS bindet Modelle über einen OpenAI-Client an (`llm_factory`, `provider="openai"`). Ollama bietet unter `/v1` eine OpenAI-kompatible Schnittstelle; der Client zeigt auf localhost mit Dummy-Schlüssel, alles bleibt lokal, kein Adapter nötig. | |
 
 ## 7. Was ich geändert hätte / Schwächen / offene Fragen
 -
