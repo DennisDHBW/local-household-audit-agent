@@ -1,0 +1,261 @@
+{
+  "run_id": "run-018",
+  "summary": {
+    "recall_agrees": 0,
+    "recall_high_without_facts": 0,
+    "recall_low_with_facts": 0,
+    "gap_only_faithfulness": {
+      "None": 1
+    }
+  },
+  "rows": [
+    {
+      "variant": "p2",
+      "question_id": "S1",
+      "facts_in_context": [
+        true,
+        true,
+        true
+      ],
+      "facts_in_answer": [
+        true,
+        true,
+        true
+      ],
+      "sources_shown": [
+        true,
+        false
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "S2",
+      "facts_in_context": [
+        true,
+        true
+      ],
+      "facts_in_answer": [
+        true,
+        false
+      ],
+      "sources_shown": [
+        true
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "S3",
+      "facts_in_context": [
+        true
+      ],
+      "facts_in_answer": [
+        false
+      ],
+      "sources_shown": [
+        true
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "S4",
+      "facts_in_context": [
+        false,
+        false
+      ],
+      "facts_in_answer": [
+        false,
+        false
+      ],
+      "sources_shown": [
+        true
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "S5",
+      "facts_in_context": [
+        true,
+        false
+      ],
+      "facts_in_answer": [
+        false,
+        false
+      ],
+      "sources_shown": [
+        false,
+        true
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "G1",
+      "facts_in_context": [
+        true,
+        true,
+        false
+      ],
+      "facts_in_answer": [
+        false,
+        false,
+        false
+      ],
+      "sources_shown": [
+        true,
+        true
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "G2",
+      "facts_in_context": [
+        true,
+        true,
+        true
+      ],
+      "facts_in_answer": [
+        false,
+        true,
+        true
+      ],
+      "sources_shown": [
+        true,
+        true
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "G3",
+      "facts_in_context": [
+        false,
+        false,
+        false
+      ],
+      "facts_in_answer": [
+        false,
+        false,
+        false
+      ],
+      "sources_shown": [
+        true,
+        false
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "G4",
+      "facts_in_context": [
+        true,
+        false,
+        false
+      ],
+      "facts_in_answer": [
+        false,
+        false,
+        false
+      ],
+      "sources_shown": [
+        true,
+        true
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "N1",
+      "facts_in_context": [],
+      "facts_in_answer": [],
+      "sources_shown": [],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "N2",
+      "facts_in_context": [],
+      "facts_in_answer": [],
+      "sources_shown": [],
+      "is_gap_only": true,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "Z1",
+      "facts_in_context": [
+        true,
+        true,
+        true
+      ],
+      "facts_in_answer": [
+        true,
+        false,
+        false
+      ],
+      "sources_shown": [
+        true
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "Z2",
+      "facts_in_context": [
+        true
+      ],
+      "facts_in_answer": [
+        false
+      ],
+      "sources_shown": [
+        true
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    },
+    {
+      "variant": "p2",
+      "question_id": "Z3",
+      "facts_in_context": [
+        true
+      ],
+      "facts_in_answer": [
+        true
+      ],
+      "sources_shown": [
+        true
+      ],
+      "is_gap_only": false,
+      "faithfulness": null,
+      "context_recall": null
+    }
+  ]
+}

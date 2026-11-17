@@ -1,0 +1,87 @@
+
+== P2 Agent S1: Welche Kündigungsfrist gilt für den Gasvertrag und bis wann läuft die Erstlaufzeit?
+   286.9 s: Für den Gasvertrag gilt eine Kündigungsfrist von 6 Wochen zum Ablauf der Erstvertragslaufzeit [1]. Anschließend ist der Vertrag unbefristet und kann mit einer Kündigungsfrist von 1 Monat beendet werde
+
+== P2 Agent S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   241.8 s: Laut dem Stromvertrag gelten derzeit folgende Arbeits- und Grundpreise:
+
+- **Grundpreis (Netto):** 115,97 EUR pro Jahr
+- **Grundpreis (Brutto):** 138,00 EUR pro Jahr (inkl. 19 % USt.)
+
+Diese Werte gel
+
+== P2 Agent S3: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
+   192.1 s: Der Zählerstand des Wohnungswasserzählers 8WAS445566 am 31.12.2025 lautete [2] 386 m³.
+
+== P2 Agent S4: Wie hoch war der Stromverbrauch 2022 und 2023?
+   194.4 s: Dazu liegen in den Unterlagen keine Angaben vor, welche Stromverbrauchsdaten für 2022 verfügbar sind. Für 2023 ist der Stromverbrauch im 1. Halbjahr 1.470 kWh [1].
+
+== P2 Agent S5: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
+   397.6 s: Dazu liegen in den Unterlagen keine Angaben vor, die die Übereinstimmung der Stromabrechnung 2024 mit den Vertragspreisen belegen. Es gibt Treffer für die Preisanpassung 2025, aber keine expliziten Ve
+
+== P2 Agent G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   202.5 s: 
+
+== P2 Agent G2: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
+   325.1 s: Die Abweichung zwischen dem berechneten Anteil von 1.830,00 EUR [1] und dem Wert von -1.920,00 EUR [2] beträgt -90,00 EUR. 
+
+Der Sollwert lautet 1.830,00 EUR, während der Istwert -1.920,00 EUR ist. Di
+
+== P2 Agent G3: Ist die Gasabrechnung 2026 korrekt?
+   444.5 s: ### Berechnungen:
+
+1. **Sollwert (Vertrag):**
+   - Monatlicher Abschlag ab 01.01.2026: 105,04 EUR netto [8]
+   - USt. (19%): 105,04 * 0,19 = 20,00 EUR [8]
+   - Brutto: 105,04 + 20,00 = 125,04 EUR [8]
+
+
+== P2 Agent G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   369.2 s: Ihr Anteil an den Betriebskosten 2026 lautet 1.963,28 EUR in der Abrechnung [1], während der Sollwert laut Vertrag [9] 1.830,00 EUR beträgt. Die Abweichung beträgt 133,28 EUR.
+
+Rechne: \( 1963.28 - 18
+
+== P2 Agent N1: Wie hoch war meine Stromrechnung 2023?
+   185.9 s: Dazu liegen in den Unterlagen keine Angaben vor, dass es eine Stromrechnung für das Jahr 2023 gibt.
+
+== P2 Agent N2: Welchen Grundpreis zahle ich für Fernwärme?
+   227.9 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+   276.4 s: Der Zählerstandunterschied beträgt 1.200 m³ [1]. Der abgerechnete Verbrauch für 2025 lautet ebenfalls 1.200 m³. Es gibt also keine Abweichung zwischen Sollwert und Istwert.
+
+Zusammengefasst:
+- Sollwer
+
+== P2 Agent Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+   195.6 s: Der aktuelle monatliche Stromabschlag beträgt 115,00 EUR brutto (96,64 EUR netto zzgl. 18,36 EUR USt.), wie es in der [1] 03_Strom_Preisanpassung_SuedVolt_2025.pdf, S. 1, und in der [3] 04_Strom_Jahre
+
+== P2 Agent Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+   242.9 s: Der Vertrag kann kündigt werden:
+
+- **1 Monat vor Ablauf der Erstvertragslaufzeit (01.01.2024 – 31.12.2024)**: Danach ist die Kündigungsfrist unbefristet, mit einer Frist von 1 Monat. [1]
+- **Sonderkü
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-018/report.md
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-018/report.md
+{
+  "recall_agrees": 0,
+  "recall_high_without_facts": 0,
+  "recall_low_with_facts": 0,
+  "gap_only_faithfulness": {
+    "None": 1
+  }
+}
+evidence: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-018/evidence.json
+{
+  "run-018": {
+    "questions": 14,
+    "model_calls": 49,
+    "wall_seconds": 3773.1,
+    "prefill_first_calls": 1216.6,
+    "first_calls_from_cache": 0,
+    "prefill_later_calls": 1320.8,
+    "prompt_tokens_later_calls": 113349,
+    "decode_seconds": 1105.2,
+    "generated_tokens": 4663
+  }
+}
