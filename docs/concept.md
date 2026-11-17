@@ -332,7 +332,7 @@ Daraus folgt: keine Bildanalyse zur Abfragezeit (nur gecachte Captions) und kein
 - Testset: die Fragen aus `dataset/ground_truth.yaml` (erwartete Antwort, Fakten, Quellen mit Datei + Seite, erwartete Tools, Kategorie); ein eigenes `testset.yaml` entfällt (M6a, ADR-0011)
 - `python -m audit_agent.evaluation generate` führt die Fragen gegen **drei Varianten** aus und schreibt je Variante eine JSON-Zeile pro Antwort; `score` bewertet die gespeicherten Antworten ohne Ollama (`scores.json`, `report.md`):
   - **B0 – Volltext-Baseline:** Seitentext in Katalogreihenfolge, bis das Kontextfenster voll ist (bei `num_ctx` 8192 die Dateien 01–06, ISS-039), direkt im Prompt
-  - **P1 – Modulare Pipeline:** eine Suche (Top-5, ohne Filter, mit Boost), danach ein Modellaufruf mit nummerierten Treffern
+  - **P1 – Modulare Pipeline:** eine Suche (Top-5, ohne Filter, mit Boost), seit M6h ergänzt um bis zu 2 Treffer der Größen-Anfrage (seit M6i mit der Sparte der Frage als Filter, ADR-0017), danach ein Modellaufruf mit nummerierten Treffern
   - **P2 – Agentic RAG:** der Agent aus M5
   - Alle drei mit demselben Modell, denselben Chat-Optionen und demselben Belegformat `[n]`
 - Whitebox-Unit-Tests (`pytest`) für Parser, Chunker, Serialisierung, Score-Berechnung und `calculate`
@@ -428,7 +428,7 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 | M3 | Enrichment & Cache | Captions, Tabellen-Summaries, `.cache/` | Welcher Prompt geht an `gemma3:4b`? Wie funktioniert der SHA-256-Cache-Schlüssel? |
 | M4 | Embedding & Retrieval (P1) | ChromaDB-Index, Score mit Boost + Filter, Evidence-UI | Score für einen Treffer von Hand nachrechnen; Wirkung von Filter und Boost an einem Beispiel zeigen |
 | M5 | Agent (P2) | ReAct-Loop, 6 Tools, Logging | Ein Log Schritt für Schritt erklären: Was ging ans Modell, was kam zurück, wie wird der Tool-Aufruf geparst? |
-| M6 | Testmodul | `testset.yaml`, `run_eval.py`, pytest, RAGAS | Wie berechnet RAGAS Faithfulness? Wie werden die eigenen Metriken berechnet? |
+| M6 | Testmodul | `audit_agent.evaluation` (`generate`, `score`, `ragas`), Fragen aus `ground_truth.yaml`, pytest, RAGAS (Notizen: `reverse-engineering/m6-*.md`) | Wie berechnet RAGAS Faithfulness? Wie werden die eigenen Metriken berechnet? |
 | M7 | Ausarbeitung | 5–8 Seiten | Jede Aussage über das System ist durch eigenes Verständnis und Testergebnisse gedeckt |
 
 ---

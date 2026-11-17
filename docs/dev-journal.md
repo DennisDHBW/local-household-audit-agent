@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-17 – Abschluss M6: Reverse Engineering, Abgleich mit den Anforderungen, v1.0.0
+**Ziel der Sitzung:** M6 rückwärts aufarbeiten (Testmodul, Größen-Anfrage, Sparten-Filter, Rückfragen), gegen `requirements.md` prüfen und v1.0.0 taggen.
+**Was wurde gemacht:**
+- 44 seit v0.2.0 geänderte Dateien in drei Runden aufgeteilt (Nutzer einverstanden, Tag auch ohne seine Antworten)
+- Datenflüsse an echten Läufen nachgezeichnet: G1 in P1 (RUN-020) und P2 (RUN-021), S1 mit Zitier-Rückfrage (RUN-021)
+- Je Runde Erklärung, 4 fehlende Whitebox-Tests und 7–8 Verständnisfragen ohne Musterantworten im Chat
+- Abgleich mit `requirements.md`; Konzept 11.1 (P1 mit Größen-Suche) und 13 (M6-Dateien), Glossar (Wiederholungssperre, Text-Aufruf), README, ADR-0017-Status nachgezogen; vier Grundanforderungen in der Abgabe-Checkliste abgehakt
+**Gelieferte Dateien / Funktionen:** `docs/reverse-engineering/m6-evaluation.md`, `m6-quantity-retrieval.md`, `m6-agent.md`, `m6-abgleich-requirements.md`; kein Code geändert
+**Entscheidungen:** ADR-0017 Status ergänzt (ISS-077 gelöst in M6i); keine neue Architekturentscheidung
+**Probleme / Überraschungen:** ISS-080 (Sparte bei „Strom- und Gaspreis“), ISS-081 (Gegenstück-Hinweis „keine Treffer“, obwohl Rechnung und Preisschreiben schon da sind), ISS-082 (RAGAS nicht für v1.0.0), ISS-083 (Prüffrage-Erkennung per Wortliste). Zwei eigene Fehldeutungen beim Schreiben der Notizen, vor dem Commit korrigiert: Beleg [6] enthält bei G1 beide Preise (34,80 und 38,20), und bei G1 lief gar keine Gegenstück-Suche
+**Offen / unklar:** Antworten des Nutzers zu M6 (und M0, M2–M5); RAGAS-Nachtlauf ja oder nein
+**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 · **Commit(s):** `docs(reverse-engineering)`, `docs`, Tag `v1.0.0`
+
 ### 2026-11-17 – M6i: Sparte in der Größen-Anfrage
 **Ziel der Sitzung:** Den Fehler aus M6h beheben, dass die Größen-Anfrage ohne Sparte bei P1 das Gas-Schreiben statt der Strom-Zeile trifft (ISS-077); P1 und P2 neu messen.
 **Was wurde gemacht:**

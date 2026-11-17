@@ -7,7 +7,7 @@ Hochschulprojekt im Kurs „Agentensysteme: Local Agentic AI“ (DHBW). Phase 1:
 
 ---
 
-## Projektstruktur (M0 bis M5 umgesetzt, M6 in Arbeit)
+## Projektstruktur (M0 bis M6 umgesetzt, Stand v1.0.0)
 
 ```
 local-household-audit-agent/
@@ -26,7 +26,7 @@ local-household-audit-agent/
 │   ├── ingestion/             # PDF-Parser, Chunk-Modelle, Pipeline
 │   ├── enrichment/            # Bild-Captions, Tabellen-Summaries, Cache (braucht Ollama)
 │   ├── retrieval/             # Index (ChromaDB), Suche mit Filter und Hierarchie-Boost, Evidenz, Vergleichslauf (braucht Ollama)
-│   ├── agent/                 # ReAct-Schleife mit 6 Tools, Rechner, Protokoll, Report, CLI, Streamlit-Oberfläche (braucht Ollama)
+│   ├── agent/                 # ReAct-Schleife mit 5 Tools (ADR-0014), Rechner, Protokoll, Report, CLI, Streamlit-Oberfläche (braucht Ollama)
 │   ├── evaluation/            # Testmodul: Varianten B0/P1/P2, eigene Metriken, RAGAS mit lokalem Bewerter, Report
 ├── tests/                     # pytest (unit / integration / slow)
 ├── paper/                     # Ausarbeitung (LaTeX, DHBW-Vorlage)

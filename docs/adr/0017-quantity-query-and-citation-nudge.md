@@ -1,6 +1,6 @@
 # ADR-0017: Größen-Anfrage für P1 und P2, Zitier-Rückfrage, Einheitenfaktor nur für Geldfakten
 
-- **Status:** akzeptiert für Zitier-Rückfrage und Einheitenfaktor; Größen-Anfrage umgesetzt und standardmäßig an, in RUN-018/019 ohne messbaren Gewinn (Nachbesserung ISS-077 offen)
+- **Status:** akzeptiert für Zitier-Rückfrage und Einheitenfaktor; Größen-Anfrage umgesetzt und standardmäßig an, in RUN-018/019 ohne messbaren Gewinn; Nachbesserung M6i (Sparte als Filter, ISS-077 gelöst): RUN-020 P1 13 → 16 von 27 Sollzahlen im Kontext, P2 (RUN-021) unverändert
 - **Datum:** 2026-11-16
 - **Meilenstein:** M6 (M6h)
 - **Ersetzt:** –; ergänzt ADR-0009 (Suche), ADR-0014 (Werkzeug `search`), ADR-0015 (Rückfragen)
