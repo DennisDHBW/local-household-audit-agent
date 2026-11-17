@@ -72,6 +72,9 @@ def test_cosine_similarity_rejects_bad_input():
         ("1.234,56", 1234.56),
         ("34,80", 34.8),
         ("3,480", 3480.0),
+        ("0,348", 0.348),
+        ("0.956", 0.956),
+        ("0,956", 0.956),
     ],
 )
 def test_parse_number_handles_german_and_english_formats(token, expected):

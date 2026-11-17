@@ -31,7 +31,13 @@ from audit_agent.agent.models import EvidenceBook
 from audit_agent.config import Settings
 from audit_agent.corpus import DocType, DocumentCatalog, DocumentMeta, UtilityType
 from audit_agent.ingestion import ChunkType, chunks_path, load_parsed_document
-from audit_agent.retrieval import MetadataFilter, SearchHit, SearchOptions
+from audit_agent.retrieval import (
+    MetadataFilter,
+    SearchHit,
+    SearchOptions,
+    new_quantity_hits,
+    quantity_query,
+)
 from audit_agent.retrieval.evidence import render_numbered_hit
 from audit_agent.retrieval.search import fold
 
@@ -398,8 +404,22 @@ class ToolBox:
             args.query, SearchOptions(metadata_filter=metadata_filter, chunk_types=chunk_types)
         )
         notes: list[str] = []
+        quantity = quantity_query(args.query) if self._settings.agent.quantity_hits else None
+        if hits and quantity is not None:
+            extra = new_quantity_hits(
+                self._backend.search,
+                quantity,
+                SearchOptions(metadata_filter=metadata_filter, chunk_types=chunk_types),
+                hits,
+                self._settings.agent.quantity_hits,
+            )
+            if extra:
+                hits = [*hits, *extra]
+                notes.append(
+                    f'Hinweis: Weitere Treffer stammen aus einer Suche nur nach "{quantity}".'
+                )
         if hits and args.include_counterpart:
-            extra, note = self._counterpart_hits(args, hits, chunk_types)
+            extra, note = self._counterpart_hits(quantity or args.query, args, hits, chunk_types)
             hits = [*hits, *extra]
             notes.append(note)
         header = f'Treffer für "{args.query}" (Filter: {describe_filter(metadata_filter)}):'
@@ -411,9 +431,17 @@ class ToolBox:
         return ToolResult(text="\n".join([header, *notes, *blocks]), hit_numbers=numbers)
 
     def _counterpart_hits(
-        self, args: SearchArguments, hits: list[SearchHit], chunk_types: frozenset[ChunkType]
+        self,
+        query: str,
+        args: SearchArguments,
+        hits: list[SearchHit],
+        chunk_types: frozenset[ChunkType],
     ) -> tuple[list[SearchHit], str]:
-        """Extra hits from the document family that the first search did not reach (ISS-007)."""
+        """Extra hits from the document family that the first search did not reach (ISS-007).
+
+        ``query`` is the quantity query if there is one: the long question would find the same
+        document chunks again (ISS-072).
+        """
         found = {self._doc_type_of(hit) for hit in hits}
         wanted = []
         if DocType.BILL not in found:
@@ -428,9 +456,7 @@ class ToolBox:
                 chunk_types=chunk_types,
                 top_k=COUNTERPART_HITS,
             )
-            extra += [
-                h for h in self._backend.search(args.query, options) if h.chunk_id not in seen
-            ]
+            extra += [h for h in self._backend.search(query, options) if h.chunk_id not in seen]
         if not extra:
             return [], "Hinweis: Im Gegenstück (Vertrag bzw. Rechnung) gibt es keine Treffer."
         return (

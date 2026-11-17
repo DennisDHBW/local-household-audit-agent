@@ -294,6 +294,57 @@ def test_counterpart_search_adds_the_contract_to_a_bill_hit(tmp_path):
     assert "Gegenstück" in result.text
 
 
+def test_counterpart_search_uses_the_quantity_query(tmp_path):
+    # Arrange
+    toolbox, backend, _ = _toolbox(tmp_path, FakeBackend(lambda q, o: _by_doc_type(o)))
+
+    # Act
+    toolbox.tools()["search"].run(
+        SearchArguments(query="neuer Arbeitspreis 2025", include_counterpart=True), EvidenceBook()
+    )
+
+    # Assert
+    queries = [call[0] for call in backend.calls]
+    assert queries[0] == "neuer Arbeitspreis 2025"
+    assert queries[1:] and set(queries[1:]) == {"Arbeitspreis"}
+
+
+def test_quantity_search_adds_only_new_hits_after_the_main_hits(tmp_path):
+    # Arrange
+    def hits(query, options):
+        if query == "Arbeitspreis":
+            return [make_hit("c1"), make_hit("row", content="Arbeitspreis | 38,20 ct")]
+        return [make_hit("c1", content="Zwischenablesung"), make_hit("c2")]
+
+    toolbox, backend, _ = _toolbox(tmp_path, FakeBackend(hits))
+
+    # Act
+    result = toolbox.tools()["search"].run(
+        SearchArguments(query="neuer Arbeitspreis 2025"), EvidenceBook()
+    )
+
+    # Assert
+    assert [call[0] for call in backend.calls] == ["neuer Arbeitspreis 2025", "Arbeitspreis"]
+    assert result.hit_numbers == (1, 2, 3)
+    assert result.text.index("Zwischenablesung") < result.text.index("38,20 ct")
+    assert 'Weitere Treffer stammen aus einer Suche nur nach "Arbeitspreis"' in result.text
+
+
+def test_quantity_search_is_skipped_for_a_short_query_and_when_switched_off(tmp_path):
+    # Arrange
+    short, short_backend, _ = _toolbox(tmp_path, FakeBackend(lambda q, o: [make_hit()]))
+    off, off_backend, _ = _toolbox(
+        tmp_path, FakeBackend(lambda q, o: [make_hit()]), quantity_hits=0
+    )
+
+    # Act
+    short.tools()["search"].run(SearchArguments(query="Arbeitspreis"), EvidenceBook())
+    off.tools()["search"].run(SearchArguments(query="neuer Arbeitspreis 2025"), EvidenceBook())
+
+    # Assert
+    assert len(short_backend.calls) == 1 and len(off_backend.calls) == 1
+
+
 def test_counterpart_search_is_off_by_default(tmp_path):
     # Arrange
     toolbox, backend, _ = _toolbox(tmp_path, FakeBackend(lambda q, o: _by_doc_type(o)))

@@ -24,6 +24,66 @@
 
 ## Einträge
 
+### ISS-077 – Größen-Anfrage ohne Sparte trifft das falsche Dokument (P1)
+- **Datum / Meilenstein:** 2026-11-17 / M6h (RUN-019)
+- **Kategorie:** retrieval
+- **Status:** offen
+- **Symptom:** P1/G1: Die Größen-Anfrage „Arbeitspreis“ liefert zwei Treffer aus dem Gas-Preisschreiben (Kapitel „Senkung Ihres Gas-Arbeitspreises“), nicht die Strom-Zeile mit 38,20 ct. Die Sollzahlen im Kontext bleiben bei P1 13 von 27 (RUN-011: 13). P1/S5 kippt von „Ja, stimmt“ zu einem Fehlalarm mit sinnloser Rechnung (68,00 EUR).
+- **Ursache:** `quantity_query` entfernt Sparten und Zusammensetzungen wie „Stromabrechnung“ ganz; P1 hat keinen Sparten-Filter (P2 übergibt `utility_type` an beide Suchen). Das Wort steht dann im Kapitel eines anderen Dokuments und bekommt den Hierarchie-Boost 1,5. Fehler im Entwurf von Claude: Der Fall P1 ohne Filter wurde nicht bedacht, und ohne Ollama ließ sich die Wirkung vorab nicht prüfen.
+- **Lösung / Workaround:** Offen. Kandidat: die Sparte aus der Anfrage (Präfix von „Stromabrechnung“, Wort „Strom“) als zusätzliches Suchwort oder als Sparten-Filter für die Größen-Suche behalten, nur wenn die Frage sie nennt. Danach P1 und P2 neu messen.
+- **Gelernt:** Eine Anfrage, die nur noch den Fachbegriff enthält, verliert den Kontext, der das richtige Dokument bestimmt; Entfernen von Wörtern braucht eine Messung mit dem echten Embedding-Modell.
+- **Relevant für Ausarbeitung?** ja → Retrieval (Grenzen), Reflexion (Fehler im Entwurf)
+
+### ISS-076 – Leere Antwort nach der Rechennachfrage (G1, RUN-018)
+- **Datum / Meilenstein:** 2026-11-17 / M6h (RUN-018)
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** P2/G1: Die erste Antwort („neuer Arbeitspreis 38,20 ct angewendet“, falsch, aber nicht leer) löst die Rechennachfrage aus; die nächste Modellantwort hat 25 erzeugte Token, aber leeren Inhalt und keinen Werkzeugaufruf. Der Loop endet mit `stop_reason=empty_answer` und liefert nichts.
+- **Ursache:** Nicht geklärt (Einzelfall, ein Lauf). Die Nachfrage ersetzt keine Antwort, sondern hängt eine Nutzernachricht an; das Modell antwortet hier nur mit Steuerzeichen oder einem verworfenen Aufruf.
+- **Lösung / Workaround:** Offen. Kandidat: bei leerer Antwort nach einer Rückfrage die vorherige Antwort zurückgeben oder einmal neu fragen. Erst bei Wiederholung in einem weiteren Lauf umsetzen.
+- **Gelernt:** Jede Rückfrage des Loops braucht einen Plan für die leere Antwort danach.
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-075 – VM ohne Speicherplatz: `uv sync` scheitert, alte Umgebungen anderer Sitzungen nicht löschbar
+- **Datum / Meilenstein:** 2026-11-16 / M6h
+- **Kategorie:** ki-assistent
+- **Status:** gelöst (Workaround)
+- **Symptom:** `uv sync` in Claudes Shell brach mit „No space left on device“ ab (Wurzel-Dateisystem der VM 99 % voll, 189 MB frei). Die Ordner `/tmp/uv-cache`, `/tmp/uvc-m6g`, `/tmp/venv-m6g`, `/tmp/venvs` (zusammen 3,4 GB) gehören einer früheren Sitzung (Benutzer `nobody`), sind nicht lesbar, nicht ausführbar und nicht löschbar.
+- **Ursache:** Jede Sitzung legt eine eigene Umgebung (870 MB) und einen eigenen Cache (850 MB) an, wie in `status.md` verlangt (neuer Ordnername je Sitzung, ISS-065/069); frühere Ordner bleiben liegen.
+- **Lösung / Workaround:** Cache und Umgebung dieser Sitzung liegen in `/dev/shm` (RAM-Speicher, 2 GB) mit `UV_LINK_MODE=hardlink` (nur eine Kopie): `export UV_CACHE_DIR=/dev/shm/uvc UV_PROJECT_ENVIRONMENT=/dev/shm/venv UV_LINK_MODE=hardlink`. Nichts davon liegt im Projektordner. Das RAM-Verzeichnis ist nach Sitzungsende weg; `uv run` baut das Projektpaket bei jedem Aufruf neu (einige Sekunden).
+- **Gelernt:** Das Anlegen einer neuen Umgebung je Sitzung läuft auf einer VM mit festem Speicher irgendwann voll; ein RAM-Verzeichnis ist der Ausweg, wenn man fremde Ordner nicht löschen darf.
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-074 – G3: Das Gegenstück „gleiche Stelle im Vorjahr“ fehlt weiter
+- **Datum / Meilenstein:** 2026-11-16 / M6h
+- **Kategorie:** retrieval
+- **Status:** offen
+- **Symptom:** G3 („Ist die Gasabrechnung 2026 korrekt?“) braucht die z-Zahl 0,9560 aus der Abrechnung 2025. Die Frage nennt keine Größe, die Größen-Anfrage (ISS-072) findet nichts („Gasabrechnung 2026“ besteht nur aus Dokument- und Jahreswörtern, `quantity_query` gibt `None`), und `include_counterpart` kennt nur die Familien Vertrag, Preisschreiben und Rechnung, nicht „Rechnung des Vorjahres“.
+- **Ursache:** Der Code kennt Dokumentfamilien, aber keine zeitliche Beziehung zwischen zwei Rechnungen derselben Sparte und Vertragsnummer. Welche Zeile der Vorjahresrechnung gemeint ist, hängt von der geprüften Größe ab, die in der Frage fehlt.
+- **Lösung / Workaround:** Offen. Kandidat: für Rechnungstreffer die Zeile mit gleicher Überschrift in der Rechnung eines anderen Zeitraums holen (Text des Treffers als Suchanfrage, Filter Sparte und Dokumentart Rechnung); kostet je Treffer eine Einbettung und mehr Kontext. RUN-018: G3 hat weiter 0 von 3 Sollzahlen im Kontext (die Antwort „stimmt sehr gut überein“ vergleicht nur den Abschlag), das Retrieval ist also weiter der Engpass.
+- **Gelernt:** Eine Größen-Anfrage kann nur finden, was die Frage nennt; Fragen mit „ist alles korrekt?“ brauchen einen Plan, welche Größen zu prüfen sind (siehe Negativergebnis ADR-0016).
+- **Relevant für Ausarbeitung?** ja → Retrieval (Grenzen), Agent
+
+### ISS-073 – `parse_number` las „0,348“ als 348
+- **Datum / Meilenstein:** 2026-11-16 / M6h
+- **Kategorie:** evaluation
+- **Status:** gelöst
+- **Symptom:** Der neue Test „0,348 EUR/kWh gilt als 34,80 ct/kWh“ schlug fehl. `extract_numbers("0,348")` lieferte 348.0.
+- **Ursache:** Die Erkennung englischer Tausendergruppen (`\d{1,3}(,\d{3})+`) passte auf „0,348“. Eine Tausendergruppe beginnt aber nie mit 0. Betroffen war auch die deutsche Variante mit Punkt („0.956“). Die Zahlensuche der Metrik und die Smoke-Prüfung der Anreicherung teilen sich die Funktion.
+- **Lösung / Workaround:** Beide Muster verlangen jetzt eine erste Ziffer von 1 bis 9 (`numbers.py`, Test mit „0,348“, „0.956“, „0,956“). „3,480“ bleibt mehrdeutig (englisch: 3480, deutsch: 3,48) und wird wie bisher als 3480 gelesen.
+- **Gelernt:** Ein Test für den neuen Einheitenfaktor deckte einen alten Fehler in einer Hilfsfunktion auf; Prüffunktionen brauchen Randfälle (führende Null).
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-072 – Jahr und Dokumentwort in der Suchanfrage ziehen das Dokument, nicht die Zeile
+- **Datum / Meilenstein:** 2026-11-16 / M6h (RUN-014, G1)
+- **Kategorie:** retrieval
+- **Status:** akzeptiert (umgesetzt in M6h; RUN-018/019: Wirkung nur bei P2/G1, bei P1 keine; Nachbesserung ISS-077)
+- **Symptom:** G1: Die Suche „neuer Arbeitspreis 2025“ liefert fünf Treffer aus dem Schreiben zur Zwischenablesung (Kapitel „… 1. Halbjahr 2025“); die Zeile „Arbeitspreis … Neu Brutto 38,20 ct“ im Preisschreiben fehlt. Auch die Gegenstück-Treffer sind Grundpreiszeilen, nicht der Arbeitspreis. Das Modell antwortet „keine Angaben“. P1 (die ganze Frage als Anfrage) hat dasselbe Problem.
+- **Ursache:** Das Jahr und Wörter wie „Abrechnung“ prägen die Einbettung der Anfrage stärker als der Fachbegriff, und der Hierarchie-Boost belohnt Kapitel mit „2025“ im Titel (ISS-027). Die Zeile mit der Zahl trägt kaum Jahr oder Dokumentwörter.
+- **Lösung / Workaround:** `retrieval/quantity.py`: `quantity_query` entfernt Jahreszahlen, Frage- und Urteilswörter, Dokumentwörter (auch Zusammensetzungen wie „Gasabrechnung“) und Sparten, übrig bleibt die Größe („Arbeitspreis“). Eine zweite Suche mit ihr fügt bis zu `AgentSettings.quantity_hits` (2) neue Treffer an (P1 und P2); die Gegenstück-Suche nutzt dieselbe kurze Anfrage. Bleibt kein Wort übrig oder ändert sich die Anfrage nicht, entfällt die zweite Suche. Schalter: `quantity_hits=0`.
+- **Gelernt:** Eine Frage und die gesuchte Zeile ähneln sich in der Einbettung wenig; die Anfrage muss wie die Zeile klingen, nicht wie die Frage.
+- **Relevant für Ausarbeitung?** ja → Retrieval (Suchanfrage und Tabellenzeilen), Agent (Werkzeugentwurf)
+
 ### ISS-071 – Prüfablauf: Nachricht des Ablaufs führt zu Lückenantworten und chinesischem Text
 - **Datum / Meilenstein:** 2026-11-16 / M6g (RUN-017)
 - **Kategorie:** agent

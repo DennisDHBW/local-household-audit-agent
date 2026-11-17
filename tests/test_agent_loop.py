@@ -21,6 +21,7 @@ from audit_agent.agent.loop import LIMIT_OBSERVATION, estimate_tokens
 from audit_agent.agent.models import NudgeStep
 from audit_agent.agent.prompts import (
     CALCULATE_BEFORE_ANSWER_MESSAGE,
+    CITE_BEFORE_ANSWER_MESSAGE,
     FORCED_ANSWER_MESSAGE,
     GAP_ANSWER,
     REPEAT_FAILED_OBSERVATION,
@@ -80,13 +81,13 @@ def test_direct_answer_without_tools():
 
 def test_tool_call_observation_goes_back_to_the_model():
     # Arrange
-    loop, chat = _loop([tool_reply(CALCULATE), answer_reply("Ergebnis 6.")])
+    loop, chat = _loop([tool_reply(CALCULATE), answer_reply("Ergebnis 6 [1].")])
 
     # Act
     run = loop.run("Was ist 2*3?")
 
     # Assert
-    assert run.answer == "Ergebnis 6." and run.tool_call_count == 1
+    assert run.answer == "Ergebnis 6 [1]." and run.tool_call_count == 1
     assert [step.kind for step in run.steps] == ["model_call", "tool_call", "model_call"]
     tool_message = chat.requests[1]["messages"][-1]
     assert tool_message == {"role": "tool", "tool_name": "calculate", "content": "2*3 = 6"}
@@ -370,7 +371,7 @@ def test_repeated_tool_error_is_blocked_and_a_corrected_call_runs():
         tool_reply(missing),
         tool_reply(calculate_wrong),
         tool_reply(calculate_right),
-        answer_reply("3."),
+        answer_reply("3 [1]."),
     ]
     loop, _ = _loop(replies)
 
@@ -424,7 +425,7 @@ def test_calculate_nudge_is_not_repeated_and_the_second_answer_is_accepted():
 
 def test_calculate_nudge_is_skipped_when_it_would_not_help():
     # Arrange
-    calculated = [tool_reply(SEARCH), tool_reply(CALCULATE), answer_reply("Abweichung 6 EUR.")]
+    calculated = [tool_reply(SEARCH), tool_reply(CALCULATE), answer_reply("Abweichung 6 EUR [1].")]
     single_fact = [tool_reply(SEARCH), answer_reply("34,80 ct/kWh [1].")]
     no_search = [answer_reply("Das weiß ich nicht.")]
     gap = [tool_reply(SEARCH), tool_reply(("list_documents", {})), answer_reply(GAP_ANSWER)]
@@ -444,7 +445,7 @@ def test_calculate_nudge_is_skipped_when_it_would_not_help():
 
 def test_repeated_calculate_does_not_count_as_calculated():
     # Arrange: the first calculate counts, the identical second one is blocked, no nudge follows
-    replies = [tool_reply(CALCULATE), tool_reply(CALCULATE), answer_reply("Ergebnis 6.")]
+    replies = [tool_reply(CALCULATE), tool_reply(CALCULATE), answer_reply("Ergebnis 6 [1].")]
     loop, _ = _loop(replies)
 
     # Act
@@ -602,18 +603,23 @@ def _run(answer, sources=(), tools=("search",)):
 
 
 @pytest.mark.parametrize(
-    ("value", "answer", "expected"),
+    ("value", "unit", "answer", "expected"),
     [
-        (Decimal("34.80"), "Der Arbeitspreis beträgt 34,80 ct/kWh.", True),
-        (Decimal("0.348"), "Der Arbeitspreis beträgt 34,80 ct/kWh.", True),
-        (Decimal("1189"), "Gesamt 1.189,00 EUR", True),
-        (Decimal("34.80"), "Der Arbeitspreis beträgt 39,50 ct/kWh.", False),
-        ("Hausverwaltung", "Die hausverwaltung schickt…", True),
-        ("Hausverwaltung", "Unbekannt.", False),
+        (Decimal("34.80"), "ct/kWh", "Der Arbeitspreis beträgt 34,80 ct/kWh.", True),
+        (Decimal("0.348"), "EUR/kWh", "Der Arbeitspreis beträgt 34,80 ct/kWh.", True),
+        (Decimal("34.80"), "ct/kWh", "Der Arbeitspreis beträgt 0,348 EUR/kWh.", True),
+        (Decimal("1189"), "EUR", "Gesamt 1.189,00 EUR", True),
+        (Decimal("34.80"), "ct/kWh", "Der Arbeitspreis beträgt 39,50 ct/kWh.", False),
+        (Decimal("3480"), "kWh", "Der Verbrauch beträgt 3.480 kWh.", True),
+        (Decimal("3480"), "kWh", "Der Arbeitspreis beträgt 34,80 ct/kWh.", False),
+        (Decimal("0.956"), None, "Die z-Zahl ist 95,6.", False),
+        ("Hausverwaltung", None, "Die hausverwaltung schickt…", True),
+        ("Hausverwaltung", None, "Unbekannt.", False),
     ],
 )
-def test_is_fact_in_answer(value, answer, expected):
-    assert is_fact_in_answer(ExpectedFact(label="x", value=value), answer) is expected
+def test_is_fact_in_answer(value, unit, answer, expected):
+    fact = ExpectedFact(label="x", value=value, unit=unit)
+    assert is_fact_in_answer(fact, answer) is expected
 
 
 def test_evaluate_run_for_an_answerable_question():
@@ -718,3 +724,50 @@ def test_streamlit_app_renders_the_first_page_without_ollama():
     assert not page.exception
     assert page.title[0].value == "Energie- & Nebenkosten-Auditor"
     assert page.button[0].disabled  # no question yet
+
+
+def test_answer_with_numbers_and_no_hit_number_is_questioned_once():
+    # Arrange
+    replies = [tool_reply(SEARCH), answer_reply("34,80 ct/kWh."), answer_reply("34,80 ct/kWh [1].")]
+    loop, chat = _loop(replies)
+
+    # Act
+    run = loop.run("Wie hoch ist der Arbeitspreis?")
+
+    # Assert
+    nudges = [step for step in run.steps if step.kind == "nudge"]
+    assert [nudge.reason for nudge in nudges] == ["cite"]
+    assert run.answer == "34,80 ct/kWh [1]."
+    assert chat.requests[-1]["messages"][-1]["content"] == CITE_BEFORE_ANSWER_MESSAGE
+
+
+def test_cite_nudge_is_asked_once_and_skipped_when_it_would_not_help():
+    # Arrange
+    uncited_twice = [tool_reply(SEARCH), answer_reply("34,80 ct/kWh."), answer_reply("34,80 ct.")]
+    no_number = [tool_reply(SEARCH), answer_reply("Ja, das stimmt.")]
+    no_search = [answer_reply("Es sind 5 Dokumente.")]
+    gap = [tool_reply(SEARCH), tool_reply(SEARCH), answer_reply(GAP_ANSWER)]
+
+    # Act
+    first = _loop(uncited_twice)[0].run("Wie hoch ist der Arbeitspreis?")
+    others = [_loop(replies)[0].run("Frage?") for replies in (no_number, no_search, gap)]
+
+    # Assert
+    assert [s.reason for s in first.steps if s.kind == "nudge"] == ["cite"]
+    assert first.answer == "34,80 ct."
+    for run in others:
+        assert "nudge" not in [step.kind for step in run.steps]
+
+
+def test_cite_nudge_can_be_switched_off():
+    # Arrange
+    loop, _ = _loop(
+        [tool_reply(SEARCH), answer_reply("34,80 ct/kWh.")],
+        agent=AgentSettings(require_citation=False),
+    )
+
+    # Act
+    run = loop.run("Wie hoch ist der Arbeitspreis?")
+
+    # Assert
+    assert "nudge" not in [step.kind for step in run.steps]

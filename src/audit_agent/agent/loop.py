@@ -31,10 +31,12 @@ from audit_agent.agent.models import (
 )
 from audit_agent.agent.prompts import (
     CALCULATE_BEFORE_ANSWER_MESSAGE,
+    CITE_BEFORE_ANSWER_MESSAGE,
     FORCED_ANSWER_MESSAGE,
     REPEAT_FAILED_OBSERVATION,
     REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
+    has_citation,
     is_audit_question,
     is_gap_answer,
     system_prompt,
@@ -182,6 +184,7 @@ class AgentLoop:
         forced: StopReason | None = None
         is_gap_questioned = False
         is_calculate_questioned = False
+        is_cite_questioned = False
         is_calculated = False
         is_audit = is_audit_question(question)
         memory = _CallMemory()
@@ -229,6 +232,18 @@ class AgentLoop:
                 ):
                     is_calculate_questioned = True
                     nudge(message, "calculate", CALCULATE_BEFORE_ANSWER_MESSAGE)
+                    continue
+                if (
+                    forced is None
+                    and agent.require_citation
+                    and not is_cite_questioned
+                    and tool_call_count > 0
+                    and any(char.isdigit() for char in answer)
+                    and not has_citation(answer)
+                    and not is_gap_answer(answer)
+                ):
+                    is_cite_questioned = True
+                    nudge(message, "cite", CITE_BEFORE_ANSWER_MESSAGE)
                     continue
                 stop_reason = forced or ("answer" if answer else "empty_answer")
                 break

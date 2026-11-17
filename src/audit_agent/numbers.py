@@ -5,8 +5,9 @@ from __future__ import annotations
 import re
 
 _NUMBER_TOKEN = re.compile(r"\d[\d.,]*\d|\d")
-_GERMAN_THOUSANDS = re.compile(r"\d{1,3}(\.\d{3})+(,\d+)?")
-_ENGLISH_THOUSANDS = re.compile(r"\d{1,3}(,\d{3})+(\.\d+)?")
+_GERMAN_THOUSANDS = re.compile(r"[1-9]\d{0,2}(\.\d{3})+(,\d+)?")
+_ENGLISH_THOUSANDS = re.compile(r"[1-9]\d{0,2}(,\d{3})+(\.\d+)?")
+"""A thousands group never starts with 0: ``0,348`` is a decimal, ``3,480`` is ambiguous."""
 
 
 def parse_number(token: str) -> float | None:

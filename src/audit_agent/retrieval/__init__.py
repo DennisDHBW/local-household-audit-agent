@@ -20,6 +20,7 @@ from audit_agent.retrieval.models import (
     SearchHit,
     SearchOptions,
 )
+from audit_agent.retrieval.quantity import new_quantity_hits, quantity_query
 from audit_agent.retrieval.search import Retriever, build_where, path_matches, tokenize_query
 
 __all__ = [
@@ -37,8 +38,10 @@ __all__ = [
     "embedding_text",
     "get_collection",
     "hierarchy_prefix",
+    "new_quantity_hits",
     "open_vector_client",
     "path_matches",
+    "quantity_query",
     "render_evidence_text",
     "tokenize_query",
 ]

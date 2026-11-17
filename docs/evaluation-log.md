@@ -474,3 +474,31 @@
 - **Prüfablauf in Zahlen:** 6 Prüffragen, 14 geplante Prüfgrößen: 4 Abweichung, 3 gleich, 4 nicht gefunden, 3 nicht belegt. In 4 Prüfgrößen stammen Soll- und Istzahl aus demselben Treffer. 33 Aufrufe des Ablaufs, 1.494 s (25 min) nur im Ablauf, je Prüffrage 113 bis 336 s zusätzlich.
 - **Handprüfung der sechs Prüffragen:** G1: Urteil „Abweichung“ stimmt zufällig, die Begründung ist falsch (Gas-Rechnungsbetrag 1.555,43 EUR gegen Strom-Rechnungsbetrag 1.379,30 EUR, −176,13 EUR; Prüfgröße war „Arbeitspreis“). G2: Unsinn (Verbrauch und „z-Zahl“ einer Stromabrechnung, nichts zu Betriebskosten). G3: Ablauf liest z-Zahl 1,0000 auf beiden Seiten aus demselben Treffer, danach „keine Angaben“, die freie Schleife endet im Werkzeuglimit mit „7,01 EUR Abweichung“ (falsch). G4: sagt „korrekt“, rechnet 11.819 kWh × 13,45 EUR/1.000 kWh; die Wohnflächenabweichung wird nicht gefunden (RUN-014 fand sie). S5: Urteil „stimmt“ richtig, Antwort chinesisch mit erfundenem Stückpreis „1 EUR/kWh“. Z1: Urteil „passt“ und 1.200 m³ richtig, Text widersprüchlich (Soll gleich Ist aus demselben Wert).
 - **Deutung:** Der Prüfablauf bringt in dieser Form keinen Gewinn: gleiche Handpunktzahl (6 von 14) bei 27 % mehr Zeit, G4 geht verloren, und es entstehen neue Fehlerarten (ISS-070, ISS-071). Gut ist nur, dass die Zahlen nachweislich aus Treffern stammen und der Code rechnet; die Treffer sind aber meist die falschen. Die Bedingung aus ADR-0016, den Ablauf zu bestätigen, ist nicht erfüllt.
+
+### RUN-018 / RUN-019 – M6h, Größen-Anfrage und Zitier-Rückfrage (P2 und P1, `qwen2.5:7b`, 14 Fragen)
+- **Datum / Commit:** 2026-11-17 · Branch `feat/m6h-retrieval`, Commit `docs: add ADR-0017, ISS-072 to ISS-075, glossary and concept note for M6h`
+- **Variante:** RUN-018 nur P2 (Vergleich RUN-014), RUN-019 nur P1 (Vergleich RUN-011); gleiche Fragen und gleiches Modell; neu gegenüber RUN-014/011: Größen-Anfrage mit bis zu 2 neuen Treffern (P1 und P2, ADR-0017), Gegenstück-Suche mit der Größen-Anfrage, Zitier-Rückfrage (nur P2), Einheitenfaktor der Metrik nur für ct und EUR
+- **Konfiguration:** `num_ctx` 8192, Temperatur 0, `quantity_hits` 2, `require_citation` an; Aufruf `scripts/eval_run.sh run-018:qwen2.5:7b`, danach `generate --run-id run-019 --variants p1 --all`, `score`, `scripts/check_evidence.py`
+- **Dauer:** RUN-018 63 min (3.773 s; RUN-014: 70 min), RUN-019 ca. 21 min (92 s je Frage)
+- **Rohdaten:** `data/eval/run-018/`, `data/eval/run-019/`, `run-018.log`, `run-018-env.txt`, `run-018-journal.txt`, `run-019-journal.txt`
+
+| Metrik | RUN-014 P2 | RUN-018 P2 | RUN-011 P1 | RUN-019 P1 |
+|---|---|---|---|---|
+| Richtig laut Metrik (von 14) | 4 | 4 | 6 | 5 |
+| Richtig nach Handprüfung (von 14) | 6 | 6 | – | – |
+| Fakten in der Antwort (von 27) | 9 | 8 | 10 | 9 |
+| Fakten im Kontext (von 27) | 17 | 18 | 13 | 13 |
+| Erwartete Quellen zitiert (von 18) | 6 | 8 | 8 | 7 |
+| Antworten mit Zahlen und `[n]` | 5 von 9 | 9 von 9 | 9 von 9 | 7 von 8 |
+| Fehler erkannt von Hand mit tragfähiger Begründung (von 3) | 1 (G4) | 0 | 0 | 0 |
+| Sekunden je Frage (Mittel) | 301 | 270 | – | 92 |
+| Prompt-Token je Frage (Mittel) | 9.371 | 9.863 | – | 1.233 |
+
+- **Nachbewertung:** Die geänderte Metrik (Einheitenfaktor) ändert in RUN-010 bis RUN-017 keine einzige Bewertung; die Läufe bleiben vergleichbar.
+- **Handprüfung RUN-018 (alle 14 Antworten gelesen):** Richtig sind S1, S2 (brutto 34,80 ct/kWh und 138,00 EUR/Jahr genannt, daneben Netto- und 2025-Werte; wie RUN-014), N1, N2, Z1 (Grenzfall: „passt“ und 1.200 m³ stimmen, z-Zahl fehlt), Z3 (Satz fehlerhaft, Frist 1 Monat stimmt). Falsch: S3 (Zählerstand 386 m³ statt Verbrauch 74 m³), S4 und S5 (Lückenantwort), G1 (leere Antwort nach der Rechennachfrage, `stop_reason=empty_answer`; vor der Rückfrage stand „angewendet“ mit 38,20 ct), G2 (Istwert −1.920 EUR als Abweichung −90 EUR gemeldet), G3 („stimmt sehr gut überein“, nur der Abschlag verglichen, danach JSON-Reste), G4 (Sollwert 1.830 EUR statt 1.867,50 EUR, Abweichung 133,28 EUR; RUN-014 war richtig), Z2 (115,00 statt 120,00 EUR).
+- **Wirkung der Größen-Anfrage:** Sie greift in 13 von 16 Suchen (11 von 14 Fragen) und ist bei P2/G1 der einzige Grund, dass die Preisanpassung mit 38,20 ct im Kontext steht (Treffer [6]); der Gewinn von 0 auf 2 Fakten in G1 wird durch die falsche Antwort nicht genutzt. Bei P1 bleiben 13 von 27 Sollzahlen im Kontext: In 7 von 14 Fragen kamen 2 Treffer dazu, die Antwort änderte sich in S1, S5, G2, G4, Z1, Z2, Z3 (Wortlaut), inhaltlich nur in S5 (RUN-011 „Ja, stimmt“, jetzt Fehlalarm mit 68,00 EUR). Ursache für P1/G1: Die Größen-Anfrage „Arbeitspreis“ hat keine Sparte; die Kapitelüberschrift des Gas-Preisschreibens („Gas-Arbeitspreises“) trifft sie und den Hierarchie-Boost, die Strom-Zeile mit 38,20 ct kommt nicht (ISS-077). Der Rückgang bei G4 im Kontext (2 auf 1 von 3) stammt nicht aus der Suche, sondern aus der fehlenden Rechnung 7470 × 0,25 (der Wert steht nur in einer `calculate`-Antwort).
+- **Wirkung der Zitier-Rückfrage:** 4 Rückfragen (S1, S3, G3, Z3), alle führten zu einer Antwort mit Treffernummer; 9 von 9 Antworten mit Zahlen tragen jetzt `[n]` (RUN-014: 5 von 9), erwartete Quellen zitiert 8 statt 6 von 18. Keine Antwort wurde dadurch inhaltlich schlechter oder besser (S3 und Z3 bleiben wie sie waren).
+- **Weitere Rückfragen und Abbrüche:** 4 Lückenrückfragen (S4, S5, N1, N2), 5 Rechennachfragen (G1, G2, G3, G4, Z1), dazu die 4 Zitier-Rückfragen; 0 Abbrüche durch Werkzeug- oder Kontextlimit, 1 leere Antwort (G1, ISS-076).
+- **Laufzeit:** 3.773 s gegen 4.207 s; das Ollama-Journal zeigt keine Kürzung. Die Zeit hängt weiter an der Ladepolitik (ISS-057), der Vergleich ist nur ein Hinweis, kein Beleg für Schnelligkeit.
+- **Deutung:** Die Zitier-Rückfrage wirkt wie beabsichtigt (Belegbarkeit), ohne die Genauigkeit zu ändern. Die Größen-Anfrage bringt im Mittel keinen messbaren Gewinn: Sie holt bei P2/G1 die fehlende Zeile, aber das Modell nutzt sie nicht (keine Rechnung, leere Antwort), und bei P1 verfehlt sie die Strom-Zeile, weil die Sparte fehlt. Nach Handprüfung bleibt P2 bei 6 von 14, die eingebauten Fehler (G1, G3, G4) erkennt keine Variante. Einzelne Läufe bei Temperatur 0, Streuung nicht gemessen.
+

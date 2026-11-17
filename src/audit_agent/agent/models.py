@@ -69,11 +69,12 @@ class ToolCallStep(_Frozen):
         return "Wiederholung" if self.is_repeat else "ok"
 
 
-NudgeReason = Literal["gap", "calculate"]
+NudgeReason = Literal["gap", "calculate", "cite"]
 
 NUDGE_LABELS: dict[NudgeReason, str] = {
     "gap": "Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen",
     "calculate": "Rückfrage: Prüffrage ohne calculate beantwortet",
+    "cite": "Rückfrage: Antwort mit Zahlen ohne Treffernummer",
 }
 
 
@@ -82,6 +83,7 @@ class NudgeStep(_Frozen):
 
     ``gap``: a "not in the documents" answer that rested on too few searches.
     ``calculate``: an audit question answered without a single ``calculate`` call (ISS-058).
+    ``cite``: an answer with numbers and no hit number (M6h).
     """
 
     kind: Literal["nudge"] = "nudge"

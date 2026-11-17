@@ -30,7 +30,9 @@ from audit_agent.retrieval.search import fold
 CITATION = re.compile(r"\[(\d+(?:\s*[,;]\s*\d+)*)\]")
 """``[3]`` or ``[1, 4]``; the numbers refer to the shown sources of the answer."""
 UNIT_FACTORS = (Decimal(1), Decimal(100), Decimal("0.01"))
-"""A fact may be written as EUR or ct, 0.348 or 34,8."""
+"""A money fact may be written as EUR or ct, 0.348 or 34,8."""
+MONEY_UNITS = ("ct", "eur")
+"""Facts whose unit contains one of these (folded) may use ``UNIT_FACTORS``; others only 1."""
 SEARCH_TOOLS = frozenset({"search", "search_documents", "search_tables", "search_images"})
 """``search_documents`` and ``search_tables`` only appear in runs before ADR-0014."""
 _LEADING_VERDICT = re.compile(r"\W*(ja|nein)\b")
@@ -59,11 +61,18 @@ def is_fact_in_answer(fact: ExpectedFact, answer: str) -> bool:
     text = strip_citations(answer)
     if isinstance(fact.value, str):
         return re.search(rf"\b{re.escape(fold(fact.value))}\b", fold(text)) is not None
+    factors = UNIT_FACTORS if _is_money(fact) else (Decimal(1),)
     return any(
         abs(Decimal(str(number)) - fact.value * factor) <= fact.tolerance * max(factor, 1)
         for number in extract_numbers(text)
-        for factor in UNIT_FACTORS
+        for factor in factors
     )
+
+
+def _is_money(fact: ExpectedFact) -> bool:
+    """True for ct and EUR facts; kWh, m³ and ratios must match as written (ISS-050)."""
+    unit = fold(fact.unit or "")
+    return any(marker in unit for marker in MONEY_UNITS)
 
 
 def expected_verdict(question: Question) -> Verdict | None:
