@@ -37,6 +37,7 @@ from audit_agent.retrieval import (
     SearchOptions,
     new_quantity_hits,
     quantity_query,
+    with_query_utility,
 )
 from audit_agent.retrieval.evidence import render_numbered_hit
 from audit_agent.retrieval.search import fold
@@ -400,26 +401,31 @@ class ToolBox:
         self, args: SearchArguments, book: EvidenceBook, chunk_types: frozenset[ChunkType]
     ) -> ToolResult:
         metadata_filter = MetadataFilter(utility_type=args.utility_type)
-        hits = self._backend.search(
-            args.query, SearchOptions(metadata_filter=metadata_filter, chunk_types=chunk_types)
-        )
+        options = SearchOptions(metadata_filter=metadata_filter, chunk_types=chunk_types)
+        hits = self._backend.search(args.query, options)
+        # The extra searches drop the utility words of the query, so they keep it as a filter.
+        utility_type = with_query_utility(options, args.query).metadata_filter.utility_type
         notes: list[str] = []
         quantity = quantity_query(args.query) if self._settings.agent.quantity_hits else None
         if hits and quantity is not None:
             extra = new_quantity_hits(
                 self._backend.search,
                 quantity,
-                SearchOptions(metadata_filter=metadata_filter, chunk_types=chunk_types),
+                with_query_utility(options, args.query),
                 hits,
                 self._settings.agent.quantity_hits,
             )
             if extra:
                 hits = [*hits, *extra]
+                scope = "" if utility_type is args.utility_type else f" (Sparte={utility_type})"
                 notes.append(
-                    f'Hinweis: Weitere Treffer stammen aus einer Suche nur nach "{quantity}".'
+                    f'Hinweis: Weitere Treffer stammen aus einer Suche nur nach "{quantity}"'
+                    f"{scope}."
                 )
         if hits and args.include_counterpart:
-            extra, note = self._counterpart_hits(quantity or args.query, args, hits, chunk_types)
+            extra, note = self._counterpart_hits(
+                quantity or args.query, utility_type, hits, chunk_types
+            )
             hits = [*hits, *extra]
             notes.append(note)
         header = f'Treffer für "{args.query}" (Filter: {describe_filter(metadata_filter)}):'
@@ -433,14 +439,15 @@ class ToolBox:
     def _counterpart_hits(
         self,
         query: str,
-        args: SearchArguments,
+        utility_type: UtilityType | None,
         hits: list[SearchHit],
         chunk_types: frozenset[ChunkType],
     ) -> tuple[list[SearchHit], str]:
         """Extra hits from the document family that the first search did not reach (ISS-007).
 
         ``query`` is the quantity query if there is one: the long question would find the same
-        document chunks again (ISS-072).
+        document chunks again (ISS-072). ``utility_type`` is the filter of the agent or, without
+        one, the utility that the search query names (ISS-077).
         """
         found = {self._doc_type_of(hit) for hit in hits}
         wanted = []
@@ -452,7 +459,7 @@ class ToolBox:
         extra: list[SearchHit] = []
         for doc_type in wanted:
             options = SearchOptions(
-                metadata_filter=MetadataFilter(utility_type=args.utility_type, doc_type=doc_type),
+                metadata_filter=MetadataFilter(utility_type=utility_type, doc_type=doc_type),
                 chunk_types=chunk_types,
                 top_k=COUNTERPART_HITS,
             )

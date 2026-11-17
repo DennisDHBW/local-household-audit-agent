@@ -330,6 +330,78 @@ def test_quantity_search_adds_only_new_hits_after_the_main_hits(tmp_path):
     assert 'Weitere Treffer stammen aus einer Suche nur nach "Arbeitspreis"' in result.text
 
 
+def test_quantity_search_filters_by_the_utility_that_the_query_names(tmp_path):
+    # Arrange
+    def hits(query, options):
+        if query == "Arbeitspreis":
+            return [make_hit("row", content="Arbeitspreis | 38,20 ct")]
+        return [make_hit("c1", content="Zwischenablesung")]
+
+    toolbox, backend, _ = _toolbox(tmp_path, FakeBackend(hits))
+
+    # Act
+    result = toolbox.tools()["search"].run(
+        SearchArguments(query="neuer Arbeitspreis Stromabrechnung 2025"), EvidenceBook()
+    )
+
+    # Assert
+    utilities = [call[1].metadata_filter.utility_type for call in backend.calls]
+    assert utilities == [None, UtilityType.ELECTRICITY]
+    assert 'nur nach "Arbeitspreis" (Sparte=electricity).' in result.text
+    assert "(Filter: keine)" in result.text
+
+
+def test_quantity_search_keeps_the_utility_filter_of_the_agent(tmp_path):
+    # Arrange
+    toolbox, backend, _ = _toolbox(
+        tmp_path, FakeBackend(lambda q, o: [make_hit("row" if q == "Arbeitspreis" else "c1")])
+    )
+
+    # Act
+    result = toolbox.tools()["search"].run(
+        SearchArguments(query="Arbeitspreis Strom 2025", utility_type=UtilityType.GAS),
+        EvidenceBook(),
+    )
+
+    # Assert
+    utilities = [call[1].metadata_filter.utility_type for call in backend.calls]
+    assert utilities == [UtilityType.GAS, UtilityType.GAS]
+    assert 'nur nach "Arbeitspreis".' in result.text
+
+
+def test_quantity_search_stays_unfiltered_for_two_utilities(tmp_path):
+    # Arrange
+    toolbox, backend, _ = _toolbox(tmp_path, FakeBackend(lambda q, o: [make_hit()]))
+
+    # Act
+    toolbox.tools()["search"].run(
+        SearchArguments(query="Arbeitspreis Strom und Gas 2025"), EvidenceBook()
+    )
+
+    # Assert
+    assert [call[0] for call in backend.calls] == [
+        "Arbeitspreis Strom und Gas 2025",
+        "Arbeitspreis",
+    ]
+    assert all(call[1].metadata_filter.utility_type is None for call in backend.calls)
+
+
+def test_counterpart_search_filters_by_the_utility_that_the_query_names(tmp_path):
+    # Arrange
+    toolbox, backend, _ = _toolbox(tmp_path, FakeBackend(lambda q, o: _by_doc_type(o)))
+
+    # Act
+    toolbox.tools()["search"].run(
+        SearchArguments(query="Gasabrechnung 2026", include_counterpart=True), EvidenceBook()
+    )
+
+    # Assert
+    first, *counterparts = [call[1].metadata_filter for call in backend.calls]
+    assert first.utility_type is None
+    assert counterparts and all(f.utility_type is UtilityType.GAS for f in counterparts)
+    assert DocType.CONTRACT in {f.doc_type for f in counterparts}
+
+
 def test_quantity_search_is_skipped_for_a_short_query_and_when_switched_off(tmp_path):
     # Arrange
     short, short_backend, _ = _toolbox(tmp_path, FakeBackend(lambda q, o: [make_hit()]))
