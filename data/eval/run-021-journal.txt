@@ -1,0 +1,1499 @@
+Nov 17 17:25:12 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:25:12 | 200 |   10.334737ms |       127.0.0.1 | GET      "/api/tags"
+Nov 17 17:25:12 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:25:12 | 200 |    2.172496ms |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:25:12 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:25:12 | 200 |      777.35µs |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:25:14 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:25:14 | 200 |      81.992µs |       127.0.0.1 | GET      "/api/version"
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:25:15 | 200 |    4.093883ms |       127.0.0.1 | GET      "/api/tags"
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:25:15 | 200 |    1.673729ms |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:25:15 | 200 |      723.62µs |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:15.930+01:00 level=INFO source=sched.go:1152 msg="disabling mmap for llama-server load by default" model=/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730 reason=cpu
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:15.930+01:00 level=INFO source=server.go:100 msg="using llama-server for model" model=/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:15.930+01:00 level=INFO source=llama_server.go:436 msg="starting llama-server" cmd="/usr/local/lib/ollama/llama-server --model /usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730 --port 36679 --host 127.0.0.1 --no-webui --offline -c 8192 -np 1 --log-verbosity 4 --no-log-prefix --no-log-timestamps --no-jinja --chat-template chatml --load-mode none --flash-attn auto -b 1024 -ub 1024 --context-shift --keep 4"
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:15.930+01:00 level=INFO source=sched.go:618 msg="system memory" total="14.4 GiB" free="10.3 GiB" free_swap="4.0 GiB"
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:15.930+01:00 level=INFO source=llama_server.go:1054 msg="loading model via llama-server" model=/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:15.930+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:15.931+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server not responding"
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: initializing ...
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_backend: loaded CPU backend from /usr/local/lib/ollama/libggml-cpu-haswell.so
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: build 1 (6f767fe96) with GNU 13.3.1 for Linux x86_64
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: verbosity = 4 (adjust with the `-lv N` CLI arg)
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: device_info:
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param:   - CPU     : AMD Ryzen 5 7520U with Radeon Graphics (14709 MiB, 14709 MiB free)
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: system_info: n_threads = 4 (n_threads_batch = 4) / 8 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | LLAMAFILE = 1 | REPACK = 1 |
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: The UI is disabled
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: using 7 threads for HTTP server
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: loading model '/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730'
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: local path '/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730'
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: fitting params to device memory ...
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+Nov 17 17:25:15 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: getting device memory data for initial parameters:
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:16.181+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server loading model"
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: | memory breakdown [MiB] | total   free    self   model   context   compute    unaccounted |
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: |   - Host               |                 2225 =  1483 +     448 +     294                |
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: |   - CPU_REPACK         |                 2976 =  2976 +       0 +       0                |
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: projected to use 2225 MiB of host memory vs. 14709 MiB of total host memory
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: will leave 12483 >= 1024 MiB of system memory, no changes needed
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: successfully fit params to free device memory
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: fitting params to free memory took 0.38 seconds
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: loaded meta data with 34 key-value pairs and 339 tensors from /usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730 (version GGUF V3 (latest))
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   0:                       general.architecture str              = qwen2
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   1:                               general.type str              = model
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   2:                               general.name str              = Qwen2.5 7B Instruct
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   3:                           general.finetune str              = Instruct
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   4:                           general.basename str              = Qwen2.5
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   5:                         general.size_label str              = 7B
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   6:                            general.license str              = apache-2.0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   7:                       general.license.link str              = https://huggingface.co/Qwen/Qwen2.5-7...
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   8:                   general.base_model.count u32              = 1
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   9:                  general.base_model.0.name str              = Qwen2.5 7B
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  10:          general.base_model.0.organization str              = Qwen
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  11:              general.base_model.0.repo_url str              = https://huggingface.co/Qwen/Qwen2.5-7B
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  12:                               general.tags arr[str,2]       = ["chat", "text-generation"]
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  13:                          general.languages arr[str,1]       = ["en"]
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  14:                          qwen2.block_count u32              = 28
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  15:                       qwen2.context_length u32              = 32768
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  16:                     qwen2.embedding_length u32              = 3584
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  17:                  qwen2.feed_forward_length u32              = 18944
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  18:                 qwen2.attention.head_count u32              = 28
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  19:              qwen2.attention.head_count_kv u32              = 4
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  20:                       qwen2.rope.freq_base f32              = 1000000.000000
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  21:     qwen2.attention.layer_norm_rms_epsilon f32              = 0.000001
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  22:                          general.file_type u32              = 15
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  23:                       tokenizer.ggml.model str              = gpt2
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  24:                         tokenizer.ggml.pre str              = qwen2
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  25:                      tokenizer.ggml.tokens arr[str,152064]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  26:                  tokenizer.ggml.token_type arr[i32,152064]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  27:                      tokenizer.ggml.merges arr[str,151387]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "Ġ t",...
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  28:                tokenizer.ggml.eos_token_id u32              = 151645
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  29:            tokenizer.ggml.padding_token_id u32              = 151643
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  30:                tokenizer.ggml.bos_token_id u32              = 151643
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  31:               tokenizer.ggml.add_bos_token bool             = false
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  32:                    tokenizer.chat_template str              = {%- if tools %}\n    {{- '<|im_start|>...
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  33:               general.quantization_version u32              = 2
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type  f32:  141 tensors
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type q4_K:  169 tensors
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type q6_K:   29 tensors
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file format = GGUF V3 (latest)
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file type   = Q4_K - Medium
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file size   = 4.36 GiB (4.91 BPW)
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: 0 unused tokens
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: printing all EOG tokens:
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 128247 ('</s>')
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151643 ('<|endoftext|>')
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151645 ('<|im_end|>')
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151662 ('<|fim_pad|>')
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151663 ('<|repo_name|>')
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151664 ('<|file_sep|>')
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: special tokens cache size = 23
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: token to piece cache size = 0.9310 MB
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: arch                  = qwen2
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab_only            = 0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: no_alloc              = 0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_train           = 32768
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_inp            = 3584
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd                = 3584
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_out            = 3584
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer               = 28
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer_all           = 28
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head                = 28
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head_kv             = 4
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_rot                 = 128
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_swa                 = 0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: is_swa_any            = 0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: non_causal_type       = 0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_k         = 128
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_v         = 128
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_gqa                 = 7
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_k_gqa          = 512
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_v_gqa          = 512
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_eps            = 0.0e+00
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_rms_eps        = 1.0e-06
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_clamp_kqv           = 0.0e+00
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_max_alibi_bias      = 0.0e+00
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_logit_scale         = 0.0e+00
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_scale          = 0.0e+00
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_value_scale    = 0.0000
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ff                  = 18944
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert              = 0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_used         = 0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_groups       = 0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_group_used          = 0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: causal attn           = 1
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: pooling type          = -1
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope type             = 2
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope scaling          = linear
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_base_train       = 1000000.0
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_scale_train      = 1
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_orig_yarn       = 32768
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_yarn_log_mul     = 0.0000
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_finetuned        = unknown
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model type            = 7B
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model params          = 7.62 B
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: general.name          = Qwen2.5 7B Instruct
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab type            = BPE
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_vocab               = 152064
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_merges              = 151387
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: BOS token             = 151643 '<|endoftext|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOS token             = 151645 '<|im_end|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOT token             = 151645 '<|im_end|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: PAD token             = 151643 '<|endoftext|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: LF token              = 198 'Ċ'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM PRE token         = 151659 '<|fim_prefix|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM SUF token         = 151661 '<|fim_suffix|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM MID token         = 151660 '<|fim_middle|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM PAD token         = 151662 '<|fim_pad|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM REP token         = 151663 '<|repo_name|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM SEP token         = 151664 '<|file_sep|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 128247 '</s>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151643 '<|endoftext|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151645 '<|im_end|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151662 '<|fim_pad|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151663 '<|repo_name|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151664 '<|file_sep|>'
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: max token length      = 256
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors: loading model tensors, this can take a while... (load_mode = none)
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors:          CPU model buffer size =  1483.70 MiB
+Nov 17 17:25:16 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors:   CPU_REPACK model buffer size =  2976.75 MiB
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added </s> logit bias = -inf
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|endoftext|> logit bias = -inf
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|im_end|> logit bias = -inf
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|fim_pad|> logit bias = -inf
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|repo_name|> logit bias = -inf
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|file_sep|> logit bias = -inf
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: constructing llama_context
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_seq_max             = 1
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx                 = 8192
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx_seq             = 8192
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_batch               = 1024
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ubatch              = 1024
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: causal_attn           = 1
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: flash_attn            = auto
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: kv_unified            = false
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_base             = 1000000.0
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_scale            = 1
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_rs_seq              = 0
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max         = 1
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max_per_seq = 1
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx_seq (8192) < n_ctx_train (32768) -- the full capacity of the model will not be utilized
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context:        CPU  output buffer size =     0.58 MiB
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache:        CPU KV buffer size =   448.00 MiB
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache: size =  448.00 MiB (  8192 cells,  28 layers,  1/1 seqs), K (f16):  224.00 MiB, V (f16):  224.00 MiB
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 128
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 128
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserving ...
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: Flash Attention enabled
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: resolving fused DeepSeek V4 HC support:
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC pre enabled
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC comb enabled
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC post enabled
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve:        CPU compute buffer size =   294.02 MiB
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: graph: nodes = 958, splits = 1, input objects = 4, input tensors = 6
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserve took 3.67 ms, sched copies = 1
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn          init: llama threadpool init, n_threads = 4
+Nov 17 17:25:24 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: spec common_specu: no implementations specified for speculative decoding
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   load_model: id  0 | task -1 | new slot, n_ctx = 8192
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: use `--cache-ram 0` to disable the prompt cache
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: context checkpoints enabled, max = 32, min spacing = 8192
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: idle slots will be saved to prompt cache upon starting a new task
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, example_format: '<|im_start|>system
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: You are a helpful assistant<|im_end|>
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hello<|im_end|>
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hi there<|im_end|>
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: How are you?<|im_end|>
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: '
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, thinking = 0
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: preserve_reasoning kwarg: not supported by template
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: model loaded
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: listening on http://127.0.0.1:36679
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:25.473+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 9.54 seconds"
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:25.473+01:00 level=INFO source=images.go:395 msg="template selection" model=registry.ollama.ai/library/qwen2.5:7b selected=go_template renderer="" parser="" go_template="[completion tools]" chat_template="[tools completion]" harmony=null renderer_parser=null
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:25.473+01:00 level=INFO source=sched.go:733 msg="loaded runners" count=1
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:25.474+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:25:25.474+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 9.54 seconds"
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  server_strea: conv_id= (empty=1)
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - skipping, slot is empty
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  get_availabl: updating prompt cache
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          load:  - looking for better prompt, base f_keep = -1.000, f_sim = 0.000
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 8192 tokens, 8589934592 est)
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  get_availabl: prompt cache update took 0.01 ms
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler params:
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         top_k = 40, top_p = 0.900, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | new prompt, n_ctx_slot = 8192, n_keep = 4, task.n_tokens = 1771
+Nov 17 17:25:25 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | cached n_tokens = 0, memory_seq_rm [0, end)
+Nov 17 17:26:11 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 | prompt processing, n_tokens =   1024, progress = 0.58, t =  46.06 s / 22.23 tokens per second
+Nov 17 17:26:11 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | cached n_tokens = 1024, memory_seq_rm [1024, end)
+Nov 17 17:26:11 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot init_sampler: id  0 | task 0 | init sampler, took 0.28 ms, tokens: text = 1771, total = 1771
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 | prompt eval time =   81849.28 ms /  1771 tokens (   46.22 ms per token,    21.64 tokens per second)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 |        eval time =    7969.01 ms /    41 tokens (  199.23 ms per token,     5.02 tokens per second)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 |       total time =   89818.28 ms /  1812 tokens
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 |    graphs reused =         39
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 0 | stop processing: n_tokens = 1811, truncated = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:26:55 | 200 |         1m39s |       127.0.0.1 | POST     "/api/chat"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.364+01:00 level=INFO source=sched.go:1152 msg="disabling mmap for llama-server load by default" model=/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6 reason=cpu
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.364+01:00 level=INFO source=server.go:100 msg="using llama-server for model" model=/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.364+01:00 level=WARN source=server.go:105 msg="requested context size too large for model" num_ctx=8192 n_ctx_train=2048
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.364+01:00 level=INFO source=llama_server.go:436 msg="starting llama-server" cmd="/usr/local/lib/ollama/llama-server --model /usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6 --port 33289 --host 127.0.0.1 --no-webui --offline -c 2048 -np 1 --log-verbosity 4 --no-log-prefix --no-log-timestamps --load-mode none --flash-attn auto --embedding -b 2048 -ub 2048 --context-shift --keep 4"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.365+01:00 level=INFO source=sched.go:618 msg="system memory" total="14.4 GiB" free="5.3 GiB" free_swap="4.0 GiB"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.365+01:00 level=INFO source=llama_server.go:1054 msg="loading model via llama-server" model=/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.365+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.365+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server not responding"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: initializing ...
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_backend: loaded CPU backend from /usr/local/lib/ollama/libggml-cpu-haswell.so
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: build 1 (6f767fe96) with GNU 13.3.1 for Linux x86_64
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: verbosity = 4 (adjust with the `-lv N` CLI arg)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: device_info:
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param:   - CPU     : AMD Ryzen 5 7520U with Radeon Graphics (14709 MiB, 14709 MiB free)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: system_info: n_threads = 4 (n_threads_batch = 4) / 8 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | LLAMAFILE = 1 | REPACK = 1 |
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: The UI is disabled
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: using 7 threads for HTTP server
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: loading model '/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: local path '/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: fitting params to device memory ...
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: getting device memory data for initial parameters:
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: | memory breakdown [MiB] | total   free    self   model   context   compute    unaccounted |
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: |   - Host               |                  358 =   260 +       0 +      98                |
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: projected to use 358 MiB of host memory vs. 14709 MiB of total host memory
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: will leave 14350 >= 1024 MiB of system memory, no changes needed
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: successfully fit params to free device memory
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: fitting params to free memory took 0.05 seconds
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: loaded meta data with 24 key-value pairs and 112 tensors from /usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6 (version GGUF V3 (latest))
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   0:                       general.architecture str              = nomic-bert
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   1:                               general.name str              = nomic-embed-text-v1.5
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   2:                     nomic-bert.block_count u32              = 12
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   3:                  nomic-bert.context_length u32              = 2048
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   4:                nomic-bert.embedding_length u32              = 768
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   5:             nomic-bert.feed_forward_length u32              = 3072
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   6:            nomic-bert.attention.head_count u32              = 12
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   7:    nomic-bert.attention.layer_norm_epsilon f32              = 0.000000
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   8:                          general.file_type u32              = 1
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   9:                nomic-bert.attention.causal bool             = false
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  10:                    nomic-bert.pooling_type u32              = 1
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  11:                  nomic-bert.rope.freq_base f32              = 1000.000000
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  12:            tokenizer.ggml.token_type_count u32              = 2
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  13:                tokenizer.ggml.bos_token_id u32              = 101
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  14:                tokenizer.ggml.eos_token_id u32              = 102
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  15:                       tokenizer.ggml.model str              = bert
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  16:                      tokenizer.ggml.tokens arr[str,30522]   = ["[PAD]", "[unused0]", "[unused1]", "...
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  17:                      tokenizer.ggml.scores arr[f32,30522]   = [-1000.000000, -1000.000000, -1000.00...
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  18:                  tokenizer.ggml.token_type arr[i32,30522]   = [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  19:            tokenizer.ggml.unknown_token_id u32              = 100
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  20:          tokenizer.ggml.seperator_token_id u32              = 102
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  21:            tokenizer.ggml.padding_token_id u32              = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  22:                tokenizer.ggml.cls_token_id u32              = 101
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  23:               tokenizer.ggml.mask_token_id u32              = 103
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type  f32:   51 tensors
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type  f16:   61 tensors
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file format = GGUF V3 (latest)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file type   = F16
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file size   = 260.86 MiB (16.00 BPW)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: 0 unused tokens
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: special_eos_id is not in special_eog_ids - the tokenizer config may be incorrect
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: printing all EOG tokens:
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 0 ('[PAD]')
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 102 ('[SEP]')
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: special tokens cache size = 5
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: token to piece cache size = 0.2032 MB
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: arch                  = nomic-bert
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab_only            = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: no_alloc              = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_train           = 2048
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_inp            = 768
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd                = 768
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_out            = 768
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer               = 12
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer_all           = 12
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head                = 12
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head_kv             = 12
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_rot                 = 64
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_swa                 = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: is_swa_any            = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: non_causal_type       = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_k         = 64
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_v         = 64
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_gqa                 = 1
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_k_gqa          = 768
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_v_gqa          = 768
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_eps            = 1.0e-12
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_rms_eps        = 0.0e+00
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_clamp_kqv           = 0.0e+00
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_max_alibi_bias      = 0.0e+00
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_logit_scale         = 0.0e+00
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_scale          = 0.0e+00
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_value_scale    = 0.0000
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ff                  = 3072
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert              = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_used         = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_groups       = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_group_used          = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: causal attn           = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: pooling type          = 1
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope type             = 2
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope scaling          = linear
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_base_train       = 1000.0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_scale_train      = 1
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_orig_yarn       = 2048
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_yarn_log_mul     = 0.0000
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_finetuned        = unknown
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model type            = 137M
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model params          = 136.73 M
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: general.name          = nomic-embed-text-v1.5
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab type            = WPM
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_vocab               = 30522
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_merges              = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: BOS token             = 101 '[CLS]'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOS token             = 102 '[SEP]'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: UNK token             = 100 '[UNK]'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: SEP token             = 102 '[SEP]'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: PAD token             = 0 '[PAD]'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: MASK token            = 103 '[MASK]'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: LF token              = 0 '[PAD]'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM PAD token         = 0 '[PAD]'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 0 '[PAD]'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 102 '[SEP]'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: max token length      = 21
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors: loading model tensors, this can take a while... (load_mode = none)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors:          CPU model buffer size =   260.86 MiB
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.617+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server loading model"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added [PAD] logit bias = -inf
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added [SEP] logit bias = -inf
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: constructing llama_context
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_seq_max             = 1
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx                 = 2048
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx_seq             = 2048
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_batch               = 2048
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ubatch              = 2048
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: causal_attn           = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: flash_attn            = auto
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: kv_unified            = false
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_base             = 1000.0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_scale            = 1
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_rs_seq              = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max         = 2048
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max_per_seq = 1
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context:        CPU  output buffer size =     0.12 MiB
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserving ...
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: Flash Attention enabled
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: resolving fused DeepSeek V4 HC support:
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC pre enabled
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC comb enabled
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC post enabled
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve:        CPU compute buffer size =    98.03 MiB
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: graph: nodes = 335, splits = 1, input objects = 5, input tensors = 5
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserve took 1.50 ms, sched copies = 1
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn          init: llama threadpool init, n_threads = 4
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: KV cache shifting is not supported for this context, disabling KV cache shifting
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: init: embeddings required but some input tokens were not marked as outputs -> overriding
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: speculative decoding not supported by this context
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: initializing, n_slots = 1, n_ctx_slot = 2048, kv_unified = 'false'
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   load_model: id  0 | task -1 | new slot, n_ctx = 2048
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: use `--cache-ram 0` to disable the prompt cache
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: context checkpoints enabled, max = 32, min spacing = 8192
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: idle slots will be saved to prompt cache upon starting a new task
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, example_format: '<|im_start|>system
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: You are a helpful assistant<|im_end|>
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hello<|im_end|>
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hi there<|im_end|>
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: How are you?<|im_end|>
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: '
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, thinking = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: preserve_reasoning kwarg: not supported by template
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: model loaded
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: listening on http://127.0.0.1:33289
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.869+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 0.50 seconds"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.869+01:00 level=INFO source=images.go:395 msg="template selection" model=registry.ollama.ai/library/nomic-embed-text:latest selected=none renderer="" parser="" go_template=null chat_template=null harmony=null renderer_parser=null
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.869+01:00 level=INFO source=sched.go:733 msg="loaded runners" count=2
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.869+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:26:55.869+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 0.50 seconds"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - skipping, slot is empty
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | new prompt, n_ctx_slot = 2048, n_keep = 0, task.n_tokens = 18
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | cached n_tokens = 0, memory_seq_rm [0, end)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 0 | stop processing: n_tokens = 18, truncated = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:26:55 | 200 |  543.857066ms |       127.0.0.1 | POST     "/api/embed"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - checking sim = 0.692 (9/13) > 0.100
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.692 (> 0.100 thold), f_keep = 0.500
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 2 | processing task, is_child = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 2 | new prompt, n_ctx_slot = 2048, n_keep = 0, task.n_tokens = 13
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 2 | cached n_tokens = 0, memory_seq_rm [0, end)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 2 | stop processing: n_tokens = 13, truncated = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:26:55 | 200 |   23.713104ms |       127.0.0.1 | POST     "/api/embed"
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  server_strea: conv_id= (empty=1)
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - checking sim = 0.573 (1783/3110) > 0.100
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.573 (> 0.100 thold), f_keep = 0.985
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler params:
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         top_k = 40, top_p = 0.900, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 43 | processing task, is_child = 0
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 43 | new prompt, n_ctx_slot = 8192, n_keep = 4, task.n_tokens = 3110
+Nov 17 17:26:55 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 43 | cached n_tokens = 1783, memory_seq_rm [1783, end)
+Nov 17 17:27:48 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | prompt processing, n_tokens =   1024, progress = 0.90, t =  52.74 s / 19.42 tokens per second
+Nov 17 17:27:48 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 43 | cached n_tokens = 2807, memory_seq_rm [2807, end)
+Nov 17 17:27:48 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot init_sampler: id  0 | task 43 | init sampler, took 0.42 ms, tokens: text = 3110, total = 3110
+Nov 17 17:28:26 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    100, tg =   4.73 t/s, tg_3s =   4.78 t/s
+Nov 17 17:28:29 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    114, tg =   4.72 t/s, tg_3s =   4.66 t/s
+Nov 17 17:28:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    129, tg =   4.72 t/s, tg_3s =   4.65 t/s
+Nov 17 17:28:36 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    143, tg =   4.70 t/s, tg_3s =   4.58 t/s
+Nov 17 17:28:39 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    157, tg =   4.69 t/s, tg_3s =   4.57 t/s
+Nov 17 17:28:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    171, tg =   4.68 t/s, tg_3s =   4.55 t/s
+Nov 17 17:28:45 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    185, tg =   4.66 t/s, tg_3s =   4.46 t/s
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | prompt eval time =   69866.12 ms /  1327 tokens (   52.65 ms per token,    18.99 tokens per second)
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 |        eval time =   42082.24 ms /   196 tokens (  215.81 ms per token,     4.63 tokens per second)
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 |       total time =  111948.36 ms /  1523 tokens
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 |    graphs reused =        233
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 43 | stop processing: n_tokens = 3305, truncated = 0
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:28:47 | 200 |         1m51s |       127.0.0.1 | POST     "/api/chat"
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  server_strea: conv_id= (empty=1)
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - checking sim = 0.981 (3305/3368) > 0.100
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.981 (> 0.100 thold), f_keep = 1.000
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler params:
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         top_k = 40, top_p = 0.900, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 241 | processing task, is_child = 0
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 241 | new prompt, n_ctx_slot = 8192, n_keep = 4, task.n_tokens = 3368
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 241 | cached n_tokens = 3305, memory_seq_rm [3305, end)
+Nov 17 17:28:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot init_sampler: id  0 | task 241 | init sampler, took 0.48 ms, tokens: text = 3368, total = 3368
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 241 | prompt eval time =   10259.42 ms /    63 tokens (  162.85 ms per token,     6.14 tokens per second)
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 241 |        eval time =    6199.07 ms /    28 tokens (  229.60 ms per token,     4.36 tokens per second)
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 241 |       total time =   16458.49 ms /    91 tokens
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 241 |    graphs reused =        259
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 241 | stop processing: n_tokens = 3395, truncated = 0
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:29:04 | 200 | 16.482861809s |       127.0.0.1 | POST     "/api/chat"
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  server_strea: conv_id= (empty=1)
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - checking sim = 0.986 (3381/3429) > 0.100
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.986 (> 0.100 thold), f_keep = 0.996
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler params:
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         top_k = 40, top_p = 0.900, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 270 | processing task, is_child = 0
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 270 | new prompt, n_ctx_slot = 8192, n_keep = 4, task.n_tokens = 3429
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 270 | cached n_tokens = 3381, memory_seq_rm [3381, end)
+Nov 17 17:29:04 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot init_sampler: id  0 | task 270 | init sampler, took 0.50 ms, tokens: text = 3429, total = 3429
+Nov 17 17:29:35 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 270 | n_gen =    100, tg =   4.21 t/s, tg_3s =   4.25 t/s
+Nov 17 17:29:38 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 270 | n_gen =    112, tg =   4.16 t/s, tg_3s =   3.80 t/s
+Nov 17 17:29:41 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 270 | prompt eval time =    7603.79 ms /    48 tokens (  158.41 ms per token,     6.31 tokens per second)
+Nov 17 17:29:41 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 270 |        eval time =   29912.80 ms /   124 tokens (  243.19 ms per token,     4.11 tokens per second)
+Nov 17 17:29:41 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 270 |       total time =   37516.59 ms /   172 tokens
+Nov 17 17:29:41 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 270 |    graphs reused =        381
+Nov 17 17:29:41 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 270 | stop processing: n_tokens = 3552, truncated = 0
+Nov 17 17:29:41 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:29:41 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:29:41 | 200 | 37.542105542s |       127.0.0.1 | POST     "/api/chat"
+Nov 17 17:29:41 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:29:41 | 200 |    1.054406ms |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:29:42 | 200 |  484.585448ms |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:42.514+01:00 level=INFO source=sched.go:1152 msg="disabling mmap for llama-server load by default" model=/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730 reason=cpu
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:42.514+01:00 level=INFO source=server.go:100 msg="using llama-server for model" model=/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:42.515+01:00 level=INFO source=llama_server.go:436 msg="starting llama-server" cmd="/usr/local/lib/ollama/llama-server --model /usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730 --port 40775 --host 127.0.0.1 --no-webui --offline -c 8192 -np 1 --log-verbosity 4 --no-log-prefix --no-log-timestamps --no-jinja --chat-template chatml --load-mode none --flash-attn auto -b 1024 -ub 1024 --context-shift --keep 4"
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:42.515+01:00 level=INFO source=sched.go:618 msg="system memory" total="14.4 GiB" free="10.4 GiB" free_swap="4.0 GiB"
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:42.515+01:00 level=INFO source=llama_server.go:1054 msg="loading model via llama-server" model=/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:42.515+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:42.515+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server not responding"
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: initializing ...
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_backend: loaded CPU backend from /usr/local/lib/ollama/libggml-cpu-haswell.so
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: build 1 (6f767fe96) with GNU 13.3.1 for Linux x86_64
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: verbosity = 4 (adjust with the `-lv N` CLI arg)
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: device_info:
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param:   - CPU     : AMD Ryzen 5 7520U with Radeon Graphics (14709 MiB, 14709 MiB free)
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: system_info: n_threads = 4 (n_threads_batch = 4) / 8 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | LLAMAFILE = 1 | REPACK = 1 |
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: The UI is disabled
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: using 7 threads for HTTP server
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: loading model '/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730'
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: local path '/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730'
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: fitting params to device memory ...
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: getting device memory data for initial parameters:
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:42.767+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server loading model"
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: | memory breakdown [MiB] | total   free    self   model   context   compute    unaccounted |
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: |   - Host               |                 2225 =  1483 +     448 +     294                |
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: |   - CPU_REPACK         |                 2976 =  2976 +       0 +       0                |
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: projected to use 2225 MiB of host memory vs. 14709 MiB of total host memory
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: will leave 12483 >= 1024 MiB of system memory, no changes needed
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: successfully fit params to free device memory
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: fitting params to free memory took 0.38 seconds
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: loaded meta data with 34 key-value pairs and 339 tensors from /usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730 (version GGUF V3 (latest))
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   0:                       general.architecture str              = qwen2
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   1:                               general.type str              = model
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   2:                               general.name str              = Qwen2.5 7B Instruct
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   3:                           general.finetune str              = Instruct
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   4:                           general.basename str              = Qwen2.5
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   5:                         general.size_label str              = 7B
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   6:                            general.license str              = apache-2.0
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   7:                       general.license.link str              = https://huggingface.co/Qwen/Qwen2.5-7...
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   8:                   general.base_model.count u32              = 1
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   9:                  general.base_model.0.name str              = Qwen2.5 7B
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  10:          general.base_model.0.organization str              = Qwen
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  11:              general.base_model.0.repo_url str              = https://huggingface.co/Qwen/Qwen2.5-7B
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  12:                               general.tags arr[str,2]       = ["chat", "text-generation"]
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  13:                          general.languages arr[str,1]       = ["en"]
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  14:                          qwen2.block_count u32              = 28
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  15:                       qwen2.context_length u32              = 32768
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  16:                     qwen2.embedding_length u32              = 3584
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  17:                  qwen2.feed_forward_length u32              = 18944
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  18:                 qwen2.attention.head_count u32              = 28
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  19:              qwen2.attention.head_count_kv u32              = 4
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  20:                       qwen2.rope.freq_base f32              = 1000000.000000
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  21:     qwen2.attention.layer_norm_rms_epsilon f32              = 0.000001
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  22:                          general.file_type u32              = 15
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  23:                       tokenizer.ggml.model str              = gpt2
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  24:                         tokenizer.ggml.pre str              = qwen2
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  25:                      tokenizer.ggml.tokens arr[str,152064]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  26:                  tokenizer.ggml.token_type arr[i32,152064]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  27:                      tokenizer.ggml.merges arr[str,151387]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "Ġ t",...
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  28:                tokenizer.ggml.eos_token_id u32              = 151645
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  29:            tokenizer.ggml.padding_token_id u32              = 151643
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  30:                tokenizer.ggml.bos_token_id u32              = 151643
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  31:               tokenizer.ggml.add_bos_token bool             = false
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  32:                    tokenizer.chat_template str              = {%- if tools %}\n    {{- '<|im_start|>...
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  33:               general.quantization_version u32              = 2
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type  f32:  141 tensors
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type q4_K:  169 tensors
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type q6_K:   29 tensors
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file format = GGUF V3 (latest)
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file type   = Q4_K - Medium
+Nov 17 17:29:42 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file size   = 4.36 GiB (4.91 BPW)
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: 0 unused tokens
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: printing all EOG tokens:
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 128247 ('</s>')
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151643 ('<|endoftext|>')
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151645 ('<|im_end|>')
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151662 ('<|fim_pad|>')
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151663 ('<|repo_name|>')
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151664 ('<|file_sep|>')
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: special tokens cache size = 23
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: token to piece cache size = 0.9310 MB
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: arch                  = qwen2
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab_only            = 0
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: no_alloc              = 0
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_train           = 32768
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_inp            = 3584
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd                = 3584
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_out            = 3584
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer               = 28
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer_all           = 28
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head                = 28
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head_kv             = 4
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_rot                 = 128
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_swa                 = 0
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: is_swa_any            = 0
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: non_causal_type       = 0
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_k         = 128
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_v         = 128
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_gqa                 = 7
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_k_gqa          = 512
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_v_gqa          = 512
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_eps            = 0.0e+00
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_rms_eps        = 1.0e-06
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_clamp_kqv           = 0.0e+00
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_max_alibi_bias      = 0.0e+00
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_logit_scale         = 0.0e+00
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_scale          = 0.0e+00
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_value_scale    = 0.0000
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ff                  = 18944
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert              = 0
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_used         = 0
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_groups       = 0
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_group_used          = 0
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: causal attn           = 1
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: pooling type          = -1
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope type             = 2
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope scaling          = linear
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_base_train       = 1000000.0
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_scale_train      = 1
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_orig_yarn       = 32768
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_yarn_log_mul     = 0.0000
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_finetuned        = unknown
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model type            = 7B
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model params          = 7.62 B
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: general.name          = Qwen2.5 7B Instruct
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab type            = BPE
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_vocab               = 152064
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_merges              = 151387
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: BOS token             = 151643 '<|endoftext|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOS token             = 151645 '<|im_end|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOT token             = 151645 '<|im_end|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: PAD token             = 151643 '<|endoftext|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: LF token              = 198 'Ċ'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM PRE token         = 151659 '<|fim_prefix|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM SUF token         = 151661 '<|fim_suffix|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM MID token         = 151660 '<|fim_middle|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM PAD token         = 151662 '<|fim_pad|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM REP token         = 151663 '<|repo_name|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM SEP token         = 151664 '<|file_sep|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 128247 '</s>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151643 '<|endoftext|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151645 '<|im_end|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151662 '<|fim_pad|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151663 '<|repo_name|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151664 '<|file_sep|>'
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: max token length      = 256
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors: loading model tensors, this can take a while... (load_mode = none)
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors:          CPU model buffer size =  1483.70 MiB
+Nov 17 17:29:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors:   CPU_REPACK model buffer size =  2976.75 MiB
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added </s> logit bias = -inf
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|endoftext|> logit bias = -inf
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|im_end|> logit bias = -inf
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|fim_pad|> logit bias = -inf
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|repo_name|> logit bias = -inf
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|file_sep|> logit bias = -inf
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: constructing llama_context
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_seq_max             = 1
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx                 = 8192
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx_seq             = 8192
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_batch               = 1024
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ubatch              = 1024
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: causal_attn           = 1
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: flash_attn            = auto
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: kv_unified            = false
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_base             = 1000000.0
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_scale            = 1
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_rs_seq              = 0
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max         = 1
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max_per_seq = 1
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx_seq (8192) < n_ctx_train (32768) -- the full capacity of the model will not be utilized
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context:        CPU  output buffer size =     0.58 MiB
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache:        CPU KV buffer size =   448.00 MiB
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache: size =  448.00 MiB (  8192 cells,  28 layers,  1/1 seqs), K (f16):  224.00 MiB, V (f16):  224.00 MiB
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 128
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 128
+Nov 17 17:29:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserving ...
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: Flash Attention enabled
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: resolving fused DeepSeek V4 HC support:
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC pre enabled
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC comb enabled
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC post enabled
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve:        CPU compute buffer size =   294.02 MiB
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: graph: nodes = 958, splits = 1, input objects = 4, input tensors = 6
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserve took 3.78 ms, sched copies = 1
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn          init: llama threadpool init, n_threads = 4
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: spec common_specu: no implementations specified for speculative decoding
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   load_model: id  0 | task -1 | new slot, n_ctx = 8192
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: use `--cache-ram 0` to disable the prompt cache
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: context checkpoints enabled, max = 32, min spacing = 8192
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: idle slots will be saved to prompt cache upon starting a new task
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, example_format: '<|im_start|>system
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: You are a helpful assistant<|im_end|>
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hello<|im_end|>
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hi there<|im_end|>
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: How are you?<|im_end|>
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: '
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, thinking = 0
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: preserve_reasoning kwarg: not supported by template
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: model loaded
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: listening on http://127.0.0.1:40775
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:51.558+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 9.04 seconds"
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:51.559+01:00 level=INFO source=images.go:395 msg="template selection" model=registry.ollama.ai/library/qwen2.5:7b selected=go_template renderer="" parser="" go_template="[completion tools]" chat_template="[tools completion]" harmony=null renderer_parser=null
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:51.559+01:00 level=INFO source=sched.go:733 msg="loaded runners" count=1
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:51.559+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:29:51.559+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 9.04 seconds"
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  server_strea: conv_id= (empty=1)
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - skipping, slot is empty
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  get_availabl: updating prompt cache
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          load:  - looking for better prompt, base f_keep = -1.000, f_sim = 0.000
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 8192 tokens, 8589934592 est)
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  get_availabl: prompt cache update took 0.01 ms
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler params:
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         top_k = 40, top_p = 0.900, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | new prompt, n_ctx_slot = 8192, n_keep = 4, task.n_tokens = 1762
+Nov 17 17:29:51 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | cached n_tokens = 0, memory_seq_rm [0, end)
+Nov 17 17:30:37 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 | prompt processing, n_tokens =   1024, progress = 0.58, t =  46.25 s / 22.14 tokens per second
+Nov 17 17:30:37 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | cached n_tokens = 1024, memory_seq_rm [1024, end)
+Nov 17 17:30:37 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot init_sampler: id  0 | task 0 | init sampler, took 0.26 ms, tokens: text = 1762, total = 1762
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 | prompt eval time =   82790.46 ms /  1762 tokens (   46.99 ms per token,    21.28 tokens per second)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 |        eval time =    6869.90 ms /    42 tokens (  167.56 ms per token,     5.97 tokens per second)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 |       total time =   89660.36 ms /  1804 tokens
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 |    graphs reused =         40
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:31:21 | 200 |         1m38s |       127.0.0.1 | POST     "/api/chat"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 0 | stop processing: n_tokens = 1803, truncated = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.247+01:00 level=INFO source=sched.go:1152 msg="disabling mmap for llama-server load by default" model=/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6 reason=cpu
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.248+01:00 level=INFO source=server.go:100 msg="using llama-server for model" model=/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.248+01:00 level=WARN source=server.go:105 msg="requested context size too large for model" num_ctx=8192 n_ctx_train=2048
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.248+01:00 level=INFO source=llama_server.go:436 msg="starting llama-server" cmd="/usr/local/lib/ollama/llama-server --model /usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6 --port 44789 --host 127.0.0.1 --no-webui --offline -c 2048 -np 1 --log-verbosity 4 --no-log-prefix --no-log-timestamps --load-mode none --flash-attn auto --embedding -b 2048 -ub 2048 --context-shift --keep 4"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.248+01:00 level=INFO source=sched.go:618 msg="system memory" total="14.4 GiB" free="5.3 GiB" free_swap="4.0 GiB"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.248+01:00 level=INFO source=llama_server.go:1054 msg="loading model via llama-server" model=/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.248+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.249+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server not responding"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: initializing ...
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_backend: loaded CPU backend from /usr/local/lib/ollama/libggml-cpu-haswell.so
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: build 1 (6f767fe96) with GNU 13.3.1 for Linux x86_64
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: verbosity = 4 (adjust with the `-lv N` CLI arg)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: device_info:
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param:   - CPU     : AMD Ryzen 5 7520U with Radeon Graphics (14709 MiB, 14709 MiB free)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: system_info: n_threads = 4 (n_threads_batch = 4) / 8 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | LLAMAFILE = 1 | REPACK = 1 |
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: The UI is disabled
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: using 7 threads for HTTP server
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: loading model '/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: local path '/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: fitting params to device memory ...
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: getting device memory data for initial parameters:
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: | memory breakdown [MiB] | total   free    self   model   context   compute    unaccounted |
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: |   - Host               |                  358 =   260 +       0 +      98                |
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: projected to use 358 MiB of host memory vs. 14709 MiB of total host memory
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: will leave 14350 >= 1024 MiB of system memory, no changes needed
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: successfully fit params to free device memory
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: fitting params to free memory took 0.04 seconds
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: loaded meta data with 24 key-value pairs and 112 tensors from /usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6 (version GGUF V3 (latest))
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   0:                       general.architecture str              = nomic-bert
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   1:                               general.name str              = nomic-embed-text-v1.5
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   2:                     nomic-bert.block_count u32              = 12
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   3:                  nomic-bert.context_length u32              = 2048
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   4:                nomic-bert.embedding_length u32              = 768
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   5:             nomic-bert.feed_forward_length u32              = 3072
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   6:            nomic-bert.attention.head_count u32              = 12
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   7:    nomic-bert.attention.layer_norm_epsilon f32              = 0.000000
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   8:                          general.file_type u32              = 1
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   9:                nomic-bert.attention.causal bool             = false
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  10:                    nomic-bert.pooling_type u32              = 1
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  11:                  nomic-bert.rope.freq_base f32              = 1000.000000
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  12:            tokenizer.ggml.token_type_count u32              = 2
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  13:                tokenizer.ggml.bos_token_id u32              = 101
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  14:                tokenizer.ggml.eos_token_id u32              = 102
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  15:                       tokenizer.ggml.model str              = bert
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  16:                      tokenizer.ggml.tokens arr[str,30522]   = ["[PAD]", "[unused0]", "[unused1]", "...
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  17:                      tokenizer.ggml.scores arr[f32,30522]   = [-1000.000000, -1000.000000, -1000.00...
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  18:                  tokenizer.ggml.token_type arr[i32,30522]   = [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  19:            tokenizer.ggml.unknown_token_id u32              = 100
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  20:          tokenizer.ggml.seperator_token_id u32              = 102
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  21:            tokenizer.ggml.padding_token_id u32              = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  22:                tokenizer.ggml.cls_token_id u32              = 101
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  23:               tokenizer.ggml.mask_token_id u32              = 103
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type  f32:   51 tensors
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type  f16:   61 tensors
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file format = GGUF V3 (latest)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file type   = F16
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file size   = 260.86 MiB (16.00 BPW)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: 0 unused tokens
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: special_eos_id is not in special_eog_ids - the tokenizer config may be incorrect
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: printing all EOG tokens:
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 0 ('[PAD]')
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 102 ('[SEP]')
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: special tokens cache size = 5
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: token to piece cache size = 0.2032 MB
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: arch                  = nomic-bert
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab_only            = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: no_alloc              = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_train           = 2048
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_inp            = 768
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd                = 768
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_out            = 768
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer               = 12
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer_all           = 12
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head                = 12
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head_kv             = 12
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_rot                 = 64
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_swa                 = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: is_swa_any            = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: non_causal_type       = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_k         = 64
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_v         = 64
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_gqa                 = 1
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_k_gqa          = 768
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_v_gqa          = 768
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_eps            = 1.0e-12
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_rms_eps        = 0.0e+00
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_clamp_kqv           = 0.0e+00
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_max_alibi_bias      = 0.0e+00
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_logit_scale         = 0.0e+00
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_scale          = 0.0e+00
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_value_scale    = 0.0000
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ff                  = 3072
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert              = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_used         = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_groups       = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_group_used          = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: causal attn           = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: pooling type          = 1
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope type             = 2
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope scaling          = linear
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_base_train       = 1000.0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_scale_train      = 1
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_orig_yarn       = 2048
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_yarn_log_mul     = 0.0000
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_finetuned        = unknown
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model type            = 137M
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model params          = 136.73 M
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: general.name          = nomic-embed-text-v1.5
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab type            = WPM
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_vocab               = 30522
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_merges              = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: BOS token             = 101 '[CLS]'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOS token             = 102 '[SEP]'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: UNK token             = 100 '[UNK]'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: SEP token             = 102 '[SEP]'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: PAD token             = 0 '[PAD]'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: MASK token            = 103 '[MASK]'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: LF token              = 0 '[PAD]'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM PAD token         = 0 '[PAD]'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 0 '[PAD]'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 102 '[SEP]'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: max token length      = 21
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors: loading model tensors, this can take a while... (load_mode = none)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors:          CPU model buffer size =   260.86 MiB
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.500+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server loading model"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added [PAD] logit bias = -inf
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added [SEP] logit bias = -inf
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: constructing llama_context
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_seq_max             = 1
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx                 = 2048
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx_seq             = 2048
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_batch               = 2048
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ubatch              = 2048
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: causal_attn           = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: flash_attn            = auto
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: kv_unified            = false
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_base             = 1000.0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_scale            = 1
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_rs_seq              = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max         = 2048
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max_per_seq = 1
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context:        CPU  output buffer size =     0.12 MiB
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserving ...
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: Flash Attention enabled
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: resolving fused DeepSeek V4 HC support:
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC pre enabled
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC comb enabled
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC post enabled
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve:        CPU compute buffer size =    98.03 MiB
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: graph: nodes = 335, splits = 1, input objects = 5, input tensors = 5
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserve took 1.81 ms, sched copies = 1
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn          init: llama threadpool init, n_threads = 4
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: KV cache shifting is not supported for this context, disabling KV cache shifting
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: init: embeddings required but some input tokens were not marked as outputs -> overriding
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: speculative decoding not supported by this context
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: initializing, n_slots = 1, n_ctx_slot = 2048, kv_unified = 'false'
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   load_model: id  0 | task -1 | new slot, n_ctx = 2048
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: use `--cache-ram 0` to disable the prompt cache
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: context checkpoints enabled, max = 32, min spacing = 8192
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: idle slots will be saved to prompt cache upon starting a new task
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, example_format: '<|im_start|>system
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: You are a helpful assistant<|im_end|>
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hello<|im_end|>
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hi there<|im_end|>
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: How are you?<|im_end|>
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: '
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, thinking = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: preserve_reasoning kwarg: not supported by template
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: model loaded
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: listening on http://127.0.0.1:44789
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.751+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 0.50 seconds"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.751+01:00 level=INFO source=images.go:395 msg="template selection" model=registry.ollama.ai/library/nomic-embed-text:latest selected=none renderer="" parser="" go_template=null chat_template=null harmony=null renderer_parser=null
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.751+01:00 level=INFO source=sched.go:733 msg="loaded runners" count=2
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.751+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:31:21.751+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 0.50 seconds"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - skipping, slot is empty
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | new prompt, n_ctx_slot = 2048, n_keep = 0, task.n_tokens = 18
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | cached n_tokens = 0, memory_seq_rm [0, end)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 0 | stop processing: n_tokens = 18, truncated = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:31:21 | 200 |  548.077684ms |       127.0.0.1 | POST     "/api/embed"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - checking sim = 0.333 (5/15) > 0.100
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.333 (> 0.100 thold), f_keep = 0.278
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 2 | processing task, is_child = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 2 | new prompt, n_ctx_slot = 2048, n_keep = 0, task.n_tokens = 15
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 2 | cached n_tokens = 0, memory_seq_rm [0, end)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 2 | stop processing: n_tokens = 15, truncated = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:31:21 | 200 |   31.094789ms |       127.0.0.1 | POST     "/api/embed"
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  server_strea: conv_id= (empty=1)
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - checking sim = 0.583 (1774/3042) > 0.100
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.583 (> 0.100 thold), f_keep = 0.984
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler params:
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         top_k = 40, top_p = 0.900, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 44 | processing task, is_child = 0
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 44 | new prompt, n_ctx_slot = 8192, n_keep = 4, task.n_tokens = 3042
+Nov 17 17:31:21 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 44 | cached n_tokens = 1774, memory_seq_rm [1774, end)
+Nov 17 17:32:14 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 44 | prompt processing, n_tokens =   1024, progress = 0.92, t =  53.08 s / 19.29 tokens per second
+Nov 17 17:32:14 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 44 | cached n_tokens = 2798, memory_seq_rm [2798, end)
+Nov 17 17:32:14 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot init_sampler: id  0 | task 44 | init sampler, took 0.40 ms, tokens: text = 3042, total = 3042
+Nov 17 17:32:49 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 44 | n_gen =    100, tg =   4.74 t/s, tg_3s =   4.79 t/s
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 44 | prompt eval time =   66446.16 ms /  1268 tokens (   52.40 ms per token,    19.08 tokens per second)
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 44 |        eval time =   24023.69 ms /   115 tokens (  210.73 ms per token,     4.75 tokens per second)
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 44 |       total time =   90469.85 ms /  1383 tokens
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 44 |    graphs reused =        152
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 44 | stop processing: n_tokens = 3156, truncated = 0
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:32:52 | 200 |         1m30s |       127.0.0.1 | POST     "/api/chat"
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:32:52 | 200 |    1.032326ms |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:32:52 | 200 |  501.988225ms |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:32:52.916+01:00 level=INFO source=sched.go:1152 msg="disabling mmap for llama-server load by default" model=/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730 reason=cpu
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:32:52.916+01:00 level=INFO source=server.go:100 msg="using llama-server for model" model=/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:32:52.916+01:00 level=INFO source=llama_server.go:436 msg="starting llama-server" cmd="/usr/local/lib/ollama/llama-server --model /usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730 --port 40025 --host 127.0.0.1 --no-webui --offline -c 8192 -np 1 --log-verbosity 4 --no-log-prefix --no-log-timestamps --no-jinja --chat-template chatml --load-mode none --flash-attn auto -b 1024 -ub 1024 --context-shift --keep 4"
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:32:52.917+01:00 level=INFO source=sched.go:618 msg="system memory" total="14.4 GiB" free="10.4 GiB" free_swap="4.0 GiB"
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:32:52.917+01:00 level=INFO source=llama_server.go:1054 msg="loading model via llama-server" model=/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:32:52.917+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:32:52.917+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server not responding"
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: initializing ...
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_backend: loaded CPU backend from /usr/local/lib/ollama/libggml-cpu-haswell.so
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: build 1 (6f767fe96) with GNU 13.3.1 for Linux x86_64
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: verbosity = 4 (adjust with the `-lv N` CLI arg)
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: device_info:
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param:   - CPU     : AMD Ryzen 5 7520U with Radeon Graphics (14709 MiB, 14709 MiB free)
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: system_info: n_threads = 4 (n_threads_batch = 4) / 8 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | LLAMAFILE = 1 | REPACK = 1 |
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: The UI is disabled
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: using 7 threads for HTTP server
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: loading model '/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730'
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: local path '/usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730'
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: fitting params to device memory ...
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+Nov 17 17:32:52 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: getting device memory data for initial parameters:
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:32:53.168+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server loading model"
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: | memory breakdown [MiB] | total   free    self   model   context   compute    unaccounted |
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: |   - Host               |                 2225 =  1483 +     448 +     294                |
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: |   - CPU_REPACK         |                 2976 =  2976 +       0 +       0                |
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: projected to use 2225 MiB of host memory vs. 14709 MiB of total host memory
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: will leave 12483 >= 1024 MiB of system memory, no changes needed
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: successfully fit params to free device memory
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: fitting params to free memory took 0.39 seconds
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: loaded meta data with 34 key-value pairs and 339 tensors from /usr/share/ollama/.ollama/models/blobs/sha256-2bada8a7450677000f678be90653b85d364de7db25eb5ea54136ada5f3933730 (version GGUF V3 (latest))
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   0:                       general.architecture str              = qwen2
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   1:                               general.type str              = model
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   2:                               general.name str              = Qwen2.5 7B Instruct
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   3:                           general.finetune str              = Instruct
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   4:                           general.basename str              = Qwen2.5
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   5:                         general.size_label str              = 7B
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   6:                            general.license str              = apache-2.0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   7:                       general.license.link str              = https://huggingface.co/Qwen/Qwen2.5-7...
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   8:                   general.base_model.count u32              = 1
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   9:                  general.base_model.0.name str              = Qwen2.5 7B
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  10:          general.base_model.0.organization str              = Qwen
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  11:              general.base_model.0.repo_url str              = https://huggingface.co/Qwen/Qwen2.5-7B
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  12:                               general.tags arr[str,2]       = ["chat", "text-generation"]
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  13:                          general.languages arr[str,1]       = ["en"]
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  14:                          qwen2.block_count u32              = 28
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  15:                       qwen2.context_length u32              = 32768
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  16:                     qwen2.embedding_length u32              = 3584
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  17:                  qwen2.feed_forward_length u32              = 18944
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  18:                 qwen2.attention.head_count u32              = 28
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  19:              qwen2.attention.head_count_kv u32              = 4
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  20:                       qwen2.rope.freq_base f32              = 1000000.000000
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  21:     qwen2.attention.layer_norm_rms_epsilon f32              = 0.000001
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  22:                          general.file_type u32              = 15
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  23:                       tokenizer.ggml.model str              = gpt2
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  24:                         tokenizer.ggml.pre str              = qwen2
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  25:                      tokenizer.ggml.tokens arr[str,152064]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  26:                  tokenizer.ggml.token_type arr[i32,152064]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  27:                      tokenizer.ggml.merges arr[str,151387]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "Ġ t",...
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  28:                tokenizer.ggml.eos_token_id u32              = 151645
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  29:            tokenizer.ggml.padding_token_id u32              = 151643
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  30:                tokenizer.ggml.bos_token_id u32              = 151643
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  31:               tokenizer.ggml.add_bos_token bool             = false
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  32:                    tokenizer.chat_template str              = {%- if tools %}\n    {{- '<|im_start|>...
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  33:               general.quantization_version u32              = 2
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type  f32:  141 tensors
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type q4_K:  169 tensors
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type q6_K:   29 tensors
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file format = GGUF V3 (latest)
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file type   = Q4_K - Medium
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file size   = 4.36 GiB (4.91 BPW)
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: 0 unused tokens
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: printing all EOG tokens:
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 128247 ('</s>')
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151643 ('<|endoftext|>')
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151645 ('<|im_end|>')
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151662 ('<|fim_pad|>')
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151663 ('<|repo_name|>')
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 151664 ('<|file_sep|>')
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: special tokens cache size = 23
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: token to piece cache size = 0.9310 MB
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: arch                  = qwen2
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab_only            = 0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: no_alloc              = 0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_train           = 32768
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_inp            = 3584
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd                = 3584
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_out            = 3584
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer               = 28
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer_all           = 28
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head                = 28
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head_kv             = 4
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_rot                 = 128
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_swa                 = 0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: is_swa_any            = 0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: non_causal_type       = 0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_k         = 128
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_v         = 128
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_gqa                 = 7
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_k_gqa          = 512
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_v_gqa          = 512
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_eps            = 0.0e+00
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_rms_eps        = 1.0e-06
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_clamp_kqv           = 0.0e+00
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_max_alibi_bias      = 0.0e+00
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_logit_scale         = 0.0e+00
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_scale          = 0.0e+00
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_value_scale    = 0.0000
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ff                  = 18944
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert              = 0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_used         = 0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_groups       = 0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_group_used          = 0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: causal attn           = 1
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: pooling type          = -1
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope type             = 2
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope scaling          = linear
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_base_train       = 1000000.0
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_scale_train      = 1
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_orig_yarn       = 32768
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_yarn_log_mul     = 0.0000
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_finetuned        = unknown
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model type            = 7B
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model params          = 7.62 B
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: general.name          = Qwen2.5 7B Instruct
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab type            = BPE
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_vocab               = 152064
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_merges              = 151387
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: BOS token             = 151643 '<|endoftext|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOS token             = 151645 '<|im_end|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOT token             = 151645 '<|im_end|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: PAD token             = 151643 '<|endoftext|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: LF token              = 198 'Ċ'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM PRE token         = 151659 '<|fim_prefix|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM SUF token         = 151661 '<|fim_suffix|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM MID token         = 151660 '<|fim_middle|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM PAD token         = 151662 '<|fim_pad|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM REP token         = 151663 '<|repo_name|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM SEP token         = 151664 '<|file_sep|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 128247 '</s>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151643 '<|endoftext|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151645 '<|im_end|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151662 '<|fim_pad|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151663 '<|repo_name|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 151664 '<|file_sep|>'
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: max token length      = 256
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors: loading model tensors, this can take a while... (load_mode = none)
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors:          CPU model buffer size =  1483.70 MiB
+Nov 17 17:32:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors:   CPU_REPACK model buffer size =  2976.75 MiB
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added </s> logit bias = -inf
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|endoftext|> logit bias = -inf
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|im_end|> logit bias = -inf
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|fim_pad|> logit bias = -inf
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|repo_name|> logit bias = -inf
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added <|file_sep|> logit bias = -inf
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: constructing llama_context
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_seq_max             = 1
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx                 = 8192
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx_seq             = 8192
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_batch               = 1024
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ubatch              = 1024
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: causal_attn           = 1
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: flash_attn            = auto
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: kv_unified            = false
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_base             = 1000000.0
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_scale            = 1
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_rs_seq              = 0
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max         = 1
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max_per_seq = 1
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx_seq (8192) < n_ctx_train (32768) -- the full capacity of the model will not be utilized
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context:        CPU  output buffer size =     0.58 MiB
+Nov 17 17:33:00 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache:        CPU KV buffer size =   448.00 MiB
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache: size =  448.00 MiB (  8192 cells,  28 layers,  1/1 seqs), K (f16):  224.00 MiB, V (f16):  224.00 MiB
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 128
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 128
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserving ...
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: Flash Attention enabled
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: resolving fused DeepSeek V4 HC support:
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC pre enabled
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC comb enabled
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC post enabled
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve:        CPU compute buffer size =   294.02 MiB
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: graph: nodes = 958, splits = 1, input objects = 4, input tensors = 6
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserve took 3.71 ms, sched copies = 1
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn          init: llama threadpool init, n_threads = 4
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: spec common_specu: no implementations specified for speculative decoding
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   load_model: id  0 | task -1 | new slot, n_ctx = 8192
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: use `--cache-ram 0` to disable the prompt cache
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: context checkpoints enabled, max = 32, min spacing = 8192
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: idle slots will be saved to prompt cache upon starting a new task
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, example_format: '<|im_start|>system
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: You are a helpful assistant<|im_end|>
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hello<|im_end|>
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hi there<|im_end|>
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: How are you?<|im_end|>
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: '
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, thinking = 0
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: preserve_reasoning kwarg: not supported by template
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: model loaded
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: listening on http://127.0.0.1:40025
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:33:01.957+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 9.04 seconds"
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:33:01.957+01:00 level=INFO source=images.go:395 msg="template selection" model=registry.ollama.ai/library/qwen2.5:7b selected=go_template renderer="" parser="" go_template="[completion tools]" chat_template="[tools completion]" harmony=null renderer_parser=null
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:33:01.957+01:00 level=INFO source=sched.go:733 msg="loaded runners" count=1
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:33:01.957+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:33:01.957+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 9.04 seconds"
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  server_strea: conv_id= (empty=1)
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - skipping, slot is empty
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  get_availabl: updating prompt cache
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          load:  - looking for better prompt, base f_keep = -1.000, f_sim = 0.000
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 8192 tokens, 8589934592 est)
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  get_availabl: prompt cache update took 0.02 ms
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler params:
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         top_k = 40, top_p = 0.900, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | new prompt, n_ctx_slot = 8192, n_keep = 4, task.n_tokens = 1762
+Nov 17 17:33:01 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | cached n_tokens = 0, memory_seq_rm [0, end)
+Nov 17 17:33:48 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 | prompt processing, n_tokens =   1024, progress = 0.58, t =  46.57 s / 21.99 tokens per second
+Nov 17 17:33:48 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | cached n_tokens = 1024, memory_seq_rm [1024, end)
+Nov 17 17:33:48 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot init_sampler: id  0 | task 0 | init sampler, took 0.27 ms, tokens: text = 1762, total = 1762
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 | prompt eval time =   83275.21 ms /  1762 tokens (   47.26 ms per token,    21.16 tokens per second)
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 |        eval time =    6731.49 ms /    41 tokens (  168.29 ms per token,     5.94 tokens per second)
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 |       total time =   90006.70 ms /  1803 tokens
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 0 |    graphs reused =         39
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 0 | stop processing: n_tokens = 1802, truncated = 0
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:34:31 | 200 |         1m39s |       127.0.0.1 | POST     "/api/chat"
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:31.996+01:00 level=INFO source=sched.go:1152 msg="disabling mmap for llama-server load by default" model=/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6 reason=cpu
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:31.997+01:00 level=INFO source=server.go:100 msg="using llama-server for model" model=/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:31.997+01:00 level=WARN source=server.go:105 msg="requested context size too large for model" num_ctx=8192 n_ctx_train=2048
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:31.997+01:00 level=INFO source=llama_server.go:436 msg="starting llama-server" cmd="/usr/local/lib/ollama/llama-server --model /usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6 --port 44239 --host 127.0.0.1 --no-webui --offline -c 2048 -np 1 --log-verbosity 4 --no-log-prefix --no-log-timestamps --load-mode none --flash-attn auto --embedding -b 2048 -ub 2048 --context-shift --keep 4"
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:31.997+01:00 level=INFO source=sched.go:618 msg="system memory" total="14.4 GiB" free="5.3 GiB" free_swap="4.0 GiB"
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:31.997+01:00 level=INFO source=llama_server.go:1054 msg="loading model via llama-server" model=/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:31.997+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:34:31 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:31.997+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server not responding"
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: initializing ...
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_backend: loaded CPU backend from /usr/local/lib/ollama/libggml-cpu-haswell.so
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: build 1 (6f767fe96) with GNU 13.3.1 for Linux x86_64
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: common_params_print_info: verbosity = 4 (adjust with the `-lv N` CLI arg)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: device_info:
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param:   - CPU     : AMD Ryzen 5 7520U with Radeon Graphics (14709 MiB, 14709 MiB free)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_param: system_info: n_threads = 4 (n_threads_batch = 4) / 8 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | LLAMAFILE = 1 | REPACK = 1 |
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: The UI is disabled
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  init_listene: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: using 7 threads for HTTP server
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: loading model '/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: local path '/usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: fitting params to device memory ...
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: getting device memory data for initial parameters:
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: | memory breakdown [MiB] | total   free    self   model   context   compute    unaccounted |
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_memory_breakdown_print: |   - Host               |                  358 =   260 +       0 +      98                |
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: projected to use 358 MiB of host memory vs. 14709 MiB of total host memory
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_params_fit_impl: will leave 14350 >= 1024 MiB of system memory, no changes needed
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: successfully fit params to free device memory
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: common_fit_params: fitting params to free memory took 0.04 seconds
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: loaded meta data with 24 key-value pairs and 112 tensors from /usr/share/ollama/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6 (version GGUF V3 (latest))
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   0:                       general.architecture str              = nomic-bert
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   1:                               general.name str              = nomic-embed-text-v1.5
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   2:                     nomic-bert.block_count u32              = 12
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   3:                  nomic-bert.context_length u32              = 2048
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   4:                nomic-bert.embedding_length u32              = 768
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   5:             nomic-bert.feed_forward_length u32              = 3072
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   6:            nomic-bert.attention.head_count u32              = 12
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   7:    nomic-bert.attention.layer_norm_epsilon f32              = 0.000000
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   8:                          general.file_type u32              = 1
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv   9:                nomic-bert.attention.causal bool             = false
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  10:                    nomic-bert.pooling_type u32              = 1
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  11:                  nomic-bert.rope.freq_base f32              = 1000.000000
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  12:            tokenizer.ggml.token_type_count u32              = 2
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  13:                tokenizer.ggml.bos_token_id u32              = 101
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  14:                tokenizer.ggml.eos_token_id u32              = 102
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  15:                       tokenizer.ggml.model str              = bert
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  16:                      tokenizer.ggml.tokens arr[str,30522]   = ["[PAD]", "[unused0]", "[unused1]", "...
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  17:                      tokenizer.ggml.scores arr[f32,30522]   = [-1000.000000, -1000.000000, -1000.00...
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  18:                  tokenizer.ggml.token_type arr[i32,30522]   = [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  19:            tokenizer.ggml.unknown_token_id u32              = 100
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  20:          tokenizer.ggml.seperator_token_id u32              = 102
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  21:            tokenizer.ggml.padding_token_id u32              = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  22:                tokenizer.ggml.cls_token_id u32              = 101
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - kv  23:               tokenizer.ggml.mask_token_id u32              = 103
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type  f32:   51 tensors
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_model_loader: - type  f16:   61 tensors
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file format = GGUF V3 (latest)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file type   = F16
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: file size   = 260.86 MiB (16.00 BPW)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: 0 unused tokens
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: special_eos_id is not in special_eog_ids - the tokenizer config may be incorrect
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: printing all EOG tokens:
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 0 ('[PAD]')
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load:   - 102 ('[SEP]')
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: special tokens cache size = 5
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load: token to piece cache size = 0.2032 MB
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: arch                  = nomic-bert
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab_only            = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: no_alloc              = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_train           = 2048
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_inp            = 768
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd                = 768
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_out            = 768
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer               = 12
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_layer_all           = 12
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head                = 12
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_head_kv             = 12
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_rot                 = 64
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_swa                 = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: is_swa_any            = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: non_causal_type       = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_k         = 64
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_head_v         = 64
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_gqa                 = 1
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_k_gqa          = 768
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_embd_v_gqa          = 768
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_eps            = 1.0e-12
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_norm_rms_eps        = 0.0e+00
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_clamp_kqv           = 0.0e+00
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_max_alibi_bias      = 0.0e+00
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_logit_scale         = 0.0e+00
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_scale          = 0.0e+00
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: f_attn_value_scale    = 0.0000
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ff                  = 3072
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert              = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_used         = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_expert_groups       = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_group_used          = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: causal attn           = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: pooling type          = 1
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope type             = 2
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope scaling          = linear
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_base_train       = 1000.0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: freq_scale_train      = 1
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_ctx_orig_yarn       = 2048
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_yarn_log_mul     = 0.0000
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: rope_finetuned        = unknown
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model type            = 137M
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: model params          = 136.73 M
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: general.name          = nomic-embed-text-v1.5
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: vocab type            = WPM
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_vocab               = 30522
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: n_merges              = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: BOS token             = 101 '[CLS]'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOS token             = 102 '[SEP]'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: UNK token             = 100 '[UNK]'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: SEP token             = 102 '[SEP]'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: PAD token             = 0 '[PAD]'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: MASK token            = 103 '[MASK]'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: LF token              = 0 '[PAD]'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: FIM PAD token         = 0 '[PAD]'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 0 '[PAD]'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: EOG token             = 102 '[SEP]'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: print_info: max token length      = 21
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors: loading model tensors, this can take a while... (load_mode = none)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: load_tensors:          CPU model buffer size =   260.86 MiB
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:32.249+01:00 level=INFO source=llama_server.go:1362 msg="waiting for llama-server to become available" status="llm server loading model"
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added [PAD] logit bias = -inf
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: added [SEP] logit bias = -inf
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: constructing llama_context
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_seq_max             = 1
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx                 = 2048
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ctx_seq             = 2048
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_batch               = 2048
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_ubatch              = 2048
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: causal_attn           = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: flash_attn            = auto
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: kv_unified            = false
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_base             = 1000.0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: freq_scale            = 1
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_rs_seq              = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max         = 2048
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context: n_outputs_max_per_seq = 1
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: llama_context:        CPU  output buffer size =     0.12 MiB
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserving ...
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: Flash Attention enabled
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: resolving fused DeepSeek V4 HC support:
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC pre enabled
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC comb enabled
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: resolve_fused_ops: fused DeepSeek V4 HC post enabled
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve:        CPU compute buffer size =    98.03 MiB
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: graph: nodes = 335, splits = 1, input objects = 5, input tensors = 5
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: sched_reserve: reserve took 1.42 ms, sched copies = 1
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn          init: llama threadpool init, n_threads = 4
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: KV cache shifting is not supported for this context, disabling KV cache shifting
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: cmn  common_init_: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: init: embeddings required but some input tokens were not marked as outputs -> overriding
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: speculative decoding not supported by this context
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: initializing, n_slots = 1, n_ctx_slot = 2048, kv_unified = 'false'
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   load_model: id  0 | task -1 | new slot, n_ctx = 2048
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: use `--cache-ram 0` to disable the prompt cache
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv    load_model: context checkpoints enabled, max = 32, min spacing = 8192
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: idle slots will be saved to prompt cache upon starting a new task
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, example_format: '<|im_start|>system
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: You are a helpful assistant<|im_end|>
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hello<|im_end|>
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: Hi there<|im_end|>
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>user
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: How are you?<|im_end|>
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: <|im_start|>assistant
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: '
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: init: chat template, thinking = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv          init: preserve_reasoning kwarg: not supported by template
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: model loaded
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  llama_server: listening on http://127.0.0.1:44239
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:32.500+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 0.50 seconds"
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:32.500+01:00 level=INFO source=images.go:395 msg="template selection" model=registry.ollama.ai/library/nomic-embed-text:latest selected=none renderer="" parser="" go_template=null chat_template=null harmony=null renderer_parser=null
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:32.500+01:00 level=INFO source=sched.go:733 msg="loaded runners" count=2
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:32.500+01:00 level=INFO source=llama_server.go:1307 msg="waiting for llama-server to start responding"
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: time=2026-11-17T17:34:32.500+01:00 level=INFO source=llama_server.go:1374 msg="llama-server started in 0.50 seconds"
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - skipping, slot is empty
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | new prompt, n_ctx_slot = 2048, n_keep = 0, task.n_tokens = 16
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 0 | cached n_tokens = 0, memory_seq_rm [0, end)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 0 | stop processing: n_tokens = 16, truncated = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:34:32 | 200 |  556.896795ms |       127.0.0.1 | POST     "/api/embed"
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - checking sim = 0.917 (11/12) > 0.100
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.917 (> 0.100 thold), f_keep = 0.688
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 2 | processing task, is_child = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 2 | new prompt, n_ctx_slot = 2048, n_keep = 0, task.n_tokens = 12
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 2 | cached n_tokens = 0, memory_seq_rm [0, end)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 2 | stop processing: n_tokens = 12, truncated = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:34:32 | 200 |   22.707475ms |       127.0.0.1 | POST     "/api/embed"
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  server_strea: conv_id= (empty=1)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - checking sim = 0.658 (1774/2697) > 0.100
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.658 (> 0.100 thold), f_keep = 0.984
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler params:
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         top_k = 40, top_p = 0.900, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 43 | processing task, is_child = 0
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 43 | new prompt, n_ctx_slot = 8192, n_keep = 4, task.n_tokens = 2697
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 43 | cached n_tokens = 1774, memory_seq_rm [1774, end)
+Nov 17 17:34:32 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot init_sampler: id  0 | task 43 | init sampler, took 0.43 ms, tokens: text = 2697, total = 2697
+Nov 17 17:35:41 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    100, tg =   5.19 t/s, tg_3s =   5.24 t/s
+Nov 17 17:35:44 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    116, tg =   5.18 t/s, tg_3s =   5.11 t/s
+Nov 17 17:35:47 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    132, tg =   5.16 t/s, tg_3s =   5.06 t/s
+Nov 17 17:35:50 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    148, tg =   5.14 t/s, tg_3s =   4.99 t/s
+Nov 17 17:35:53 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    164, tg =   5.13 t/s, tg_3s =   5.04 t/s
+Nov 17 17:35:56 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    179, tg =   5.12 t/s, tg_3s =   4.98 t/s
+Nov 17 17:35:59 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    194, tg =   5.11 t/s, tg_3s =   4.98 t/s
+Nov 17 17:36:02 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | n_gen =    209, tg =   5.10 t/s, tg_3s =   4.95 t/s
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 | prompt eval time =   49373.14 ms /   923 tokens (   53.49 ms per token,    18.69 tokens per second)
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 |        eval time =   43225.81 ms /   221 tokens (  196.48 ms per token,     5.09 tokens per second)
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 |       total time =   92598.96 ms /  1144 tokens
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 43 |    graphs reused =        257
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 43 | stop processing: n_tokens = 2917, truncated = 0
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:36:05 | 200 |         1m32s |       127.0.0.1 | POST     "/api/chat"
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  server_strea: conv_id= (empty=1)
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 |  - checking sim = 0.982 (2917/2970) > 0.100
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, f_sim_best = 0.982 (> 0.100 thold), f_keep = 1.000
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task -1 | sampler params:
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         top_k = 40, top_p = 0.900, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot launch_slot_: id  0 | task 265 | processing task, is_child = 0
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 265 | new prompt, n_ctx_slot = 8192, n_keep = 4, task.n_tokens = 2970
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot   operator(): id  0 | task 265 | cached n_tokens = 2917, memory_seq_rm [2917, end)
+Nov 17 17:36:05 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot init_sampler: id  0 | task 265 | init sampler, took 0.43 ms, tokens: text = 2970, total = 2970
+Nov 17 17:36:34 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 265 | n_gen =    100, tg =   4.70 t/s, tg_3s =   4.75 t/s
+Nov 17 17:36:37 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 265 | n_gen =    114, tg =   4.69 t/s, tg_3s =   4.60 t/s
+Nov 17 17:36:40 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 265 | n_gen =    129, tg =   4.69 t/s, tg_3s =   4.69 t/s
+Nov 17 17:36:43 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 265 | n_gen =    144, tg =   4.68 t/s, tg_3s =   4.63 t/s
+Nov 17 17:36:45 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 265 | prompt eval time =    8046.91 ms /    53 tokens (  151.83 ms per token,     6.59 tokens per second)
+Nov 17 17:36:45 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 265 |        eval time =   32708.44 ms /   154 tokens (  213.78 ms per token,     4.68 tokens per second)
+Nov 17 17:36:45 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 265 |       total time =   40755.35 ms /   207 tokens
+Nov 17 17:36:45 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot print_timing: id  0 | task 265 |    graphs reused =        408
+Nov 17 17:36:45 usr0-HP-Laptop-15-fc0xxx ollama[4235]: slot      release: id  0 | task 265 | stop processing: n_tokens = 3123, truncated = 0
+Nov 17 17:36:45 usr0-HP-Laptop-15-fc0xxx ollama[4235]: srv  update_slots: all slots are idle
+Nov 17 17:36:45 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:36:45 | 200 | 40.782334706s |       127.0.0.1 | POST     "/api/chat"
+Nov 17 17:36:45 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:36:45 | 200 |    1.140758ms |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:36:46 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:36:46 | 200 |  494.242292ms |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:36:46 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:36:46 | 200 |     897.261µs |       127.0.0.1 | POST     "/api/generate"
+Nov 17 17:36:46 usr0-HP-Laptop-15-fc0xxx ollama[4235]: [GIN] 2026/11/17 - 17:36:46 | 200 |     713.795µs |       127.0.0.1 | POST     "/api/generate"

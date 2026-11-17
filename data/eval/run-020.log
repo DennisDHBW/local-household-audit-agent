@@ -1,0 +1,12 @@
+P1 Pipeline: alle Fragen schon beantwortet
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-020/report.md
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-020/report.md
+{
+  "recall_agrees": 0,
+  "recall_high_without_facts": 0,
+  "recall_low_with_facts": 0,
+  "gap_only_faithfulness": {
+    "None": 3
+  }
+}
+evidence: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-020/evidence.json
