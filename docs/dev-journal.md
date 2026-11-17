@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-17 – M6h: Größen-Anfrage, Zitier-Rückfrage und Einheitenfaktor
+**Ziel der Sitzung:** Das Retrieval verbessern, damit die Sollzahl (G1, G3) im Kontext steht; Zitierpflicht für P2; Einheitenfaktor der Metrik einschränken (ISS-050, ISS-051/052).
+**Was wurde gemacht:**
+- Plan mit vier Entscheidungen des Nutzers: gezielte Größen-Anfrage statt mehr Treffer, Hierarchie-Boost behalten, Summaries für den Agenten aus, Einheitenfaktor nur für ct und EUR
+- `quantity_query` und `new_quantity_hits`: zweite Suche mit der Größe allein für P1 und P2, Gegenstück-Suche nutzt sie; Zitier-Rückfrage im Loop; Metrik und `parse_number` angepasst (ISS-073); 26 neue Tests (361 insgesamt), Quality Gate grün
+- Nachbewertung RUN-010 bis RUN-017 mit der neuen Metrik: keine Änderung
+- RUN-018 (P2, 63 min) und RUN-019 (P1, 21 min) ausgewertet, alle 14 Antworten von RUN-018 gelesen, Kontext je Frage gegen RUN-014 und RUN-011 verglichen
+- VM-Speicher voll: Umgebung in `/dev/shm` (ISS-075)
+**Gelieferte Dateien / Funktionen:** `retrieval/quantity.py` (`quantity_query`, `new_quantity_hits`), `agent/tools.py` (`_search`, `_counterpart_hits`), `agent/loop.py` (Zitier-Rückfrage), `agent/prompts.py` (`has_citation`, `CITE_BEFORE_ANSWER_MESSAGE`), `evaluation/variants.py` (P1), `evaluation/metrics.py` (`_is_money`), `numbers.py`, `config.py` (`quantity_hits`, `require_citation`)
+**Entscheidungen:** ADR-0017 (Zitier-Rückfrage und Einheitenfaktor akzeptiert; Größen-Anfrage umgesetzt, ohne messbaren Gewinn, bleibt an)
+**Probleme / Überraschungen:** ISS-072 (Jahr und Dokumentwort ziehen das Dokument), ISS-073 (`0,348` als 348 gelesen), ISS-074 (G3 ohne Vorjahres-Gegenstück), ISS-075 (VM-Speicher), ISS-076 (leere Antwort nach Rückfrage), ISS-077 (Größen-Anfrage ohne Sparte, Fehler im Entwurf von Claude)
+**Offen / unklar:** Ob die Sparte in der Größen-Anfrage P1 und P2 hilft (M6i); ob M6 vor oder nach M6i abgeschlossen wird; Streuung der Läufe nicht gemessen
+**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**Zeitaufwand:** Sitzung ca. 3 h, Läufe 63 + 21 min Rechenzeit · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `fix(numbers)`, `feat(retrieval)`, `feat(agent)`, `docs` ×2, `test(evaluation)`
+
 ### 2026-11-16 – M6g: Fester Prüfablauf und Modellwechsel (Negativergebnis)
 **Ziel der Sitzung:** Prüfablauf (Soll suchen, Ist suchen, Code rechnet) und Modell für P2 entscheiden, umsetzen und mit RUN-017 messen (ISS-066, ISS-067).
 **Was wurde gemacht:**

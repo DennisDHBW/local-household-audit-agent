@@ -1,6 +1,6 @@
 # ADR-0017: Größen-Anfrage für P1 und P2, Zitier-Rückfrage, Einheitenfaktor nur für Geldfakten
 
-- **Status:** vorgeschlagen (umgesetzt in M6h, Messung RUN-018 und RUN-019 offen)
+- **Status:** akzeptiert für Zitier-Rückfrage und Einheitenfaktor; Größen-Anfrage umgesetzt und standardmäßig an, in RUN-018/019 ohne messbaren Gewinn (Nachbesserung ISS-077 offen)
 - **Datum:** 2026-11-16
 - **Meilenstein:** M6 (M6h)
 - **Ersetzt:** –; ergänzt ADR-0009 (Suche), ADR-0014 (Werkzeug `search`), ADR-0015 (Rückfragen)
@@ -30,3 +30,10 @@ Nach RUN-014 scheitern G1 und G3 daran, dass die Sollzahl nie im Kontext steht; 
 
 ## Belege
 RUN-014, `data/eval/run-014/p2-G1.jsonl` und `p2-G3.jsonl`, ISS-027, ISS-035, ISS-050, ISS-051, ISS-052, ISS-072, ISS-074; Tests in `tests/test_retrieval.py` (`test_quantity_query_keeps_the_billing_quantity`), `tests/test_agent_tools.py`, `tests/test_agent_loop.py`, `tests/test_evaluation.py`.
+
+## Ergebnis (RUN-018 und RUN-019, einzelne Läufe, `qwen2.5:7b`)
+- **Zitier-Rückfrage wirkt:** 9 von 9 Antworten mit Zahlen tragen `[n]` (RUN-014: 5 von 9), erwartete Quellen zitiert 8 statt 6 von 18; 4 Rückfragen, keine Antwort inhaltlich schlechter.
+- **Größen-Anfrage ohne messbaren Gewinn:** P2 nach Handprüfung 6 von 14 wie RUN-014 (G4 verloren durch falschen Sollwert, Z1 gewonnen), Sollzahlen im Kontext 17 auf 18 von 27 (G1 0 auf 2, die Zeile wird nicht genutzt); P1 13 von 27 unverändert, S5 wird Fehlalarm, Metrik 6 auf 5. Eingebaute Fehler: 0 von 3 erkannt.
+- **Ursache für P1 (ISS-077):** Die Größen-Anfrage verliert die Sparte; „Arbeitspreis“ trifft das Gas-Schreiben. G3 wird mangels Größe in der Frage nicht erreicht (ISS-074).
+- **Entscheidung des Nutzers (2026-11-17):** mergen, Größen-Anfrage an lassen; die Sparte in der Größen-Anfrage kommt als Folgepaket mit neuer Messung.
+
