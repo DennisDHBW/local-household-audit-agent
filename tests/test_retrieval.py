@@ -40,6 +40,8 @@ from audit_agent.retrieval import (
     quantity_query,
     render_evidence_text,
     tokenize_query,
+    utility_in_query,
+    with_query_utility,
 )
 from audit_agent.retrieval.compare import (
     CompareConfig,
@@ -564,3 +566,47 @@ def _truth(questions: list[dict]) -> GroundTruth:
 )
 def test_quantity_query_keeps_the_billing_quantity(query, expected):
     assert quantity_query(query) == expected
+
+
+@pytest.mark.parametrize(
+    ("query", "expected"),
+    [
+        ("Arbeitspreis Strom Rechnung 2025", UtilityType.ELECTRICITY),
+        (
+            "Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?",
+            UtilityType.ELECTRICITY,
+        ),
+        ("Kündigungsfrist Gasvertrag", UtilityType.GAS),
+        ("Brennwert Erdgas 2025", UtilityType.GAS),
+        ("Senkung Gas-Arbeitspreis", UtilityType.GAS),
+        ("Grundgebühr Wasserrechnungen", UtilityType.WATER),
+        ("Welchen Grundpreis zahle ich für Fernwärme?", UtilityType.DISTRICT_HEATING),
+        ("Arbeitspreis Strom und Gas", None),
+        ("Stromabrechnung und Gasabrechnung 2025", None),
+        ("Wie hoch war der Wasserverbrauch 2025?", None),
+        ("Warmwasser Nebenkostenabrechnung 2025", None),
+        ("Anteil Betriebskosten 2025", None),
+        ("Hauptgasse 4 Abschlag", None),
+        ("", None),
+    ],
+)
+def test_utility_in_query_needs_exactly_one_utility_word_or_document_compound(query, expected):
+    assert utility_in_query(query) is expected
+
+
+def test_with_query_utility_adds_the_utility_only_if_no_utility_filter_is_set():
+    # Arrange
+    plain = SearchOptions(metadata_filter=MetadataFilter(doc_type=DocType.BILL), top_k=3)
+    chosen = SearchOptions(metadata_filter=MetadataFilter(utility_type=UtilityType.GAS))
+
+    # Act
+    narrowed = with_query_utility(plain, "Arbeitspreis Stromabrechnung 2025")
+
+    # Assert
+    assert narrowed.metadata_filter == MetadataFilter(
+        utility_type=UtilityType.ELECTRICITY, doc_type=DocType.BILL
+    )
+    assert narrowed.top_k == 3
+    assert plain.metadata_filter.utility_type is None
+    assert with_query_utility(chosen, "Arbeitspreis Stromabrechnung 2025") is chosen
+    assert with_query_utility(plain, "Anteil Betriebskosten 2025") is plain

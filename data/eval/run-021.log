@@ -1,0 +1,39 @@
+
+== P2 Agent Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+   266.1 s: Der Zählerstandunterschied beträgt 1.200 m³ [1]. Der abgerechnete Verbrauch für 2025 lautet ebenfalls 1.200 m³. Es gibt also keine Abweichung zwischen Sollwert und Istwert.
+
+Zusammengefasst:
+- Sollwer
+
+== P2 Agent Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+   189.9 s: Der aktuelle monatliche Stromabschlag beträgt 115,00 EUR brutto (96,64 EUR netto zzgl. 18,36 EUR USt.), wie es in der [1] 03_Strom_Preisanpassung_SuedVolt_2025.pdf, S. 1, und in der [3] 04_Strom_Jahre
+
+== P2 Agent Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+   233.1 s: Der Vertrag kann kündigt werden:
+
+- **1 Monat vor Ablauf der Erstvertragslaufzeit (01.01.2024 – 31.12.2024)**: Danach ist die Kündigungsfrist unbefristet, mit einer Frist von 1 Monat. [1]
+- **Sonderkü
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-021/report.md
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-021/report.md
+{
+  "recall_agrees": 0,
+  "recall_high_without_facts": 0,
+  "recall_low_with_facts": 0,
+  "gap_only_faithfulness": {
+    "None": 1
+  }
+}
+evidence: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-021/evidence.json
+{
+  "run-021": {
+    "questions": 14,
+    "model_calls": 49,
+    "wall_seconds": 4301.8,
+    "prefill_first_calls": 1355.1,
+    "first_calls_from_cache": 0,
+    "prefill_later_calls": 1382.0,
+    "prompt_tokens_later_calls": 110322,
+    "decode_seconds": 1400.7,
+    "generated_tokens": 4696
+  }
+}

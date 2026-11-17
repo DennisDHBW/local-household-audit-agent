@@ -24,13 +24,33 @@
 
 ## Einträge
 
-### ISS-077 – Größen-Anfrage ohne Sparte trifft das falsche Dokument (P1)
-- **Datum / Meilenstein:** 2026-11-17 / M6h (RUN-019)
-- **Kategorie:** retrieval
+### ISS-079 – RUN-021 bricht nach N2 ohne Meldung ab; Fortsetzung überschreibt Protokoll und Umgebungsdatei
+- **Datum / Meilenstein:** 2026-11-17 / M6i (RUN-021)
+- **Kategorie:** evaluation
 - **Status:** offen
+- **Symptom:** `eval_run.sh run-021:qwen2.5:7b` endete nach 11 von 14 Fragen direkt beim Start von Z1 (13:59 Uhr, `p2-Z1.jsonl` leer), ohne Traceback, ohne `FERTIG`. Beim Fortsetzen (17:25 Uhr, Laptop 6 min vorher neu gestartet) über `eval_run.sh` wurden `run-021.log` und `run-021-env.txt` neu geschrieben; die Ausgaben der ersten 11 Fragen und der Speicherstand beim Start fehlen im Protokoll.
+- **Ursache:** Abbruch nicht geklärt (harter Prozessabbruch; Ruhezustand, Neustart oder OOM-Killer möglich). Das Systemjournal um 13:59 wurde nicht gesichert (`journalctl -b -1` wäre nach dem Neustart nötig gewesen). `eval_run.sh` schreibt Log und Umgebung mit `tee` und `>`, nicht anhängend.
+- **Lösung / Workaround:** Die Antworten sind vollständig: `generate` überspringt beantwortete Fragen, Z1 bis Z3 wurden nachgeholt, Bewertung über alle 14. Kandidat: `eval_run.sh` mit `tee -a` und Umgebung je Start anhängen.
+- **Gelernt:** Ein fortsetzbarer Lauf braucht auch ein fortsetzbares Protokoll.
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-078 – Claudes Shell: `/dev/shm` je Aufruf leer, `uv sync` zu langsam; Quality Gate läuft auf dem Laptop
+- **Datum / Meilenstein:** 2026-11-17 / M6i
+- **Kategorie:** ki-assistent
+- **Status:** gelöst (Workaround)
+- **Symptom:** Nach einem Verbindungsabbruch war `/dev/shm` in jedem `device_bash`-Aufruf leer (jeder Aufruf hat ein eigenes `/dev`); `uv sync` lädt rund 300 MB mit ca. 0,3–0,8 MB/s und schafft das nicht in 180 s. Auch ein Cache auf der Projektplatte (`.vm-uv/`) kam nicht über `pymupdf` (66 MB) hinaus, abgebrochene Downloads setzt `uv` nicht fort.
+- **Ursache:** Sandbox der VM (eigenes `/dev` je Aufruf, `/sessions` zu 100 % voll, langsamer Proxy); Workaround aus ISS-075 hing an einem `/dev/shm`, das zwischen Aufrufen bestehen blieb.
+- **Lösung / Workaround:** Quality Gate (`./scripts/check.sh`) im Befehl für das Terminal des Nutzers vor der Messung, Ausgabe nach `.vm-uv/check-m6i.log`, Messung nur bei grünem Gate (`&&`). Der Ordner `.vm-uv/` steht in `.git/info/exclude` und wurde danach gelöscht. Folge: Claude sieht Testfehler erst mit dem Messbefehl; kleine Codeprüfungen gehen weiter mit `python3` ohne Abhängigkeiten.
+- **Gelernt:** Wenn die Werkzeugumgebung wackelt, gehört die Prüfung dorthin, wo die Umgebung stabil ist, und muss die teure Messung absichern.
+- **Relevant für Ausarbeitung?** ja → Reflexion (Arbeit mit dem KI-Assistenten)
+
+### ISS-077 – Größen-Anfrage ohne Sparte trifft das falsche Dokument (P1)
+- **Datum / Meilenstein:** 2026-11-17 / M6h (RUN-019), gelöst in M6i (RUN-020)
+- **Kategorie:** retrieval
+- **Status:** gelöst
 - **Symptom:** P1/G1: Die Größen-Anfrage „Arbeitspreis“ liefert zwei Treffer aus dem Gas-Preisschreiben (Kapitel „Senkung Ihres Gas-Arbeitspreises“), nicht die Strom-Zeile mit 38,20 ct. Die Sollzahlen im Kontext bleiben bei P1 13 von 27 (RUN-011: 13). P1/S5 kippt von „Ja, stimmt“ zu einem Fehlalarm mit sinnloser Rechnung (68,00 EUR).
 - **Ursache:** `quantity_query` entfernt Sparten und Zusammensetzungen wie „Stromabrechnung“ ganz; P1 hat keinen Sparten-Filter (P2 übergibt `utility_type` an beide Suchen). Das Wort steht dann im Kapitel eines anderen Dokuments und bekommt den Hierarchie-Boost 1,5. Fehler im Entwurf von Claude: Der Fall P1 ohne Filter wurde nicht bedacht, und ohne Ollama ließ sich die Wirkung vorab nicht prüfen.
-- **Lösung / Workaround:** Offen. Kandidat: die Sparte aus der Anfrage (Präfix von „Stromabrechnung“, Wort „Strom“) als zusätzliches Suchwort oder als Sparten-Filter für die Größen-Suche behalten, nur wenn die Frage sie nennt. Danach P1 und P2 neu messen.
+- **Lösung / Workaround:** M6i: `utility_in_query` erkennt genau eine Sparte („Strom“, „Gas“, „Erdgas“, „Wasser“, „Fernwärme“ allein oder vor einem Dokumentwort wie „Stromabrechnung“); `with_query_utility` setzt sie als Sparten-Filter der Größen- und der Gegenstück-Suche, nur wenn noch kein Filter gesetzt ist. Als Filter statt Suchwort, weil „Strom“ als Suchwort über den Dateinamen jedem Stromdokument den Hierarchie-Boost gäbe. Zusammensetzungen wie „Wasserverbrauch“ und Betriebskosten zählen nicht (G2/G4 brauchen Mietvertrag und Abrechnung zusammen). RUN-020 (P1): G1 0 auf 2 von 3 Sollzahlen im Kontext (Strom-Preisanpassung und Strom-Abrechnung statt Gas-Schreiben), S5 wieder „Ja, stimmt“, Sollzahlen im Kontext 13 auf 16 von 27. RUN-021 (P2): keine Änderung, der Agent setzt die Sparte selbst oder seine Anfragen nennen keine.
 - **Gelernt:** Eine Anfrage, die nur noch den Fachbegriff enthält, verliert den Kontext, der das richtige Dokument bestimmt; Entfernen von Wörtern braucht eine Messung mit dem echten Embedding-Modell.
 - **Relevant für Ausarbeitung?** ja → Retrieval (Grenzen), Reflexion (Fehler im Entwurf)
 
@@ -40,7 +60,7 @@
 - **Status:** offen
 - **Symptom:** P2/G1: Die erste Antwort („neuer Arbeitspreis 38,20 ct angewendet“, falsch, aber nicht leer) löst die Rechennachfrage aus; die nächste Modellantwort hat 25 erzeugte Token, aber leeren Inhalt und keinen Werkzeugaufruf. Der Loop endet mit `stop_reason=empty_answer` und liefert nichts.
 - **Ursache:** Nicht geklärt (Einzelfall, ein Lauf). Die Nachfrage ersetzt keine Antwort, sondern hängt eine Nutzernachricht an; das Modell antwortet hier nur mit Steuerzeichen oder einem verworfenen Aufruf.
-- **Lösung / Workaround:** Offen. Kandidat: bei leerer Antwort nach einer Rückfrage die vorherige Antwort zurückgeben oder einmal neu fragen. Erst bei Wiederholung in einem weiteren Lauf umsetzen.
+- **Lösung / Workaround:** Offen. Kandidat: bei leerer Antwort nach einer Rückfrage die vorherige Antwort zurückgeben oder einmal neu fragen. Erst bei Wiederholung in einem weiteren Lauf umsetzen. RUN-021 zeigt dieselbe leere Antwort, aber mit identischem Kontext und Temperatur 0 (13 von 14 Antworten wortgleich mit RUN-018); das ist eine Wiederholung derselben Eingabe, kein unabhängiger zweiter Fall.
 - **Gelernt:** Jede Rückfrage des Loops braucht einen Plan für die leere Antwort danach.
 - **Relevant für Ausarbeitung?** nein
 

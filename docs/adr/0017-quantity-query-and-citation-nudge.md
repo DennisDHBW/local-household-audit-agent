@@ -37,3 +37,10 @@ RUN-014, `data/eval/run-014/p2-G1.jsonl` und `p2-G3.jsonl`, ISS-027, ISS-035, IS
 - **Ursache für P1 (ISS-077):** Die Größen-Anfrage verliert die Sparte; „Arbeitspreis“ trifft das Gas-Schreiben. G3 wird mangels Größe in der Frage nicht erreicht (ISS-074).
 - **Entscheidung des Nutzers (2026-11-17):** mergen, Größen-Anfrage an lassen; die Sparte in der Größen-Anfrage kommt als Folgepaket mit neuer Messung.
 
+## Nachtrag M6i (RUN-020 und RUN-021, 2026-11-17)
+- **Änderung:** Nennt die Frage oder Suchanfrage genau eine Sparte („Stromabrechnung“, „Gas“, „Fernwärme“), laufen Größen-Suche und Gegenstück-Suche mit dieser Sparte als Metadaten-Filter (`utility_in_query`, `with_query_utility`). Ein vom Agenten gesetzter Filter hat Vorrang; die erste Suche bleibt unverändert (ISS-077).
+- **Verworfen:** die Sparte als zusätzliches Suchwort in der Größen-Anfrage. Das Wort steht in jedem Strom-Dateinamen („…_Strom_…“) und gäbe jedem Stromdokument den Hierarchie-Boost; die Wirkung wäre erst nach einem Lauf sichtbar gewesen.
+- **P1 (RUN-020 gegen RUN-019):** Sollzahlen im Kontext 13 auf 16 von 27, Fakten in der Antwort 9 auf 12, richtig laut Metrik 5 auf 6, Fehlalarme 1 auf 0. Der Filter greift in 6 Fragen (S1, S2, S5, G1, N2, Z3) und ersetzt dort Fremdtreffer (Gas-, Internet-, Hausrat-Dokumente). G1 hat jetzt 38,20 ct und 39,50 ct im Kontext, die Antwort bleibt falsch (vergleicht mit dem alten Preis 34,80 ct).
+- **P2 (RUN-021 gegen RUN-018):** unverändert, 13 von 14 Antworten wortgleich. Der Filter griff in einer Suche (S5) ohne andere Antwort; sonst setzt der Agent die Sparte selbst oder seine Anfragen nennen keine.
+- **Stand:** Die Größen-Anfrage hilft jetzt P1 messbar; bei P2 ist der Engpass nicht mehr das Retrieval, sondern das Lesen und Vergleichen (G1, G3, G4). Eingebaute Fehler: weiter 0 von 3 erkannt.
+

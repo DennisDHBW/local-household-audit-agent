@@ -445,6 +445,27 @@ def test_pipeline_variant_adds_the_hits_of_the_quantity_search_last(tmp_path):
     assert "[2]" in answer.contexts[1] and "38,20 ct" in answer.contexts[1]
 
 
+def test_pipeline_variant_filters_the_quantity_search_by_the_utility_of_the_question(tmp_path):
+    # Arrange
+    backend = FakeBackend(
+        lambda query, options: [make_hit("row" if query == "Arbeitspreis" else "a")]
+    )
+    chat = ScriptedChat([answer_reply("Nein [2].")])
+    question = _audit_question(
+        question="Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?"
+    )
+
+    # Act
+    PipelineVariant(Settings(project_root=tmp_path), chat, backend).answer(question, "m")
+
+    # Assert
+    (first_query, first), (second_query, second) = backend.calls
+    assert first_query == question.question and second_query == "Arbeitspreis"
+    assert first.metadata_filter.utility_type is None
+    assert second.metadata_filter.utility_type is UtilityType.ELECTRICITY
+    assert second.chunk_types == first.chunk_types
+
+
 def test_pipeline_variant_without_hits_still_asks_the_model(tmp_path):
     chat = ScriptedChat([answer_reply("Dazu liegen keine Angaben vor.")])
     backend = FakeBackend(lambda query, options: [])

@@ -32,7 +32,12 @@ from audit_agent.evaluation.models import (
 )
 from audit_agent.evaluation.prompts import evidence_prompt
 from audit_agent.ingestion import ChunkType, ParsedDocument, chunks_path, load_parsed_document
-from audit_agent.retrieval import SearchOptions, new_quantity_hits, quantity_query
+from audit_agent.retrieval import (
+    SearchOptions,
+    new_quantity_hits,
+    quantity_query,
+    with_query_utility,
+)
 from audit_agent.retrieval.evidence import render_numbered_hit
 
 PIPELINE_CHUNK_TYPES = frozenset({ChunkType.TEXT, ChunkType.TABLE_ROW, ChunkType.IMAGE})
@@ -118,7 +123,11 @@ class PipelineVariant:
         quantity = quantity_query(question.question) if self._settings.agent.quantity_hits else None
         if hits and quantity is not None:
             extra = new_quantity_hits(
-                self._backend.search, quantity, options, hits, self._settings.agent.quantity_hits
+                self._backend.search,
+                quantity,
+                with_query_utility(options, question.question),
+                hits,
+                self._settings.agent.quantity_hits,
             )
             hits = [*hits, *extra]
         limit = self._settings.agent.max_hit_chars

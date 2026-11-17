@@ -20,7 +20,12 @@ from audit_agent.retrieval.models import (
     SearchHit,
     SearchOptions,
 )
-from audit_agent.retrieval.quantity import new_quantity_hits, quantity_query
+from audit_agent.retrieval.quantity import (
+    new_quantity_hits,
+    quantity_query,
+    utility_in_query,
+    with_query_utility,
+)
 from audit_agent.retrieval.search import Retriever, build_where, path_matches, tokenize_query
 
 __all__ = [
@@ -44,4 +49,6 @@ __all__ = [
     "quantity_query",
     "render_evidence_text",
     "tokenize_query",
+    "utility_in_query",
+    "with_query_utility",
 ]

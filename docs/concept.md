@@ -226,6 +226,8 @@ Vor der Final Answer prüft der Agent per Prompt-Regel:
 
 **Änderung in M6h (Stand 2026-11-16, ADR-0017):** Neben der Suchanfrage des Modells (P1: der Frage) läuft eine zweite Suche mit der Größe allein („Arbeitspreis“, ohne Jahr, Dokument- und Fragewörter); bis zu 2 neue Treffer werden angehängt, die Gegenstück-Suche nutzt dieselbe kurze Anfrage (ISS-072). Eine Antwort mit Zahlen ohne Treffernummer wird einmal nachgefragt. Der Einheitenfaktor der Metrik gilt nur noch für ct- und EUR-Fakten (ISS-050). Hierarchie-Boost, Top-5 und der Ausschluss der Tabellen-Zusammenfassungen für den Agenten bleiben (ISS-027, ISS-035).
 
+**Änderung in M6i (Stand 2026-11-17):** Nennt die Frage genau eine Sparte („Stromabrechnung“), filtern Größen- und Gegenstück-Suche nach ihr, sofern noch kein Sparten-Filter gesetzt ist (ISS-077).
+
 ---
 
 ## 8. ReAct-Zyklen (Beispiele für die Ausarbeitung)
