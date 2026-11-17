@@ -486,10 +486,10 @@ Beide Prototypen live testbar über `app.py` oder `python compare_prototypes.py`
 - [ ] Optional: lauffähiger Code-Prototyp / UI-Mockup beigefügt (praktisch empfohlen, siehe 2.1)
 
 **Grundanforderungen an den Agenten**
-- [ ] Läuft lokal / offline (Ollama o. Ä.; Cloud höchstens optionaler, abschaltbarer Vergleich)
-- [ ] Nutzt eine modulare RAG-Pipeline (nicht nur naiver Splitter + Top-k)
-- [ ] Ist agentisch (Reasoning, Tools, ggf. Planning/Memory; z. B. ReAct-Loop)
-- [ ] Ist systematisch getestet / validiert
+- [x] Läuft lokal / offline (Ollama o. Ä.; Cloud höchstens optionaler, abschaltbarer Vergleich)
+- [x] Nutzt eine modulare RAG-Pipeline (nicht nur naiver Splitter + Top-k)
+- [x] Ist agentisch (Reasoning, Tools, ggf. Planning/Memory; z. B. ReAct-Loop)
+- [x] Ist systematisch getestet / validiert
 
 **Inhalt nach Bewertungskriterien**
 - [ ] Problemverständnis & Use Case (15 %): konkretes Problem, Zielgruppe, Nutzen, Begründung „lokal“

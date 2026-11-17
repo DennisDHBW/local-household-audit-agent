@@ -24,6 +24,46 @@
 
 ## Einträge
 
+### ISS-083 – `is_audit_question` hält reine Nachschlagefragen mit „abgerechnet“ für Prüffragen
+- **Datum / Meilenstein:** 2026-11-17 / M6 (Reverse Engineering)
+- **Kategorie:** agent
+- **Status:** akzeptiert
+- **Symptom:** „Wie viel wurde 2024 abgerechnet?“ enthält „abgerechnet“ und gilt damit als Prüffrage; der Loop würde die Rechennachfrage stellen, obwohl nichts zu rechnen ist.
+- **Ursache:** Erkennung über Wortliste auf dem Fragetext (`AUDIT_PHRASES`), bewusst einfach.
+- **Lösung / Workaround:** Keine Frage im Katalog ist betroffen; die Rechennachfrage kommt höchstens einmal. Als Grenze dokumentiert.
+- **Gelernt:** Eine Wortliste trennt Absicht nicht von Wortlaut.
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-082 – RAGAS-Werte fehlen für den Stand v1.0.0
+- **Datum / Meilenstein:** 2026-11-17 / M6 (Abgleich mit `requirements.md`)
+- **Kategorie:** evaluation
+- **Status:** offen
+- **Symptom:** `ragas.jsonl` gibt es nur für RUN-009 bis RUN-011. Seitdem haben sich Werkzeuge, Größen-Anfrage und Rückfragen geändert; RUN-020/021 haben keine RAGAS-Werte.
+- **Ursache:** Ab M6d lag der Fokus auf den deterministischen Metriken und der Handprüfung; ein RAGAS-Lauf kostet mehrere Stunden CPU-Zeit.
+- **Lösung / Workaround:** Optional über Nacht `uv run --group ragas python -m audit_agent.evaluation ragas --run-id run-020` und danach dasselbe mit `run-021`. Ohne Lauf nennt die Ausarbeitung die RAGAS-Werte mit ihrem Code-Stand.
+- **Gelernt:** Eine zweite Sicht hilft nur, wenn sie zum gleichen Stand gehört.
+- **Relevant für Ausarbeitung?** ja → Testmodul, Reflexion
+
+### ISS-081 – Hinweis „Im Gegenstück gibt es keine Treffer“, obwohl das Gegenstück schon in der Liste steht
+- **Datum / Meilenstein:** 2026-11-17 / M6 (Reverse Engineering, RUN-021 G1)
+- **Kategorie:** tools
+- **Status:** offen
+- **Symptom:** Bei G1 lieferte die Größen-Suche bereits Preisschreiben [6] und Rechnung [7]. `_counterpart_hits` fand daher nichts zu suchen und meldete dem Modell „Im Gegenstück (Vertrag bzw. Rechnung) gibt es keine Treffer.“
+- **Ursache:** `_counterpart_hits` bestimmt die gefundenen Dokumentarten nach dem Anhängen der Größen-Treffer und unterscheidet nicht zwischen „nichts gefunden“ und „nichts mehr zu suchen“.
+- **Lösung / Workaround:** Kandidat: bei leerer `wanted`-Liste „Rechnung und Vertrag bzw. Preisschreiben sind schon unter den Treffern“ melden. Nicht vor v1.0.0 geändert; Wirkung auf die Antworten unklar.
+- **Gelernt:** Eine Rückmeldung an das Modell muss auch den Fall „nichts zu tun“ richtig benennen.
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-080 – Sparten-Erkennung übersieht Komposita wie „Gaspreis“
+- **Datum / Meilenstein:** 2026-11-17 / M6 (Reverse Engineering)
+- **Kategorie:** retrieval
+- **Status:** offen
+- **Symptom:** „Stimmt der Strom- und Gaspreis?“ ergibt `utility_in_query` = `electricity`, weil „Strom“ allein zählt, „Gaspreis“ aber nicht (nur Dokument-Komposita wie „Gasabrechnung“). Die Größen-Suche nach „Gaspreis“ läuft dann mit Strom-Filter.
+- **Ursache:** `_utility_of_word` akzeptiert hinter dem Spartenwort nur Dokumentwörter, damit „Wasserverbrauch“ in der Nebenkostenabrechnung nicht als Sparte zählt.
+- **Lösung / Workaround:** Keine Frage im Katalog ist betroffen. Kandidat: Komposita mit Spartenanfang mitzählen, aber nur für das Ergebnis „mehrere Sparten → kein Filter“.
+- **Gelernt:** Eine Ausnahme für einen Fall („Wasserverbrauch“) erzeugt leicht einen Fehler in einem anderen.
+- **Relevant für Ausarbeitung?** nein
+
 ### ISS-079 – RUN-021 bricht nach N2 ohne Meldung ab; Fortsetzung überschreibt Protokoll und Umgebungsdatei
 - **Datum / Meilenstein:** 2026-11-17 / M6i (RUN-021)
 - **Kategorie:** evaluation
