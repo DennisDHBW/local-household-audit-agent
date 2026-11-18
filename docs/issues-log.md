@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-089 – LaTeX in Claudes Shell unvollständig: deutsches babel und biblatex fehlen
+- **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 1)
+- **Kategorie:** ki-assistent
+- **Status:** akzeptiert
+- **Symptom:** `latexmk -pdf main.tex` bricht in Claudes Shell ab (`Unknown option 'ngerman'`, `File 'biblatex.sty' not found`). Der Hinweis in `status.md` („latexmk, pdflatex, lualatex sind in Claudes Shell vorhanden; Seitenzahl damit selbst prüfen“) stimmte nur halb: Die Programme sind da, die Pakete `texlive-lang-german` und `texlive-bibtex-extra` nicht.
+- **Ursache:** Die VM enthält nur einen Teil von TeX Live. Warum der Hinweis ohne erfolgreichen Probelauf in `status.md` stand, ist nicht mehr nachvollziehbar.
+- **Lösung / Workaround:** `paper/` als Archiv in den Projektordner packen, mit `device_stage_files` in Claudes Cloud-Umgebung kopieren und dort nach `apt-get install texlive-lang-german texlive-bibtex-extra texlive-plain-generic biber` kompilieren. Danach das Archiv löschen. Seitenzahl und Layout werden dort geprüft. Auf dem Laptop des Nutzers ändert sich nichts.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-088 – Hinweis „keine Rechtsberatung“ fehlt in Prompt und Oberfläche
+- **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 1)
+- **Kategorie:** konzept
+- **Status:** akzeptiert
+- **Symptom:** `concept.md` §12 sieht gegen das Risiko „Antworten wirken wie Rechtsberatung“ einen Hinweis im System-Prompt und in der UI vor. Beim Materialsammeln für Kapitel 1 zeigte sich: Weder `agent/prompts.py` noch `agent/app.py` enthalten einen solchen Hinweis. Die Abgrenzung wirkt nur indirekt über die Prompt-Regeln (Abweichung mit beiden Werten und Unterschied nennen, bei fehlenden Belegen „Dazu liegen in den Unterlagen keine Angaben vor.“ statt raten).
+- **Ursache:** In M5 beim Bau von Prompt und Streamlit-UI übersehen; der Risikoplan wurde vor dem Meilenstein-Abschluss nicht gegen den Code geprüft.
+- **Lösung / Workaround:** Phase 1 ist abgeschlossen, der Code bleibt unverändert. Kapitel 1 nennt die Lücke offen. Für ein Folgeprojekt: ein Satz im System-Prompt und ein `st.caption` unter der Antwort.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 1 (Abgrenzung), ggf. Reflexion
+
 ### ISS-087 – Kein O-Ton mehr für das Entwicklungstagebuch
 - **Datum / Meilenstein:** 2026-11-18 / Übergang Phase 1 → Phase 2
 - **Kategorie:** konzept

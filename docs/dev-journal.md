@@ -23,6 +23,22 @@
 
 ## Einträge
 
+### 2026-11-18 – Kapitel 1 „Problemstellung und Use Case“
+**Ziel der Sitzung:** Seitenbudget je Kapitel und Titelblatt festlegen, Kapitel 1 entwerfen (laut status.md).
+**Was wurde gemacht:**
+- Seitenbudget festgelegt (concept.md §14): 1,25 / 1,0 / 1,5 / 1,25 / 1,5 / 0,75 Seiten, Summe 7,25 von 8
+- Kapitel beginnen ohne Seitenumbruch (`\scr@startchapter` gepatcht), sonst bis zu 3 Seiten Weißraum bei 6 kurzen Kapiteln
+- Titelblatt vollständig (Name, Matrikelnummer, Studiengang, Kurs INF24A, Dozent, November 2026); fehlendes Leerzeichen in der Vorlage („Baden-WürttembergMosbach“) behoben; rotes `\todo`-Makro für offene Angaben
+- Material gesammelt (concept §1–4, ADR-0001/0005, ISS-019/039/044, RUN-010-Manifest, Chunks mit IBAN und Zählernummer); Kapitel 1 geschrieben, gemessen ca. 1,2 Seiten (ca. 500 Wörter), Wortliste aus writing-guide §3.3 geprüft
+- Lücke gefunden: Hinweis „keine Rechtsberatung“ fehlt in Prompt und UI (ISS-088), im Text offen benannt
+- Nutzer liest und beantwortet die Verständnisfragen erst nach allen Kapiteln; Fragen in `docs/paper-questions.md`
+**Gelieferte Dateien / Funktionen:** `paper/content/chapter/01-problem-use-case/main.tex`, `paper/settings/document.tex`, `paper/ads/header.tex`, `paper/ads/commandDefs.tex`, `paper/ads/cover.tex`, `docs/paper-questions.md` (neu), `docs/concept.md`, `docs/writing-guide.md`, `docs/issues-log.md`, `docs/status.md`; kein Python-Code geändert
+**Entscheidungen:** Seitenbudget und Kapitel ohne Seitenumbruch (Layout, keine ADR); Schritte 4–7 des Leitfadens gesammelt nach Kapitel 6 (Wunsch des Nutzers)
+**Probleme / Überraschungen:** ISS-088 (Rechtsberatungs-Hinweis fehlt), ISS-089 (LaTeX-Pakete fehlen in Claudes Shell, Build in der Cloud-Umgebung)
+**Offen / unklar:** Bearbeitungszeitraum „November 2026“ aus Git abgeleitet, nicht vorgegeben
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 · **Commit(s):** `docs(paper)` ×2, `docs(status)`
+
 ### 2026-11-18 – RAGAS-Auswertung v1.0.0, Freigabe Phase 2
 **Ziel der Sitzung:** RAGAS-Ergebnisse von RUN-020 (P1) und RUN-021 (P2) auswerten und ISS-082 schließen (laut status.md).
 **Was wurde gemacht:**

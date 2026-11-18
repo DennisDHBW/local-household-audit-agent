@@ -181,3 +181,11 @@
 % Spaces in tables
 \setlength{\tabcolsep}{\tableColumnMargin}
 \renewcommand{\arraystretch}{\tableRowMargin}
+
+% Chapters start without a page break: six short chapters on 5-8 pages
+% would otherwise leave up to three pages of white space.
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\scr@startchapter}{\if@openright\cleardoublepage\else\clearpage\fi}{\par}{}{%
+    \PackageError{header}{Patching \string\scr@startchapter\space failed}{}}
+\makeatother
