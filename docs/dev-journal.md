@@ -23,6 +23,22 @@
 
 ## Einträge
 
+### 2026-11-18 – Kapitel 3 „Architektur des Agenten“
+**Ziel der Sitzung:** Kapitel 3 entwerfen (laut status.md).
+**Was wurde gemacht:**
+- Material gesammelt (concept §7–9, ADR-0001/0004/0006/0010/0013 bis 0017, RUN-000, RUN-005/006, RUN-010 bis RUN-021, ISS-001/005/030/043/057/061/076); Plan mit Wortzahl je Absatz vorgelegt
+- Nutzer ließ ohne Rückmeldung fortfahren; Vorschläge übernommen: ReAct-Beispiel Z1 (Prüffrage mit Rechennachfrage, Grenzfall), Prüfablauf in Kapitel 3
+- RUN-021-Protokolle ausgezählt: 23 Werkzeugaufrufe (16 `search`, 4 `list_documents`, 3 `calculate`), 13 Rückfragen, 22 von 22 Antworten mit Werkzeugaufruf ohne Text (kein sichtbarer Thought), erster Aufruf 1.761–1.775 Token und 82–105 s Prefill; als Nachtrag in `evaluation-log.md`
+- Beim Auszählen ADR-0014 korrigiert: Der Rückgang ungültiger Aufrufe kam vom fehlenden `calculate`, nicht vom Suchwerkzeug (ISS-091)
+- Kapitel geschrieben: zwei Phasen, Werkzeugtabelle, natives Tool-Calling, Umbau auf `search`, eigene Schleife mit Rückfragen (Bezug Self-RAG), Prüfablauf als Negativergebnis, Listing Z1, Modellwahl llama → qwen, Antwortzeit; Erstentwurf 616 Wörter / ca. 2,1 S., gekürzt auf ca. 1,6 S. (ISS-092); Wortliste aus writing-guide §3.3 geprüft (keine Treffer)
+- Kapitel 2: Zeilenüberlauf bei \enquote{Datum: 18.01.2025} behoben; Glossar um „Lückenrückfrage“ ergänzt; fünf Fragen in `paper-questions.md`
+**Gelieferte Dateien / Funktionen:** `paper/content/chapter/03-architecture/main.tex`, `paper/content/chapter/02-data-preprocessing/main.tex`, `docs/evaluation-log.md`, `docs/glossary.md`, `docs/adr/0014-search-tool-and-filter-policy.md`, `docs/issues-log.md`, `docs/paper-questions.md`, `docs/status.md`; kein Python-Code geändert
+**Entscheidungen:** keine ADR; Z1 als ReAct-Beispiel und Prüfablauf in Kapitel 3 (Vorschlag von Claude, Nutzer ließ fortfahren)
+**Probleme / Überraschungen:** ISS-091 (eigene Fehldeutung in ADR-0014), ISS-092 (Kapitel 3 ca. 0,1 S. über Budget)
+**Offen / unklar:** Ob der Self-RAG-Vergleich im Gespräch trägt (in `paper-questions.md` markiert)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `docs(eval)`, `docs(paper)`, `fix(paper)`, `docs(status)`
+
 ### 2026-11-18 – Kapitel 2 „Datenbasis und Vorverarbeitung“
 **Ziel der Sitzung:** Kapitel 2 entwerfen (laut status.md).
 **Was wurde gemacht:**
