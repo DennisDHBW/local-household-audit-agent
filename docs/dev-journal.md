@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-18 – RAGAS-Auswertung v1.0.0, Freigabe Phase 2
+**Ziel der Sitzung:** RAGAS-Ergebnisse von RUN-020 (P1) und RUN-021 (P2) auswerten und ISS-082 schließen (laut status.md).
+**Was wurde gemacht:**
+- RAGAS-Nachtlauf geprüft: 3,1 h, kein Fehlschlag; Rohdaten und die RAGAS-Abschnitte in `report.md` committet
+- Quality Gate und `check_evidence.py` auf dem Laptop (382 Tests grün); RAGAS-Werte mit Sollfakten im Kontext, Lückenantworten und Handprüfung abgeglichen
+- Alle 24 Context-Recall-Werte und 6 auffällige Faithfulness-Werte von Hand gegen Referenzsatz und Belege gelesen
+- Befund: Die 8 gemeldeten Widersprüche zum Sollfakten-Abgleich sind Scheinwidersprüche (ISS-086); die Deutung aus RUN-010/011 ist damit zum Teil korrigiert (ISS-053). Faithfulness trennt bei P2 richtige nicht von falschen Antworten (beide 0,69)
+- Nutzer gibt Phase 2 frei und liefert keinen O-Ton mehr (ISS-087); offene O-Ton-Felder auf „nicht geliefert“ gesetzt
+**Gelieferte Dateien / Funktionen:** `data/eval/run-020/`, `data/eval/run-021/` (`ragas.jsonl`, `evidence.json`, `report.md`, `scores.json`, `manifest.json`), `data/eval/ragas-v1.0.0.log`, `data/eval/ragas-v1.0.0-check.log`; `docs/evaluation-log.md` (RAGAS-Nachtrag RUN-020/021), `docs/issues-log.md`, `docs/glossary.md` (Context Recall), `docs/status.md`; kein Code geändert
+**Entscheidungen:** Referenzantworten bleiben unverändert (Vergleichbarkeit der Läufe); Phase 2 startet auf Wunsch des Nutzers; keine ADR
+**Probleme / Überraschungen:** ISS-086 (Scheinwidersprüche im Abgleich, eigene Fehldeutung in RUN-010/011), ISS-087 (kein O-Ton); ISS-082 gelöst
+**Offen / unklar:** Titelblatt-Angaben; ISS-080/081/086 nur bei Zeit
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 0,5 h · **Modell/Effort:** Opus 5.5 · **Commit(s):** `test(evaluation)`, `docs(evaluation)`, `docs(status)`
+
 ### 2026-11-17 – Erklärungen zu den M6-Fragen, RAGAS-Nachtlauf gestartet
 **Ziel der Sitzung:** Nächstes Paket laut status.md: Antworten des Nutzers zu R1-1 bis R3-8 abgleichen.
 **Was wurde gemacht:**
@@ -60,7 +75,7 @@
 **Entscheidungen:** ADR-0017 Status ergänzt (ISS-077 gelöst in M6i); keine neue Architekturentscheidung
 **Probleme / Überraschungen:** ISS-080 (Sparte bei „Strom- und Gaspreis“), ISS-081 (Gegenstück-Hinweis „keine Treffer“, obwohl Rechnung und Preisschreiben schon da sind), ISS-082 (RAGAS nicht für v1.0.0), ISS-083 (Prüffrage-Erkennung per Wortliste). Zwei eigene Fehldeutungen beim Schreiben der Notizen, vor dem Commit korrigiert: Beleg [6] enthält bei G1 beide Preise (34,80 und 38,20), und bei G1 lief gar keine Gegenstück-Suche
 **Offen / unklar:** Antworten des Nutzers zu M6 (und M0, M2–M5); RAGAS-Nachtlauf ja oder nein
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 · **Commit(s):** `docs(reverse-engineering)`, `docs`, Tag `v1.0.0`
 
 ### 2026-11-17 – M6i: Sparte in der Größen-Anfrage
@@ -74,7 +89,7 @@
 **Entscheidungen:** ADR-0017, Nachtrag M6i (Sparte als Filter, Suchwort verworfen)
 **Probleme / Überraschungen:** ISS-077 gelöst; ISS-078 (Shell ohne bleibende Umgebung, Gate auf dem Laptop); ISS-079 (RUN-021-Abbruch ungeklärt, Log beim Fortsetzen überschrieben); ISS-076 erneut, aber nur als identische Wiederholung (Temperatur 0)
 **Offen / unklar:** Warum RUN-021 um 13:59 abbrach; G1 bleibt bei P1 und P2 falsch, obwohl die Zahlen im Kontext stehen (Engpass Lesen und Vergleichen); Streuung der Läufe nicht gemessen
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** Arbeit ca. 2,5 h über den Tag verteilt, Läufe 25 + 72 min Rechenzeit · **Modell/Effort:** Fable 5.2, ab der Fortsetzung Opus 5.5 · **Commit(s):** `feat(retrieval)`, `test(evaluation)`, `docs`
 
 ### 2026-11-17 – M6h: Größen-Anfrage, Zitier-Rückfrage und Einheitenfaktor
@@ -89,7 +104,7 @@
 **Entscheidungen:** ADR-0017 (Zitier-Rückfrage und Einheitenfaktor akzeptiert; Größen-Anfrage umgesetzt, ohne messbaren Gewinn, bleibt an)
 **Probleme / Überraschungen:** ISS-072 (Jahr und Dokumentwort ziehen das Dokument), ISS-073 (`0,348` als 348 gelesen), ISS-074 (G3 ohne Vorjahres-Gegenstück), ISS-075 (VM-Speicher), ISS-076 (leere Antwort nach Rückfrage), ISS-077 (Größen-Anfrage ohne Sparte, Fehler im Entwurf von Claude)
 **Offen / unklar:** Ob die Sparte in der Größen-Anfrage P1 und P2 hilft (M6i); ob M6 vor oder nach M6i abgeschlossen wird; Streuung der Läufe nicht gemessen
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** Sitzung ca. 3 h, Läufe 63 + 21 min Rechenzeit · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `fix(numbers)`, `feat(retrieval)`, `feat(agent)`, `docs` ×2, `test(evaluation)`
 
 ### 2026-11-16 – M6g: Fester Prüfablauf und Modellwechsel (Negativergebnis)
@@ -104,7 +119,7 @@
 **Entscheidungen:** ADR-0016 (akzeptiert für das Modell; Ablauf umgesetzt, nicht bestätigt, abgeschaltet)
 **Probleme / Überraschungen:** ISS-070 (Soll und Ist falsch zugeordnet, gleiche Treffer auf beiden Seiten), ISS-071 (Nachricht des Ablaufs führt zu Lückenantworten und chinesischem Text), ISS-068 (Herkunft gesichert, Vergleichbarkeit nicht), ISS-069 (VM-Platte voll, Cache-Ordner einer alten Sitzung; mein Löschversuch wurde abgelehnt, ohne Löschen gelöst). Ein fester Ablauf machte aus falschen Suchtreffern exakte, belegt wirkende falsche Rechnungen.
 **Offen / unklar:** Warum G4 ohne Ablauf (RUN-014) gefunden wurde und mit Ablauf nicht (nur ein Lauf je Zustand, Streuung bei gleichem Code 0); ob eine Überarbeitung (Dokumentart je Seite trennen) den Ablauf rettet; G1 und G3 scheitern weiter am Retrieval der Sollzahl
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** Sitzung ca. 2 h, Lauf 89 min Rechenzeit · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `feat(agent)`, `test(evaluation)`, `docs` ×3, `feat(agent)` (Ablauf aus)
 
 ### 2026-11-16 – M6f: Format-Toleranz, Gegenprobe `qwen2.5:7b`, Streuungsmessung
@@ -118,7 +133,7 @@
 **Entscheidungen:** keine neue; ADR-0015 (vorgeschlagen) und ADR-0013 warten auf deine Entscheidung zu Modell und festem Prüfablauf
 **Probleme / Überraschungen:** RUN-015 und RUN-016 sind bis auf die Zeiten identisch (Streuung 0, ISS-062); die Nachfrage wirkt bei `qwen2.5:7b`, nicht bei `llama3.1:8b` (ISS-066); gültige `calculate`-Aufrufe mit falschen Operanden erzeugen Fehlalarme (ISS-067); beide Modelle 6 von 14 nach Handprüfung
 **Offen / unklar:** fester Prüfablauf ja oder nein; Modell für P2; welche M6e-Änderung S2/S4/N2 verschlechtert hat; G1 und G3 scheitern am Retrieval der Sollzahl
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** Auswertung und Doku ca. 1 h, Läufe 3 h 41 min Rechenzeit (70 + 76 + 75 min) · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `feat(agent)`, `feat(scripts)`, `test(evaluation)`, `docs`
 
 ### 2026-11-16 – M6e: P2 rechnen und prüfen lassen (Wiederholungssperre, Rechennachfrage)
@@ -132,7 +147,7 @@
 **Entscheidungen:** ADR-0015 (vorgeschlagen): Sperre wirkt, Rechennachfrage bei `llama3.1:8b` ohne Wirkung; ein fester Prüfablauf im Code bleibt als offene Entscheidung; Prompt ohne Beispiele aus dem Testkatalog
 **Probleme / Überraschungen:** ISS-060 (Stichwort-Erkennung grob, Nachfrage wirkungslos), ISS-061 (Antwort besteht aus Werkzeugaufruf als Text), ISS-062 (Rückschritte S2/S4/N2, Streuung unbekannt), ISS-063 (`calculate` mit erfundenen Argumenten), ISS-064 (zwei kleine eigene Fehler vor dem Commit); ISS-057 nur teilweise geklärt: meine erste Erklärung (Entladen je Frage) passte nicht zu RUN-010, ich habe sie vor dem Eintragen korrigiert
 **Offen / unklar:** Streuung zwischen Läufen; ob `qwen2.5:7b` die Nachfrage befolgt; fester Prüfablauf ja oder nein; Laufzeit von RUN-010
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** ca. 2 h Sitzung, dazu Lauf ca. 1 h 15 min Rechenzeit · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `feat(scripts)`, `feat(agent)`, `test(evaluation)`, `docs`
 
 ### 2026-11-16 – M6d: Gegenmaßnahmen für P2 (Suchwerkzeug, Filter, leere Suche)
@@ -147,7 +162,7 @@
 **Entscheidungen:** ADR-0014 (ein Suchwerkzeug, Filter nur Sparte, keine Wiederholung ohne Filter); Variante B (Sparte bleibt) statt kein Filter, auf Claudes Vorschlag
 **Probleme / Überraschungen:** ISS-058 (`calculate` wird nie aufgerufen, Abrechnungsfehler bleiben unerkannt), ISS-057 (Laufzeit fast verdoppelt bei gleicher Token-Zahl, Ursache offen), ISS-059 (eigener Fehler: Skript brach bei Läufen ohne B0 ab); beim ersten Umbau gingen `_outline` und `_calculate` durch einen zu weiten Schnitt verloren, die Tests meldeten es sofort
 **Offen / unklar:** Streuung zwischen Läufen; welche der Maßnahmen wie viel bringt; Gegenprobe mit `qwen2.5:7b`; Laufzeitursache
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** ca. 1 h Sitzung, dazu Lauf ca. 1 h Rechenzeit · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `feat(agent)`, `docs`
 
 ### 2026-11-15 – M6c: Nachtläufe RUN-010/011 auswerten
@@ -163,7 +178,7 @@
 **Entscheidungen:** ADR-0013 (Agent-Modell `llama3.1:8b`, Gegenprobe mit `qwen2.5:7b` nach den Gegenmaßnahmen); ADR-0004 verweist darauf. Rohdaten von RUN-011 bleiben unverändert (erfundene schlüsselähnliche Zeichenkette, ISS-054)
 **Probleme / Überraschungen:** ISS-050 (Metrik zu großzügig bei „ja“), ISS-051 (Wiederholung ohne Filter liefert Ablenker), ISS-052 (`search_documents` findet keine Tabellenzeilen, ist aber das erwartete Werkzeug), ISS-053 (RAGAS im Einzelfall unzuverlässig), ISS-054 (qwen sagt immer „ja“, llama scheitert an `calculate`), ISS-055 (eigener Fehler: frühere Deutung zu P1 war falsch), ISS-056 (eigener Fehler: Commit vor vollständigem Gate); ISS-043 gelöst. Überrascht hat, dass der Agent schlechter abschneidet als die einfache Pipeline und dass der Parser an keinem Fehlschlag schuld ist
 **Offen / unklar:** Wirkung der Gegenmaßnahmen (M6d); ob die Ursachenzuordnung einer zweiten Person standhält (nicht gegengelesen); Streuung zwischen Läufen ist nicht gemessen
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** ca. 0,5 h Sitzung, dazu Nachtlauf ca. 8,5 h Rechenzeit · **Modell/Effort:** Fable 5.2 · **Commit(s):** `test(evaluation)`, `feat(scripts)`, `docs` ×2
 
 ### 2026-11-15 – M6b-1: Prüffragen G3/G4 und RAGAS mit lokalem Bewerter
@@ -179,7 +194,7 @@
 **Entscheidungen:** ADR-0012 (RAGAS mit lokalem Bewerter); ADR-0011 Punkt 9 verweist darauf
 **Probleme / Überraschungen:** ISS-040 gelöst; ISS-044 (Telemetrie), ISS-045 (Selbstbewertung qwen), ISS-046 (B0 nicht bewertbar), ISS-047 (Abbruch bei `max_tokens`, Context Recall 0, Faithfulness 1,00 trotz falscher Antwort), ISS-048 (eigener Fehler: Commit trotz rotem Gate), ISS-049 (eigener Fehler: Abbruch nicht abgefangen, Nachtbefehl ohne Wiederholung), ISS-043 wieder aufgetreten; überrascht hat, dass RAGAS eine sinnlose Rechnung als „treu“ bewertet, weil das Ergebnis in der Rechner-Beobachtung steht
 **Offen / unklar:** Nachtläufe RUN-010/011; ob Context Recall 0 wirklich am fehlenden zweiten Dokument liegt (RAGAS gibt die Einzelurteile nicht aus); Stichproben der Bewerterurteile von Hand
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** ca. 1,5 h (davon Probelauf ca. 47 min) · **Modell/Effort:** Opus 5.5 · **Commit(s):** `feat(corpus)`, `feat(evaluation)` ×2, `fix(evaluation)` ×2, `feat(scripts)`, `docs` ×3
 
 ### 2026-11-14/15 – M6a: Testmodul-Grundlage (B0, P1-Synthese, Metriken)
@@ -195,7 +210,7 @@
 **Entscheidungen:** ADR-0011 (Aufbau des Testmoduls, B0 Variante A)
 **Probleme / Überraschungen:** ISS-037 gelöst; ISS-038 (Metriken sind Heuristiken), ISS-039 (B0 sieht nur 6 Dateien), ISS-040 (Fehlererkennung nur E1), ISS-041 (stille Kürzung durch falsche Token-Schätzung), ISS-042 (eigener Fehler: Abbruch nicht abgefangen), ISS-043 (OOM-Kill); überrascht hat, dass Ollama zu lange Prompts ohne Fehlermeldung halbiert und nur das Journal es zeigt, und dass P1 trotz passender Treffer „keine Angaben“ antwortet
 **Offen / unklar:** RAGAS mit lokalem Bewerter; E2/E3 als Fragen; ob `qwen2.5:7b` die Tool-Wahl verbessert; warum P1 bei vorhandenen Belegen aufgibt
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** ca. 2,5 h (davon Ollama-Läufe ca. 50 min) · **Modell/Effort:** Opus 5.5 · **Commit(s):** `refactor(agent)`, `feat(evaluation)`, `test(evaluation)`, `fix(evaluation)` ×2, `feat(scripts)`, `docs` ×4
 
 ### 2026-11-14 – M5: Agent (P2) mit Tools
@@ -211,7 +226,7 @@
 **Entscheidungen:** ADR-0010 (Agentenschleife und Tools), ADR-0006 bestätigt (Aufrufformat bleibt)
 **Probleme / Überraschungen:** ISS-030 (großer Prompt), ISS-031 (Kürzung), ISS-032 (Filterregeln als Heuristik), ISS-033 (keine Vertragslaufzeit), ISS-034 (eigene Fehler), ISS-035 (Summary als Beleg zitiert), ISS-036 (Modell gibt auf, wählt falsch), ISS-037 (P1-Synthese und B0 fehlen); überrascht hat, dass die Rückfrage bei „keine Angaben“ nur dieselbe Suche wiederholen ließ und dass `prompt_eval_count` nicht die Kontextgröße ist
 **Offen / unklar:** Ob `qwen2.5:7b` oder ein gemeinsames Suchtool die Tool-Wahl verbessert (M6); ob die Summaries für den Agenten wieder eingeschaltet werden; Reverse-Engineering zu M2 bis M5 unbeantwortet
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** ca. 1,5 h (zwei Ollama-Läufe mit zusammen gut 25 min) · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `build`, `feat(config)`, `feat(agent)`, `feat(ui)`, `test(agent)`, `fix(agent)`, `docs(adr)`, `docs` ×3, `docs: close M5 session`
 
 ### 2026-11-14 – M4: Embedding & Retrieval
@@ -225,7 +240,7 @@
 **Entscheidungen:** ADR-0009 (Aufbau von Index und Suche), ADR-0002 akzeptiert (Filter belegt, Boost ohne belegten Nutzen)
 **Probleme / Überraschungen:** ISS-025 (Zeitraumfilter schließt Dokumente ohne Zeitraum aus), ISS-026 (eigener Fehler: Regex-Wortzeichen), ISS-027 (Boost greift fast überall), ISS-028 (Vergleich mit handgesetzten Filtern), ISS-029 (S4 nicht gefunden); im Plan stand 542 statt 547 Chunks, ein Rechenfehler von mir; überrascht hat, dass der Boost keinen Rang ändert, obwohl er fast jeden Treffer erreicht
 **Offen / unklar:** Ob der Boost bleibt (ISS-027); wie oft der Agent falsche Filter setzt (ISS-028); Rang des S4-Bild-Chunks außerhalb der Top-5 unbekannt; Reverse-Engineering zu M2, M3 und M4 unbeantwortet
-**O-Ton (von mir):** (ausstehend, wird nachgetragen; heute keine Zeit)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** ca. 1,2 h (Ollama-Lauf unter 2 min) · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `build`, `feat(config)`, `feat(retrieval)`, `test(retrieval)`, `docs(adr)`, `docs` ×3, `docs: close M4 session`
 
 ### 2026-11-14 – M3: Enrichment & Cache
@@ -240,7 +255,7 @@
 **Entscheidungen:** ADR-0008 (Enrichment als eigener Schritt, Prompt-Text im Cache-Schlüssel, Summaries nur als Suchhilfe)
 **Probleme / Überraschungen:** ISS-021 (Ingestion überschreibt Enrichment), ISS-022 (Zahlenprüfung nur Teilcheck), ISS-023 (Caption erfindet Werte ohne Beschriftung), ISS-024 (abgeschnittene Summaries, eigener Fehler: `done_reason` nicht ausgewertet); der erste Lauf hat erst durch die Sichtprüfung gezeigt, dass die Ergebnisse schlechter waren, als der Report vermuten ließ
 **Offen / unklar:** Wirkung der Summaries und Briefkopf-Chunks aufs Retrieval (M4); Reverse-Engineering zu M0 bis M3 unbeantwortet
-**O-Ton (von mir):** (ausstehend, wird nachgetragen; heute keine Zeit)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** ca. 1,3 h (davon 2 × 26 min Ollama-Lauf, parallel zur Doku) · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `refactor(numbers)`, `feat(ingestion)`, `feat(enrichment)`, `fix(enrichment)`, `docs: …` ×3, `docs(reverse-engineering)`
 
 ### 2026-11-14 – M2: Parser & JSON-Zwischenformat
@@ -255,7 +270,7 @@
 **Entscheidungen:** ADR-0007 (Parser-Heuristiken); Abweichung von der Vorlage: kurze Reste mit Ziffer bleiben erhalten (ISS-017)
 **Probleme / Überraschungen:** ISS-012 bis ISS-020; die Unit-Tests allein hätten die Tabellenfehler nicht gefunden, erst der Blick in die echten JSON-Zeilen
 **Offen / unklar:** Wirkung der Briefkopf-Chunks aufs Retrieval (M4); Reverse-Engineering zu M0, M1, M2 unbeantwortet
-**O-Ton (von mir):** (ausstehend, wird nachgetragen)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
 **Zeitaufwand:** ca. … h · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `feat(ingestion)` ×3, `refactor(ingestion)`, `docs: …M2`
 
 ### 2026-11-14 – M1: Metadaten & Ground Truth

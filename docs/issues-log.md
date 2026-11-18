@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-087 – Kein O-Ton mehr für das Entwicklungstagebuch
+- **Datum / Meilenstein:** 2026-11-18 / Übergang Phase 1 → Phase 2
+- **Kategorie:** konzept
+- **Status:** akzeptiert
+- **Symptom:** Der Nutzer kann ab 2026-11-18 grundsätzlich keinen O-Ton mehr liefern. Von 20 Einträgen im `dev-journal.md` hat nur einer einen O-Ton (2026-11-17); die übrigen standen auf „ausstehend“ oder „nicht geliefert“.
+- **Ursache:** Zeitmangel des Nutzers (vgl. ISS-085).
+- **Lösung / Workaround:** Claude fragt nicht mehr nach dem O-Ton; das Feld steht auf „(nicht geliefert, ISS-087)“. Die Reflexion in Phase 2 stützt sich nur auf belegte Einträge (issues-log, evaluation-log, ADRs, der eine vorhandene O-Ton) und erfindet keine persönlichen Eindrücke. Der Nutzer muss den persönlichen Teil vor der Abgabe selbst lesen und bei Bedarf ergänzen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Reflexion (Risiko: generischer Text)
+
 ### ISS-086 – Abgleich „Context Recall gegen Sollfakten“ zählt Scheinwidersprüche
 - **Datum / Meilenstein:** 2026-11-18 / M6 (RAGAS-Auswertung v1.0.0)
 - **Kategorie:** evaluation (auch ki-assistent: Fehldeutung in RUN-010/011)
