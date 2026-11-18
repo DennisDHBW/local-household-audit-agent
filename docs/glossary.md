@@ -32,7 +32,7 @@
 | Chunk | `DocumentChunk` | Kleinste suchbare Einheit (Absatz, Tabellenzeile, Bild-Caption) | |
 | Chunk-Typ | `chunk_type` | text, heading, table_row, table_summary, image | |
 | Überschriften-Stapel | `heading_stack` | Liste der aktiven Überschriften über einem Chunk | |
-| Hierarchie-Prefix | – | `[Sparte \| Dokumenttyp \| Datei \| Kapitel]` vor dem Embedding | |
+| Hierarchie-Prefix | – | Begriff aus dem Konzept (`[Sparte \| Dokumenttyp \| Datei \| Kapitel]`); umgesetzt und in der Ausarbeitung verwendet als „Hierarchie-Präfix“ (ADR-0009) | |
 | Enrichment | `enrichment` | Anreicherung durch Modelle (Tabellen-Summary, Bild-Caption) | |
 | Bild-Caption | `ImageCaptioner` | Vom Vision-Modell erzeugte Beschreibung eines Diagramms mit Zahlenwerten; ersetzt den Platzhalter im `image`-Chunk | |
 | Tabellen-Summary | `TableSummarizer`, `table_summary` | Kurze Zusammenfassung einer ganzen Tabelle als eigener Chunk, zusätzlich zu den Zeilen | |
@@ -161,6 +161,8 @@
 | Entladen je Frage | `unloads_after_each_question`, `_unload` | Die Auswertung gibt Chat- und Embedding-Modell nach jeder P1/P2-Frage frei (Schutz vor OOM, ISS-043); führt in RUN-012 und RUN-013 zu rund 90 s Prefill für die erste Anfrage je Frage (ISS-057) | |
 | Größen-Anfrage | `quantity_query`, `new_quantity_hits`, `AgentSettings.quantity_hits` | Die Frage oder Suchanfrage ohne Jahr, Dokument- und Fragewörter („neuer Arbeitspreis 2025“ → „Arbeitspreis“); eine zweite Suche damit ergänzt P1 und P2 um bis zu 2 neue Treffer (ISS-072, ADR-0017) | |
 | Sparte der Anfrage | `utility_in_query`, `with_query_utility`, `UTILITY_WORDS` | Die eine Sparte, die eine Frage nennt („Stromabrechnung“ → `electricity`); Größen- und Gegenstück-Suche filtern danach, wenn noch kein Sparten-Filter gesetzt ist (ISS-077, ADR-0017 Nachtrag M6i) | |
+| Query-Rewriting | – (P2: Suchanfrage des Agenten; `quantity_query`) | Umformulieren der Suchanfrage vor der Suche; im Prototyp ohne eigenes Modell: Der Agent formuliert seine Anfragen selbst, die Größen-Anfrage streicht Füllwörter im Code (ADR-0009 Punkt 8, ADR-0017) | |
+| Sollfakt | `facts` in `dataset/ground_truth.yaml` | Angabe, die eine richtige Antwort enthalten muss, meist eine Zahl mit Einheit, vereinzelt Frist oder Urteil (27 über alle 14 Fragen); „Sollfakten im Kontext“ zählt, wie viele davon in den Belegen des Modells standen (`check_evidence.py`); in ADR-0017 und im evaluation-log auch „Sollzahlen“ | |
 | Zitier-Rückfrage | `CITE_BEFORE_ANSWER_MESSAGE`, `has_citation`, `NudgeStep.reason="cite"`, `AgentSettings.require_citation` | Einmalige Rückfrage des Loops, wenn eine Antwort Zahlen, aber keine Treffernummer `[n]` enthält (ADR-0017) | |
 | Text-Aufruf | `parse_text_call`, `TextCall`, `ToolCallStep.is_text_call` | Werkzeugaufruf, den das Modell als JSON ans Ende seines Antworttexts schreibt statt als nativen Tool Call; der Loop führt ihn wie einen nativen aus (ISS-061) | |
 | Geldfakt | `MONEY_UNITS`, `_is_money` | Erwarteter Fakt mit Einheit ct oder EUR; nur bei ihm gilt der Umrechnungsfaktor 100 bzw. 0,01 der Metrik (ISS-050) | |

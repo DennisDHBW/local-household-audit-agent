@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-093 – Erstentwurf Kapitel 4 zu lang und mit drei ungenauen Aussagen
+- **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 4)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Der erste Entwurf hatte gut 500 Wörter statt der geplanten ca. 370; eine spätere Fassung kam gemessen auf 1,39 statt 1,25 Seiten. Beim Gegenlesen gegen die Quellen fielen drei Aussagen auf, die so nicht stimmten: „Überschriften sind keine eigenen Chunks“ (es gibt 82 Überschriften-Chunks, sie werden nur nicht eingebettet), „die Zeile mit 38,20 ct enthält weder Jahr noch Dokumentwort“ (ihr Präfix enthält „01.01.2025“; ISS-072 sagt „kaum“), „bekam nur Treffer aus dem Schreiben zur Zwischenablesung“ (die Gegenstück-Suche lieferte zusätzlich Grundpreiszeilen). Außerdem bezeichnet „Sollzahlen“ (ADR-0017, evaluation-log) die 27 Sollfakten nicht genau, 5 davon sind Fristen, Datum oder Urteil.
+- **Ursache:** Beim Verdichten wurden Aussagen aus den Quellen zugespitzt; die Länge wurde wie bei Kapitel 2 und 3 unterschätzt.
+- **Lösung / Workaround:** Alle drei Sätze an die Quellen angepasst, im Text „Sollfakten“ statt „Sollzahlen“, Glossar ergänzt. Gekürzt in sieben Build-Runden auf 1,25 Seiten, gemessen von Überschrift bis Überschrift.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein (Arbeitsweise; bei der Endkontrolle jede Zahl und jede Absolutaussage gegen die Quelle prüfen)
+
 ### ISS-092 – Kapitel 3 kommt auf ca. 1,6 statt 1,5 Seiten
 - **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 3)
 - **Kategorie:** ki-assistent
