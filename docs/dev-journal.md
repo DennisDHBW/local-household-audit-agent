@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-18 – Kapitel 4 „RAG- und Retrieval-Konzept“
+**Ziel der Sitzung:** Kapitel 4 entwerfen (laut status.md).
+**Was wurde gemacht:**
+- Material gesammelt (concept §6, §10, §14; ADR-0002/0003/0009/0010/0014/0017; RUN-004 mit `search-s2-*.txt`, RUN-018 bis RUN-021; ISS-007/025/027/028/031/051/072/074/077); Plan mit sechs Absätzen und Wortzahl vorgelegt, Nutzer gab frei (RUN-004 im Fließtext statt Tabelle, ADR-0003 auf akzeptiert)
+- Kapitel geschrieben: Index und Hierarchie-Präfix, Score-Formel mit S2-Beispiel (0,712 × 1,5 = 1,068) und Boost ohne belegten Nutzen, Metadatenfilter (0/55 statt 4/60 Ablenker, MRR 0,683 → 0,733) und seine Grenzen beim Agenten, Gegenstück und Größen-Anfrage (ISS-072/077, P1 16 statt 13 von 27 Sollfakten im Kontext), Evidence-First mit Belegnummern und 600-Zeichen-Kürzung, GraphRAG-Entscheidung mit G3 als Grenzfall
+- Satz zum Gegenstück über den Plan hinaus ergänzt (Begriff stand unerklärt in Tabelle 3.1)
+- Länge in sieben Build-Runden von ca. 1,39 auf 1,25 S. gebracht; drei ungenaue Aussagen beim Gegenlesen korrigiert (ISS-093); Wortliste aus writing-guide §3.3 geprüft (keine Treffer)
+- ADR-0003 auf „akzeptiert“ mit Nachtrag; Glossar um Query-Rewriting und Sollfakt ergänzt, alter Eintrag „Hierarchie-Prefix“ auf „Hierarchie-Präfix“ verwiesen; concept §14 aktualisiert; fünf Fragen in `paper-questions.md`
+**Gelieferte Dateien / Funktionen:** `paper/content/chapter/04-retrieval/main.tex`, `docs/adr/0003-no-full-graphrag.md`, `docs/glossary.md`, `docs/concept.md`, `docs/paper-questions.md`, `docs/issues-log.md`, `docs/status.md`; kein Python-Code geändert
+**Entscheidungen:** ADR-0003 akzeptiert (Nutzer); RUN-004-Zahlen im Fließtext ohne Tabelle (Nutzer)
+**Probleme / Überraschungen:** ISS-093 (Entwurf zu lang, drei zugespitzte Aussagen)
+**Offen / unklar:** Abgrenzung zu Kapitel 5 bei RUN-020 (in `paper-questions.md` markiert)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `docs(paper)` ×2, `docs`
+
 ### 2026-11-18 – Kapitel 3 „Architektur des Agenten“
 **Ziel der Sitzung:** Kapitel 3 entwerfen (laut status.md).
 **Was wurde gemacht:**

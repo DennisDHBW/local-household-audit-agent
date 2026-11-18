@@ -49,3 +49,21 @@
 - Weggelassen aus Platzgründen: Text-Aufrufe (ISS-061), Belegnummern und Trefferkürzung auf 600 Zeichen (gehören zu Kapitel 4), Speicherwerte 5,46 und 6,25 GB.
 - In Kapitel 2 wurde nebenbei ein Zeilenüberlauf behoben (\enquote{Datum: 18.01.2025}, geschütztes Leerzeichen entfernt).
 
+
+## Kapitel 4 – RAG- und Retrieval-Konzept
+
+1. Rechne den Score des ersten S2-Treffers nach (0,712 × 1,5). Woher kommen die beiden Zahlen, und warum ändert der Boost an der Reihenfolge der fünf Treffer nichts?
+2. Warum entfernt der Metadatenfilter die Ablenker vollständig, der Hierarchie-Boost aber kaum? Und warum sind die Werte mit Filter aus dem Vergleichslauf nur eine obere Schranke für den Agenten?
+3. Das Modell darf nur nach Sparte filtern. Wie findet der Agent trotzdem die Rechnung eines bestimmten Jahres, und was passiert, wenn es diese Rechnung gar nicht gibt?
+4. Was macht die Größen-Anfrage aus „neuer Arbeitspreis 2025“, und warum fand die erste Fassung bei P1 das Gas-Preisschreiben statt des Strom-Preisschreibens?
+5. Welche Testfrage hätte von einem Graphen profitiert, und warum lohnt sich GraphRAG für diesen Haushalt trotzdem nicht?
+
+**Antworten (von mir):**
+
+**Beim Lesen besonders prüfen:**
+- Gegenüber dem freigegebenen Plan kam ein Satz zum Argument Gegenstück dazu, weil Tabelle 3.1 den Begriff nennt, ohne ihn zu erklären. Dafür wurden andere Sätze gekürzt (Kapitel bleibt bei ca. 1,25 S.).
+- „Im ersten Nachtlauf“ meint RUN-010 mit `llama3.1:8b` (wie in Kapitel 3). Die 9 von 19 ausschließenden Filter stammen aus diesem Lauf.
+- „16 statt 13 von 27 Sollfakten“ ist ein Retrieval-Ergebnis von P1 (RUN-011/019 gegen RUN-020). Kapitel 5 soll darauf verweisen und nicht wiederholen, dass G1 trotz der Zahlen im Kontext falsch beantwortet wird, sondern es dort als Lese- und Vergleichsfehler einordnen.
+- Hybrid-Suche mit BM25 kommt nicht vor (in ADR-0009 verworfen, nicht gefordert). Ein Prüfer könnte danach fragen; die Antwort steht in ADR-0009.
+- Weggelassen aus Platzgründen: Wirkung der Summaries (steht in Kapitel 2), Ablenker im Kontext 7/94 → 4/92 (RUN-020), Bildsuche für S4 (`search_images`), Wirkung der Zitier-Rückfrage (9 von 9 Antworten mit Belegnummer, Kandidat für Kapitel 5).
+- Der Satz zur Kürzung auf 600 Zeichen nennt ein Risiko, das nie gezielt gemessen wurde (ISS-031 offen).
