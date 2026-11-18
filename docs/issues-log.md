@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-092 – Kapitel 3 kommt auf ca. 1,6 statt 1,5 Seiten
+- **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 3)
+- **Kategorie:** ki-assistent
+- **Status:** akzeptiert
+- **Symptom:** Der erste Entwurf von Kapitel 3 hatte 616 Wörter und kam mit Tabelle und Listing auf ca. 2,1 Seiten. Nach drei Kürzungsrunden liegt das Kapitel bei ca. 1,6 Seiten (gemessen Überschrift bis Überschrift).
+- **Ursache:** Wieder zu viel Text im ersten Entwurf, obwohl die Gliederung ca. 430 Wörter vorsah; Tabelle (Gleitobjekt) und Listing brauchen zusammen ca. 0,4 Seiten, und Gleitobjekte lassen am Seitenende Lücken.
+- **Lösung / Workaround:** Gekürzt wurden Belegnummer und Trefferkürzung (kommen in Kapitel 4), Text-Aufrufe, Speicherwerte der Modelle und die Begründung zur Werkzeugzahl. Hochrechnung jetzt ca. 7,7 von 8 Seiten (1,3 + 1,3 + 1,6 + 1,25 + 1,5 + 0,75). Kapitel 4 bis 6 dürfen ihr Budget nicht überschreiten.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein (Planung)
+
+### ISS-091 – ADR-0014 schreibt den Rückgang ungültiger Werkzeugaufrufe dem Suchwerkzeug zu
+- **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 3)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst (Doku korrigiert)
+- **Symptom:** ADR-0014 nennt als positive Folge „kein ungültiger Werkzeugaufruf in 24 Aufrufen (RUN-010: 13 von 37)“. Beim Auszählen der Protokolle für Kapitel 3 zeigte sich: 11 der 13 ungültigen Aufrufe in RUN-010 waren `calculate`, nur 2 `search_tables`. In RUN-012 kam `calculate` gar nicht vor (ISS-058).
+- **Ursache:** Eigene Fehldeutung beim Schreiben von ADR-0014: Der Vergleich wurde nicht nach Werkzeug aufgeschlüsselt.
+- **Lösung / Workaround:** Nachtrag in ADR-0014 und in `evaluation-log.md` (RUN-021, Nachtrag Werkzeugnutzung). Kapitel 3 nennt die Zahl nicht als Wirkung des Suchwerkzeugs, sondern die Fehleranalyse (18 von 23 Fehlschlägen bei Werkzeugwahl und Filtern).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 3 (Zahl bewusst nicht verwendet)
+
 ### ISS-090 – Seitenbudget knapp: Kapitel 1 und 2 zusammen ca. 0,35 Seiten über Plan
 - **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 2)
 - **Kategorie:** ki-assistent
