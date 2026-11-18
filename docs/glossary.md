@@ -147,6 +147,8 @@
 | Reine Lückenantwort | `is_gap_only`, `GAP_ANSWER` | Antwort, die nur aus dem Satz „Dazu liegen in den Unterlagen keine Angaben vor.“ besteht | |
 | Hauptursache eines Fehlschlags | – | Von Hand vergebene Klasse je falscher Antwort: Kontextbudget, Retrieval, Tool-Wahl, Filter, Argumente, Synthese, Parser (evaluation-log, RUN-010/011) | |
 | Handprüfung | – | Lesen jeder Antwort gegen Ground Truth und Belege; korrigiert „richtig laut Metrik“ zu „richtig nach Handprüfung“ (ISS-050) | |
+| Knapp als richtig gewertet | – | Antwort, der ein Teil fehlt (etwa Z1 ohne z-Zahl), die nach Handprüfung trotzdem als richtig zählt; im evaluation-log „Grenzfall“ genannt, in der Ausarbeitung umbenannt, damit es nicht mit der Fragekategorie Grenzfälle (G1–G4) verwechselt wird | |
+| Frage ohne Prüfung | – | Die 8 Testfragen, die keine Prüffrage sind (S1–S4, N1, N2, Z2, Z3); Grundlage der Qualitätsaussage in Kapitel 5 | |
 | Suchwerkzeug | `search` | Einziges Textsuchwerkzeug des Agenten; durchsucht Fließtext und Tabellenzeilen, Filter nur `utility_type` (ADR-0014) | |
 | Gegenstück | `include_counterpart` | Parameter von `search` für Prüffragen: ergänzt je bis zu 2 Treffer aus Vertrag/Preisschreiben bzw. Rechnung, falls die erste Suche nur eine Familie trifft | |
 | Bestandsmeldung | `ToolBox._inventory` | Text bei leerer Suche: nennt Sparten und Dokumentarten, zu denen Unterlagen vorliegen (ISS-051) | |

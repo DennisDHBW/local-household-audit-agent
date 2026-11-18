@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-18 – Kapitel 5 „Testmodul und Evaluation“
+**Ziel der Sitzung:** Kapitel 5 entwerfen (laut status.md).
+**Was wurde gemacht:**
+- Material gesammelt (concept §4.3, §11, §14; ADR-0011/0012; RUN-010 bis RUN-021 mit RAGAS-Nachtrag; ISS-028/038/039/045/046/047/050/053/062/066/067/074/076/086/091; `run-011/report.md`, `evidence.json` von RUN-020/021); per git geprüft, dass der B0-Code seit RUN-011 unverändert ist; Plan mit acht Teilen und Wortzahl vorgelegt, Nutzer gab frei
+- Kapitel geschrieben: Testmodul (`generate`/`score`/`ragas`, 382 Unit-Tests), Testdaten (Sollfakten 27, Quellen 18, Prüffragen mit und ohne eingebauten Fehler), eigene Metriken und warum von Hand geprüft wird (S5), Belegabgleich, RAGAS mit Grenzen (Faithfulness 0,69 bei richtigen und falschen Antworten, Context Recall gegen Referenzsätze), Tabelle 5.1 B0/P1/P2, Qualitätsaussage, Fehleranalyse (61 Fehlschläge, Engpass Lesen und Vergleichen), Grenzen
+- Länge in drei Build-Runden von 1,75 auf 1,43 S. gebracht; Wortliste aus writing-guide §3.3 und Ich-/Wir-Form geprüft (keine Treffer); jede Zahl gegen evaluation-log und `report.md` geprüft
+- evaluation-log: Nachtrag Ergebnisse je Fragekategorie; Glossar: „Knapp als richtig gewertet“, „Frage ohne Prüfung“; concept §14 und writing-guide (14 statt 12 Testfragen) aktualisiert; fünf Fragen in `paper-questions.md`
+**Gelieferte Dateien / Funktionen:** `paper/content/chapter/05-evaluation/main.tex`, `docs/evaluation-log.md`, `docs/glossary.md`, `docs/concept.md`, `docs/writing-guide.md`, `docs/paper-questions.md`, `docs/issues-log.md`, `docs/status.md`; kein Python-Code geändert
+**Entscheidungen:** keine ADR; „knapp als richtig gewertet“ statt „Grenzfall“ für Bewertungen (Glossar); Verlauf von P2 (3 → 9 → 6) aus Platzgründen nach Kapitel 6 verschoben
+**Probleme / Überraschungen:** ISS-094 (Qualitätsaussage beruht auf Handprüfung durch Claude); ISS-093 ergänzt (Erstentwurf wieder ca. 25 % zu lang)
+**Offen / unklar:** KI-Hinweis zur Rolle von Claude bei der Auswertung (Nutzer entscheidet)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `docs(paper)`, `docs`
+
 ### 2026-11-18 – Kapitel 4 „RAG- und Retrieval-Konzept“
 **Ziel der Sitzung:** Kapitel 4 entwerfen (laut status.md).
 **Was wurde gemacht:**

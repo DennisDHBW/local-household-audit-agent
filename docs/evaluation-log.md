@@ -566,3 +566,22 @@
 - **Beispiel Z1 (ReAct-Listing in Kapitel 3):** `search("Gasverbrauch 2025 Zählerstand Rechnung")` mit 7 Treffern, [1] ist die Zählerzeile der Gasrechnung 2025 (8.120 m³, 9.320 m³, Volumen 1.200 m³, z-Zahl 0,9560); erste Antwort „keine Abweichung, 1.200 m³ [1]“; Rechennachfrage; `calculate("9320 - 8120")` = 1200; Schlussantwort „passt“. Zeiten der vier Modellaufrufe 99,4 s (davon 81,8 s Prefill), 112,0 s, 16,5 s, 37,5 s; zusammen 266,1 s. Nach Handprüfung Grenzfall (z-Zahl und kWh fehlen), wie in RUN-018 gezählt.
 - **Zum Vergleich RUN-010 (`llama3.1:8b`, zwei Suchwerkzeuge):** 37 Werkzeugaufrufe, 13 ungültig, davon 11 `calculate` und 2 `search_tables`; RUN-012 (ein `search`): 24 Aufrufe, 0 ungültig, aber auch kein einziger `calculate`-Aufruf (ISS-058). Der Rückgang von 13 auf 0 geht also überwiegend auf das fehlende Rechnen zurück und nicht auf das gemeinsame Suchwerkzeug (ISS-091).
 - **Grenzen:** reine Auszählung der Protokolle; Zeiten von RUN-021 wegen Abbruch und Neustart nur eingeschränkt vergleichbar (ISS-079).
+
+### Nachtrag für Kapitel 5 – Ergebnisse je Fragekategorie (Endfassung, `qwen2.5:7b`)
+- **Datum:** 2026-11-18 · Branch `docs/paper-05-evaluation`; aus den Handprüfungen oben ausgezählt, kein neuer Lauf
+- **Quellen:** B0 aus RUN-011 (`report.md`: richtig laut Metrik S5, N1, N2, Z3; S5 nach Handprüfung falsch, ISS-050), P1 aus RUN-020, P2 aus RUN-021 (Handprüfung wie RUN-018). Der B0-Code ist seit RUN-011 unverändert: `evaluation/prompts.py` ohne Änderung seit `f46e50e`, die Änderungen in `evaluation/variants.py` betreffen nur P1 und P2, die geänderte Metrik (Einheitenfaktor) ändert keine Bewertung (RUN-018/019).
+
+| Kategorie | B0 (RUN-011) | P1 (RUN-020) | P2 (RUN-021) |
+|---|---|---|---|
+| Standardfragen S1–S5 (von 5) | 0 | 3 (S1, S3, S5) | 2 (S1, S2) |
+| Grenzfälle G1–G4 (von 4) | 0 | 1 (G2 knapp) | 0 |
+| Negativfragen N1, N2 (von 2) | 2 | 2 | 2 |
+| Zusatzfragen Z1–Z3 (von 3) | 1 (Z3) | 2 (Z1 knapp, Z3) | 2 (Z1 knapp, Z3) |
+| Richtig nach Handprüfung (laut Metrik), von 14 | 3 (4) | 8 (6) | 6 (4) |
+| Fragen ohne Prüfung (S1–S4, N1, N2, Z2, Z3), von 8 | 3 (N1, N2, Z3) | 5 (S1, S3, N1, N2, Z3) | 5 (S1, S2, N1, N2, Z3) |
+| Prüffragen (S5, G1–G4, Z1), von 6 | 0 | 3 (S5; G2, Z1 knapp) | 1 (Z1 knapp) |
+
+- **„knapp“** heißt in den Läufen oben „Grenzfall“ (ein Teil fehlt, die Antwort zählt trotzdem als richtig). Die Ausarbeitung schreibt „knapp als richtig gewertet“, damit es nicht mit der Fragekategorie Grenzfälle (G1–G4) verwechselt wird.
+- **Fehler und Fehlalarme nach Handprüfung:** eingebaute Fehler mit tragfähiger Begründung 0 / 0 / 0; Fehlalarme 0 / 0 / 1 (P2/G2: Abweichung „−90 EUR“ bei richtiger Abrechnung).
+- **Ursachen RUN-010/011 in Kapitel 5:** „19-mal die Werkzeugaufrufe (P2)“ = Tool-Wahl 8 + Filter 10 + Argumente 1; Kapitel 3 nennt 18 von 23 (ohne Argumente). Summe mit Kontextbudget 14, Retrieval 12 und Synthese 16: 61.
+- **Grenzen:** Die Kategoriezahlen hängen an der Handprüfung (von Claude, nicht gegengelesen; ISS-094).

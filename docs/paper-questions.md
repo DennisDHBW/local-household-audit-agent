@@ -67,3 +67,22 @@
 - Hybrid-Suche mit BM25 kommt nicht vor (in ADR-0009 verworfen, nicht gefordert). Ein Prüfer könnte danach fragen; die Antwort steht in ADR-0009.
 - Weggelassen aus Platzgründen: Wirkung der Summaries (steht in Kapitel 2), Ablenker im Kontext 7/94 → 4/92 (RUN-020), Bildsuche für S4 (`search_images`), Wirkung der Zitier-Rückfrage (9 von 9 Antworten mit Belegnummer, Kandidat für Kapitel 5).
 - Der Satz zur Kürzung auf 600 Zeichen nennt ein Risiko, das nie gezielt gemessen wurde (ISS-031 offen).
+
+## Kapitel 5 – Testmodul und Evaluation
+
+1. Warum sind `generate` und `score` getrennte Schritte? Was hätte eine geänderte Metrik gekostet, wenn beides in einem Lauf stünde?
+2. Bei S5 bestand eine Antwort die Metrik, ohne dass der Vertrag gelesen wurde. Warum ist das möglich, und woran hättest du es automatisch erkennen können?
+3. Eine falsche Antwort bekommt Faithfulness 1,00, eine Prüffrage mit allen Ausgangszahlen im Kontext Context Recall 0,00. Was misst RAGAS in diesen beiden Fällen tatsächlich?
+4. P2 hatte mehr Sollfakten im Kontext als P1 (18 gegen 16), nennt in den Antworten aber weniger (8 gegen 12). Wie erklärst du das, und was würdest du als Nächstes ändern?
+5. Wie belastbar ist „P1 8, P2 6 von 14“? Was zeigt die wortgleiche Wiederholung bei Temperatur 0, und was zeigt sie nicht?
+
+**Antworten (von mir):**
+
+**Beim Lesen besonders prüfen:**
+- Die Handprüfung und die Zuordnung der Ursachen hat Claude gemacht (evaluation-log). Im Text steht nur „nicht unabhängig gegengelesen“. Bitte mindestens RUN-020 G1, G2, Z1, RUN-021 G2, Z1 und RUN-011 B0/S5 selbst lesen und entscheiden, ob ein KI-Hinweis die Auswertung nennt (ISS-094).
+- „Knapp als richtig gewertet“ heißt im evaluation-log „Grenzfall“. Umbenannt, damit es nicht mit der Fragekategorie Grenzfälle (G1–G4) verwechselt wird (Glossar).
+- B0 stammt aus RUN-011 (Code-Stand M6b). Per git geprüft: Prompts und B0-Kontext haben sich seitdem nicht geändert, nur P1, P2 und der Einheitenfaktor der Metrik (ändert keine Bewertung). Zählung je Kategorie: evaluation-log, Nachtrag für Kapitel 5.
+- „19-mal die Werkzeugaufrufe“ = Werkzeugwahl 8 + Filter 10 + Argumente 1. Kapitel 3 nennt 18 von 23 (ohne Argumente). Beide Zahlen stimmen, können aber zu Nachfragen führen.
+- „Acht Fragen ohne Prüfung“ sind S1–S4, N1, N2, Z2, Z3. Die Zahl steht nicht in der Tabelle, sondern ist aus den Einzelergebnissen gezählt.
+- „Alle 9 Antworten mit Zahlen tragen eine Belegnummer“ ist in RUN-018 gezählt. RUN-021 ist dort wortgleich (13 von 14 Antworten gleich, S5 ohne Zahlen).
+- Weggelassen aus Platzgründen, Kandidaten für Kapitel 6: Verlauf von P2 (3 → 9 mit `llama3.1:8b` in RUN-012 → 6), die beste gemessene Fassung ist also nicht die Endfassung. Außerdem G4 einmal sauber erkannt (RUN-014) und wieder verloren, Ablenker im Kontext bei P1 (7/94 → 4/92) und die ungeklärte leere Antwort bei G1 (ISS-076).

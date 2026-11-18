@@ -24,13 +24,23 @@
 
 ## Einträge
 
+### ISS-094 – Qualitätsaussage in Kapitel 5 stützt sich auf eine Handprüfung durch Claude
+- **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 5)
+- **Kategorie:** ki-assistent
+- **Status:** offen
+- **Symptom:** Kapitel 5 nennt „richtig nach Handprüfung“ (B0 3, P1 8, P2 6 von 14) als Hauptergebnis und die von Hand vergebenen Hauptursachen der Fehlschläge. Beides hat Claude beim Auswerten der Läufe gemacht (`evaluation-log.md`, RUN-010 bis RUN-021); der Text sagt nur „nicht unabhängig gegengelesen“, nicht wer geprüft hat. Bei ISS-086 und ISS-091 musste Claude eigene Deutungen schon einmal korrigieren.
+- **Ursache:** Zeitmangel (ISS-084/085/087); die Handprüfung wurde nie vom Nutzer gegengelesen.
+- **Lösung / Workaround:** Offen. Vorschlag für die Überarbeitung: Der Nutzer liest mindestens die Antworten der Endfassung, deren Wertung knapp ist oder die Kapitel 5 als Beispiel nennt (RUN-020 G1, G2, Z1; RUN-021 G2, Z1; RUN-011 B0/S5), und entscheidet, ob ein KI-Hinweis (in `paper/main.tex` auskommentiert) die Rolle von Claude bei der Auswertung nennt.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 (Grenzen), Kapitel 6, ggf. KI-Hinweis
+
 ### ISS-093 – Erstentwurf Kapitel 4 zu lang und mit drei ungenauen Aussagen
 - **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 4)
 - **Kategorie:** ki-assistent
 - **Status:** gelöst
 - **Symptom:** Der erste Entwurf hatte gut 500 Wörter statt der geplanten ca. 370; eine spätere Fassung kam gemessen auf 1,39 statt 1,25 Seiten. Beim Gegenlesen gegen die Quellen fielen drei Aussagen auf, die so nicht stimmten: „Überschriften sind keine eigenen Chunks“ (es gibt 82 Überschriften-Chunks, sie werden nur nicht eingebettet), „die Zeile mit 38,20 ct enthält weder Jahr noch Dokumentwort“ (ihr Präfix enthält „01.01.2025“; ISS-072 sagt „kaum“), „bekam nur Treffer aus dem Schreiben zur Zwischenablesung“ (die Gegenstück-Suche lieferte zusätzlich Grundpreiszeilen). Außerdem bezeichnet „Sollzahlen“ (ADR-0017, evaluation-log) die 27 Sollfakten nicht genau, 5 davon sind Fristen, Datum oder Urteil.
 - **Ursache:** Beim Verdichten wurden Aussagen aus den Quellen zugespitzt; die Länge wurde wie bei Kapitel 2 und 3 unterschätzt.
-- **Lösung / Workaround:** Alle drei Sätze an die Quellen angepasst, im Text „Sollfakten“ statt „Sollzahlen“, Glossar ergänzt. Gekürzt in sieben Build-Runden auf 1,25 Seiten, gemessen von Überschrift bis Überschrift.
+- **Lösung / Workaround:** Alle drei Sätze an die Quellen angepasst, im Text „Sollfakten“ statt „Sollzahlen“, Glossar ergänzt. Gekürzt in sieben Build-Runden auf 1,25 Seiten, gemessen von Überschrift bis Überschrift. Nachtrag Kapitel 5: erster Entwurf 542 Wörter (Ziel ca. 420), gemessen 1,75 Seiten; nach drei Kürzungsrunden 1,43 Seiten bei gut 480 Wörtern und einer Tabelle mit zehn Zeilen. Weggelassen, aber für Kapitel 6 vorgemerkt: Verlauf von P2 (3 → 9 → 6) und der einmal erkannte Fehler in G4 (RUN-014).
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** nein (Arbeitsweise; bei der Endkontrolle jede Zahl und jede Absolutaussage gegen die Quelle prüfen)
 

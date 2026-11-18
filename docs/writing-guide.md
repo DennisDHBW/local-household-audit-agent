@@ -88,7 +88,7 @@ Schritt 7 ist kurz, macht aber viel aus: Eigene Formulierungen und Antworten aus
 - [ ] Alle Bewertungskriterien abgedeckt (`requirements.md`, Abschnitt 11)
 - [ ] Testmodul-Abschnitt vorhanden, mit Ergebnissen und Qualitätsaussage
 - [ ] GraphRAG-Entscheidung begründet
-- [ ] 12 Testfragen und Ergebnisse dargestellt
+- [ ] 14 Testfragen und Ergebnisse dargestellt (Kategorien in Tabelle 5.1, Einzelergebnisse im evaluation-log)
 - [ ] Jede Zahl durch `evaluation-log.md` belegt
 - [ ] Begriffe einheitlich laut Glossar
 - [ ] Keine Ich-/Wir-Form
