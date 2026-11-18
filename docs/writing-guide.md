@@ -26,6 +26,8 @@
 | 6. Überarbeitung | Claude | Markierungen einarbeiten, meine Formulierungen aus Schritt 4/5 übernehmen |
 | 7. Eigene Handschrift | ich | In jedem Kapitel 2–3 Sätze selbst umformulieren oder ergänzen |
 
+> Abweichung (Entscheidung des Nutzers, 2026-11-18): Claude erledigt die Schritte 1–3 je Kapitel in einem eigenen Chat und sammelt die Verständnisfragen (Schritt 5) in `docs/paper-questions.md`. Lesen, Antworten, Überarbeitung und eigene Handschrift (Schritte 4–7) folgen gesammelt, wenn alle sechs Kapitel stehen.
+
 Schritt 7 ist kurz, macht aber viel aus: Eigene Formulierungen und Antworten aus Schritt 5 bringen den Text näher an die eigene Sprache und zeigen beim Lesen, ob alles verstanden ist.
 
 ---
