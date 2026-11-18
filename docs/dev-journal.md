@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-18 – Kapitel 6 „Reflexion und Ausblick“
+**Ziel der Sitzung:** Kapitel 6 entwerfen (laut status.md), damit alle sechs Kapitel für die Überarbeitung vorliegen.
+**Was wurde gemacht:**
+- Material gesammelt (concept §14, requirements §3/§5.7, ADR-0013/0015/0016, RUN-010 bis RUN-021, ISS-058/062/066/067/070/071/074/076/087/088/094, Kandidaten aus `paper-questions.md`); Kapitel 1, 3, 4 und 5 auf Überschneidungen geprüft (Prüfablauf, Self-RAG, GraphRAG und Messgrenzen stehen schon dort); Plan mit drei Absätzen und Wortzahl vorgelegt, Nutzer gab frei
+- Kapitel geschrieben: Annahme aus Kapitel 1 nicht bestätigt, Verlauf P2 3 → 9 → 6 und warum die Ursache offen ist, G4 einmal erkannt und verloren, gültiger Aufruf gegen richtige Rechnung (G2), Rückfragen gegen Self-RAG, Prüfablauf sichert Herkunft statt Zuordnung (4 von 14 Prüfgrößen aus demselben Treffer, Chinesisch bei S5); Ausblick mit ISS-070/074/088 und größerem Fragenkatalog
+- Vor dem Build von 334 auf ca. 280 Wörter gekürzt, zwei Builds (0,73 und 0,70 S.); Wortliste aus writing-guide §3.3 und Ich-/Wir-Form geprüft (keine Treffer); jede Zahl gegen evaluation-log und ADRs geprüft
+- Fünf Fragen in `paper-questions.md`; concept §14 (Seiten); PDF aller Kapitel nach `Claude outputs/` gelegt
+**Gelieferte Dateien / Funktionen:** `paper/content/chapter/06-reflection/main.tex`, `docs/paper-questions.md`, `docs/concept.md`, `docs/issues-log.md`, `docs/status.md`, `Claude outputs/Ausarbeitung-Entwurf-Kapitel1-6.pdf` (nicht versioniert); kein Python-Code geändert
+**Entscheidungen:** keine ADR; Kapitel 6 ohne persönliche Eindrücke (ISS-087) und ohne Hinweis auf die Rolle von Claude bei der Handprüfung (ISS-094, Entscheidung beim Nutzer)
+**Probleme / Überraschungen:** ISS-093 ergänzt (Erstentwurf wieder ca. 24 % zu lang); Gesamtumfang im PDF ca. 7,8 statt 7,6 S. (Lücken durch Gleitobjekte)
+**Offen / unklar:** persönlicher Teil der Reflexion, KI-Hinweis, Titelblatt-Zeitraum (status.md)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 0,5 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `docs(paper)`, `docs`
+
 ### 2026-11-18 – Kapitel 5 „Testmodul und Evaluation“
 **Ziel der Sitzung:** Kapitel 5 entwerfen (laut status.md).
 **Was wurde gemacht:**

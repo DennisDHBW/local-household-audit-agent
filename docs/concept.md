@@ -442,8 +442,8 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 | 3. Architektur | Gesamtbild, P1 vs. P2, Tools, ReAct-Beispiel, Modellwahl & Hardware | 25 % | 1,5 |
 | 4. RAG- & Retrieval-Konzept | Hierarchie-Präfix, Score-Formel, Metadatenfilter, Gegenstück und Größen-Anfrage, Evidence-First, GraphRAG-Entscheidung | 20 % | 1,25 (Entwurf ca. 1,25) |
 | 5. Testmodul & Evaluation | 14-Fragen-Katalog (5/4/2 + 3), RAGAS + eigene Metriken, Baselines, Ergebnisse, Fehleranalyse | 15 % | 1,5 inkl. Ergebnistabelle (Entwurf ca. 1,45) |
-| 6. Reflexion und Ausblick | Grenzen, Erkenntnisse aus Tests und Issues, Ausblick (ohne Literatur) | 10 % | 0,75 |
-| **Summe** | | | **7,5** (Puffer bis 8; nach den Entwürfen 1 bis 5 Hochrechnung ca. 7,7, Puffer ca. 0,35) |
+| 6. Reflexion und Ausblick | Grenzen, Erkenntnisse aus Tests und Issues, Ausblick (ohne Literatur) | 10 % | 0,75 (Entwurf ca. 0,7) |
+| **Summe** | | | **7,5** (Puffer bis 8; nach allen Entwürfen Summe der Kapitel ca. 7,6, im PDF endet der Text auf Seite 8 nach gut 80 % der Seite, weil Gleitobjekte Lücken lassen; Puffer ca. 0,18) |
 
 Festgelegt am 2026-11-18. Seiten sind im kompilierten PDF gemessen (12 pt, 1,5-zeilig, ca. 400 Wörter je Seite); Kapitel beginnen ohne Seitenumbruch (`paper/ads/header.tex`). Gemessen wird von Kapitelüberschrift bis Kapitelüberschrift (Zeilenpositionen aus `pdftotext -bbox-layout`, ca. 700 pt Satzspiegel je Seite). So gemessen kommt Kapitel 1 auf ca. 1,3 statt der in der Kapitel-1-Sitzung notierten 1,2 Seiten (ISS-090). Kapitel 2 bekam am 2026-11-18 auf Wunsch des Nutzers 0,25 Seiten mehr für ein JSON-Listing.
 
