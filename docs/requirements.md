@@ -76,7 +76,7 @@ Laut Folie ist der lauffähige Prototyp optional. Die Zusatzanforderungen des Pr
 |---|---|
 | Selbst erzeugte (synthetische) Dokumente als Datenbasis? | erlaubt; Korpus liegt vollständig synthetisch unter `dataset/` |
 | Ich-Form in der Ausarbeitung? | vermeiden (unpersönlicher Stil) |
-| Kennzeichnung des KI-Einsatzes? | nicht vorgesehen; KI-Hinweis der Vorlage auskommentiert |
+| Kennzeichnung des KI-Einsatzes? | nicht vorgesehen; KI-Hinweis der Vorlage entfernt (Entscheidung 2026-11-18) |
 | Abgabe des Codes | GitHub-Repository `DennisDHBW/local-household-audit-agent` |
 | Seitenumfang | 5–8 Seiten ohne Anhang, Verzeichnisse und Titelblatt |
 | LaTeX-Vorlage | DHBW-Projektarbeiten-Template (Evolinox), unter `paper/`; aktiv sind nur Titelblatt, Inhaltsverzeichnis und Kapitel |
