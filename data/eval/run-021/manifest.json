@@ -1,4 +1,13 @@
 {
   "model": "qwen2.5:7b",
-  "num_ctx": 8192
+  "num_ctx": 8192,
+  "ragas": {
+    "judge": "audit-judge",
+    "judge_num_ctx": 8192,
+    "judge_max_tokens": 2048,
+    "metrics": [
+      "faithfulness",
+      "context_recall"
+    ]
+  }
 }

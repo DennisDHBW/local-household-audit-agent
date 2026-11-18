@@ -1,0 +1,48 @@
+All checks passed!
+144 files already formatted
+============================= test session starts ==============================
+platform linux -- Python 3.13.15, pytest-9.2.0, pluggy-1.7.0
+rootdir: /home/usr0/PycharmProjects/local-household-audit-agent
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.16.0, langsmith-0.14.17
+collected 383 items / 1 deselected / 382 selected
+
+tests/test_agent_loop.py ............................................... [ 12%]
+.............                                                            [ 15%]
+tests/test_agent_text_calls.py ..............                            [ 19%]
+tests/test_agent_tools.py .............................................. [ 31%]
+......................                                                   [ 37%]
+tests/test_audit_flow.py ..............                                  [ 40%]
+tests/test_config.py .....                                               [ 42%]
+tests/test_corpus.py ...................                                 [ 47%]
+tests/test_enrichment.py ........................                        [ 53%]
+tests/test_evaluation.py ................................                [ 61%]
+tests/test_ingestion_models_pipeline.py ........                         [ 63%]
+tests/test_ingestion_parser.py ..................                        [ 68%]
+tests/test_preflight.py ....                                             [ 69%]
+tests/test_ragas_eval.py ...............                                 [ 73%]
+tests/test_retrieval.py ................................................ [ 86%]
+..................                                                       [ 90%]
+tests/test_smoke_metrics.py ..........................                   [ 97%]
+tests/test_smoke_runner.py .........                                     [100%]
+
+====================== 382 passed, 1 deselected in 15.42s ======================
+{
+  "recall_agrees": 7,
+  "recall_high_without_facts": 2,
+  "recall_low_with_facts": 3,
+  "gap_only_faithfulness": {
+    "1.0": 3
+  }
+}
+evidence: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-020/evidence.json
+{
+  "recall_agrees": 9,
+  "recall_high_without_facts": 1,
+  "recall_low_with_facts": 2,
+  "gap_only_faithfulness": {
+    "0.0": 1
+  }
+}
+evidence: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-021/evidence.json

@@ -1,11 +1,11 @@
 {
   "run_id": "run-021",
   "summary": {
-    "recall_agrees": 0,
-    "recall_high_without_facts": 0,
-    "recall_low_with_facts": 0,
+    "recall_agrees": 9,
+    "recall_high_without_facts": 1,
+    "recall_low_with_facts": 2,
     "gap_only_faithfulness": {
-      "None": 1
+      "0.0": 1
     }
   },
   "rows": [
@@ -27,8 +27,8 @@
         false
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 1.0,
+      "context_recall": 1.0
     },
     {
       "variant": "p2",
@@ -45,8 +45,8 @@
         true
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 1.0,
+      "context_recall": 0.5
     },
     {
       "variant": "p2",
@@ -61,8 +61,8 @@
         true
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 1.0,
+      "context_recall": 1.0
     },
     {
       "variant": "p2",
@@ -79,8 +79,8 @@
         true
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 1.0,
+      "context_recall": 0.0
     },
     {
       "variant": "p2",
@@ -98,8 +98,8 @@
         true
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 0.0,
+      "context_recall": 1.0
     },
     {
       "variant": "p2",
@@ -120,7 +120,7 @@
       ],
       "is_gap_only": false,
       "faithfulness": null,
-      "context_recall": null
+      "context_recall": 0.0
     },
     {
       "variant": "p2",
@@ -140,8 +140,8 @@
         true
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 1.0,
+      "context_recall": 1.0
     },
     {
       "variant": "p2",
@@ -161,8 +161,8 @@
         false
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 0.3333,
+      "context_recall": 0.0
     },
     {
       "variant": "p2",
@@ -182,8 +182,8 @@
         true
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 1.0,
+      "context_recall": 0.0
     },
     {
       "variant": "p2",
@@ -192,7 +192,7 @@
       "facts_in_answer": [],
       "sources_shown": [],
       "is_gap_only": false,
-      "faithfulness": null,
+      "faithfulness": 1.0,
       "context_recall": null
     },
     {
@@ -202,7 +202,7 @@
       "facts_in_answer": [],
       "sources_shown": [],
       "is_gap_only": true,
-      "faithfulness": null,
+      "faithfulness": 0.0,
       "context_recall": null
     },
     {
@@ -222,8 +222,8 @@
         true
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 0.1667,
+      "context_recall": 1.0
     },
     {
       "variant": "p2",
@@ -238,8 +238,8 @@
         true
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 0.5,
+      "context_recall": 0.0
     },
     {
       "variant": "p2",
@@ -254,8 +254,8 @@
         true
       ],
       "is_gap_only": false,
-      "faithfulness": null,
-      "context_recall": null
+      "faithfulness": 1.0,
+      "context_recall": 0.0
     }
   ]
 }

@@ -1,0 +1,136 @@
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S1 Faithfulness: ok 0.50 (211.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S1 Context Recall: ok 1.00 (161.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S2 Faithfulness: ok 0.33 (227.6 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S2 Context Recall: ok 0.50 (180.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S3 Faithfulness: ok 1.00 (200.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S3 Context Recall: ok 1.00 (166.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S4 Faithfulness: ok 1.00 (153.1 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S4 Context Recall: ok 0.00 (157.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S5 Faithfulness: ok 0.50 (286.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline S5 Context Recall: ok 1.00 (150.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G1 Faithfulness: ok 0.67 (225.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G1 Context Recall: ok 0.00 (165.6 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G2 Faithfulness: ok 1.00 (216.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G2 Context Recall: ok 0.00 (171.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G3 Faithfulness: ok 0.75 (432.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G3 Context Recall: ok 0.00 (162.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G4 Faithfulness: ok 1.00 (236.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline G4 Context Recall: ok 0.00 (171.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline N1 Faithfulness: ok 1.00 (129.8 s) 
+   P1 Pipeline N1 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline N2 Faithfulness: ok 1.00 (149.3 s) 
+   P1 Pipeline N2 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z1 Faithfulness: ok 1.00 (294.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z1 Context Recall: ok 1.00 (196.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z2 Faithfulness: ok 0.00 (217.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z2 Context Recall: ok 0.00 (179.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z3 Faithfulness: ok 0.40 (251.1 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P1 Pipeline Z3 Context Recall: ok 0.00 (182.5 s) 
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-020/report.md
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S1 Faithfulness: ok 1.00 (310.6 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S1 Context Recall: ok 1.00 (223.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S2 Faithfulness: ok 1.00 (457.7 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S2 Context Recall: ok 0.50 (177.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S3 Faithfulness: ok 1.00 (177.1 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S3 Context Recall: ok 1.00 (178.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S4 Faithfulness: ok 1.00 (170.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S4 Context Recall: ok 0.00 (158.4 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S5 Faithfulness: ok 0.00 (260.2 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent S5 Context Recall: ok 1.00 (279.0 s) 
+   P2 Agent G1 Faithfulness: not_applicable (0.0 s) leere Antwort
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G1 Context Recall: ok 0.00 (178.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G2 Faithfulness: ok 1.00 (263.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G2 Context Recall: ok 1.00 (236.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G3 Faithfulness: ok 0.33 (234.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G3 Context Recall: ok 0.00 (194.8 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G4 Faithfulness: ok 1.00 (360.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent G4 Context Recall: ok 0.00 (228.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent N1 Faithfulness: ok 1.00 (134.2 s) 
+   P2 Agent N1 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent N2 Faithfulness: ok 0.00 (204.7 s) 
+   P2 Agent N2 Context Recall: not_applicable (0.0 s) Negativfrage: Referenz enthält keine Fakten
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z1 Faithfulness: ok 0.17 (280.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z1 Context Recall: ok 1.00 (185.0 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z2 Faithfulness: ok 0.50 (260.3 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z2 Context Recall: ok 0.00 (174.9 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z3 Faithfulness: ok 1.00 (236.5 s) 
+HTTP Request: POST http://localhost:11434/v1/chat/completions "HTTP/1.1 200 OK"
+   P2 Agent Z3 Context Recall: ok 0.00 (159.1 s) 
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-021/report.md

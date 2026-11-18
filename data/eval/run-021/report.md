@@ -1,4 +1,4 @@
-# Evaluation run-021 (2026-11-17)
+# Evaluation run-021 (2026-11-18)
 
 Modell: `qwen2.5:7b`. Metriken deterministisch (concept.md 11.3, ADR-0011); Urteil ja/nein und Fakten sind Heuristiken (ISS-038).
 
@@ -18,6 +18,13 @@ Modell: `qwen2.5:7b`. Metriken deterministisch (concept.md 11.3, ADR-0011); Urte
 | Fehlalarme | 1/3 (33 %) |
 | Sekunden je Frage (Mittel / Median) | 307.9 / 270.9 |
 | Prompt-Token je Frage (Mittel) | 9647 |
+
+RAGAS (ADR-0012), Bewerter `audit-judge`; Mittel über die bewerteten Antworten, Stichproben von Hand prüfen.
+
+| RAGAS | P2 Agent |
+|---|---|
+| Faithfulness | 0.69 (13/14 bewertet) |
+| Context Recall | 0.46 (12/14 bewertet) |
 
 ## Fragen × Varianten (✓/✗, gefundene Fakten)
 
@@ -48,6 +55,7 @@ Die Erstlaufzeit des Vertrags beträgt 24 Monate, also von 01.01.2024 bis 31.12.
 
 - Fakten fehlen: -; Urteil: - (erwartet -); Lücke benannt: nein; Tools: search, search
 - Zitiert: [1] 07_Gas_Liefervertrag_NeckarEnergie_2024.pdf S. 1, [3] 07_Gas_Liefervertrag_NeckarEnergie_2024.pdf S. 1
+- RAGAS: Context Recall 1.00, Faithfulness 1.00
 
 ## S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
 
@@ -77,6 +85,7 @@ Diese Informationen stammen aus den Dokumenten [1] und [2].
 
 - Fakten fehlen: Grundpreis brutto; Urteil: - (erwartet -); Lücke benannt: nein; Tools: search
 - Zitiert: [1] 03_Strom_Preisanpassung_SuedVolt_2025.pdf S. 1, [2] 03_Strom_Preisanpassung_SuedVolt_2025.pdf S. 1
+- RAGAS: Context Recall 0.50, Faithfulness 1.00
 
 ## S3: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
 
@@ -86,6 +95,7 @@ Erwartet: 74 m³ (Zählerstand 386 m³ am Jahresende minus 312 m³ am Jahresanfa
 
 - Fakten fehlen: Wasserverbrauch 2025; Urteil: - (erwartet -); Lücke benannt: nein; Tools: search
 - Zitiert: [2] 15_Wasser_Jahresbescheid_2025_SWM.pdf S. 1
+- RAGAS: Context Recall 1.00, Faithfulness 1.00
 
 ## S4: Wie hoch war der Stromverbrauch 2022 und 2023?
 
@@ -95,6 +105,7 @@ Erwartet: 3.480 kWh (2022) und 3.390 kWh (2023); die Werte stehen nur im Diagram
 
 - Fakten fehlen: Stromverbrauch 2022, Stromverbrauch 2023; Urteil: - (erwartet -); Lücke benannt: ja; Tools: search, list_documents
 - Zitiert: [1] 05_Strom_Zwischenablesung_Info_2025.pdf S. 1
+- RAGAS: Context Recall 0.00, Faithfulness 1.00
 
 ## S5: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
 
@@ -103,6 +114,7 @@ Erwartet: Ja, der Rechnungsbetrag von 1.189,00 EUR ist mit den Vertragspreisen u
 **P2 Agent** (359.3 s, answer): Dazu liegen in den Unterlagen keine Angaben vor, die die Übereinstimmung der Stromabrechnung 2024 mit den Vertragspreisen belegen. Es gibt keine expliziten Vergleiche oder Preise in der Abrechnung 2024, die mit den Vertragspreisen verglichen werden könnten.
 
 - Fakten fehlen: Rechnungsbetrag 2024, Abrechnung korrekt; Urteil: ja (erwartet ja); Lücke benannt: ja; Tools: search, list_documents, search
+- RAGAS: Context Recall 1.00, Faithfulness 0.00
 
 ## G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
 
@@ -111,6 +123,7 @@ Erwartet: Nein. Angekündigt waren 38,20 ct/kWh, abgerechnet wurden 39,50 ct/kWh
 **P2 Agent** (249.7 s, empty_answer): 
 
 - Fakten fehlen: Angekündigter Arbeitspreis, Abgerechneter Arbeitspreis, Zu viel berechnet; Urteil: - (erwartet nein); Lücke benannt: nein; Tools: search
+- RAGAS: Context Recall 0.00, Faithfulness entfällt
 
 ## G2: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
 
@@ -122,6 +135,7 @@ Der Sollwert lautet 1.830,00 EUR, während der Istwert -1.920,00 EUR ist. Die Ab
 
 - Fakten fehlen: Wohnflächenanteil; Urteil: nein (erwartet ja); Lücke benannt: nein; Tools: search, calculate
 - Zitiert: [1] 19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf S. 1, [2] 19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf S. 1
+- RAGAS: Context Recall 1.00, Faithfulness 1.00
 
 ## G3: Ist die Gasabrechnung 2026 korrekt?
 
@@ -157,6 +171,7 @@ Das Rechnungsbetrag von 125,00 EUR [2] stimmt also mit dem Sollwert von 125,04 E
 
 - Fakten fehlen: Korrekte z-Zahl, Korrekte Energiemenge, Zu viel berechnet; Urteil: - (erwartet nein); Lücke benannt: nein; Tools: search
 - Zitiert: [2] 29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf S. 1, [8] 09_Gas_Preisanpassung_NeckarEnergie_2026.pdf S. 1
+- RAGAS: Context Recall 0.00, Faithfulness 0.33
 
 ## G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
 
@@ -170,6 +185,7 @@ Zusammengefasst: Ihr Anteil an den Betriebskosten 2026 in der Abrechnung ist 1.9
 
 - Fakten fehlen: Wohnfläche laut Mietvertrag, Abgerechnete Wohnfläche, Korrekter Anteil; Urteil: nein (erwartet nein); Lücke benannt: nein; Tools: search, calculate
 - Zitiert: [1] 30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf S. 1, [9] 16_Mietvertrag_Hauptstrasse42_2023.pdf S. 1
+- RAGAS: Context Recall 0.00, Faithfulness 1.00
 
 ## N1: Wie hoch war meine Stromrechnung 2023?
 
@@ -178,6 +194,7 @@ Erwartet: Liegt nicht vor, da die Belieferung erst am 01.01.2024 begann; nur der
 **P2 Agent** (236.5 s, answer): Dazu liegen in den Unterlagen keine Angaben vor, dass es eine Stromrechnung für das Jahr 2023 gibt.
 
 - Fakten fehlen: -; Urteil: - (erwartet -); Lücke benannt: ja; Tools: search, list_documents
+- RAGAS: Context Recall entfällt, Faithfulness 1.00
 
 ## N2: Welchen Grundpreis zahle ich für Fernwärme?
 
@@ -186,6 +203,7 @@ Erwartet: Es gibt keinen Fernwärmevertrag; die Wohnung wird mit einer Gasetagen
 **P2 Agent** (275.7 s, answer): Dazu liegen in den Unterlagen keine Angaben vor.
 
 - Fakten fehlen: -; Urteil: - (erwartet -); Lücke benannt: ja; Tools: search, list_documents
+- RAGAS: Context Recall entfällt, Faithfulness 0.00
 
 ## Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
 
@@ -201,6 +219,7 @@ Es passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen.
 
 - Fakten fehlen: z-Zahl, Energiemenge; Urteil: ja (erwartet ja); Lücke benannt: nein; Tools: search, calculate
 - Zitiert: [1] 10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf S. 1
+- RAGAS: Context Recall 1.00, Faithfulness 0.17
 
 ## Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
 
@@ -210,6 +229,7 @@ Erwartet: 120,00 EUR ab 15.02.2026, nicht die früheren 105,00 oder 115,00 EUR.
 
 - Fakten fehlen: Aktueller Abschlag; Urteil: - (erwartet -); Lücke benannt: nein; Tools: search
 - Zitiert: [1] 03_Strom_Preisanpassung_SuedVolt_2025.pdf S. 1, [3] 04_Strom_Jahresabrechnung_2024_SuedVolt.pdf S. 1
+- RAGAS: Context Recall 0.00, Faithfulness 0.50
 
 ## Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
 
@@ -222,3 +242,4 @@ Erwartet: Nach der Erstlaufzeit (bis 31.12.2024) jederzeit mit 1 Monat Frist; di
 
 - Fakten fehlen: -; Urteil: nein (erwartet -); Lücke benannt: nein; Tools: search
 - Zitiert: [1] 01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf S. 1, [2] 03_Strom_Preisanpassung_SuedVolt_2025.pdf S. 1
+- RAGAS: Context Recall 0.00, Faithfulness 1.00
