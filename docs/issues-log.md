@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-087 – Kein O-Ton mehr für das Entwicklungstagebuch
+- **Datum / Meilenstein:** 2026-11-18 / Übergang Phase 1 → Phase 2
+- **Kategorie:** konzept
+- **Status:** akzeptiert
+- **Symptom:** Der Nutzer kann ab 2026-11-18 grundsätzlich keinen O-Ton mehr liefern. Von 20 Einträgen im `dev-journal.md` hat nur einer einen O-Ton (2026-11-17); die übrigen standen auf „ausstehend“ oder „nicht geliefert“.
+- **Ursache:** Zeitmangel des Nutzers (vgl. ISS-085).
+- **Lösung / Workaround:** Claude fragt nicht mehr nach dem O-Ton; das Feld steht auf „(nicht geliefert, ISS-087)“. Die Reflexion in Phase 2 stützt sich nur auf belegte Einträge (issues-log, evaluation-log, ADRs, der eine vorhandene O-Ton) und erfindet keine persönlichen Eindrücke. Der Nutzer muss den persönlichen Teil vor der Abgabe selbst lesen und bei Bedarf ergänzen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Reflexion (Risiko: generischer Text)
+
+### ISS-086 – Abgleich „Context Recall gegen Sollfakten“ zählt Scheinwidersprüche
+- **Datum / Meilenstein:** 2026-11-18 / M6 (RAGAS-Auswertung v1.0.0)
+- **Kategorie:** evaluation (auch ki-assistent: Fehldeutung in RUN-010/011)
+- **Status:** akzeptiert
+- **Symptom:** `scripts/check_evidence.py` meldet für RUN-020/021 8 von 24 Context-Recall-Werten als Widerspruch („alle Sollfakten im Kontext“ gegen Wert ≥ 0,5). Von Hand gegen Referenzsatz und Belege gelesen, ist keiner davon ein Fehlurteil des Bewerters. Das echte Fehlurteil P2/S2 (0,50, obwohl beide Preise im Kontext stehen) zählt der Abgleich dagegen nicht. Claude hat dieselbe Zählung in RUN-010/011 (13 von 48) und in ISS-053, Punkt 3, als Unzuverlässigkeit des Bewerters gedeutet; das war vermutlich zum Teil eine Fehldeutung.
+- **Ursache:** Zwei verschiedene Bezugsgrößen. RAGAS urteilt je Satz der Referenzantwort (`expected_answer`), der Abgleich prüft die Sollfakten (`facts`). Die Referenzsätze enthalten zusätzlich berechnete Werte, Flächen, ältere Ablenker-Werte und Hinweise, die in keinem Beleg stehen (G1–G4, Z2, Z3); umgekehrt enthalten die Sollfakten Urteile wie „Abrechnung korrekt: ja“ (S5), die nie in einem Beleg stehen. Dazu kommt die Ja/Nein-Schwelle 0,5 gegen einen anteiligen Wert (S2).
+- **Lösung / Workaround:** Widersprüche von Hand auflösen (`evaluation-log.md`, RAGAS-Nachtrag RUN-020/021). Nur bei Zeit: Urteilsfakten im Abgleich auslassen und den Anteil der Sollfakten im Kontext mit Context Recall vergleichen. Die Referenzantworten bleiben unverändert, damit die Läufe vergleichbar bleiben.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen), Reflexion
+
 ### ISS-085 – Verständnisfragen M6 nicht selbst beantwortet, Erklärungen von Claude eingetragen
 - **Datum / Meilenstein:** 2026-11-17 / M6 (Reverse Engineering)
 - **Kategorie:** konzept
@@ -57,10 +77,10 @@
 ### ISS-082 – RAGAS-Werte fehlen für den Stand v1.0.0
 - **Datum / Meilenstein:** 2026-11-17 / M6 (Abgleich mit `requirements.md`)
 - **Kategorie:** evaluation
-- **Status:** offen
+- **Status:** gelöst
 - **Symptom:** `ragas.jsonl` gibt es nur für RUN-009 bis RUN-011. Seitdem haben sich Werkzeuge, Größen-Anfrage und Rückfragen geändert; RUN-020/021 haben keine RAGAS-Werte.
 - **Ursache:** Ab M6d lag der Fokus auf den deterministischen Metriken und der Handprüfung; ein RAGAS-Lauf kostet mehrere Stunden CPU-Zeit.
-- **Lösung / Workaround:** Optional über Nacht `uv run --group ragas python -m audit_agent.evaluation ragas --run-id run-020` und danach dasselbe mit `run-021`. Ohne Lauf nennt die Ausarbeitung die RAGAS-Werte mit ihrem Code-Stand.
+- **Lösung / Workaround:** Optional über Nacht `uv run --group ragas python -m audit_agent.evaluation ragas --run-id run-020` und danach dasselbe mit `run-021`. Ohne Lauf nennt die Ausarbeitung die RAGAS-Werte mit ihrem Code-Stand. Nachtlauf 2026-11-17/18 ohne Fehlschlag (3,1 h); Auswertung im `evaluation-log.md` (RAGAS-Nachtrag RUN-020/021), Befund zum Abgleich in ISS-086.
 - **Gelernt:** Eine zweite Sicht hilft nur, wenn sie zum gleichen Stand gehört.
 - **Relevant für Ausarbeitung?** ja → Testmodul, Reflexion
 
@@ -350,7 +370,7 @@
 - **Status:** akzeptiert
 - **Symptom:** (1) Die reine Lückenantwort „Dazu liegen in den Unterlagen keine Angaben vor.“ bekommt Faithfulness 0,00 in 5 und 1,00 in 9 von 14 Fällen; in mindestens 4 der 5 Null-Fälle fehlten die gesuchten Werte tatsächlich im Kontext. (2) Context Recall bei Z3: P1 hat die Zeile „Kündigungsfrist: 1 Monat …“ im Kontext und bekommt 0,00 (beide Läufe), llama P2 hat sie nicht und bekommt 1,00. (3) 13 von 48 Context-Recall-Werten widersprechen dem Abgleich „alle Sollfakten im Kontext“ (7-mal 1,00 ohne die Fakten, 6-mal 0,00 mit den Fakten). (4) Wörtlich belegte Antworten bekommen zum Teil 0,00 oder 0,50 (qwen P2/Z3, qwen P1/Z3).
 - **Ursache:** Ein 7B-Bewerter auf der CPU; RAGAS zerlegt die Referenz in Sätze, und die Referenzsätze mischen Fakten mit Hinweisen („die Fristen von Internet- und Mobilfunkvertrag gehören nicht dazu“), die in keinem Beleg stehen. Für Lückenantworten gibt es keine prüfbare Aussage. Die Einzelurteile gibt RAGAS nicht aus, die Ursache je Fall ist deshalb nur vermutet.
-- **Lösung / Workaround:** RAGAS bleibt als zweite Sicht im Report, trägt aber keine Aussage allein. Die Tabelle nennt Faithfulness zusätzlich ohne reine Lückenantworten. Für „Beleg im Kontext?“ zählt der deterministische Abgleich aus `scripts/check_evidence.py`. Ergänzt ISS-047.
+- **Lösung / Workaround:** RAGAS bleibt als zweite Sicht im Report, trägt aber keine Aussage allein. Die Tabelle nennt Faithfulness zusätzlich ohne reine Lückenantworten. Für „Beleg im Kontext?“ zählt der deterministische Abgleich aus `scripts/check_evidence.py`. Ergänzt ISS-047. Nachtrag RUN-020/021: Punkt 2 (P1/Z3) und die Zählung in Punkt 3 erklären sich weitgehend aus der Referenzformulierung und dem Abgleich selbst (ISS-086); Punkt 1 und 4 bestätigen sich (P2/N2, P1/S1, P2/Z1).
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen von LLM-Bewertern auf kleiner Hardware)
 

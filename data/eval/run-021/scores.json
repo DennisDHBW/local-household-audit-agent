@@ -28,7 +28,26 @@
       "prompt_tokens_mean": 9647.0
     }
   ],
-  "ragas": [],
+  "ragas": [
+    {
+      "variant": "p2",
+      "metric": "faithfulness",
+      "mean": 0.69,
+      "scored": 13,
+      "total": 14,
+      "too_long": 0,
+      "errors": 0
+    },
+    {
+      "variant": "p2",
+      "metric": "context_recall",
+      "mean": 0.46,
+      "scored": 12,
+      "total": 14,
+      "too_long": 0,
+      "errors": 0
+    }
+  ],
   "scores": [
     {
       "variant": "p2",
