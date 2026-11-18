@@ -24,7 +24,7 @@ Die Fehleranalyse zu RUN-010/011 zeigte, dass P2 seine Belege meist schon durch 
 | Bei leerer Suche den Filter lockern | Bei einer Sparte, die es nicht gibt, ist „keine Treffer“ die richtige Antwort (ISS-051). |
 
 ## Konsequenzen
-- Positiv: Kein ungültiger Werkzeugaufruf in 24 Aufrufen (RUN-010: 13 von 37). S1, Z3 (Kündigungsfristen) und N2 (Negativfrage) werden richtig beantwortet. Weniger Code im Modellvertrag (ein Suchwerkzeug, drei Parameter).
+- Positiv: Kein ungültiger Werkzeugaufruf in 24 Aufrufen (RUN-010: 13 von 37). Nachtrag 2026-11-18 (ISS-091): 11 der 13 ungültigen Aufrufe in RUN-010 waren `calculate`, das in RUN-012 nicht mehr vorkam; der Rückgang ist daher kaum dem gemeinsamen Suchwerkzeug zuzuschreiben. S1, Z3 (Kündigungsfristen) und N2 (Negativfrage) werden richtig beantwortet. Weniger Code im Modellvertrag (ein Suchwerkzeug, drei Parameter).
 - Negativ / Preis der Entscheidung: Das Modell setzt `include_counterpart` in 12 von 17 Suchen, auch bei Einzelfragen; der Kontext wird größer. Jahr und Dokumentart laufen nur noch über die Suchanfrage und damit über die Ähnlichkeit statt über eine harte Auswahl. Die Laufzeit je Frage stieg von 136 s auf 263 s (Ursache offen, ISS-057). Fehler in Abrechnungen findet P2 weiterhin nicht (0 von 3), weil `llama3.1:8b` `calculate` nie aufruft (ISS-058).
 - Was muss getestet werden, um die Entscheidung zu bestätigen? Zweiter Lauf zur Streuung; Gegenprobe mit `qwen2.5:7b` (ADR-0013); prüfen, ob das Jahr in der Suchanfrage ohne Jahresfilter bei Fragen wie N1 („Stromrechnung 2023“) ausreicht.
 
