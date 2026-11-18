@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-18 – Überarbeitung Teil 1 (Kapitel gegeneinander geprüft)
+**Ziel der Sitzung:** Laut status.md die Überarbeitung; da noch keine Antworten in `paper-questions.md` vorlagen, nur die Kapitel gegeneinander prüfen und die offenen Entscheidungen klären.
+**Was wurde gemacht:**
+- Offene Entscheidungen mit dem Nutzer geklärt: Titelblatt „November 2026“ bleibt; kein Hinweis auf die Rolle von Claude bei der Handprüfung, KI-Hinweis der Vorlage entfernt (`aiNote.tex`, Schalter in `main.tex`, `commandDefs.tex`, `settings/document.tex`); PDF noch nicht gelesen
+- Alle sechs Kapitel gegeneinander gelesen und neun Stellen angeglichen (ISS-095): Kürzel S/G/N/Z und P2 in Kapitel 1 eingeführt, G1 dort markiert, Prüfablauf in Kapitel 1 als Ziel formuliert, „Grenzfall“ in Kapitel 3 ersetzt, E1 durch Verweis auf Kapitel 1 ersetzt, 629 Chunks in Kapitel 2 hergeleitet, 18/19 Werkzeug-Fehlschläge verbunden, Doppelung der Begründung Kapitel 3/6 entfernt, Bezugswort in Kapitel 6 ergänzt
+- Alle Zahlen gegen `evaluation-log.md` geprüft (keine Abweichung; Listing-Zeiten in `run-021/p2-Z1.jsonl` nachgeprüft); Wortliste aus `writing-guide.md` §3.3, Gedankenstriche und rhetorische Fragen geprüft (keine Treffer)
+- Zwei Builds: Die erste Fassung kostete 0,12 S. (zusätzliche Zeilen und verschobene Gleitobjekte), nach Kürzung und Verlagerung in einen Absatz mit freier letzter Zeile endet das PDF wie vorher bei gut 80 % von Seite 8; Vergleich gegen einen Build von `main`
+- Geänderte Stellen oben in `paper-questions.md` aufgelistet, damit der Nutzer sie beim Lesen findet
+**Gelieferte Dateien / Funktionen:** `paper/content/chapter/0{1..6}*/main.tex`, `paper/main.tex`, `paper/ads/commandDefs.tex`, `paper/settings/document.tex`, `paper/ads/aiNote.tex` (gelöscht), `docs/requirements.md`, `docs/paper-questions.md`, `docs/issues-log.md`, `docs/status.md`, `Claude outputs/Ausarbeitung-Entwurf-Kapitel1-6.pdf` (überschrieben, nicht versioniert); kein Python-Code geändert
+**Entscheidungen:** keine ADR; kein KI-Hinweis (ISS-094, `requirements.md` Abschnitt 2.2)
+**Probleme / Überraschungen:** ISS-095 (Kapitel passten nicht zueinander, obwohl jede Zahl stimmte; erste Korrektur zu teuer im Seitenbudget)
+**Offen / unklar:** z-Zahl unerklärt, Restpunkte ISS-095; Antworten und Markierungen des Nutzers; persönlicher Teil Kapitel 6 (ISS-087)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 0,5 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `chore(paper)`, `docs(paper)`, `docs`
+
 ### 2026-11-18 – Kapitel 6 „Reflexion und Ausblick“
 **Ziel der Sitzung:** Kapitel 6 entwerfen (laut status.md), damit alle sechs Kapitel für die Überarbeitung vorliegen.
 **Was wurde gemacht:**
