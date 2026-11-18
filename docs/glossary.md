@@ -141,7 +141,7 @@
 | RAGAS | `ragas_eval`, Befehl `ragas` | Framework, das Antworten mit einem LLM als Bewerter benotet; hier lokal mit `audit-judge` | |
 | Bewertermodell | `audit-judge`, `RagasJudge` | Alias von `qwen2.5:7b` mit festem `num_ctx` 8192, bewertet für RAGAS | |
 | Faithfulness | `faithfulness` | Anteil der Aussagen einer Antwort, die durch die gezeigten Belege gedeckt sind (0–1) | |
-| Context Recall | `context_recall` | Anteil der Aussagen der erwarteten Antwort, die in den gezeigten Belegen stehen (0–1) | |
+| Context Recall | `context_recall` | Anteil der Aussagen der erwarteten Antwort (`expected_answer`), die in den gezeigten Belegen stehen (0–1); der Bewerter urteilt je Satz, ein Satz mit einem unbelegten Teil zählt ganz als nicht belegt (ISS-086) | |
 | RAGAS-Status | `RagasStatus` | `ok`, `too_long` (Prompt passt nicht, nicht gekürzt), `no_context`, `not_applicable`, `no_statements`, `error` | |
 | Belegabgleich | `scripts/check_evidence.py`, `evidence.json` | Prüft je gespeicherter Antwort, ob die Sollfakten im Kontext des Modells standen und ob die erwarteten Quellen gezeigt wurden; trennt „Beleg kam nie an“ von „Beleg da, Antwort falsch“ | |
 | Reine Lückenantwort | `is_gap_only`, `GAP_ANSWER` | Antwort, die nur aus dem Satz „Dazu liegen in den Unterlagen keine Angaben vor.“ besteht | |
