@@ -3,6 +3,16 @@
 > Je Kapitel 3–5 Fragen, die ein Prüfer zum Text stellen könnte. Keine Musterantworten.
 > Der Nutzer liest die Kapitel und beantwortet die Fragen gesammelt, wenn alle sechs Kapitel entworfen sind (Entscheidung 2026-11-18). Die Antworten fließen danach in die Überarbeitung ein.
 
+## Überarbeitung Teil 1 (2026-11-18): geänderte Stellen
+
+Beim Lesen des neuen PDFs (`Claude outputs/Ausarbeitung-Entwurf-Kapitel1-6.pdf`) betrifft das diese Sätze (ISS-095):
+- Kapitel 1: Die Prüffrage im zweiten Absatz ist als G1 markiert und als Ziel formuliert („soll … gegenüberstellen“), weil der feste Prüfablauf abgeschaltet ist. Am Ende des dritten Absatzes stehen jetzt die 14 Testfragen mit den Kürzeln S/G/N/Z und der Agent als P2.
+- Kapitel 2: „eingebauter Fehler aus Kapitel 1“ statt „E1“; „zu jeder der 65 Tabellen …, zusammen sind es 629 Chunks“.
+- Kapitel 3: „Er ist deshalb abgeschaltet (Kapitel 6)“ statt der Begründung, die Kapitel 6 ausführt; Z1 „nur knapp als richtig gewertet“ statt „Grenzfall“.
+- Kapitel 5: Kürzel-Erklärung entfernt (steht in Kapitel 1); „19-mal die Werkzeugaufrufe (P2, davon einmal die Argumente)“.
+- Kapitel 6: „Welche Änderung ihn auslöste … wurden alle zusammen gemessen“.
+- KI-Hinweis der Vorlage entfernt; Titelblatt „November 2026“ bestätigt.
+
 ## Kapitel 1 – Problemstellung und Use Case
 
 1. Warum reicht es nicht, alle Unterlagen direkt in den Prompt zu geben, und was hat B0 dazu konkret gezeigt?
@@ -14,7 +24,6 @@
 **Antworten (von mir):**
 
 **Beim Lesen besonders prüfen:**
-- Titelblatt: Bearbeitungszeitraum „November 2026“ ist aus Git abgeleitet (erster Commit 14.11.2026), nicht vorgegeben.
 - Letzter Absatz: Der Hinweis „keine Rechtsberatung“ fehlt im Prototyp (ISS-088). Passt die Formulierung im Text?
 
 ## Kapitel 2 – Datenbasis und Vorverarbeitung
@@ -79,7 +88,7 @@
 **Antworten (von mir):**
 
 **Beim Lesen besonders prüfen:**
-- Die Handprüfung und die Zuordnung der Ursachen hat Claude gemacht (evaluation-log). Im Text steht nur „nicht unabhängig gegengelesen“. Bitte mindestens RUN-020 G1, G2, Z1, RUN-021 G2, Z1 und RUN-011 B0/S5 selbst lesen und entscheiden, ob ein KI-Hinweis die Auswertung nennt (ISS-094).
+- Die Handprüfung und die Zuordnung der Ursachen hat Claude gemacht (evaluation-log). Im Text steht nur „nicht unabhängig gegengelesen“. Bitte mindestens RUN-020 G1, G2, Z1, RUN-021 G2, Z1 und RUN-011 B0/S5 selbst lesen, damit du die Handprüfung erklären kannst (ISS-094; kein KI-Hinweis, Entscheidung 2026-11-18).
 - „Knapp als richtig gewertet“ heißt im evaluation-log „Grenzfall“. Umbenannt, damit es nicht mit der Fragekategorie Grenzfälle (G1–G4) verwechselt wird (Glossar).
 - B0 stammt aus RUN-011 (Code-Stand M6b). Per git geprüft: Prompts und B0-Kontext haben sich seitdem nicht geändert, nur P1, P2 und der Einheitenfaktor der Metrik (ändert keine Bewertung). Zählung je Kategorie: evaluation-log, Nachtrag für Kapitel 5.
 - „19-mal die Werkzeugaufrufe“ = Werkzeugwahl 8 + Filter 10 + Argumente 1. Kapitel 3 nennt 18 von 23 (ohne Argumente). Beide Zahlen stimmen, können aber zu Nachfragen führen.
@@ -102,5 +111,4 @@
 - „Eine Wiederholung ohne Codeänderung war wortgleich“ meint RUN-015/016 (`llama3.1:8b`, Code-Stand M6f, also nach den Änderungen aus M6e). Die Rückschritte bei S2, S4 und N2 gegenüber RUN-012 bestanden dort weiter, deshalb stammen sie aus Code oder Prompt von M6e und nicht aus Zufall.
 - „In einem Zwischenstand“ bei G4 meint RUN-014 (`qwen2.5:7b`, ohne Prüfablauf, vor der Größen-Anfrage): Soll 1.867,50 EUR, Abweichung 95,78 EUR. Danach nicht mehr gefunden (RUN-017, RUN-018/021).
 - Self-RAG steht nur als Begriff im Text. Der Satz setzt voraus, dass du die Reflexionstoken erklären kannst (siehe auch Kapitel 3, Frage 4).
-- Die Rolle von Claude bei der Handprüfung steht nicht im Kapitel (ISS-094). Darüber entscheidest du beim KI-Hinweis.
 - Weggelassen aus Platzgründen: leere Antwort nach der Rückfrage bei G1 (ISS-076), Ablenker im Kontext bei P1 (7/94 → 4/92), GraphRAG und Hausverwaltung (stehen in Kapitel 4), Prefill-Zeit und Prompt-Cache als Ausblick.

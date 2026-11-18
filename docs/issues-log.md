@@ -24,13 +24,23 @@
 
 ## Einträge
 
+### ISS-095 – Kapitel passten an mehreren Stellen nicht zueinander
+- **Datum / Meilenstein:** 2026-11-18 / M7 (Überarbeitung Teil 1)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst (bis auf die Restpunkte unten)
+- **Symptom:** Die sechs Kapitel entstanden in getrennten Sitzungen; jede prüfte ihre Zahlen, aber nicht den Zusammenhang. Beim Querlesen fielen auf: Kapitel 1 beschrieb als Ist-Zustand, dass der Prototyp Soll- und Istwert getrennt sucht, obwohl der feste Prüfablauf abgeschaltet ist (Kapitel 3); die Fragekürzel (S2, G1, Z1) und P2 standen in Kapitel 3 und 4 vor ihrer Erklärung in Kapitel 5; Kapitel 3 nannte Z1 noch „Grenzfall“ statt „knapp als richtig gewertet“; die Kennung E1 kam nur in Kapitel 2 vor; die 629 Chunks in Kapitel 4 ließen sich aus den 564 in Kapitel 2 nicht herleiten; „18 von 23“ (Kapitel 3) und „19-mal“ (Kapitel 5) standen unverbunden nebeneinander; Kapitel 3 nahm die Begründung aus Kapitel 6 vorweg; in Kapitel 6 fehlte zu „Welche“ das Bezugswort. Alle Zahlen stimmten mit `evaluation-log.md` überein (auch die Zeiten im Listing, nachgeprüft in `run-021/p2-Z1.jsonl`).
+- **Ursache:** Kapitelweises Schreiben mit Prüfung nur gegen die Quellen, nicht gegen die anderen Kapitel.
+- **Lösung / Workaround:** Abkürzungen S/G/N/Z und P2 in Kapitel 1 eingeführt, G1 dort markiert, Kapitel 1 als Ziel („soll“) formuliert, übrige Stellen angeglichen. Eine erste Fassung der Korrekturen (Erklärung der z-Zahl in Kapitel 3, Summaries in Kapitel 4) verschob Gleitobjekte und kostete 0,12 S.; sie wurde gekürzt bzw. nach Kapitel 2 in einen Absatz mit freier Zeile verlegt, das PDF endet wieder bei gut 80 % von Seite 8. Restpunkte aus Platzgründen offen: z-Zahl wird nirgends erklärt (Kapitel 3, 5), die 10 Retrieval-Testfragen (Kapitel 2, 4) sind nicht ausdrücklich als Teilmenge eines früheren Katalogs gekennzeichnet, Lauf-Kennungen (RUN-011, RUN-021) in den Bildunterschriften werden nicht erklärt.
+- **Gelernt:** Ergänzungen kosten im fertigen Satz ganze Zeilen; vorher prüfen, wo ein Absatz auf seiner letzten Zeile noch Platz hat.
+- **Relevant für Ausarbeitung?** ja → alle Kapitel (Endkontrolle)
+
 ### ISS-094 – Qualitätsaussage in Kapitel 5 stützt sich auf eine Handprüfung durch Claude
 - **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 5)
 - **Kategorie:** ki-assistent
 - **Status:** offen
 - **Symptom:** Kapitel 5 nennt „richtig nach Handprüfung“ (B0 3, P1 8, P2 6 von 14) als Hauptergebnis und die von Hand vergebenen Hauptursachen der Fehlschläge. Beides hat Claude beim Auswerten der Läufe gemacht (`evaluation-log.md`, RUN-010 bis RUN-021); der Text sagt nur „nicht unabhängig gegengelesen“, nicht wer geprüft hat. Bei ISS-086 und ISS-091 musste Claude eigene Deutungen schon einmal korrigieren.
 - **Ursache:** Zeitmangel (ISS-084/085/087); die Handprüfung wurde nie vom Nutzer gegengelesen.
-- **Lösung / Workaround:** Offen. Vorschlag für die Überarbeitung: Der Nutzer liest mindestens die Antworten der Endfassung, deren Wertung knapp ist oder die Kapitel 5 als Beispiel nennt (RUN-020 G1, G2, Z1; RUN-021 G2, Z1; RUN-011 B0/S5), und entscheidet, ob ein KI-Hinweis (in `paper/main.tex` auskommentiert) die Rolle von Claude bei der Auswertung nennt.
+- **Lösung / Workaround:** Entscheidung des Nutzers am 2026-11-18: kein Hinweis auf die Rolle von Claude, weder in Kapitel 5 noch in einer KI-Erklärung; der KI-Hinweis der Vorlage ist entfernt (Kennzeichnung laut `requirements.md` nicht vorgesehen). Offen bleibt das Gegenlesen: Der Nutzer sollte mindestens RUN-020 G1, G2, Z1, RUN-021 G2, Z1 und RUN-011 B0/S5 selbst lesen, damit er die Handprüfung im Gespräch erklären kann.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Kapitel 5 (Grenzen), Kapitel 6, ggf. KI-Hinweis
 
