@@ -412,7 +412,7 @@ Ergebnis ist eine Tabelle „Variante × Metrik“, aus der eine begründete Qua
 | Fachliche Komplexität (Brennwert/Zustandszahl beim Gas, Heizkostenverteilung) | Scope begrenzen: Kernprüfungen auf Strom-Arbeitspreis/Grundpreis und Nebenkosten-Umlage; Gas-Umrechnung als Erweiterung |
 | Zahlenformate (Komma, Tausenderpunkt, ct vs. €) | Normalisierung vor `calculate`; Unit-Tests dafür |
 | Datenschutz bei echten Unterlagen in der Abgabe | synthetische oder anonymisierte Dokumente abgeben |
-| Antworten wirken wie Rechtsberatung | Formulierung als „Auffälligkeit mit Beleg“, Hinweis im System-Prompt und in der UI |
+| Antworten wirken wie Rechtsberatung | Formulierung als „Auffälligkeit mit Beleg“, Hinweis im System-Prompt und in der UI (nicht umgesetzt, nur indirekt über den Prompt, ISS-088) |
 
 ---
 
@@ -435,14 +435,17 @@ Nach jedem Meilenstein: Code-Dateien, Funktionen, Datenstrukturen, Datenflüsse 
 
 ## 14. Vorschlag für die Gliederung der Ausarbeitung (5–8 Seiten)
 
-| Kapitel | Inhalt | Bewertungskriterium |
-|---|---|---|
-| 1. Problem & Use Case | Prüfproblem, Zielgruppe, Datenschutzargument, Abgrenzung | 15 % |
-| 2. Datenbasis & Vorverarbeitung | Korpus, Strukturelemente, Parsing, Chunk-Typen, Metadaten, JSON-Format | 15 % |
-| 3. Architektur | Gesamtbild, P1 vs. P2, Tools, ReAct-Beispiel, Modellwahl & Hardware | 25 % |
-| 4. RAG- & Retrieval-Konzept | Hierarchie-Prefix, Score-Formel, Metadatenfilter, Evidence-First, GraphRAG-Entscheidung | 20 % |
-| 5. Testmodul & Evaluation | 14-Fragen-Katalog (5/4/2 + 3), RAGAS + eigene Metriken, Baselines, Ergebnisse, Fehleranalyse | 15 % |
-| 6. Reflexion und Ausblick | Grenzen, Erkenntnisse aus Tests und Issues, Ausblick (ohne Literatur) | 10 % |
+| Kapitel | Inhalt | Bewertungskriterium | Seiten (Budget) |
+|---|---|---|---|
+| 1. Problem & Use Case | Prüfproblem, Zielgruppe, Datenschutzargument, Abgrenzung | 15 % | 1,25 (Entwurf ca. 1,2) |
+| 2. Datenbasis & Vorverarbeitung | Korpus, Strukturelemente, Parsing, Chunk-Typen, Metadaten, JSON-Format | 15 % | 1,0 |
+| 3. Architektur | Gesamtbild, P1 vs. P2, Tools, ReAct-Beispiel, Modellwahl & Hardware | 25 % | 1,5 |
+| 4. RAG- & Retrieval-Konzept | Hierarchie-Prefix, Score-Formel, Metadatenfilter, Evidence-First, GraphRAG-Entscheidung | 20 % | 1,25 |
+| 5. Testmodul & Evaluation | 14-Fragen-Katalog (5/4/2 + 3), RAGAS + eigene Metriken, Baselines, Ergebnisse, Fehleranalyse | 15 % | 1,5 (Tabellen) |
+| 6. Reflexion und Ausblick | Grenzen, Erkenntnisse aus Tests und Issues, Ausblick (ohne Literatur) | 10 % | 0,75 |
+| **Summe** | | | **7,25** (Puffer bis 8) |
+
+Festgelegt am 2026-11-18. Seiten sind im kompilierten PDF gemessen (12 pt, 1,5-zeilig, ca. 400 Wörter je Seite); Kapitel beginnen ohne Seitenumbruch (`paper/ads/header.tex`). Kapitel 1 kam im Entwurf auf ca. 1,2 statt 1,0 Seiten; die 0,25 Seiten gehen vom Puffer ab.
 
 ---
 
