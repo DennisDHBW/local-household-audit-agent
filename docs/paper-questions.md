@@ -86,3 +86,21 @@
 - „Acht Fragen ohne Prüfung“ sind S1–S4, N1, N2, Z2, Z3. Die Zahl steht nicht in der Tabelle, sondern ist aus den Einzelergebnissen gezählt.
 - „Alle 9 Antworten mit Zahlen tragen eine Belegnummer“ ist in RUN-018 gezählt. RUN-021 ist dort wortgleich (13 von 14 Antworten gleich, S5 ohne Zahlen).
 - Weggelassen aus Platzgründen, Kandidaten für Kapitel 6: Verlauf von P2 (3 → 9 mit `llama3.1:8b` in RUN-012 → 6), die beste gemessene Fassung ist also nicht die Endfassung. Außerdem G4 einmal sauber erkannt (RUN-014) und wieder verloren, Ablenker im Kontext bei P1 (7/94 → 4/92) und die ungeklärte leere Antwort bei G1 (ISS-076).
+
+## Kapitel 6 – Reflexion und Ausblick
+
+1. P2 kam mit `llama3.1:8b` schon auf 9 von 14 und fiel danach auf 6. Warum lässt sich nicht sagen, welche Änderung schuld war, und wie hättest du trotz 60 bis 90 Minuten je Lauf anders messen können?
+2. Warum ist ein gültiger `calculate`-Aufruf kein Beleg für eine richtige Prüfung? Erkläre es an G2.
+3. Was bewertet ein Modell bei Self-RAG, und was prüfen die Rückfragen des Prototyps? Warum reicht eine Prüfung der Form nicht?
+4. Der feste Prüfablauf sichert die Herkunft jeder Zahl. Warum war das nicht genug, und was müsste ein überarbeiteter Ablauf zusätzlich prüfen?
+5. Würdest du für Prüffragen eher P1 oder P2 weiterentwickeln? Begründe mit Zahlen aus Kapitel 5.
+
+**Antworten (von mir):**
+
+**Beim Lesen besonders prüfen:**
+- Das Kapitel enthält keine persönlichen Eindrücke (kein O-Ton, ISS-087). Eigene Erfahrungen (was überrascht oder Zeit gekostet hat) gehören hierher; Platz: ca. 0,05 S. im Kapitelbudget, insgesamt ca. 0,18 S. bis zum Ende von Seite 8.
+- „Eine Wiederholung ohne Codeänderung war wortgleich“ meint RUN-015/016 (`llama3.1:8b`, Code-Stand M6f, also nach den Änderungen aus M6e). Die Rückschritte bei S2, S4 und N2 gegenüber RUN-012 bestanden dort weiter, deshalb stammen sie aus Code oder Prompt von M6e und nicht aus Zufall.
+- „In einem Zwischenstand“ bei G4 meint RUN-014 (`qwen2.5:7b`, ohne Prüfablauf, vor der Größen-Anfrage): Soll 1.867,50 EUR, Abweichung 95,78 EUR. Danach nicht mehr gefunden (RUN-017, RUN-018/021).
+- Self-RAG steht nur als Begriff im Text. Der Satz setzt voraus, dass du die Reflexionstoken erklären kannst (siehe auch Kapitel 3, Frage 4).
+- Die Rolle von Claude bei der Handprüfung steht nicht im Kapitel (ISS-094). Darüber entscheidest du beim KI-Hinweis.
+- Weggelassen aus Platzgründen: leere Antwort nach der Rückfrage bei G1 (ISS-076), Ablenker im Kontext bei P1 (7/94 → 4/92), GraphRAG und Hausverwaltung (stehen in Kapitel 4), Prefill-Zeit und Prompt-Cache als Ausblick.
