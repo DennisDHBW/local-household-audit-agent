@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-090 – Seitenbudget knapp: Kapitel 1 und 2 zusammen ca. 0,35 Seiten über Plan
+- **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 2)
+- **Kategorie:** ki-assistent
+- **Status:** akzeptiert
+- **Symptom:** Der erste Entwurf von Kapitel 2 kam auf ca. 1,7 Seiten bei 1,0 Seiten Budget (plus 0,25 für das Listing). Erst nach Kürzen auf ca. 400 Wörter lag er bei ca. 1,3 Seiten. Mit derselben Messung (Kapitelüberschrift bis Kapitelüberschrift) kommt Kapitel 1 auf ca. 1,3 statt der notierten 1,2 Seiten.
+- **Ursache:** Die Faustregel „ca. 400 Wörter je Seite“ trifft zu, der erste Entwurf hatte aber über 500 Wörter. Wie Kapitel 1 gemessen wurde, war nicht notiert; die Abweichung von 0,1 Seiten stammt vermutlich aus der Messmethode.
+- **Lösung / Workaround:** Messmethode in `concept.md` §14 festgehalten. Kapitel 2 gekürzt; dabei fiel das Problem der aneinanderstoßenden Tabellen (ISS-014) heraus (in `paper-questions.md` vermerkt). Hochrechnung: ca. 7,6 von 8 Seiten. Kapitel 3 bis 6 vor dem Schreiben auf Wortzahl planen (ca. 400 Wörter je Seite abzüglich Tabellen).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein (Planung)
+
 ### ISS-089 – LaTeX in Claudes Shell unvollständig: deutsches babel und biblatex fehlen
 - **Datum / Meilenstein:** 2026-11-18 / M7 (Kapitel 1)
 - **Kategorie:** ki-assistent
