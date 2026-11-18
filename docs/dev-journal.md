@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-18 – Kapitel 2 „Datenbasis und Vorverarbeitung“
+**Ziel der Sitzung:** Kapitel 2 entwerfen (laut status.md).
+**Was wurde gemacht:**
+- Material gesammelt (concept §4–5, ADR-0005/0007/0008, ISS-012 bis ISS-024, RUN-001 bis RUN-004, Fehleranalyse RUN-010/011, echter Chunk aus `data/processed/06_…_chunks.json`)
+- Nutzer wählte Variante (a): JSON-Listing im Text, Budget 1,25 statt 1,0 Seiten
+- Kapitel geschrieben: Layoutmerkmale des Korpus, Parser-Regeln mit ISS-012/013 und verworfenen Alternativen, Chunk-Zahlen aus RUN-001, ISS-017, Listing der E1-Zeile, Enrichment mit Cache, Fehler aus RUN-002/003, Summaries nur als Suchhilfe (RUN-004), Grenzen
+- Erster Entwurf ca. 1,7 Seiten, auf ca. 1,3 Seiten gekürzt; ISS-014 dabei gestrichen; Wortliste aus writing-guide §3.3 geprüft (keine Treffer)
+- Fünf Verständnisfragen in `paper-questions.md`; Seitenbudget und Messmethode in `concept.md` §14
+**Gelieferte Dateien / Funktionen:** `paper/content/chapter/02-data-preprocessing/main.tex`, `docs/paper-questions.md`, `docs/concept.md`, `docs/issues-log.md`, `docs/status.md`; kein Python-Code geändert
+**Entscheidungen:** JSON-Listing im Text statt im Anhang (Nutzer); keine ADR
+**Probleme / Überraschungen:** ISS-090 (Seitenbudget knapp, Messmethode für Kapitel 1 nicht notiert)
+**Offen / unklar:** –
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `docs(paper)`, `docs`
+
 ### 2026-11-18 – Kapitel 1 „Problemstellung und Use Case“
 **Ziel der Sitzung:** Seitenbudget je Kapitel und Titelblatt festlegen, Kapitel 1 entwerfen (laut status.md).
 **Was wurde gemacht:**
