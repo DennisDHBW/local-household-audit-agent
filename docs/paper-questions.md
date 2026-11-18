@@ -31,3 +31,21 @@
 - Aus Platzgründen fehlt das Problem der aneinanderstoßenden Tabellen (ISS-014, Kostenzeilen mit Spalten der Zählertabelle). Bei Bedarf in Kapitel 6 aufgreifen.
 - „Eine fette erste Zeile gilt als Spaltenkopf“ ist vereinfacht: Die Regel verlangt außerdem mindestens zwei Zellen (ADR-0007, Punkt 3).
 - Der Satz „8 statt 9 von 10 Testfragen“ ist ein Retrieval-Ergebnis (RUN-004). Kapitel 4 soll ihn nicht wiederholen.
+
+## Kapitel 3 – Architektur des Agenten
+
+1. Warum laufen Einlesen und Abfrage in getrennten Phasen, und was kann der Agent deshalb zur Abfragezeit nicht?
+2. Im Protokoll steht bei keinem Werkzeugaufruf ein Thought. Ist P2 trotzdem ein ReAct-Agent, und wo steckt die Überlegung des Modells?
+3. Warum hat das Zusammenlegen der beiden Suchwerkzeuge die Fragen zu Kündigungsfristen gelöst, und was hat der Agent dabei an Steuerung verloren?
+4. Die Rückfragen übernehmen die Selbstprüfung im Code. Wie unterscheidet sich das von Self-RAG, und warum hat eine Rechennachfrage allein keinen eingebauten Fehler gefunden?
+5. Warum kostet schon der erste Modellaufruf jeder Frage 82 bis 105 s, und wie ließe sich das verkürzen, ohne den Schutz vor Speichermangel aufzugeben?
+
+**Antworten (von mir):**
+
+**Beim Lesen besonders prüfen:**
+- Self-RAG kommt nur als Begriff vor (keine Literatur, Entscheidung 2026-11-14). Der Satz setzt voraus, dass du erklären kannst, was Self-RAG dem Modell beibringt (Reflexionstoken) und warum hier stattdessen feste Regeln im Code stehen.
+- „18 von 23 Fehlschlägen“ stammen aus RUN-010 und RUN-011 zusammen (zwei Modelle, je 14 Fragen). Der Rückgang ungültiger Aufrufe (13 auf 0) steht bewusst nicht im Text, er kam vor allem vom fehlenden `calculate` (ISS-091).
+- Das Kapitel ist mit ca. 1,6 Seiten 0,1 Seiten über Budget (ISS-092). Kürzungskandidat, falls nötig: der Satz zur pydantic-Prüfung.
+- Weggelassen aus Platzgründen: Text-Aufrufe (ISS-061), Belegnummern und Trefferkürzung auf 600 Zeichen (gehören zu Kapitel 4), Speicherwerte 5,46 und 6,25 GB.
+- In Kapitel 2 wurde nebenbei ein Zeilenüberlauf behoben (\enquote{Datum: 18.01.2025}, geschütztes Leerzeichen entfernt).
+
