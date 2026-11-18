@@ -3,6 +3,20 @@
 \chapter{RAG- und Retrieval-Konzept}
 \label{chap:04-retrieval}
 
-% Bewertungskriterium: 20 %
-% Inhalt: Hierarchie-Prefix, Score-Formel, Metadatenfilter, Evidence-First, GraphRAG-Entscheidung
-% Wird in Phase 2 geschrieben (docs/writing-guide.md, Skill audit-paper-writer).
+% Bewertungskriterium: RAG- & Retrieval-Konzept (20 %)
+
+Der Index in ChromaDB enthält 547 der 629 Chunks, eingebettet mit \texttt{nomic-embed-text}. Die 82 Überschriften stecken nur im Hierarchie-Präfix \texttt{[Ordner | Datei | Kapitel > Unterkapitel]} vor jedem Inhalt. Filter und Boost sind wie bei Modular RAG einzeln schaltbar und wurden mit 10 beantwortbaren Testfragen getrennt gemessen.
+
+Von 20 Kandidaten nach Cosinus-Abstand $d_{\cos}$ liefert die Suche die fünf besten:
+\[
+\mathit{final\_score} = (1 - d_{\cos}) \times \mathit{boost}, \qquad \mathit{boost} \in \{1{,}0;\ 1{,}5\}
+\]
+Der Hierarchie-Boost greift, wenn ein Anfragebegriff im Pfad steht oder, wegen der Komposita, mit einem Pfadwort beginnt. Bei S2 traf \enquote{Stromvertrag} aus der Frage das Wort \enquote{Strom} im Dateinamen, der erste Treffer kam auf $0{,}712 \times 1{,}5 = 1{,}068$. Den Boost bekamen aber alle fünf Treffer, im Vergleichslauf ohne Filter 55 von 60, weil Wörter wie \enquote{Strom} oder \enquote{Arbeitspreis} in vielen Dateinamen und Überschriften stehen. Kein Rang einer erwarteten Datei änderte sich, ein Nutzen ist nicht belegt.
+
+Messbar half der Metadatenfilter, eine \texttt{where}-Bedingung mit Werten aus \texttt{documents.yaml}. Mit Filter kam kein Ablenkungsdokument mehr unter die Top-5 (0 von 55 statt 4 von 60 Treffern), die MRR der erwarteten Datei stieg von 0,683 auf 0,733. Die Filter waren von Hand gesetzt, im ersten Nachtlauf schlossen 9 von 19 Filtern des Agenten die gesuchte Quelle aus, weil das Modell ungefragt Dokumenttyp und Jahr setzte und ein Jahr Verträge ohne Abrechnungszeitraum ausschließt. Seither filtert es nur nach Sparte, und eine leere Suche wird nicht mehr ungefiltert wiederholt. Bei Fernwärme, die im Korpus fehlt, hatte das Grundpreise aus Strom- und Gasdokumenten geliefert.
+
+Für G1 suchte der Agent \enquote{neuer Arbeitspreis 2025} und bekam nur Treffer aus dem Schreiben zur Zwischenablesung mit dem Kapitel \enquote{1.~Halbjahr 2025}. Das Jahr prägte den Vektor der Anfrage stärker als der Fachbegriff, die Zeile mit 38,20\,ct fehlte. Als Query-Rewriting ohne Modellaufruf streicht die Größen-Anfrage Jahr, Sparte, Frage- und Dokumentwörter, sucht mit dem Rest (\enquote{Arbeitspreis}) erneut und hängt bis zu zwei neue Treffer an. Die erste Fassung verlor dabei die Sparte und fand bei P1 das Gas-Preisschreiben. Mit der Sparte aus der Frage als Filter hat P1 16 statt 13 von 27 Sollzahlen im Kontext.
+
+Jeder gefundene Chunk erhält je Lauf eine Belegnummer, die Antwort zitiert sie als \texttt{[n]}. Nach dem Evidence-First-Prinzip zeigt die Streamlit-Oberfläche die Belege schon während der Suche, nach Dokument und Kapitel gruppiert und KI-Texte mit dem Hinweis \enquote{kein Beleg}. Das Modell sieht je Treffer nur 600 Zeichen, denn fünf volle Text-Chunks hätten je Suche rund 110\,s Prefill gekostet. Dafür kann das Ende eines langen Absatzes fehlen.
+
+Auf GraphRAG verzichtet der Prototyp. Beziehungen wie die von Rechnung zu Vertrag oder von Preisschreiben zu Tarif hängen an wenigen Metadaten, die sich exakt filtern lassen (\texttt{contract\_id}, \texttt{billing\_period}, \texttt{valid\_from}). Mehrschrittige Fragen übernimmt die Agentenschleife. Eine Extraktion per LLM wäre auf der CPU langsam, und ein falsch extrahierter Preis schadet mehr als ein fehlender. Im Test fehlte die Beziehung zur Vorjahresrechnung (G3), die in Vertragsnummer und Zeitraum steckt, aber nicht genutzt wird. Lohnen würde sich ein Graph für eine Hausverwaltung mit vielen Wohnungen.
