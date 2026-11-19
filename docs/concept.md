@@ -322,7 +322,7 @@ Daraus folgt: keine Bildanalyse zur Abfragezeit (nur gecachte Captions) und kein
 | Warum reicht klassisches RAG plus Agent? | Wenige Entitäten (ein Haushalt, ca. 4 Verträge); die wichtigen Beziehungen sind wenige, stabile Schlüssel (`contract_id`, `billing_period`, `valid_from`), die sich als Metadaten exakt filtern lassen. Multi-Hop übernimmt der ReAct-Loop. |
 | Zusätzliche Kosten/Komplexität | LLM-basierte Entity- und Relationsextraktion ist auf der CPU langsam und fehleranfällig (falsch extrahierte Preise wären schlimmer als keine); zusätzliche Graph-Datenbank; aufwendigeres Testen |
 
-**Ausblick:** Bei einem Hausverwaltungs-Szenario mit vielen Wohnungen, Mietparteien und Verträgen würde sich GraphRAG lohnen.
+**Ausblick:** Bei einem Hausverwaltungs-Szenario mit vielen Wohnungen, Mietparteien und Verträgen würde sich GraphRAG lohnen. Nachtrag nach der Evaluation (ADR-0003, 2026-11-19): Die gescheiterten Prüffragen G1 und G3 hängen an Beziehungen (geltender Preis ab Datum, Vorjahresrechnung); näher als ein Graph läge eine regelbasiert gefüllte Faktentabelle (nicht umgesetzt).
 
 ---
 
