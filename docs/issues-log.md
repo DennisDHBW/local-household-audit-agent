@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-098 – Endkontrolle: zwei ungenaue Aussagen, ein abweichender Begriff, eine zu sichere Aussage
+- **Datum / Meilenstein:** 2026-11-19 / M7 (Endkontrolle)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Beim Abgleich jeder Zahl und Absolutaussage mit `evaluation-log.md`, ADRs, `ground_truth.yaml`, den Chunk-Dateien, PDFs und Laufprotokollen fielen auf: (1) Kapitel 2 „jede Seite endet mit Bank- und Registerangaben“: 5 von 34 Seiten (Dok. 16–19 und 30 der Hausverwaltung) enden nur mit Register- und Kontaktangaben. (2) Kapitel 4 begründete die 9 ausschließenden Filter aus RUN-010 damit, dass „ein Jahr Verträge ohne Abrechnungszeitraum ausschließt“. Im Code-Stand von RUN-010 (`f46e50e`) galt der Jahresfilter aber nur zusammen mit Rechnung, Hinweis oder Abschlagsplan (ADR-0010, ISS-025); ausgeschlossen hat die Kombination Rechnung plus Jahr (8 von 9: S4, S5, G1 ×2, G2, G3 ×2, G4; dazu S1 mit `contract`). (3) Kapitel 1 schrieb „Ablenker“, Kapitel 4 und das Glossar „Ablenkungsdokument“. (4) Kapitel 4 „Ein Graph lohnt sich erst bei vielen Wohnungen“ ist ungemessen, stand aber als sichere Aussage da (writing-guide 3.3). Nebenbefund: `evaluation-log.md` (RUN-014 bis RUN-016) nannte „G2 und G4 (RUN-015)“, der Fehlalarm G2 mit falschem Operanden stammt aber aus RUN-014.
+- **Ursache:** (1) und (4) beim Verdichten zugespitzt; (2) ISS-025 (M4, von Hand gesetzte Filter) mit dem Verhalten des Agenten in RUN-010 vermischt und nicht gegen den Code-Stand geprüft.
+- **Lösung / Workaround:** Alle vier Sätze angepasst („fast jede Seite“, „und so meist nur in der Rechnung des gefragten Jahres suchte“, „Ablenkungsdokumente“, „vermutlich“), Nebenbefund im evaluation-log korrigiert. Jede Änderung bleibt in den bestehenden Zeilen; Zeilenvergleich alter/neuer Build zeigt sonst kein verschobenes Wort, das PDF bleibt bei 8 Seiten.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 1, 2, 4 (umgesetzt)
+
 ### ISS-097 – GraphRAG-Begründung im Entwurf einseitig und unbelegt
 - **Datum / Meilenstein:** 2026-11-19 / M7 (Prüfung gegen die Anforderungen)
 - **Kategorie:** ki-assistent

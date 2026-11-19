@@ -85,14 +85,14 @@ Schritt 7 ist kurz, macht aber viel aus: Eigene Formulierungen und Antworten aus
 
 ## 4. Endkontrolle vor der Abgabe
 
-- [ ] Alle Bewertungskriterien abgedeckt (`requirements.md`, Abschnitt 11)
-- [ ] Testmodul-Abschnitt vorhanden, mit Ergebnissen und Qualitätsaussage
-- [ ] GraphRAG-Entscheidung begründet
-- [ ] 14 Testfragen und Ergebnisse dargestellt (Kategorien in Tabelle 5.1, Einzelergebnisse im evaluation-log)
-- [ ] Jede Zahl durch `evaluation-log.md` belegt
-- [ ] Begriffe einheitlich laut Glossar
-- [ ] Keine Ich-/Wir-Form
-- [ ] Keine Wörter und Muster aus Abschnitt 3.3 (Suchlauf über die `.tex`-Dateien)
+- [x] Alle Bewertungskriterien abgedeckt (`requirements.md`, Abschnitt 11; Literaturbezug nur über Begriffe, Entscheidung 2026-11-14)
+- [x] Testmodul-Abschnitt vorhanden, mit Ergebnissen und Qualitätsaussage
+- [x] GraphRAG-Entscheidung begründet
+- [x] 14 Testfragen und Ergebnisse dargestellt (Kategorien in Tabelle 5.1, Einzelergebnisse im evaluation-log)
+- [x] Jede Zahl durch `evaluation-log.md` belegt (Endkontrolle 2026-11-19, vier Korrekturen: ISS-098)
+- [x] Begriffe einheitlich laut Glossar
+- [x] Keine Ich-/Wir-Form
+- [x] Keine Wörter und Muster aus Abschnitt 3.3 (Suchlauf über die `.tex`-Dateien)
 - [ ] Ich kann jeden Absatz mündlich erklären und die Verständnisfragen beantworten
 - [ ] In jedem Kapitel eigene Formulierungen ergänzt
-- [ ] Laut gelesen, Seitenzahl 5–8 eingehalten
+- [ ] Laut gelesen, Seitenzahl 5–8 eingehalten (Seitenzahl geprüft: 8 Seiten am 2026-11-19; laut lesen offen)
