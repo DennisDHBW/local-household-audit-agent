@@ -27,3 +27,8 @@ Anforderungen 5.5; Konzept Abschnitt 10.
 ## Nachtrag 2026-11-18 (Kapitel 4)
 - Status auf „akzeptiert“ gesetzt: Der Prototyp (v1.0.0) arbeitet ohne Graph; die Beziehungen laufen über `contract_id`, `billing_period` und den Dokumentkatalog (`include_counterpart`, ADR-0014).
 - In der Evaluation fiel eine Beziehung auf, die die Suche nicht abbildet: die Vorjahresrechnung bei G3 (ISS-074). Die Daten dafür liegen in den Metadaten (gleiche Vertragsnummer `GV-2024-7731`, früherer Abrechnungszeitraum), genutzt werden sie nicht. Ein Graph wäre dafür nicht nötig.
+
+## Nachtrag 2026-11-19 (kritische Prüfung auf Nachfrage des Nutzers)
+- Entscheidung bleibt: kein Graph aus LLM-Extraktion. Die Begründung in Kapitel 4 war aber einseitig: Sie nannte nicht, dass gerade die gescheiterten Prüffragen G1 (ab 2025 geltender Preis) und G3 (Vorjahresrechnung desselben Vertrags) an Beziehungen hängen, und stützte „LLM-Extraktion ist langsam und fehleranfällig“ nicht mit eigenen Belegen (ISS-097).
+- Belege jetzt im Text: Schätzung 564 Chunks × knapp 19 s (Ø der Tabellen-Summaries, RUN-000/M3) ≈ 3 h; Fehllesung eines Preises durch `llama3.2` in der Summary zur Wassergebühr 2026 (Kapitel 2).
+- Ergänzt als Alternative: regelbasiert aus den Tabellenzeilen gefüllte Faktentabelle (Vertrag, Tarif, Preis, gültig ab). Nicht gebaut, nicht gemessen. Für G1 allein reicht sie nicht sicher, weil P1 beide Preise bereits im Kontext hatte (Lesefehler).

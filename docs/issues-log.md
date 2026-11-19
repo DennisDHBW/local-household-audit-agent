@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-097 – GraphRAG-Begründung im Entwurf einseitig und unbelegt
+- **Datum / Meilenstein:** 2026-11-19 / M7 (Prüfung gegen die Anforderungen)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Auf Nachfrage des Nutzers („Bist du dir sicher?“) zeigte sich: Der GraphRAG-Absatz in Kapitel 4 behandelte die Prüffragen aus `requirements.md` 5.5 nur teilweise (keine Entitäten, keine Fragen, die profitieren würden) und ließ das stärkste Gegenargument aus den eigenen Ergebnissen weg: G1 und G3 scheitern an Beziehungen (geltender Preis, Vorjahresrechnung). „LLM-Extraktion wäre langsam“ und „ein falsch extrahierter Preis schadet“ standen ohne Beleg da, obwohl Belege vorlagen (Enrichment-Zeiten, Wasser-Summary). „Ein Graph lohnt sich erst bei einer Hausverwaltung“ war zu pauschal.
+- **Ursache:** Beim Schreiben von Kapitel 4 wurde die Begründung aus ADR-0003 (vor der Evaluation geschrieben) übernommen und nicht gegen die Ergebnisse aus Kapitel 5 geprüft.
+- **Lösung / Workaround:** Absatz neu geschrieben: Entitäten, Beziehungen, betroffene Fragen G1/G3, Gründe gegen LLM-Extraktion mit Belegen (Schätzung ca. 3 h, Wasser-Summary), Faktentabelle als naheliegendere Alternative, Hinweis, dass nichts davon gemessen ist. ADR-0003 und concept §10 nachgetragen. Kapitel 4 wächst von ca. 490 auf ca. 570 Wörter; dafür an fünf Stellen in Kapitel 1–3, 5 und 6 gekürzt. Das PDF endet jetzt ganz unten auf Seite 8 (kein Puffer mehr).
+- **Gelernt:** Entscheidungen, die vor der Evaluation fielen, im Text gegen die Ergebnisse prüfen.
+- **Relevant für Ausarbeitung?** ja → Kapitel 4 (umgesetzt)
+
 ### ISS-096 – Fragen zur Ausarbeitung unbeantwortet, Überarbeitung Teil 2 entfallen
 - **Datum / Meilenstein:** 2026-11-19 / M7 (Ausarbeitung)
 - **Kategorie:** konzept
@@ -37,10 +47,10 @@
 ### ISS-095 – Kapitel passten an mehreren Stellen nicht zueinander
 - **Datum / Meilenstein:** 2026-11-18 / M7 (Überarbeitung Teil 1)
 - **Kategorie:** ki-assistent
-- **Status:** gelöst (bis auf die Restpunkte unten)
+- **Status:** gelöst (Restpunkte am 2026-11-19 umgesetzt)
 - **Symptom:** Die sechs Kapitel entstanden in getrennten Sitzungen; jede prüfte ihre Zahlen, aber nicht den Zusammenhang. Beim Querlesen fielen auf: Kapitel 1 beschrieb als Ist-Zustand, dass der Prototyp Soll- und Istwert getrennt sucht, obwohl der feste Prüfablauf abgeschaltet ist (Kapitel 3); die Fragekürzel (S2, G1, Z1) und P2 standen in Kapitel 3 und 4 vor ihrer Erklärung in Kapitel 5; Kapitel 3 nannte Z1 noch „Grenzfall“ statt „knapp als richtig gewertet“; die Kennung E1 kam nur in Kapitel 2 vor; die 629 Chunks in Kapitel 4 ließen sich aus den 564 in Kapitel 2 nicht herleiten; „18 von 23“ (Kapitel 3) und „19-mal“ (Kapitel 5) standen unverbunden nebeneinander; Kapitel 3 nahm die Begründung aus Kapitel 6 vorweg; in Kapitel 6 fehlte zu „Welche“ das Bezugswort. Alle Zahlen stimmten mit `evaluation-log.md` überein (auch die Zeiten im Listing, nachgeprüft in `run-021/p2-Z1.jsonl`).
 - **Ursache:** Kapitelweises Schreiben mit Prüfung nur gegen die Quellen, nicht gegen die anderen Kapitel.
-- **Lösung / Workaround:** Abkürzungen S/G/N/Z und P2 in Kapitel 1 eingeführt, G1 dort markiert, Kapitel 1 als Ziel („soll“) formuliert, übrige Stellen angeglichen. Eine erste Fassung der Korrekturen (Erklärung der z-Zahl in Kapitel 3, Summaries in Kapitel 4) verschob Gleitobjekte und kostete 0,12 S.; sie wurde gekürzt bzw. nach Kapitel 2 in einen Absatz mit freier Zeile verlegt, das PDF endet wieder bei gut 80 % von Seite 8. Restpunkte aus Platzgründen offen: z-Zahl wird nirgends erklärt (Kapitel 3, 5), die 10 Retrieval-Testfragen (Kapitel 2, 4) sind nicht ausdrücklich als Teilmenge eines früheren Katalogs gekennzeichnet, Lauf-Kennungen (RUN-011, RUN-021) in den Bildunterschriften werden nicht erklärt.
+- **Lösung / Workaround:** Abkürzungen S/G/N/Z und P2 in Kapitel 1 eingeführt, G1 dort markiert, Kapitel 1 als Ziel („soll“) formuliert, übrige Stellen angeglichen. Eine erste Fassung der Korrekturen (Erklärung der z-Zahl in Kapitel 3, Summaries in Kapitel 4) verschob Gleitobjekte und kostete 0,12 S.; sie wurde gekürzt bzw. nach Kapitel 2 in einen Absatz mit freier Zeile verlegt, das PDF endet wieder bei gut 80 % von Seite 8. Restpunkte aus Platzgründen offen: z-Zahl wird nirgends erklärt (Kapitel 3, 5), die 10 Retrieval-Testfragen (Kapitel 2, 4) sind nicht ausdrücklich als Teilmenge eines früheren Katalogs gekennzeichnet, Lauf-Kennungen (RUN-011, RUN-021) in den Bildunterschriften werden nicht erklärt. Nachtrag 2026-11-19: alle drei umgesetzt (z-Zahl in Kapitel 3 erklärt, „10 beantwortbare Fragen eines ersten Katalogs“ in Kapitel 2/4, Lauf-Kennung in Kapitel 5 eingeführt).
 - **Gelernt:** Ergänzungen kosten im fertigen Satz ganze Zeilen; vorher prüfen, wo ein Absatz auf seiner letzten Zeile noch Platz hat.
 - **Relevant für Ausarbeitung?** ja → alle Kapitel (Endkontrolle)
 

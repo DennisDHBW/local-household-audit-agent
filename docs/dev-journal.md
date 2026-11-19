@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-19 – GraphRAG kritisch geprüft, Kapitel gegen Anforderungen geprüft
+**Ziel der Sitzung:** Auf Nachfrage des Nutzers die GraphRAG-Entscheidung kritisch hinterfragen und den Text anpassen, danach die Ausarbeitung gegen `requirements.md` prüfen und Verbesserungen umsetzen.
+**Was wurde gemacht:**
+- GraphRAG-Absatz gegen requirements 5.5, ADR-0003 und die Ergebnisse aus Kapitel 5 geprüft: Entscheidung haltbar, Begründung einseitig (ISS-097); Absatz neu geschrieben, Nutzer gab den Vorschlag frei („so anpassen, dass du mit der Qualität zufrieden bist“)
+- Alle sechs Kapitel gegen requirements Abschnitte 3, 5 und 6 gelesen: Modellwahl im Enrichment und Hybrid-Suche ergänzt, Restpunkte ISS-095 (z-Zahl, 10 Retrieval-Testfragen, Lauf-Kennungen) umgesetzt; Literaturbezug wegen Entscheidung 2026-11-14 nicht angefasst
+- Drei Builds in der Cloud-Umgebung; erste Fassung ragte 0,13 S. auf Seite 9, nach Kürzungen an sieben Stellen endet das PDF ganz unten auf Seite 8; Wortliste writing-guide §3.3 und Ich-/Wir-Form geprüft (keine Treffer)
+- Verbindung zum Rechner zwischendurch weg; Kapitel in der Cloud-Kopie fertig bearbeitet und danach übertragen
+**Gelieferte Dateien / Funktionen:** `paper/content/chapter/0{1..6}*/main.tex`, `docs/adr/0003-no-full-graphrag.md`, `docs/concept.md`, `docs/issues-log.md`, `docs/paper-questions.md`, `docs/status.md`, `Claude outputs/Ausarbeitung-Entwurf-Kapitel1-6.pdf` (überschrieben, nicht versioniert); kein Python-Code geändert
+**Entscheidungen:** ADR-0003 Nachtrag (Entscheidung bleibt, Faktentabelle als nicht umgesetzte Alternative)
+**Probleme / Überraschungen:** ISS-097 (Begründung vor der Evaluation geschrieben und nicht nachgeprüft); Seitenpuffer aufgebraucht
+**Offen / unklar:** persönlicher Teil Kapitel 6 (ISS-087) ohne Platz; Literaturbezug
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 · **Commit(s):** `docs(paper)`, `docs`
+
 ### 2026-11-19 – Entscheidung: Überarbeitung Teil 2 entfällt
 **Ziel der Sitzung:** Laut status.md Überarbeitung Teil 2 mit den Antworten und Markierungen des Nutzers.
 **Was wurde gemacht:**

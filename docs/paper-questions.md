@@ -5,6 +5,14 @@
 
 **Stand 2026-11-19:** Überarbeitung Teil 2 entfällt (Entscheidung Nutzer, ISS-096). Die Fragen bleiben als Vorbereitung auf Nachfragen zur Abgabe; Antworten werden nicht mehr in den Text eingearbeitet.
 
+## Prüfung gegen die Anforderungen (2026-11-19): geänderte Stellen
+
+- Kapitel 4, letzter Absatz (GraphRAG): neu geschrieben mit Entitäten, Beziehungen, betroffenen Fragen G1/G3, Gründen gegen LLM-Extraktion und Faktentabelle als Alternative (ISS-097). Bitte selbst lesen: Du musst die Entscheidung im Gespräch verteidigen können (neue Frage 6 zu Kapitel 4).
+- Kapitel 4: Hybrid-Suche mit BM25 als Abgrenzung zur Größen-Anfrage genannt; Retrieval-Testfragen als „10 beantwortbare Fragen eines ersten Katalogs“; Fernwärme-Beispiel gestrichen.
+- Kapitel 3: Modellwahl im Enrichment begründet (`gemma3:4b` und `llama3.2`, zusammen 7,1 GB); z-Zahl erklärt; Token-Raten gerundet; pydantic-Satz und Zahl der Rückfragen gestrichen.
+- Kapitel 1: Details zur RAGAS-Telemetrie gekürzt, Gas-Beispiel gekürzt. Kapitel 2: Satz zu Resten unter 20 Zeichen gestrichen, Bezug der 10 Testfragen ergänzt. Kapitel 5: Lauf-Kennung eingeführt, Satz zum Überspringen gekürzt. Kapitel 6: doppelter Satz zu G3 und Satz „beste gemessene Fassung“ gestrichen.
+- Das PDF endet ganz unten auf Seite 8. Jede Ergänzung (auch eigene Sätze in Kapitel 6) muss anderswo gekürzt werden.
+
 ## Überarbeitung Teil 1 (2026-11-18): geänderte Stellen
 
 Beim Lesen des neuen PDFs (`Claude outputs/Ausarbeitung-Entwurf-Kapitel1-6.pdf`) betrifft das diese Sätze (ISS-095):
@@ -68,6 +76,7 @@ Beim Lesen des neuen PDFs (`Claude outputs/Ausarbeitung-Entwurf-Kapitel1-6.pdf`)
 3. Das Modell darf nur nach Sparte filtern. Wie findet der Agent trotzdem die Rechnung eines bestimmten Jahres, und was passiert, wenn es diese Rechnung gar nicht gibt?
 4. Was macht die Größen-Anfrage aus „neuer Arbeitspreis 2025“, und warum fand die erste Fassung bei P1 das Gas-Preisschreiben statt des Strom-Preisschreibens?
 5. Welche Testfrage hätte von einem Graphen profitiert, und warum lohnt sich GraphRAG für diesen Haushalt trotzdem nicht?
+6. P1 hatte bei G1 beide Arbeitspreise im Kontext und verglich trotzdem falsch. Hätte die vorgeschlagene Faktentabelle das verhindert? Was müsste der Code mit ihr tun, damit sie hilft?
 
 **Antworten (von mir):**
 

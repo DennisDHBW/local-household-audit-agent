@@ -2,7 +2,7 @@
 
 > Diese Datei liest Claude zu Beginn jeder Sitzung. Kurz halten (max. 1 Seite). Alte Einträge überschreiben; die Historie steht in `dev-journal.md` und in Git.
 
-**Letzte Aktualisierung:** 2026-11-19 (Überarbeitung Teil 2 entfällt, Endkontrolle als Nächstes)
+**Letzte Aktualisierung:** 2026-11-19 (GraphRAG-Absatz überarbeitet, Kapitel gegen Anforderungen geprüft)
 **Phase:** 2 – Ausarbeitung (vom Nutzer am 2026-11-18 freigegeben); Phase 1 abgeschlossen
 **Aktueller Meilenstein:** M7 Ausarbeitung
 **Version:** v1.0.0
@@ -18,14 +18,16 @@
 | M4 | Embedding & Retrieval (P1) + Evidenz (CLI) | fertig (Reverse-Engineering-Fragen offen) | – |
 | M5 | Agent (P2) mit Tools + Streamlit-Evidenz | fertig (Reverse-Engineering Runde 1 vorbereitet) | v0.2.0 |
 | M6 | Testmodul & Evaluation | fertig (P1 8 von 14, P2 6 von 14 nach Handprüfung, eingebaute Fehler 0 von 3; RAGAS v1.0.0 ausgewertet; M6-Fragen nur von Claude erklärt, ISS-085) | v1.0.0 |
-| M7 | Ausarbeitung (Phase 2, Vorlage unter `paper/`) | läuft: alle sechs Kapitel entworfen und gegeneinander geprüft (PDF endet auf Seite 8 nach gut 80 %, Puffer ca. 0,18 S.); Überarbeitung Teil 2 entfallen (Entscheidung 2026-11-19), Endkontrolle als Nächstes | – |
+| M7 | Ausarbeitung (Phase 2, Vorlage unter `paper/`) | läuft: alle sechs Kapitel entworfen und gegeneinander geprüft und gegen die Anforderungen geprüft (PDF endet ganz unten auf Seite 8, kein Puffer); Überarbeitung Teil 2 entfallen, Endkontrolle als Nächstes | – |
 
-## Zuletzt erledigt (Sitzung: Entscheidung zu Überarbeitung Teil 2)
-- In `paper-questions.md` lagen keine Antworten, keine Markierungen zum PDF und keine Eindrücke für Kapitel 6 vor. Entscheidung des Nutzers: Überarbeitung Teil 2 entfällt, direkt Endkontrolle (ISS-096)
-- Stand der Ausarbeitung unverändert seit Überarbeitung Teil 1 (2026-11-18): PDF `Claude outputs/Ausarbeitung-Entwurf-Kapitel1-6.pdf`, geänderte Stellen oben in `paper-questions.md`
+## Zuletzt erledigt (Sitzung: Überarbeitung Teil 2 entfällt, GraphRAG und Anforderungen)
+- Überarbeitung Teil 2 entfällt, weil keine Antworten oder Markierungen vorlagen (Entscheidung Nutzer, ISS-096)
+- GraphRAG-Absatz in Kapitel 4 auf Nachfrage kritisch geprüft und neu geschrieben (ISS-097, Nachtrag ADR-0003, concept §10): Entscheidung bleibt, aber mit Entitäten, betroffenen Fragen G1/G3, Belegen und Faktentabelle als Alternative
+- Kapitel gegen `requirements.md` geprüft: Modellwahl im Enrichment (Kapitel 3), Abgrenzung zur Hybrid-Suche (Kapitel 4), Restpunkte ISS-095 umgesetzt; für die Seitenzahl an sieben Stellen gekürzt (Liste in `paper-questions.md`)
+- Neues PDF `Claude outputs/Ausarbeitung-Entwurf-Kapitel1-6.pdf` (8 Seiten, letzte Seite voll)
 
 ## Nächstes Arbeitspaket
-Endkontrolle der Ausarbeitung (einmalig), Branch `docs/paper-final-check`: Checkliste `writing-guide.md` Abschnitt 4 und `requirements.md` Abschnitt 11 vollständig durchgehen und als Liste ausgeben (Skill audit-paper-writer), jede Zahl und jede Absolutaussage gegen `evaluation-log.md` bzw. die Quelle prüfen (ISS-093), Restpunkte aus ISS-095 mit dem Nutzer entscheiden, Seitenzahl max. 8 halten, neues PDF nach `Claude outputs/`. Punkte, die nur der Nutzer erfüllen kann (jeden Absatz mündlich erklären, eigene Formulierungen, laut lesen, Abgabe über Moodle), nicht abhaken, sondern als offene Liste übergeben.
+Endkontrolle der Ausarbeitung (einmalig), Branch `docs/paper-final-check`: Checkliste `writing-guide.md` Abschnitt 4 und `requirements.md` Abschnitt 11 vollständig durchgehen und als Liste ausgeben (Skill audit-paper-writer), jede Zahl und jede Absolutaussage gegen `evaluation-log.md` bzw. die Quelle prüfen (ISS-093), Seitenzahl max. 8 halten (kein Puffer mehr, jede Ergänzung kürzt anderswo), neues PDF nach `Claude outputs/`. Punkte, die nur der Nutzer erfüllen kann (jeden Absatz mündlich erklären, eigene Formulierungen, laut lesen, Abgabe über Moodle), nicht abhaken, sondern als offene Liste übergeben.
 
 **Empfohlenes Modell:** Opus 5.5, Effort Max (Endkontrolle; laut `ai-workflow.md`, Abschnitt 4)
 
@@ -35,8 +37,8 @@ Endkontrolle der Ausarbeitung (einmalig), Branch `docs/paper-final-check`: Check
 3. Nur bei Zeit: ISS-080/081/086/088
 
 ## Offene Entscheidungen / Fragen
-- Reflexion ohne O-Ton: persönlichen Teil vor der Abgabe selbst lesen und ergänzen, Platz in Kapitel 6 ca. 0,05 S. (ISS-087)
-- Restpunkte ISS-095 (in der Endkontrolle klären): z-Zahl in Kapitel 3/5 erklären (kostet eine Zeile), 10 Retrieval-Testfragen als Teilmenge kennzeichnen, Lauf-Kennungen in Bildunterschriften
+- Reflexion ohne O-Ton: persönlichen Teil vor der Abgabe selbst lesen und ergänzen; dafür muss anderswo gekürzt werden (ISS-087)
+- Literaturbezug (Kriterium 6, 10 %) bewusst ohne Quellen (Entscheidung 2026-11-14); bleibt Risiko
 
 ## Bekannte Probleme / Risiken (Details in `issues-log.md`)
 - ISS-087: kein O-Ton; ISS-084/085/096: Verständnisfragen M0–M6 und Fragen zur Ausarbeitung nicht selbst beantwortet. Kapitel 6 enthält keine persönlichen Eindrücke, Verständnis ist bewertungsrelevant
@@ -44,7 +46,7 @@ Endkontrolle der Ausarbeitung (einmalig), Branch `docs/paper-final-check`: Check
 - ISS-086/053/047/045: RAGAS nur als zweite Sicht; Context Recall misst gegen Referenzsätze, Faithfulness misst Belegtreue, nicht Richtigkeit
 - ISS-074/076: G3 ohne Vorjahres-Gegenstück, leere Antwort nach Rückfrage (G1); ISS-079: Abbruch von RUN-021 ungeklärt
 - ISS-088: Rechtsberatungs-Hinweis aus dem Konzept nicht umgesetzt (Kapitel 1 und 6)
-- ISS-090/092/093: Seitenbudget; Summe der Kapitel ca. 7,6 S., im PDF wegen Gleitobjekten ca. 7,8 S.; Ergänzungen in der Überarbeitung müssen anderswo gekürzt werden
+- ISS-090/092/093/097: Seitenbudget; PDF endet ganz unten auf Seite 8 (Kapitel 4 ca. 570 Wörter nach GraphRAG-Überarbeitung); Ergänzungen müssen anderswo gekürzt werden
 - ISS-080/081/083, ISS-078/075, ISS-070/071/068, ISS-066/067 (0 von 3 eingebauten Fehlern erkannt), ISS-062, ISS-057, ISS-054, ISS-050/038, ISS-039, ISS-029 und ältere: wie bisher
 
 ## Hinweise für die nächste Sitzung
