@@ -5,6 +5,19 @@
 
 **Stand 2026-11-19:** Überarbeitung Teil 2 entfällt (Entscheidung Nutzer, ISS-096). Die Fragen bleiben als Vorbereitung auf Nachfragen zur Abgabe; Antworten werden nicht mehr in den Text eingearbeitet.
 
+## Quellen eingebaut (2026-11-19): geänderte Stellen
+
+- Neu im Literaturverzeichnis (Seite 9): [1] ReAct, [2] Self-RAG, [3] Xiang et al. 2026, [4] RAGAS, [5] Ferrazzi et al. 2026. Bitte von jedem Paper Abstract und Ergebnisteil selbst lesen (ISS-099); Kernaussagen stehen in `sources.md`.
+- Kapitel 4, GraphRAG-Absatz: neuer Satz zu Xiang et al. (Graph hilft bei Fragen, die viele Begriffe verknüpfen; bei reiner Faktensuche ist einfaches RAG gleich gut oder besser). „Wie bei Modular RAG“ gestrichen.
+- Kapitel 6, erster Absatz: „Die modulare Pipeline P1“ statt „im Sinne von Modular RAG“; neuer Satz zu Ferrazzi et al. (kein genereller Vorteil von agentischem RAG, 3,3-mal so viele Eingabe-Token).
+- Kapitel 2: Docling „stützt sich auf eigene KI-Modelle“ statt „wäre auf der CPU langsam“ (ISS-100).
+- Gekürzt zum Ausgleich: Kapitel 1 („dieser Arbeit“, „zugleich“), Kapitel 2 („einem eigenen Schritt“), Kapitel 3 („gegen Speichermangel“, „Zuletzt brauchte“), Kapitel 5 („im Laufordner“, „Dazu kommen 382 Unit-Tests ohne Ollama“).
+
+Neue Fragen zu den Quellen:
+1. Ferrazzi et al. vergleichen „Enhanced RAG“ und „Agentic RAG“. Welcher der Varianten B0, P1 und P2 entspricht welches System, und wo hinkt der Vergleich mit Ihrem Prototyp?
+2. Xiang et al. unterscheiden einfache Faktensuche von Fragen, die viele Begriffe verknüpfen. Zu welcher Art gehört Prüffrage G1, und warum trägt die Begründung gegen GraphRAG trotzdem?
+3. Self-RAG trainiert die Selbstprüfung ins Modell, der Prototyp prüft im Code. Was kann die Prüfung im Code grundsätzlich nicht leisten?
+
 ## Prüfung gegen die Anforderungen (2026-11-19): geänderte Stellen
 
 - Kapitel 4, letzter Absatz (GraphRAG): neu geschrieben mit Entitäten, Beziehungen, betroffenen Fragen G1/G3, Gründen gegen LLM-Extraktion und Faktentabelle als Alternative (ISS-097). Bitte selbst lesen: Du musst die Entscheidung im Gespräch verteidigen können (neue Frage 6 zu Kapitel 4).

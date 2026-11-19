@@ -36,3 +36,6 @@ Der `DocumentParser` (`src/audit_agent/ingestion/parser.py`) arbeitet mit folgen
 
 ## Belege
 RUN-001 in `evaluation-log.md`, ISS-012 bis ISS-019, `tests/test_ingestion_parser.py`.
+
+## Nachtrag 2026-11-19
+Die Begründung „auf der CPU langsam“ für Layoutmodelle wie Docling war nie gemessen. Laut Docling Technical Report (arXiv 2408.09869) läuft Docling effizient auf Standardhardware. Die Entscheidung bleibt (Regeln Zeile für Zeile erklärbar, keine zusätzlichen KI-Modelle für Layout und Tabellen), Kapitel 2 nennt die Geschwindigkeit nicht mehr als Grund (ISS-100).
