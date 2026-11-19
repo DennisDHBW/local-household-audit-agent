@@ -5,7 +5,7 @@
 
 % Bewertungskriterium: Vorverarbeitung & Datenstrukturen (15 %)
 
-Die 30 PDFs des Korpus (34 Seiten) haben eine Textebene, sind aber wie echte Post gesetzt. Die Rechnungstabellen haben keine Rahmen, nur abwechselnd gefüllte Zeilen, und jede Seite endet mit Bank- und Registerangaben. Fünf Diagramme enthalten Werte, die nur im Bild stehen, etwa den Stromverbrauch 2022 mit 3.480\,kWh.
+Die 30 PDFs des Korpus (34 Seiten) haben eine Textebene, sind aber wie echte Post gesetzt. Die Rechnungstabellen haben keine Rahmen, nur abwechselnd gefüllte Zeilen, und fast jede Seite endet mit Bank- und Registerangaben. Fünf Diagramme enthalten Werte, die nur im Bild stehen, etwa den Stromverbrauch 2022 mit 3.480\,kWh.
 
 Der \texttt{DocumentParser} (PyMuPDF) erkennt zuerst die Tabellen und nimmt ihre Fläche aus dem Fließtext heraus. Erst der Abgleich der Chunks mit den PDFs zeigte, wie unzuverlässig das anfangs war. Je nach Strategie verlor \texttt{find\_tables()} Kopfzeilen oder fasste in Dokument~29 Rechnungsbetrag und Abschläge zu einer Zeile zusammen. Der Parser lässt deshalb zwei Strategien laufen und behält die Tabelle mit mehr Zeilen. Den Zelltext von PyMuPDF übernimmt er nicht, weil Zahlen darin zerrissen sind (\enquote{1~189~00~EUR}), sondern gruppiert die Textspans selbst zu Zellen. Eine fette erste Zeile gilt als Spaltenkopf, und jede Datenzeile wird mit den Spaltennamen serialisiert. Überschriften erkennt der Parser an Fettdruck und Schriftgröße und legt sie im Überschriften-Stapel (\texttt{heading\_stack}) ab, Kopf- und Fußzone der Seite verwirft er. Ein Aufteilen nach fester Länge hätte die Tabellen zerrissen. Ein Layoutmodell wie Docling wäre auf der CPU langsam und nicht Regel für Regel erklärbar.
 

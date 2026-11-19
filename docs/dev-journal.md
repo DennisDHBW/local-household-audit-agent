@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-19 – Endkontrolle der Ausarbeitung
+**Ziel der Sitzung:** Einmalige Endkontrolle laut status.md: Checklisten `writing-guide.md` §4 und `requirements.md` §11 vollständig prüfen, jede Zahl und jede Absolutaussage gegen die Quelle prüfen (ISS-093), Seitenzahl ≤ 8 halten, neues PDF.
+**Was wurde gemacht:**
+- Alle sechs Kapitel gelesen und Satz für Satz gegen `evaluation-log.md`, ADR-0004/0006/0007/0008/0009/0010/0012/0014/0016/0017, `ground_truth.yaml`, die Chunk-Dateien, die PDFs (Fußzeilen mit pdfplumber), `data/eval/run-004/search-s2-*.txt`, `run-010/scores.json`, `run-011/answers-p2.jsonl` und `run-021/p2-*.jsonl` geprüft (u. a. Listing-Zeiten 99/112/16/38 s, Pfadtreffer „stromvertrag“ bei S2, 382 Tests, `calculate("1830 - 1920")` bei G2)
+- Vier Stellen korrigiert (ISS-098): Fußzeilen Kapitel 2, Ursache der ausschließenden Filter in Kapitel 4 (Code-Stand `f46e50e`), „Ablenkungsdokumente“ in Kapitel 1, „vermutlich“ bei der Graph-Aussage in Kapitel 4; Nebenbefund im evaluation-log korrigiert
+- Stil: Suchlauf über die Liste aus writing-guide §3.3, Ich-/Wir-Form, Gedankenstriche, Fettdruck, `\todo`: keine Treffer
+- Alter und neuer Stand in der Cloud-Umgebung gebaut und mit `pdftotext -layout` verglichen: nur die vier Sätze ändern sich, gleiche Zeilenzahl, 8 Inhaltsseiten, keine undefinierten Verweise
+- Checklisten abgehakt, soweit prüfbar; Punkte des Nutzers offen gelassen
+**Gelieferte Dateien / Funktionen:** `paper/content/chapter/01*/02*/04*/main.tex`, `docs/issues-log.md`, `docs/evaluation-log.md`, `docs/writing-guide.md`, `docs/requirements.md`, `docs/status.md`, `Claude outputs/Ausarbeitung-Endkontrolle.pdf` (nicht versioniert); kein Python-Code geändert
+**Entscheidungen:** keine neue ADR
+**Probleme / Überraschungen:** ISS-098 (zwei ungenaue Aussagen, ein Begriff, eine zu sichere Aussage trotz früherer Prüfungen)
+**Offen / unklar:** alle Punkte, die nur der Nutzer erfüllen kann (laut lesen, erklären, eigene Formulierungen, persönlicher Teil Kapitel 6, Abgabe); Literaturbezug bleibt Risiko
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 0,75 h · **Modell/Effort:** Opus 5.5 · **Commit(s):** `docs(paper)`, `docs`
+
 ### 2026-11-19 – GraphRAG kritisch geprüft, Kapitel gegen Anforderungen geprüft
 **Ziel der Sitzung:** Auf Nachfrage des Nutzers die GraphRAG-Entscheidung kritisch hinterfragen und den Text anpassen, danach die Ausarbeitung gegen `requirements.md` prüfen und Verbesserungen umsetzen.
 **Was wurde gemacht:**

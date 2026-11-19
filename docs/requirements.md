@@ -481,7 +481,7 @@ Beide Prototypen live testbar über `app.py` oder `python compare_prototypes.py`
 ## 11. Abgabe-Checkliste
 
 **Formales**
-- [ ] Konzeptentwurf ca. 5–8 Seiten (oder äquivalente Markdown-/Notebook-Doku)
+- [x] Konzeptentwurf ca. 5–8 Seiten (oder äquivalente Markdown-/Notebook-Doku) (8 Seiten, Endkontrolle 2026-11-19)
 - [ ] Abgabe über Moodle (<https://moodle.dhbw.de/mod/assign/view.php?id=592218>)
 - [ ] Optional: lauffähiger Code-Prototyp / UI-Mockup beigefügt (praktisch empfohlen, siehe 2.1)
 
@@ -492,15 +492,15 @@ Beide Prototypen live testbar über `app.py` oder `python compare_prototypes.py`
 - [x] Ist systematisch getestet / validiert
 
 **Inhalt nach Bewertungskriterien**
-- [ ] Problemverständnis & Use Case (15 %): konkretes Problem, Zielgruppe, Nutzen, Begründung „lokal“
-- [ ] Architekturentwurf (25 %): Komponenten, Kontrollfluss, Modellauswahl mit Begründung, Kosten
-- [ ] RAG- & Retrieval-Konzept (20 %): Embedding, Vektor-Store, Retrieval-Strategie, Quellen/Zitation
-- [ ] GraphRAG-Entscheidung begründet (Entitäten, Beziehungen, bessere Fragen, warum klassisches RAG ggf. reicht, Kosten/Komplexität)
-- [ ] Vorverarbeitung & Datenstrukturen (15 %): Datenformate/-qualität, Parsing, Chunking, Enrichment, JSON-Zwischenformat, Metadaten
-- [ ] Tool-Strategie: benötigte Tools/Funktionen beschrieben
-- [ ] Test- & Evaluationsstrategie (15 %): 5 Standardfragen, 2 komplexe Grenzfälle, 2 Negativfragen
-- [ ] **Abschnitt Testmodul:** umgesetzt, beschrieben, genutzt → Qualitätsaussage; Framework-KPIs (z. B. RAGAS, synthetische Testdaten) und/oder eigene kontextspezifische Testszenarien; Ergebnisse
-- [ ] Literaturbezug & Reflexion (10 %): Bezug zu Grundlagen- und aktuellen Papern; kritische Reflexion, Grenzen, Ausblick
+- [x] Problemverständnis & Use Case (15 %): konkretes Problem, Zielgruppe, Nutzen, Begründung „lokal“
+- [x] Architekturentwurf (25 %): Komponenten, Kontrollfluss, Modellauswahl mit Begründung, Kosten
+- [x] RAG- & Retrieval-Konzept (20 %): Embedding, Vektor-Store, Retrieval-Strategie, Quellen/Zitation
+- [x] GraphRAG-Entscheidung begründet (Entitäten, Beziehungen, bessere Fragen, warum klassisches RAG ggf. reicht, Kosten/Komplexität)
+- [x] Vorverarbeitung & Datenstrukturen (15 %): Datenformate/-qualität, Parsing, Chunking, Enrichment, JSON-Zwischenformat, Metadaten
+- [x] Tool-Strategie: benötigte Tools/Funktionen beschrieben
+- [x] Test- & Evaluationsstrategie (15 %): 5 Standardfragen, 2 komplexe Grenzfälle, 2 Negativfragen
+- [x] **Abschnitt Testmodul:** umgesetzt, beschrieben, genutzt → Qualitätsaussage; Framework-KPIs (z. B. RAGAS, synthetische Testdaten) und/oder eigene kontextspezifische Testszenarien; Ergebnisse
+- [ ] Literaturbezug & Reflexion (10 %): Bezug zu Grundlagen- und aktuellen Papern; kritische Reflexion, Grenzen, Ausblick (Reflexion, Grenzen, Ausblick in Kapitel 5/6 erfüllt; Literatur nur über Begriffe ReAct, Modular RAG, Self-RAG, RAGAS, GraphRAG, Entscheidung 2026-11-14, Risiko)
 
 **Verständnis & Eigenleistung**
 - [ ] Bei jedem Meilenstein Reverse Engineering + Whitebox-Funktions- und Modultests durchgeführt
