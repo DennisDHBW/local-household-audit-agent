@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-096 – Fragen zur Ausarbeitung unbeantwortet, Überarbeitung Teil 2 entfallen
+- **Datum / Meilenstein:** 2026-11-19 / M7 (Ausarbeitung)
+- **Kategorie:** konzept
+- **Status:** akzeptiert
+- **Symptom:** Die 30 Fragen in `paper-questions.md` (Kapitel 1–6) sind unbeantwortet, zum PDF liegen keine Markierungen und für Kapitel 6 keine eigenen Eindrücke vor. Damit fehlte die Grundlage für Überarbeitung Teil 2 (Formulierungen des Nutzers einarbeiten). Entscheidung des Nutzers: direkt zur Endkontrolle.
+- **Ursache:** Zeitmangel des Nutzers (vgl. ISS-085/087).
+- **Lösung / Workaround:** Überarbeitung Teil 2 gestrichen; die Endkontrolle prüft Zahlen, Begriffe, Zusammenhang und Seitenzahl. Die Fragen bleiben in `paper-questions.md` als Vorbereitung auf Nachfragen. Risiko: Der Text enthält keine Formulierungen des Nutzers (Checkliste `writing-guide.md` Abschnitt 4, „eigene Formulierungen ergänzt“, „jeden Absatz mündlich erklären“), Verständnis ist laut `requirements.md` bewertungsrelevant.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** nein (betrifft Abgabe und mögliche Nachfragen)
+
 ### ISS-095 – Kapitel passten an mehreren Stellen nicht zueinander
 - **Datum / Meilenstein:** 2026-11-18 / M7 (Überarbeitung Teil 1)
 - **Kategorie:** ki-assistent

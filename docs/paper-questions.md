@@ -3,6 +3,8 @@
 > Je Kapitel 3–5 Fragen, die ein Prüfer zum Text stellen könnte. Keine Musterantworten.
 > Der Nutzer liest die Kapitel und beantwortet die Fragen gesammelt, wenn alle sechs Kapitel entworfen sind (Entscheidung 2026-11-18). Die Antworten fließen danach in die Überarbeitung ein.
 
+**Stand 2026-11-19:** Überarbeitung Teil 2 entfällt (Entscheidung Nutzer, ISS-096). Die Fragen bleiben als Vorbereitung auf Nachfragen zur Abgabe; Antworten werden nicht mehr in den Text eingearbeitet.
+
 ## Überarbeitung Teil 1 (2026-11-18): geänderte Stellen
 
 Beim Lesen des neuen PDFs (`Claude outputs/Ausarbeitung-Entwurf-Kapitel1-6.pdf`) betrifft das diese Sätze (ISS-095):
