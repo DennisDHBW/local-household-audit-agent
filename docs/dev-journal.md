@@ -23,6 +23,19 @@
 
 ## Einträge
 
+### 2026-11-19 – Entscheidung: Überarbeitung Teil 2 entfällt
+**Ziel der Sitzung:** Laut status.md Überarbeitung Teil 2 mit den Antworten und Markierungen des Nutzers.
+**Was wurde gemacht:**
+- `paper-questions.md` geprüft: alle Felder „Antworten (von mir)“ leer, keine Markierungen, keine Eindrücke für Kapitel 6
+- Nutzer gefragt (wie in status.md vorgesehen); Entscheidung: direkt Endkontrolle
+- status.md auf Endkontrolle umgestellt, Hinweis in `paper-questions.md`, ISS-096 angelegt
+**Gelieferte Dateien / Funktionen:** `docs/status.md`, `docs/issues-log.md`, `docs/paper-questions.md`, `docs/dev-journal.md`; kein Code und kein LaTeX geändert
+**Entscheidungen:** keine ADR; Überarbeitung Teil 2 gestrichen (Nutzer)
+**Probleme / Überraschungen:** ISS-096
+**Offen / unklar:** Restpunkte ISS-095 (Endkontrolle); persönlicher Teil Kapitel 6 (ISS-087)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 0,1 h · **Modell/Effort:** Opus 5.5 · **Commit(s):** `docs`
+
 ### 2026-11-18 – Überarbeitung Teil 1 (Kapitel gegeneinander geprüft)
 **Ziel der Sitzung:** Laut status.md die Überarbeitung; da noch keine Antworten in `paper-questions.md` vorlagen, nur die Kapitel gegeneinander prüfen und die offenen Entscheidungen klären.
 **Was wurde gemacht:**
