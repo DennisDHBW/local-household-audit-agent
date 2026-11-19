@@ -46,6 +46,7 @@
 | Metadatenfilter | `metadata_filter` | Einschränkung der Suche auf Sparte/Typ/Zeitraum | |
 | Evidence-First | – | Belege anzeigen, bevor das LLM antwortet | |
 | ReAct | `AuditAgent` | Schleife aus Thought → Action → Observation | |
+| Act (ReAct-Variante) | – | Variante aus dem ReAct-Paper ohne Thought, nur Action → Observation; so laufen P2 und `qwen2.5:7b`, weil der Prompt keinen Thought verlangt (ISS-102) | |
 | Tool | `AuditTool` | Funktion, die der Agent aufrufen kann | |
 | Tool-Ergebnis | `AuditToolResult` | Normalisiertes Ergebnis eines Tools mit Quellen | |
 | Ground Truth | `ground_truth` | Bekannte richtige Antwort für eine Testfrage | |
@@ -141,7 +142,7 @@
 | RAGAS | `ragas_eval`, Befehl `ragas` | Framework, das Antworten mit einem LLM als Bewerter benotet; hier lokal mit `audit-judge` | |
 | Bewertermodell | `audit-judge`, `RagasJudge` | Alias von `qwen2.5:7b` mit festem `num_ctx` 8192, bewertet für RAGAS | |
 | Faithfulness | `faithfulness` | Anteil der Aussagen einer Antwort, die durch die gezeigten Belege gedeckt sind (0–1) | |
-| Context Recall | `context_recall` | Anteil der Aussagen der erwarteten Antwort (`expected_answer`), die in den gezeigten Belegen stehen (0–1); der Bewerter urteilt je Satz, ein Satz mit einem unbelegten Teil zählt ganz als nicht belegt (ISS-086) | |
+| Context Recall | `context_recall` | Anteil der Aussagen der erwarteten Antwort (`expected_answer`), die in den gezeigten Belegen stehen (0–1); der Bewerter zerlegt die Referenz in Aussagen und urteilt je Aussage (Code ragas 0.4.4, ISS-102), eine Aussage mit einem unbelegten Teil zählt ganz als nicht belegt (ISS-086) | |
 | RAGAS-Status | `RagasStatus` | `ok`, `too_long` (Prompt passt nicht, nicht gekürzt), `no_context`, `not_applicable`, `no_statements`, `error` | |
 | Belegabgleich | `scripts/check_evidence.py`, `evidence.json` | Prüft je gespeicherter Antwort, ob die Sollfakten im Kontext des Modells standen und ob die erwarteten Quellen gezeigt wurden; trennt „Beleg kam nie an“ von „Beleg da, Antwort falsch“ | |
 | Reine Lückenantwort | `is_gap_only`, `GAP_ANSWER` | Antwort, die nur aus dem Satz „Dazu liegen in den Unterlagen keine Angaben vor.“ besteht | |

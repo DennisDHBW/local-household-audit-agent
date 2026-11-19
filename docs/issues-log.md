@@ -24,13 +24,23 @@
 
 ## Einträge
 
+### ISS-102 – Quellenprüfung: sieben Stellen ungenau zitiert oder formatiert
+- **Datum / Meilenstein:** 2026-11-20 / M7 (Quellenprüfung)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Auf Wunsch des Nutzers alle fünf Quellen erneut auf arxiv.org, aclanthology.org und iclr.cc geprüft und jede Textstelle mit dem Paper verglichen. Bibliografische Angaben stimmten, ICLR 2026 bei Xiang et al. ist jetzt bestätigt. Ungenau waren: (1) Literatur [Ferrazzi] mit „Adresse: https://…“ (deutscher Bibstring des IEEE-Stils), ohne DOI, Tagungsband nicht offiziell benannt; (2) Kapitel 6 „nicht ob der Inhalt stimmt“, obwohl Self-RAG Relevanz und Belegtreue bewertet, nicht Richtigkeit (Widerspruch zur eigenen Trennung in Kapitel 5); (3) Kapitel 3 „übernehmen … die Selbstprüfung“, obwohl nur ein Teil abgedeckt ist; (4) Kapitel 5 nennt Context Recall im Satz mit dem RAGAS-Zitat, das Paper enthält die Metrik nicht, und ragas 0.4.4 urteilt laut Code je Aussage, nicht je Satz; (5) Kapitel 3 „schreibt keinen Thought aus“, obwohl der System-Prompt gar keinen verlangt, die Läufe entsprechen der Variante „Act“ des ReAct-Papers; (6) Kapitel 4 „verlängert den Prompt deutlich“ gilt nicht für alle Graph-Varianten (HippoRAG2); (7) Kapitel 6 „3,3-mal“ ist ein Mittelwert, das Fazit nennt „bis zu 3,6-mal“.
+- **Ursache:** Beim Einbau am 2026-11-19 nur Abstract, Einleitung und Ergebnisse gesichtet und die Aussagen knapp verdichtet; Prompt und RAGAS-Code nicht gegen die Formulierung geprüft; Literaturverzeichnis nur auf fehlende Verweise, nicht auf Formatierung geprüft.
+- **Lösung / Workaround:** Alle sieben Stellen präzisiert, RAGAS-Dokumentation als Quelle [5] ergänzt (Ferrazzi jetzt [6]), DOI statt URL, Bibstring „Verfügbar unter“, kein Umbruch nach „https:“. Seitenumbrüche unverändert, Inhalt endet auf Seite 8, Literatur auf Seite 9; zum Ausgleich in Kapitel 6 „fanden ihn“ gestrichen. PDF `Claude outputs/Ausarbeitung-Quellenpruefung.pdf`.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 3 bis 6, Literaturverzeichnis
+
 ### ISS-101 – Context Recall steht nicht im RAGAS-Paper
 - **Datum / Meilenstein:** 2026-11-19 / M7 (Quellen)
 - **Kategorie:** evaluation
 - **Status:** akzeptiert
 - **Symptom:** Kapitel 5 nutzt die RAGAS-Metriken Faithfulness und Context Recall. Das zitierte Paper (Es et al., EACL 2024) beschreibt Faithfulness, Answer Relevance und Context Relevance, aber kein Context Recall.
 - **Ursache:** Context Recall kam später in die RAGAS-Bibliothek; die Definition steht nur in der Dokumentation.
-- **Lösung / Workaround:** Zitat nur bei der ersten Nennung von RAGAS; Context Recall bleibt ohne Paper-Beleg. Falls ein Prüfer fragt: Definition aus der RAGAS-Dokumentation (Abschnitt „Technische Dokumentation“ in `sources.md`).
+- **Lösung / Workaround:** Zitat nur bei der ersten Nennung von RAGAS; Context Recall bleibt ohne Paper-Beleg. Falls ein Prüfer fragt: Definition aus der RAGAS-Dokumentation (Abschnitt „Technische Dokumentation“ in `sources.md`). Nachtrag 2026-11-20: Dokumentation jetzt als eigene Quelle direkt bei Context Recall zitiert (ISS-102).
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Kapitel 5 (Hintergrund für Nachfragen)
 
@@ -50,7 +60,7 @@
 - **Status:** offen (Paper vom Nutzer noch nicht selbst gelesen)
 - **Symptom:** Kriterium 6 „Literaturbezug & Reflexion“ (10 %) war seit 2026-11-14 bewusst ohne Quellen (Risiko in status.md).
 - **Ursache:** Entscheidung vom 2026-11-14, um Aufwand zu sparen.
-- **Lösung / Workaround:** Auf Wunsch des Nutzers 21 Quellen gesichtet (`sources.md`), fünf zitiert: ReAct, Self-RAG, RAGAS (Begriffe standen schon im Text), Xiang et al. 2026 zur GraphRAG-Entscheidung (Kapitel 4), Ferrazzi et al. 2026 zum Vergleich Agent und Pipeline (Kapitel 6). „Modular RAG“ ohne Quelle aus dem Text genommen. Für die zwei neuen Sätze an sechs Stellen gekürzt; Inhalt weiter 8 Seiten, Literaturverzeichnis auf Seite 9 (zählt laut requirements nicht mit). Risiken: Die Paper sind von Claude über Abstract, Einleitung und Ergebnisse gesichtet, nicht vom Nutzer gelesen; Xiang et al. sprechen von „Faktensuche“, die Prüffragen vergleichen aber zwei Werte (Aussage gilt für die einzelnen Nachschlage-Schritte); die Tagung ICLR 2026 bei Xiang et al. steht nur im PDF-Kopf von v3.
+- **Lösung / Workaround:** Auf Wunsch des Nutzers 21 Quellen gesichtet (`sources.md`), fünf zitiert: ReAct, Self-RAG, RAGAS (Begriffe standen schon im Text), Xiang et al. 2026 zur GraphRAG-Entscheidung (Kapitel 4), Ferrazzi et al. 2026 zum Vergleich Agent und Pipeline (Kapitel 6). „Modular RAG“ ohne Quelle aus dem Text genommen. Für die zwei neuen Sätze an sechs Stellen gekürzt; Inhalt weiter 8 Seiten, Literaturverzeichnis auf Seite 9 (zählt laut requirements nicht mit). Risiken: Die Paper sind von Claude über Abstract, Einleitung und Ergebnisse gesichtet, nicht vom Nutzer gelesen; Xiang et al. sprechen von „Faktensuche“, die Prüffragen vergleichen aber zwei Werte (Aussage gilt für die einzelnen Nachschlage-Schritte); die Tagung ICLR 2026 bei Xiang et al. steht nur im PDF-Kopf von v3. Nachtrag 2026-11-20: ICLR 2026 auf iclr.cc bestätigt; Quellenprüfung mit sieben Präzisierungen (ISS-102).
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Kapitel 1 bis 6, Literaturverzeichnis
 
@@ -179,7 +189,7 @@
 - **Kategorie:** evaluation (auch ki-assistent: Fehldeutung in RUN-010/011)
 - **Status:** akzeptiert
 - **Symptom:** `scripts/check_evidence.py` meldet für RUN-020/021 8 von 24 Context-Recall-Werten als Widerspruch („alle Sollfakten im Kontext“ gegen Wert ≥ 0,5). Von Hand gegen Referenzsatz und Belege gelesen, ist keiner davon ein Fehlurteil des Bewerters. Das echte Fehlurteil P2/S2 (0,50, obwohl beide Preise im Kontext stehen) zählt der Abgleich dagegen nicht. Claude hat dieselbe Zählung in RUN-010/011 (13 von 48) und in ISS-053, Punkt 3, als Unzuverlässigkeit des Bewerters gedeutet; das war vermutlich zum Teil eine Fehldeutung.
-- **Ursache:** Zwei verschiedene Bezugsgrößen. RAGAS urteilt je Satz der Referenzantwort (`expected_answer`), der Abgleich prüft die Sollfakten (`facts`). Die Referenzsätze enthalten zusätzlich berechnete Werte, Flächen, ältere Ablenker-Werte und Hinweise, die in keinem Beleg stehen (G1–G4, Z2, Z3); umgekehrt enthalten die Sollfakten Urteile wie „Abrechnung korrekt: ja“ (S5), die nie in einem Beleg stehen. Dazu kommt die Ja/Nein-Schwelle 0,5 gegen einen anteiligen Wert (S2).
+- **Ursache:** Zwei verschiedene Bezugsgrößen. RAGAS urteilt je Aussage der Referenzantwort (`expected_answer`; zuerst als „je Satz“ notiert, laut Code von ragas 0.4.4 je Aussage, ISS-102), der Abgleich prüft die Sollfakten (`facts`). Die Referenzsätze enthalten zusätzlich berechnete Werte, Flächen, ältere Ablenker-Werte und Hinweise, die in keinem Beleg stehen (G1–G4, Z2, Z3); umgekehrt enthalten die Sollfakten Urteile wie „Abrechnung korrekt: ja“ (S5), die nie in einem Beleg stehen. Dazu kommt die Ja/Nein-Schwelle 0,5 gegen einen anteiligen Wert (S2).
 - **Lösung / Workaround:** Widersprüche von Hand auflösen (`evaluation-log.md`, RAGAS-Nachtrag RUN-020/021). Nur bei Zeit: Urteilsfakten im Abgleich auslassen und den Anteil der Sollfakten im Kontext mit Context Recall vergleichen. Die Referenzantworten bleiben unverändert, damit die Läufe vergleichbar bleiben.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Evaluation (Grenzen), Reflexion

@@ -5,6 +5,19 @@
 
 **Stand 2026-11-19:** Überarbeitung Teil 2 entfällt (Entscheidung Nutzer, ISS-096). Die Fragen bleiben als Vorbereitung auf Nachfragen zur Abgabe; Antworten werden nicht mehr in den Text eingearbeitet.
 
+## Quellenprüfung (2026-11-20): geänderte Stellen
+
+- Literatur: neu [5] RAGAS-Dokumentation zu Context Recall; Ferrazzi et al. jetzt [6], mit DOI statt „Adresse: https://…“.
+- Kapitel 3: Rückfragen übernehmen „einen Teil der“ Selbstprüfung von Self-RAG. Bei Listing Z1: „Einen Thought verlangt der Prompt nicht … Das entspricht der Variante Act ohne Denkschritte [1].“ Listing heißt jetzt „Agentenlauf“.
+- Kapitel 4: Graph verlängert den Prompt „meist“ deutlich.
+- Kapitel 5: „Context Recall [5] urteilt je Aussage“ statt „je Satz“.
+- Kapitel 6: „im Mittel 3,3-mal“; Self-RAG-Satz endet mit „nicht ob der Beleg die Aussage stützt“; „spätere Fassungen nicht mehr“ (gekürzt).
+
+Neue Fragen zu den Quellen:
+4. Das ReAct-Paper vergleicht ReAct mit einer Variante „Act“. Was unterscheidet beide, und warum entspricht P2 eher Act? Würde ein Prompt, der einen Thought verlangt, bei einem 7B-Modell helfen?
+5. Self-RAG bewertet, ob der Beleg die Antwort stützt. Warum ist das nicht dasselbe wie eine richtige Antwort, und wo trennt Kapitel 5 dieselben Begriffe bei RAGAS?
+6. Ferrazzi et al. nennen im Mittel 3,3-mal so viele Eingabe-Token. Welche Zahl aus Kapitel 5 zeigt den Mehraufwand von P2, und ist sie mit Ferrazzis Token-Zahl vergleichbar?
+
 ## Quellen eingebaut (2026-11-19): geänderte Stellen
 
 - Neu im Literaturverzeichnis (Seite 9): [1] ReAct, [2] Self-RAG, [3] Xiang et al. 2026, [4] RAGAS, [5] Ferrazzi et al. 2026. Bitte von jedem Paper Abstract und Ergebnisteil selbst lesen (ISS-099); Kernaussagen stehen in `sources.md`.
