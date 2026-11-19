@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-20 – Quellenprüfung der Ausarbeitung
+**Ziel der Sitzung:** Auf Wunsch des Nutzers die fünf Quellen prüfen und kontrollieren, ob sie im Text korrekt verwendet sind.
+**Was wurde gemacht:**
+- Angaben aller fünf Paper auf arxiv.org, aclanthology.org und iclr.cc geprüft (Autoren, Titel, Tagung, Seiten, DOI); ICLR 2026 bei Xiang et al. bestätigt
+- Jede Zitatstelle gegen das Paper gelesen (Ferrazzi: Abschnitte zu Kosten und Fazit; Xiang: Obs. 1, 2, 8 und Token-Tabelle), dazu System-Prompt (`prompts.py`) und Context-Recall-Code von ragas 0.4.4
+- Sieben Stellen präzisiert (ISS-102): Self-RAG in Kapitel 3 und 6, ReAct/Act in Kapitel 3, „meist deutlich“ in Kapitel 4, Context Recall mit eigener Quelle und „je Aussage“ in Kapitel 5, „im Mittel“ in Kapitel 6; Literatur [6] mit DOI, Bibstring „Verfügbar unter“, kein URL-Umbruch nach „https:“
+- Alt und neu in der Cloud-Umgebung gebaut und Seite für Seite verglichen: Seitenumbrüche gleich, Inhalt endet auf Seite 8, Literatur auf Seite 9 mit sechs Einträgen
+**Gelieferte Dateien / Funktionen:** `paper/bibliographie.bib`, `paper/ads/header.tex`, `paper/content/chapter/0{3,4,5,6}*/main.tex`, `docs/sources.md`, `docs/issues-log.md`, `docs/glossary.md`, `docs/paper-questions.md`, `docs/writing-guide.md`, `docs/status.md`, `Claude outputs/Ausarbeitung-Quellenpruefung.pdf` (nicht versioniert); kein Python-Code geändert
+**Entscheidungen:** RAGAS-Dokumentation als sechste Quelle (nur für Context Recall); keine ADR
+**Probleme / Überraschungen:** ISS-102 (eigene Ungenauigkeiten vom 2026-11-19); ISS-086 nachgetragen (je Aussage statt je Satz); der Prompt verlangt keinen Thought, P2 ist streng genommen die Variante Act
+**Offen / unklar:** Nutzer liest die Paper selbst (ISS-099) und beantwortet die neuen Fragen 4–6 in `paper-questions.md`
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `docs(paper)`, `docs`
+
 ### 2026-11-19 – Quellen für die Ausarbeitung gesucht und eingebaut
 **Ziel der Sitzung:** Auf Wunsch des Nutzers passende, möglichst aktuelle Quellen (auch Whitepaper von arXiv) für die Ausarbeitung suchen, die fünf besten auswählen und einbauen.
 **Was wurde gemacht:**
