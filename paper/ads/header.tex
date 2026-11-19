@@ -139,7 +139,7 @@
         minnames=4,
         dashed=false
     ]{biblatex}
-    \DefineBibliographyStrings{german}{andothers={et\addabbrvspace al\adddot}}
+    \DefineBibliographyStrings{german}{andothers={et\addabbrvspace al\adddot},url={Verfügbar unter}}
 }
 \iflang{en}{%
     \usepackage[
@@ -156,6 +156,7 @@
 
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
+\setcounter{biburlbigbreakpenalty}{10000}
 
 % \bibliography{bibliographie.bib}
 \addbibresource{bibliographie.bib}
