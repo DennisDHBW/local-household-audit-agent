@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-19 – Quellen für die Ausarbeitung gesucht und eingebaut
+**Ziel der Sitzung:** Auf Wunsch des Nutzers passende, möglichst aktuelle Quellen (auch Whitepaper von arXiv) für die Ausarbeitung suchen, die fünf besten auswählen und einbauen.
+**Was wurde gemacht:**
+- Alle sechs Kapitel nach Begriffen ohne Beleg durchsucht (ReAct, Self-RAG, Modular RAG, RAGAS, GraphRAG, Docling)
+- Erste Runde: sechs Quellen aus der Vorlesungsliste und zu GraphRAG/LLM-as-a-Judge geprüft; zweite Runde: 15 weitere aus 2024 bis 2026 (u. a. ACL 2026, ICLR 2026, NeurIPS-2026-Workshop), Tagung und Kennung jeweils auf arxiv.org bzw. aclanthology.org geprüft, Ergebnisse in `sources.md`
+- Auswahl mit dem Nutzer abgestimmt: ReAct, Self-RAG, RAGAS, Xiang et al. 2026, Ferrazzi et al. 2026; BibTeX in `paper/bibliographie.bib`, Beispiel-Einträge der Vorlage entfernt, `\printbibliography` aktiv
+- ReAct, Self-RAG, RAGAS nur als `\cite`; je ein neuer Satz zu Xiang (Kapitel 4) und Ferrazzi (Kapitel 6); „Modular RAG“ umformuliert; Docling-Satz korrigiert (ISS-100)
+- Drei Builds in der Cloud-Umgebung: erste Fassung 4 Zeilen, zweite 2 Zeilen über Seite 8; danach an sechs Stellen gekürzt (Kapitel 1, 2, 3, 4, 5 je kurze Absatzenden); Inhalt endet auf Seite 8, Literatur auf Seite 9, keine undefinierten Verweise
+**Gelieferte Dateien / Funktionen:** `paper/bibliographie.bib`, `paper/main.tex`, `paper/content/chapter/0{1..6}*/main.tex`, `docs/sources.md`, `docs/issues-log.md`, `docs/requirements.md`, `docs/writing-guide.md`, `docs/adr/0007-parser-heuristics.md`, `docs/paper-questions.md`, `docs/status.md`, `Claude outputs/Ausarbeitung-Quellen.pdf` (nicht versioniert); kein Python-Code geändert
+**Entscheidungen:** Literatur in der Ausarbeitung (ersetzt Entscheidung 2026-11-14); ADR-0007 Nachtrag (Begründung korrigiert, Entscheidung bleibt)
+**Probleme / Überraschungen:** ISS-099 (Paper nicht vom Nutzer gelesen), ISS-100 (ungemessene Docling-Aussage), ISS-101 (Context Recall nicht im RAGAS-Paper); der Skill audit-paper-writer verbietet noch ein Literaturverzeichnis
+**Offen / unklar:** Nutzer liest Abstract und Ergebnisse der fünf Paper; Reserve-Quellen (Zhang et al. 2026, Wataoka et al. 2024, Huang et al. 2024) nur bei freiem Platz
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 · **Commit(s):** `docs(paper)`, `docs`
+
 ### 2026-11-19 – Endkontrolle der Ausarbeitung
 **Ziel der Sitzung:** Einmalige Endkontrolle laut status.md: Checklisten `writing-guide.md` §4 und `requirements.md` §11 vollständig prüfen, jede Zahl und jede Absolutaussage gegen die Quelle prüfen (ISS-093), Seitenzahl ≤ 8 halten, neues PDF.
 **Was wurde gemacht:**

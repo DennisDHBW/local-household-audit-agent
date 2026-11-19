@@ -8,8 +8,8 @@
 ## 1. Rahmen
 
 - Umfang: 5–8 Seiten Fließtext ohne Titelblatt, Verzeichnisse und Anhang
-- LaTeX-Vorlage unter `paper/` (DHBW-Template). Aktiv: Titelblatt, Inhaltsverzeichnis, Kapitel (`paper/content/chapter/NN-name/main.tex`). Auskommentiert: Sperrvermerk, Erklärung, KI- und Gender-Hinweis, Abstract, Verzeichnisse, Literaturverzeichnis, Glossar. Ein Anhang kann bei Bedarf wieder aktiviert werden.
-- Keine Literatur: kein Literaturverzeichnis, keine Zitate, keine Verweise auf Paper (Entscheidung vom 2026-11-14). Fachbegriffe wie ReAct oder RAG dürfen als Begriffe vorkommen. Der Reflexionsteil stützt sich auf eigene Ergebnisse.
+- LaTeX-Vorlage unter `paper/` (DHBW-Template). Aktiv: Titelblatt, Inhaltsverzeichnis, Kapitel (`paper/content/chapter/NN-name/main.tex`). Aktiv seit 2026-11-19 auch das Literaturverzeichnis (`paper/bibliographie.bib`, Stil IEEE). Auskommentiert: Sperrvermerk, Erklärung, KI- und Gender-Hinweis, Abstract, übrige Verzeichnisse, Glossar. Ein Anhang kann bei Bedarf wieder aktiviert werden.
+- Literatur: fünf zitierte Paper (Entscheidung vom 2026-11-19, ersetzt „keine Literatur“ vom 2026-11-14). Zitate mit `\cite{…}` direkt hinter dem Begriff oder am Satzende; neue Quellen nur nach Prüfung auf arxiv.org bzw. aclanthology.org und mit Eintrag in `sources.md`. Ein Zitat stützt nur, was das Paper selbst sagt. Der Reflexionsteil stützt sich weiter vor allem auf eigene Ergebnisse.
 - **Keine Ich-Form** (auch kein „wir“). Stattdessen: der Prototyp, der Agent, das System, diese Arbeit, unpersönliche Konstruktionen. Passiv nur dosiert, sonst wird der Text hölzern. Bevorzugt Sätze mit dem System als Subjekt: „Der Parser erkennt Tabellen zuerst …“, „Im ersten Testlauf zeigte sich …“.
 - Gliederung und Gewichtung: siehe `concept.md`, Abschnitt 14, und `requirements.md`, Abschnitt 3
 - Begriffe genau wie in `glossary.md`
@@ -85,7 +85,7 @@ Schritt 7 ist kurz, macht aber viel aus: Eigene Formulierungen und Antworten aus
 
 ## 4. Endkontrolle vor der Abgabe
 
-- [x] Alle Bewertungskriterien abgedeckt (`requirements.md`, Abschnitt 11; Literaturbezug nur über Begriffe, Entscheidung 2026-11-14)
+- [x] Alle Bewertungskriterien abgedeckt (`requirements.md`, Abschnitt 11; Literaturbezug seit 2026-11-19 mit fünf Quellen)
 - [x] Testmodul-Abschnitt vorhanden, mit Ergebnissen und Qualitätsaussage
 - [x] GraphRAG-Entscheidung begründet
 - [x] 14 Testfragen und Ergebnisse dargestellt (Kategorien in Tabelle 5.1, Einzelergebnisse im evaluation-log)

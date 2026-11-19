@@ -24,6 +24,36 @@
 
 ## Einträge
 
+### ISS-101 – Context Recall steht nicht im RAGAS-Paper
+- **Datum / Meilenstein:** 2026-11-19 / M7 (Quellen)
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** Kapitel 5 nutzt die RAGAS-Metriken Faithfulness und Context Recall. Das zitierte Paper (Es et al., EACL 2024) beschreibt Faithfulness, Answer Relevance und Context Relevance, aber kein Context Recall.
+- **Ursache:** Context Recall kam später in die RAGAS-Bibliothek; die Definition steht nur in der Dokumentation.
+- **Lösung / Workaround:** Zitat nur bei der ersten Nennung von RAGAS; Context Recall bleibt ohne Paper-Beleg. Falls ein Prüfer fragt: Definition aus der RAGAS-Dokumentation (Abschnitt „Technische Dokumentation“ in `sources.md`).
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 (Hintergrund für Nachfragen)
+
+### ISS-100 – Aussage „Docling wäre auf der CPU langsam“ ungemessen
+- **Datum / Meilenstein:** 2026-11-19 / M7 (Quellen)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Kapitel 2 begründete den Verzicht auf ein Layoutmodell unter anderem damit, dass Docling auf der CPU langsam wäre. Der Docling Technical Report (arXiv 2408.09869) beschreibt das Gegenteil: effizient auf Standardhardware mit kleinem Ressourcenbudget.
+- **Ursache:** Begründung aus ADR-0007 (M2) übernommen; sie war eine Annahme von Claude und wurde nie gemessen.
+- **Lösung / Workaround:** Satz in Kapitel 2 geändert („stützt sich auf eigene KI-Modelle und wäre nicht Regel für Regel erklärbar“), Nachtrag in ADR-0007.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 2 (umgesetzt)
+
+### ISS-099 – Literaturbezug nachgeholt, Entscheidung „keine Literatur“ aufgehoben
+- **Datum / Meilenstein:** 2026-11-19 / M7 (Quellen)
+- **Kategorie:** konzept
+- **Status:** offen (Paper vom Nutzer noch nicht selbst gelesen)
+- **Symptom:** Kriterium 6 „Literaturbezug & Reflexion“ (10 %) war seit 2026-11-14 bewusst ohne Quellen (Risiko in status.md).
+- **Ursache:** Entscheidung vom 2026-11-14, um Aufwand zu sparen.
+- **Lösung / Workaround:** Auf Wunsch des Nutzers 21 Quellen gesichtet (`sources.md`), fünf zitiert: ReAct, Self-RAG, RAGAS (Begriffe standen schon im Text), Xiang et al. 2026 zur GraphRAG-Entscheidung (Kapitel 4), Ferrazzi et al. 2026 zum Vergleich Agent und Pipeline (Kapitel 6). „Modular RAG“ ohne Quelle aus dem Text genommen. Für die zwei neuen Sätze an sechs Stellen gekürzt; Inhalt weiter 8 Seiten, Literaturverzeichnis auf Seite 9 (zählt laut requirements nicht mit). Risiken: Die Paper sind von Claude über Abstract, Einleitung und Ergebnisse gesichtet, nicht vom Nutzer gelesen; Xiang et al. sprechen von „Faktensuche“, die Prüffragen vergleichen aber zwei Werte (Aussage gilt für die einzelnen Nachschlage-Schritte); die Tagung ICLR 2026 bei Xiang et al. steht nur im PDF-Kopf von v3.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 1 bis 6, Literaturverzeichnis
+
 ### ISS-098 – Endkontrolle: zwei ungenaue Aussagen, ein abweichender Begriff, eine zu sichere Aussage
 - **Datum / Meilenstein:** 2026-11-19 / M7 (Endkontrolle)
 - **Kategorie:** ki-assistent

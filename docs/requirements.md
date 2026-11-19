@@ -80,10 +80,10 @@ Laut Folie ist der lauffähige Prototyp optional. Die Zusatzanforderungen des Pr
 | Abgabe des Codes | GitHub-Repository `DennisDHBW/local-household-audit-agent` |
 | Seitenumfang | 5–8 Seiten ohne Anhang, Verzeichnisse und Titelblatt |
 | LaTeX-Vorlage | DHBW-Projektarbeiten-Template (Evolinox), unter `paper/`; aktiv sind nur Titelblatt, Inhaltsverzeichnis und Kapitel |
-| Quellen / Literaturverzeichnis | keine Literatur in der Ausarbeitung (Entscheidung 2026-11-14) |
+| Quellen / Literaturverzeichnis | 5 Quellen mit Literaturverzeichnis (Entscheidung 2026-11-19, ersetzt „keine Literatur“ vom 2026-11-14) |
 | Abgabetermin, Coaching-Termine | für die Planung nicht relevant |
 
-> Hinweis: Das Bewertungskriterium „Literaturbezug & Reflexion“ (10 %) bleibt bestehen. Der Literaturteil wird bewusst nicht bedient; der Reflexionsteil stützt sich auf eigene Ergebnisse.
+> Hinweis: Das Bewertungskriterium „Literaturbezug & Reflexion“ (10 %) bleibt bestehen. Seit 2026-11-19 zitiert die Ausarbeitung fünf Paper (ReAct, Self-RAG, RAGAS, Xiang et al. 2026, Ferrazzi et al. 2026; Auswahl und Reserve in `sources.md`). Der Reflexionsteil stützt sich weiter vor allem auf eigene Ergebnisse.
 
 ---
 
@@ -500,7 +500,7 @@ Beide Prototypen live testbar über `app.py` oder `python compare_prototypes.py`
 - [x] Tool-Strategie: benötigte Tools/Funktionen beschrieben
 - [x] Test- & Evaluationsstrategie (15 %): 5 Standardfragen, 2 komplexe Grenzfälle, 2 Negativfragen
 - [x] **Abschnitt Testmodul:** umgesetzt, beschrieben, genutzt → Qualitätsaussage; Framework-KPIs (z. B. RAGAS, synthetische Testdaten) und/oder eigene kontextspezifische Testszenarien; Ergebnisse
-- [ ] Literaturbezug & Reflexion (10 %): Bezug zu Grundlagen- und aktuellen Papern; kritische Reflexion, Grenzen, Ausblick (Reflexion, Grenzen, Ausblick in Kapitel 5/6 erfüllt; Literatur nur über Begriffe ReAct, Modular RAG, Self-RAG, RAGAS, GraphRAG, Entscheidung 2026-11-14, Risiko)
+- [ ] Literaturbezug & Reflexion (10 %): Bezug zu Grundlagen- und aktuellen Papern; kritische Reflexion, Grenzen, Ausblick (Reflexion, Grenzen, Ausblick in Kapitel 5/6 erfüllt; seit 2026-11-19 fünf zitierte Paper, davon zwei aus 2026; Grundlagen-Paper ReAct, Self-RAG, RAGAS, aktuelle Paper Xiang et al. und Ferrazzi et al.; Häkchen erst, wenn der Nutzer die Paper selbst gesichtet hat, ISS-099)
 
 **Verständnis & Eigenleistung**
 - [ ] Bei jedem Meilenstein Reverse Engineering + Whitebox-Funktions- und Modultests durchgeführt
