@@ -500,7 +500,7 @@ Beide Prototypen live testbar über `app.py` oder `python compare_prototypes.py`
 - [x] Tool-Strategie: benötigte Tools/Funktionen beschrieben
 - [x] Test- & Evaluationsstrategie (15 %): 5 Standardfragen, 2 komplexe Grenzfälle, 2 Negativfragen
 - [x] **Abschnitt Testmodul:** umgesetzt, beschrieben, genutzt → Qualitätsaussage; Framework-KPIs (z. B. RAGAS, synthetische Testdaten) und/oder eigene kontextspezifische Testszenarien; Ergebnisse
-- [ ] Literaturbezug & Reflexion (10 %): Bezug zu Grundlagen- und aktuellen Papern; kritische Reflexion, Grenzen, Ausblick (Reflexion, Grenzen, Ausblick in Kapitel 5/6 erfüllt; seit 2026-11-19 fünf zitierte Paper, davon zwei aus 2026; Grundlagen-Paper ReAct, Self-RAG, RAGAS, aktuelle Paper Xiang et al. und Ferrazzi et al.; Häkchen erst, wenn der Nutzer die Paper selbst gesichtet hat, ISS-099)
+- [ ] Literaturbezug & Reflexion (10 %): Bezug zu Grundlagen- und aktuellen Papern; kritische Reflexion, Grenzen, Ausblick (Kapitel 6 seit 2026-11-20 entfallen, Einordnung, Grenzen und knapper Ausblick in Kapitel 4/5, ISS-106; fünf zitierte Paper, davon zwei aus 2026; Grundlagen-Paper ReAct, Gao et al., RAGAS, aktuelle Paper Xiang et al. und Ferrazzi et al.; Häkchen erst, wenn der Nutzer die Paper selbst gesichtet hat, ISS-099)
 
 **Verständnis & Eigenleistung**
 - [ ] Bei jedem Meilenstein Reverse Engineering + Whitebox-Funktions- und Modultests durchgeführt

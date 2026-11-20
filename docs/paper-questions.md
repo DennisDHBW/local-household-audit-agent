@@ -5,6 +5,21 @@
 
 **Stand 2026-11-19:** Überarbeitung Teil 2 entfällt (Entscheidung Nutzer, ISS-096). Die Fragen bleiben als Vorbereitung auf Nachfragen zur Abgabe; Antworten werden nicht mehr in den Text eingearbeitet.
 
+## Kapitel 6 entfernt, Klang überarbeitet (2026-11-20, ISS-105, ISS-106)
+
+- Kapitel 6 ist ganz entfallen. In Kapitel 5 steht dafür ein Absatz: Annahme aus Kapitel 1 nicht bestätigt, Ferrazzi et al. [5], spricht nicht gegen agentisches RAG an sich (7B-Modell auf der CPU).
+- Im Fließtext stehen keine Fragen-Kürzel mehr (S1, G1, Z1 …). Die Fragen heißen nach ihrem Inhalt, z. B. „die Frage nach dem Arbeitspreis 2025“ (G1), „die Frage zur Stromabrechnung 2024“ (S5), „Gasverbrauch 2025 gegen Zählerstände“ (Z1).
+- Tabelle 5.1 zeigt jetzt alle 14 Fragen (gekürzt), ob die Abrechnung korrekt ist oder einen Fehler enthält, das Ergebnis je Variante und darunter die Kennzahlen. RAGAS-Werte stehen im Text.
+- Gestrichen: Gas-„Preissenkung“ in Kapitel 1, die Laufzeiten von P1/P2 am Ende von Kapitel 3 (stehen in Tabelle 5.1), „Prüffragen gibt es zu Strom, Gas und Betriebskosten“.
+- Neu in Kapitel 3: eigene Schleife statt eines fertigen Agenten aus LangChain (ADR-0010).
+- Seitenbudget: Inhalt endet auf Seite 8 mit gut einer Zeile frei.
+
+Neue Fragen:
+11. Die Frage zur Stromabrechnung 2024 zählt bei P1 als richtig, bei P2 nicht. Warum reicht die automatische Metrik bei dieser Frage nicht, und was hat die Handprüfung zusätzlich geprüft?
+12. Warum ist „Wie hoch war meine Stromrechnung 2023?“ eine Negativfrage, obwohl der Verbrauch 2023 im Diagramm steht?
+13. Welche drei Fehler sind eingebaut, und welches Dokument braucht der Prototyp jeweils als Gegenstück?
+14. Kapitel 5 sagt, das Ergebnis spreche nicht gegen agentisches RAG an sich. Mit welchen Zahlen begründest du das, und was würdest du als Nächstes messen?
+
 ## Endprüfung (2026-11-20): geänderte Stellen
 
 - Literatur: genau fünf Quellen, [1] Gao et al., [2] ReAct, [3] Xiang et al., [4] RAGAS, [5] Ferrazzi et al.; Self-RAG und RAGAS-Dokumentation entfernt (ISS-103).
@@ -18,7 +33,7 @@ Neue Fragen:
 7. Gao et al. unterscheiden Naive, Advanced und Modular RAG. In welche Kategorie fällt P1 nach Gao, und warum heißt P1 im Text trotzdem modulare Pipeline?
 8. Wer orchestriert in P1, wer in P2? Was genau entscheidet das Modell zur Laufzeit, und was setzt die Schleife durch?
 9. Nach Xiang et al. helfen Graphen bei Fragen, die mehrere Fakten verknüpfen. G1 verknüpft zwei Fakten. Warum lohnt sich der Graph trotzdem nicht, und wann würde er sich lohnen?
-10. Kapitel 6 sagt, jede Änderung hätte einen eigenen Lauf gebraucht. Wie viel Laufzeit hätte das bei den drei Änderungen von M6e gekostet, und wie hättest du die Läufe geplant?
+10. (Kapitel 6 entfallen, Frage bleibt zur Vorbereitung) Kapitel 6 sagte, jede Änderung hätte einen eigenen Lauf gebraucht. Wie viel Laufzeit hätte das bei den drei Änderungen von M6e gekostet, und wie hättest du die Läufe geplant?
 
 ## Quellenprüfung (2026-11-20): geänderte Stellen
 
@@ -148,7 +163,7 @@ Beim Lesen des neuen PDFs (`Claude outputs/Ausarbeitung-Entwurf-Kapitel1-6.pdf`)
 - „Alle 9 Antworten mit Zahlen tragen eine Belegnummer“ ist in RUN-018 gezählt. RUN-021 ist dort wortgleich (13 von 14 Antworten gleich, S5 ohne Zahlen).
 - Weggelassen aus Platzgründen, Kandidaten für Kapitel 6: Verlauf von P2 (3 → 9 mit `llama3.1:8b` in RUN-012 → 6), die beste gemessene Fassung ist also nicht die Endfassung. Außerdem G4 einmal sauber erkannt (RUN-014) und wieder verloren, Ablenker im Kontext bei P1 (7/94 → 4/92) und die ungeklärte leere Antwort bei G1 (ISS-076).
 
-## Kapitel 6 – Reflexion und Ausblick
+## Kapitel 6 – Reflexion und Ausblick (entfallen am 2026-11-20, ISS-106; Fragen bleiben zur Vorbereitung)
 
 1. P2 kam mit `llama3.1:8b` schon auf 9 von 14 und fiel danach auf 6. Warum lässt sich nicht sagen, welche Änderung schuld war, und wie hättest du trotz 60 bis 90 Minuten je Lauf anders messen können?
 2. Warum ist ein gültiger `calculate`-Aufruf kein Beleg für eine richtige Prüfung? Erkläre es an G2.
