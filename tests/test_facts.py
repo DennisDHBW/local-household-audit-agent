@@ -236,3 +236,38 @@ def test_balance_is_negative_for_a_credit_and_positive_for_a_back_payment():
     store = FactStore(facts=tuple(extract_document(_document(BILL, rows), BILL)))
     (balance,) = store.of_file(BILL.file, FactKind.BALANCE)
     assert balance.value == Decimal("212.82")
+
+
+def test_price_change_inside_the_period_is_not_judged_without_pro_rata():
+    late = LETTER.model_copy(
+        update={"file": "01_e/33b_Preis_Juli.pdf", "valid_from": date(2025, 7, 1)}
+    )
+    rows = [
+        r.replace("24,10 ct", "25,00 ct").replace("01.01.2025", "01.07.2025") for r in LETTER_ROWS
+    ]
+    store = _store()
+    store = FactStore(facts=store.facts + tuple(extract_document(_document(late, rows), late)))
+    nt = next(c for c in check_bill(store, BILL).checks if c.name == "Arbeitspreis NT")
+    assert nt.status is CheckStatus.UNVERIFIABLE and "01.07.2025" in nt.note
+
+
+def test_consumption_jump_against_the_previous_year_is_a_notice_not_a_deviation():
+    old_bill = BILL.model_copy(
+        update={
+            "file": "01_e/32_Rechnung_2024.pdf",
+            "billing_period_start": date(2024, 1, 1),
+            "billing_period_end": date(2024, 12, 31),
+        }
+    )
+    old_rows = [
+        r.replace("2025", "2024").replace("12.680", "11.000").replace("16.100", "12.680")
+        for r in BILL_ROWS[2:6]
+    ]
+    store = _store()
+    store = FactStore(
+        facts=store.facts + tuple(extract_document(_document(old_bill, old_rows), old_bill))
+    )
+    report = check_bill(store, BILL)
+    notices = [c for c in report.checks if c.status is CheckStatus.NOTICE]
+    assert [c.name for c in notices] == ["Verbrauch NT gegenüber Vorjahr"]
+    assert "Verbrauch NT gegenüber Vorjahr" not in [c.name for c in report.deviations]

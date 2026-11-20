@@ -210,10 +210,13 @@ class FactTools:
         if agreed:
             lines.append("Vereinbart (Vertrag, Preisschreiben, Abschlagsplan, Mietvertrag):")
             current = _current(agreed, args.year)
+            latest = _latest(agreed)
             for f in sorted(agreed, key=lambda f: (_series(f), f.valid_from or date.min))[
                 -MAX_FACT_LINES:
             ]:
                 marker = f"  <- gilt {args.year}" if args.year and f in current else ""
+                if not args.year and f in latest:
+                    marker = "  <- neuester Stand"
                 valid = f", gültig ab {f.valid_from:%d.%m.%Y}" if f.valid_from else ""
                 lines.append(f"- {_series(f)}: {_value(f)}{valid} {self._source(f, book)}{marker}")
                 numbers.append(self.cite(f, book))
@@ -308,6 +311,7 @@ class FactTools:
             parts = [
                 f"{c.name}: Soll {c.expected}, Ist {c.actual}"
                 + (f", {fmt(abs(c.impact_eur), 'EUR', 2)}" if c.impact_eur is not None else "")
+                + (f" ({c.note})" if any(ch.isdigit() for ch in c.note) else "")
                 for c in deviations
             ]
             lines.append(
@@ -446,3 +450,13 @@ def _scope(utility: UtilityType | None, tariff: TariffKind | None, year: int | N
     if year:
         parts.append(str(year))
     return ", ".join(parts)
+
+
+def _latest(agreed: list[Fact]) -> set[Fact]:
+    """Per series the agreed value with the latest start (the current one without a year)."""
+    best: dict[str, Fact] = {}
+    for fact in agreed:
+        key = _series(fact)
+        if key not in best or (fact.valid_from or date.min) > (best[key].valid_from or date.min):
+            best[key] = fact
+    return set(best.values())

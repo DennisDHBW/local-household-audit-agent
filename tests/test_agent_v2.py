@@ -232,3 +232,36 @@ def test_trailing_gap_sentence_after_a_real_answer_is_dropped():
 
     assert drop_trailing_gap(f"3.420 kWh [1].\n\n{GAP_ANSWER}") == "3.420 kWh [1]."
     assert drop_trailing_gap(GAP_ANSWER) == GAP_ANSWER
+
+
+def test_routing_offers_tools_by_question_type():
+    from audit_agent.agent.scope import route_tools
+
+    audit = route_tools("Ist die Heizstromabrechnung 2025 korrekt?", "")
+    chart = route_tools("und jetzt?", "Zeig den Verbrauch als Grafik. und jetzt?")
+    fact = route_tools("Welche Kündigungsfrist gilt?", "")
+    assert "check_bill" in audit and "make_chart" not in audit
+    assert "make_chart" in chart and "check_bill" not in chart
+    assert {"get_facts", "search"} <= fact and "check_bill" not in fact
+
+
+def test_offered_specs_follow_the_route(tmp_path: Path):
+    replies = [answer_reply("Dazu liegen in den Unterlagen keine Angaben vor.")] * 2
+    loop, chat = _loop(tmp_path, replies)
+    loop.run("Erstelle ein Diagramm zum Wasserverbrauch.")
+    offered = [spec["function"]["name"] for spec in chat.requests[0]["tools"]]
+    assert offered == ["plan", "list_documents", "get_facts", "make_chart", "calculate"]
+
+
+def test_planned_result_tool_that_never_ran_is_questioned(tmp_path: Path):
+    replies = [
+        tool_reply(("plan", {"steps": ["get_facts Verbrauch", "make_chart Verbrauch"]})),
+        tool_reply(("get_facts", {"fact": "verbrauch", "tariff_kind": "heating"})),
+        answer_reply("NT 3.420 kWh [1]."),
+        tool_reply(("make_chart", {"topic": "verbrauch"})),
+        answer_reply("Die Grafik zeigt den Verbrauch [3]."),
+    ]
+    loop, _ = _loop(tmp_path, replies)
+    run = loop.run("Wie hoch war der Heizstromverbrauch?")
+    assert [s.reason for s in run.steps if isinstance(s, NudgeStep)] == ["plan"]
+    assert run.artifacts

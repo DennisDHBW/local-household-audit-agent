@@ -116,6 +116,9 @@ class AgentSettings(BaseModel):
     """Tool calls per question (valid or invalid); protects against endless loops on slow CPUs.
 
     6 until M6; 10 since M8 because ``plan`` and the artifact tools add steps (ADR-0019)."""
+    route_tools: bool = True
+    """v2: offer only the tools that fit the question type (audit, chart, overview, fact);
+    ADR-0020."""
     verify_answer: bool = True
     """v2 self-check before an answer is accepted: audit question without ``check_bill``,
     requested chart or overview missing, numbers that no tool result contains (ADR-0019)."""

@@ -39,6 +39,7 @@ from audit_agent.agent.prompts import (
     NUMBERS_BEFORE_ANSWER_MESSAGE,
     OVERVIEW_BEFORE_ANSWER_MESSAGE,
     PLAN_HINT,
+    PLAN_STEP_MISSING_MESSAGE,
     REPEAT_FAILED_OBSERVATION,
     REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
@@ -53,7 +54,7 @@ from audit_agent.agent.prompts import (
     wants_chart,
     wants_overview,
 )
-from audit_agent.agent.scope import CURRENT_QUESTION, REPAIR_NOTES
+from audit_agent.agent.scope import CURRENT_QUESTION, REPAIR_NOTES, route_tools
 from audit_agent.agent.text_calls import TextCall, parse_text_call
 from audit_agent.agent.tools import AgentTool, ToolError, clean_arguments
 from audit_agent.config import Settings
@@ -170,6 +171,7 @@ class AgentLoop:
         self._client = client
         self._tools = dict(tools)
         self._specs = [tool.spec() for tool in tools.values()]
+        self._active_specs = self._specs
         self._spec_tokens = estimate_tokens(json.dumps(self._specs, ensure_ascii=False))
 
     def run(
@@ -198,6 +200,12 @@ class AgentLoop:
         messages.append({"role": "user", "content": question})
         context_text = " ".join(q for q, _ in (history or [])[-HISTORY_TURNS:]) + " " + question
         question_token = CURRENT_QUESTION.set(context_text)
+        self._active_specs = self._specs
+        if is_v2 and agent.route_tools:
+            offered = route_tools(question, context_text)
+            self._active_specs = [
+                tool.spec() for name, tool in self._tools.items() if name in offered
+            ]
         is_plan_hinted = not is_v2
 
         def emit(step: AgentStep) -> None:
@@ -318,6 +326,7 @@ class AgentLoop:
                 forced = "context_limit"
 
         CURRENT_QUESTION.reset(question_token)
+        self._active_specs = self._specs
         artifacts = tuple(
             a for s in steps if isinstance(s, ToolCallStep) and not s.is_repeat for a in s.artifacts
         )
@@ -332,6 +341,20 @@ class AgentLoop:
             sources=book.numbered_hits,
             artifacts=artifacts,
         )
+
+    def _unplanned(self, steps: list[AgentStep], used: set[str]) -> list[str]:
+        """Result tools named in the plan that never ran (search and lists are optional)."""
+        plan = next(
+            (s for s in steps if isinstance(s, ToolCallStep) and s.tool == "plan" and s.is_valid),
+            None,
+        )
+        if plan is None:
+            return []
+        text = " ".join(str(step) for step in plan.arguments.get("steps", []) or [])
+        wanted = ("check_bill", "get_facts", "make_chart", "make_overview")
+        return [
+            name for name in wanted if name in text and name in self._tools and name not in used
+        ]
 
     def _self_check(
         self,
@@ -360,6 +383,10 @@ class AgentLoop:
             and not used & {"make_overview", "make_chart"}
         ):
             return "overview", OVERVIEW_BEFORE_ANSWER_MESSAGE
+        if "plan" not in asked:
+            missing_steps = self._unplanned(steps, used)
+            if missing_steps:
+                return "plan", PLAN_STEP_MISSING_MESSAGE.format(tools=", ".join(missing_steps))
         if "numbers" not in asked:
             sources = [s.observation for s in valid] + [context_text]
             missing = unsupported_numbers(answer, sources)
@@ -445,7 +472,7 @@ class AgentLoop:
     ) -> tuple[Any, ModelCallStep]:
         arguments = chat_arguments(self._settings, model, messages)
         if offer_tools:
-            arguments["tools"] = self._specs
+            arguments["tools"] = self._active_specs
         if output_format is not None:
             arguments["format"] = output_format
         started = time.perf_counter()

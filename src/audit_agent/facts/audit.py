@@ -16,6 +16,7 @@ Rules (each returns ``ok``, ``deviation`` or ``unverifiable``):
 from __future__ import annotations
 
 from collections import Counter
+from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 from enum import StrEnum
 
@@ -34,12 +35,15 @@ class CheckStatus(StrEnum):
     OK = "ok"
     DEVIATION = "deviation"
     UNVERIFIABLE = "unverifiable"
+    NOTICE = "notice"
+    """Plausibility hint, not an error (e.g. consumption jump against the previous year)."""
 
 
 STATUS_LABELS = {
     CheckStatus.OK: "stimmt",
     CheckStatus.DEVIATION: "ABWEICHUNG",
     CheckStatus.UNVERIFIABLE: "nicht prüfbar",
+    CheckStatus.NOTICE: "Hinweis",
 }
 
 
@@ -106,6 +110,7 @@ def check_bill(store: FactStore, meta: DocumentMeta) -> AuditReport:
     else:
         checks += _prices(store, meta, facts)
         checks += _readings(meta, facts)
+        checks += _consumption_jump(store, meta, facts)
         if meta.utility_type is UtilityType.GAS:
             checks += _gas(store, meta, facts)
     checks += _arithmetic(facts)
@@ -137,6 +142,19 @@ def _prices(store: FactStore, meta: DocumentMeta, facts: list[Fact]) -> list[Che
                     actual=fmt(billed.value, billed.unit, 2),
                     note="kein Vertrag oder Preisschreiben mit diesem Preis für den Zeitraum",
                     facts=(billed,),
+                )
+            )
+            continue
+        change = _change_within(store, billed, meta)
+        if change is not None:
+            checks.append(
+                Check(
+                    name=name,
+                    status=CheckStatus.UNVERIFIABLE,
+                    actual=fmt(billed.value, billed.unit, 2),
+                    note=f"Preisänderung am {change:%d.%m.%Y} im Abrechnungszeitraum; eine "
+                    "anteilige Prüfung nach Tagen ist nicht umgesetzt",
+                    facts=(agreed, billed),
                 )
             )
             continue
@@ -463,3 +481,71 @@ def _difference_text(end: Decimal, start: Decimal, result: Decimal, unit: str) -
 
 def _times_text(count: int, each: Decimal, total: Decimal) -> str:
     return f"{count} × {fmt(each, 'EUR', 2)} = {fmt(total, 'EUR', 2)}"
+
+
+JUMP_LIMIT = Decimal("0.25")
+
+
+def _change_within(store: FactStore, billed: Fact, meta: DocumentMeta) -> date | None:
+    """Start date of another agreed price that begins inside the billing period, if any."""
+    start, end = meta.billing_period_start, meta.billing_period_end
+    if start is None or end is None:
+        return None
+    starts = [
+        f.valid_from
+        for f in store.select(
+            [billed.kind], role=Role.AGREED, contract_id=meta.contract_id, zone=billed.zone
+        )
+        if f.valid_from is not None and start < f.valid_from <= end
+    ]
+    return min(starts) if starts else None
+
+
+def _measured(facts: list[Fact]) -> dict[str | None, tuple[Decimal, str]]:
+    result: dict[str | None, tuple[Decimal, str]] = {}
+    for zone in {f.zone for f in facts if f.kind is FactKind.METER_READING}:
+        readings = sorted(
+            (f for f in facts if f.kind is FactKind.METER_READING and f.zone == zone),
+            key=lambda f: f.on_date,  # type: ignore[arg-type, return-value]
+        )
+        if len(readings) >= 2:
+            result[zone] = (readings[-1].value - readings[0].value, readings[-1].unit)
+    return result
+
+
+def _consumption_jump(store: FactStore, meta: DocumentMeta, facts: list[Fact]) -> list[Check]:
+    """Hint if the measured consumption changed by more than 25 % against the previous bill."""
+    if meta.billing_period_start is None:
+        return []
+    previous_year = meta.billing_period_start.year - 1
+    previous = [
+        f
+        for f in store.facts
+        if f.contract_id == meta.contract_id
+        and f.file != meta.file
+        and f.valid_from is not None
+        and f.valid_from.year == previous_year
+        and f.role is Role.STATED
+    ]
+    now, before = (
+        _measured(facts),
+        _measured(previous + [f for f in store.facts if f.file in {p.file for p in previous}]),
+    )
+    checks = []
+    for zone, (value, unit) in now.items():
+        if zone not in before or before[zone][0] == 0:
+            continue
+        old = before[zone][0]
+        change = (value - old) / old
+        if abs(change) > JUMP_LIMIT:
+            percent = (change * 100).quantize(Decimal(1), ROUND_HALF_UP)
+            checks.append(
+                Check(
+                    name=f"Verbrauch{' ' + zone if zone else ''} gegenüber Vorjahr",
+                    status=CheckStatus.NOTICE,
+                    expected=f"Vorjahr {fmt(old, unit)}",
+                    actual=fmt(value, unit),
+                    note=f"Änderung {percent:+} %; Zählerstände und Ablesung prüfen",
+                )
+            )
+    return checks
