@@ -60,6 +60,7 @@ Schritt 7 ist kurz, macht aber viel aus: Eigene Formulierungen und Antworten aus
 
 **Satzmuster:**
 - „Nicht nur …, sondern auch …“
+- „Inferenz“ (Wunsch des Nutzers, ISS-104); nichts zum Hinweis „keine Rechtsberatung“
 - Dreierreihen von Adjektiven oder Nomen („schnell, präzise und zuverlässig“)
 - „Dabei zeigt sich, dass …“ am Anfang jedes zweiten Absatzes
 - Rhetorische Fragen („Doch wie lässt sich dieses Problem lösen?“)
