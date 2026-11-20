@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-20 – M8 Nachbesserung nach Smoke-Test run-023
+**Ziel der Sitzung:** Fehler des Smoke-Tests beheben und vor dem Nachtlauf so viel wie möglich verbessern.
+**Was wurde gemacht:**
+- run-023-smoke ausgewertet (H2 falsch wegen Sparte Fernwärme, W1 richtig nach drei gesperrten Wiederholungen, V1 richtig mit angehängtem Lückensatz, kein `plan`)
+- Bewertungsabbruch behoben (ISS-115); Argument-Reparatur (`agent/scope.py`), `check_bill` mit Kurzfassung, Saldo und beiden Stromrechnungen, Lückensatz entfernen, Plan-Hinweis, kürzere Schemas (ISS-114)
+- Werkzeugauswahl nach Fragetyp, Planprüfung, neue Prüfregeln (Preisänderung im Zeitraum, Verbrauchssprung), neuester Stand bei `get_facts` (ADR-0020)
+- 411 Tests grün; Werkzeugabdeckung offline: bei 15 von 16 Entwicklungsfragen stehen alle Sollfakten im Ergebnis des passenden Werkzeugs
+**Gelieferte Dateien / Funktionen:** `agent/scope.py`, Änderungen in `loop.py`, `fact_tools.py`, `tools.py`, `prompts.py`, `facts/audit.py`, `facts/extract.py`, Tests
+**Entscheidungen:** ADR-0020
+**Probleme / Überraschungen:** ISS-114, ISS-115
+**Offen / unklar:** Wirkung erst im Nachtlauf sichtbar; neue Prüfregeln greifen im Korpus nicht
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1,5 h · **Modell/Effort:** Opus 5.5 / Medium · **Commit(s):** `fix(evaluation)`, `fix(agent)`, `feat(agent)`, `docs`
+
 ### 2026-11-20 – Text-Befunde und M8 Agent v2 (Heizstrom, Faktenspeicher, Plan, Grafiken)
 **Ziel der Sitzung:** Befunde zur Ausarbeitung einarbeiten; danach Architektur so umbauen, dass der Agent mehr als Agent handelt, die Qualität deutlich steigt und auf Anfrage Übersichten und Grafiken entstehen; Dokumentenfokus Strom (Licht- und Heizstrom), Gas, Wasser mit Verträgen.
 **Was wurde gemacht:**

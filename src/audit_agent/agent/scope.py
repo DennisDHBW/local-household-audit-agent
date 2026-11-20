@@ -121,3 +121,20 @@ def repair_utility_arguments(
     if notes and collected is not None:
         collected.extend(notes)
     return data
+
+
+ALWAYS_OFFERED = frozenset({"plan", "list_documents", "calculate"})
+
+
+def route_tools(question: str, context: str) -> frozenset[str]:
+    """Tools offered for this question (ADR-0020): fewer schemas mean less prefill and fewer
+    wrong picks. The model still chooses among them and may call any tool it knows."""
+    from audit_agent.agent.prompts import is_audit_question, wants_chart, wants_overview
+
+    if wants_chart(context):
+        return ALWAYS_OFFERED | {"make_chart", "get_facts"}
+    if wants_overview(question):
+        return ALWAYS_OFFERED | {"make_overview", "make_chart", "get_facts"}
+    if is_audit_question(question):
+        return ALWAYS_OFFERED | {"check_bill", "get_facts", "search"}
+    return ALWAYS_OFFERED | {"get_facts", "search"}

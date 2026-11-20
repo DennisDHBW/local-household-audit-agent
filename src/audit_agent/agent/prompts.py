@@ -286,3 +286,9 @@ def drop_trailing_gap(answer: str) -> str:
         return answer
     rest = answer.replace(GAP_ANSWER, "").strip()
     return rest if rest and has_citation(rest) else answer
+
+
+PLAN_STEP_MISSING_MESSAGE = (
+    "Selbstprüfung: Dein Plan sah noch {tools} vor. Führe den Schritt aus oder antworte, "
+    "wenn er nicht mehr nötig ist, unverändert."
+)

@@ -2,7 +2,7 @@
 
 > Diese Datei liest Claude zu Beginn jeder Sitzung. Kurz halten (max. 1 Seite). Alte Einträge überschreiben; die Historie steht in `dev-journal.md` und in Git.
 
-**Letzte Aktualisierung:** 2026-11-20 (Smoke-Test run-023 ausgewertet, Argument-Reparatur und Kurzfassung ergänzt, ISS-114/115)
+**Letzte Aktualisierung:** 2026-11-20 (Smoke-Test run-023 ausgewertet; Argument-Reparatur, Kurzfassung, Werkzeugauswahl nach Fragetyp, Planprüfung, Plausibilitätsregeln; ADR-0020)
 **Phase:** zurück in Phase 1 (Umsetzung M8) auf Wunsch des Nutzers; die Ausarbeitung wird erst nach besseren Ergebnissen neu überarbeitet
 **Aktueller Meilenstein:** M8 Agent v2
 **Version:** v1.0.0 (M8 wird v2.0.0 nach dem Nachtlauf)
