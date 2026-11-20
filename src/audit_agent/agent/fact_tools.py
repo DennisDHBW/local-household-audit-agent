@@ -13,10 +13,11 @@ from datetime import date
 from enum import StrEnum
 from pathlib import Path, PurePosixPath
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from audit_agent.agent.errors import ToolError
 from audit_agent.agent.models import Artifact, EvidenceBook
+from audit_agent.agent.scope import repair_utility_arguments
 from audit_agent.config import Settings
 from audit_agent.corpus import DocType, DocumentCatalog, DocumentMeta, TariffKind, UtilityType
 from audit_agent.facts import (
@@ -42,14 +43,8 @@ class _Arguments(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
 
-UTILITY_HELP = (
-    "Sparte: electricity = Strom, gas = Gas, water = Wasser, service_charges = Betriebskosten/"
-    "Nebenkosten."
-)
-TARIFF_HELP = (
-    "Nur bei Strom: household = Lichtstrom/Haushaltsstrom, heating = Heizstrom "
-    "(Nachtspeicher, HT/NT). Weglassen, wenn die Frage beide meint."
-)
+UTILITY_HELP = "electricity = Strom, gas, water = Wasser, service_charges = Betriebskosten."
+TARIFF_HELP = "Nur Strom: household = Lichtstrom, heating = Heizstrom (HT/NT)."
 
 
 class PlanArguments(_Arguments):
@@ -89,6 +84,11 @@ FACT_KINDS: dict[FactName, tuple[FactKind, ...]] = {
 
 
 class FactsArguments(_Arguments):
+    @model_validator(mode="before")
+    @classmethod
+    def _repair(cls, data: object) -> object:
+        return repair_utility_arguments(data)
+
     fact: FactName = Field(description="Gesuchte Größe.")
     utility_type: UtilityType | None = Field(default=None, description=UTILITY_HELP)
     tariff_kind: TariffKind | None = Field(default=None, description=TARIFF_HELP)
@@ -101,19 +101,27 @@ class FactsArguments(_Arguments):
 
 
 class BillArguments(_Arguments):
+    @model_validator(mode="before")
+    @classmethod
+    def _repair(cls, data: object) -> object:
+        return repair_utility_arguments(data, needs_utility=True, needs_year=True)
+
     utility_type: UtilityType = Field(description=UTILITY_HELP)
     tariff_kind: TariffKind | None = Field(default=None, description=TARIFF_HELP)
     year: int = Field(ge=2000, le=2100, description="Abrechnungsjahr der Rechnung.")
 
 
 class ViewArguments(_Arguments):
+    @model_validator(mode="before")
+    @classmethod
+    def _repair(cls, data: object) -> object:
+        return repair_utility_arguments(data)
+
     topic: Topic = Field(
         description="verbrauch = Verbrauch je Jahr, kosten = Rechnungsbeträge je Jahr, "
         "preise = vereinbarte Preise mit Gültigkeit."
     )
-    utility_type: UtilityType | None = Field(
-        default=None, description=UTILITY_HELP + " Weglassen = alle."
-    )
+    utility_type: UtilityType | None = Field(default=None, description=UTILITY_HELP)
     tariff_kind: TariffKind | None = Field(default=None, description=TARIFF_HELP)
     from_year: int | None = Field(default=None, ge=2000, le=2100)
     to_year: int | None = Field(default=None, ge=2000, le=2100)
@@ -248,37 +256,63 @@ class FactTools:
                 f"Keine Rechnung für {_scope(args.utility_type, args.tariff_kind, args.year)}. "
                 "Diese Unterlage liegt nicht vor; prüfe mit list_documents, welche es gibt."
             )
-        if len(bills) > 1:
-            kinds = ", ".join(utility_label(d.utility_type, d.tariff_kind) for d in bills)
-            raise ToolError(f"Mehrere Rechnungen passen ({kinds}). Setze tariff_kind.")
-        bill: DocumentMeta = bills[0]
+        texts: list[str] = []
+        numbers: list[int] = []
+        for bill in bills:  # Strom without tariff_kind: both bills of the year (ISS-114)
+            text, cited = self._audit_text(bill, book)
+            texts.append(text)
+            numbers += cited
+        return FactToolResult(text="\n\n".join(texts), hit_numbers=tuple(dict.fromkeys(numbers)))
+
+    def _audit_text(self, bill: DocumentMeta, book: EvidenceBook) -> tuple[str, list[int]]:
         report = check_bill(self._store, bill)
         name = utility_label(bill.utility_type, bill.tariff_kind)
+        year = bill.billing_period_start.year if bill.billing_period_start else ""
         lines = [
             f"Prüfung {name}-Rechnung {PurePosixPath(bill.file).name} "
             f"(Zeitraum {bill.billing_period_start:%d.%m.%Y}–{bill.billing_period_end:%d.%m.%Y}):"
         ]
         numbers: list[int] = []
         for check in report.checks:
-            sources = " ".join(f"[{self.cite(f, book)}]" for f in check.facts)
-            numbers += [self.cite(f, book) for f in check.facts]
+            cited = list(dict.fromkeys(self.cite(f, book) for f in check.facts))
+            numbers += cited
             line = f"- {STATUS_LABELS[check.status]}: {check.name}"
             if check.expected:
                 line += f" | Soll {check.expected}"
             if check.actual:
                 line += f" | Ist {check.actual}"
             if check.impact_eur is not None and check.status is CheckStatus.DEVIATION:
-                direction = "zu viel berechnet" if check.impact_eur > 0 else "zu wenig berechnet"
-                line += f" | Auswirkung {fmt(abs(check.impact_eur), 'EUR', 2)} {direction}"
+                side = "zu Ihren Lasten" if check.impact_eur > 0 else "zu Ihren Gunsten"
+                line += f" | Auswirkung {fmt(abs(check.impact_eur), 'EUR', 2)} {side}"
             if check.note:
                 line += f" | {check.note}"
-            lines.append(f"{line} {sources}")
+            lines.append(f"{line} {' '.join(f'[{n}]' for n in cited)}")
+        balance = next(
+            (f for f in self._store.of_file(bill.file) if f.kind is FactKind.BALANCE), None
+        )
+        if balance is not None:
+            word = "Guthaben" if balance.value < 0 else "Nachzahlung"
+            cited = self.cite(balance, book)
+            numbers.append(cited)
+            lines.append(
+                f"- Saldo laut Rechnung: {word} {fmt(abs(balance.value), 'EUR', 2)} [{cited}]"
+            )
         deviations = report.deviations
         if deviations:
             total = report.total_impact
+            side = "zu Ihren Lasten" if total >= 0 else "zu Ihren Gunsten"
             lines.append(
                 f"Ergebnis: {len(deviations)} Abweichung(en), zusammen {fmt(abs(total), 'EUR', 2)} "
-                f"{'zu viel' if total >= 0 else 'zu wenig'} berechnet. Die Rechnung stimmt nicht."
+                f"{side}. Die Rechnung stimmt nicht."
+            )
+            parts = [
+                f"{c.name}: Soll {c.expected}, Ist {c.actual}"
+                + (f", {fmt(abs(c.impact_eur), 'EUR', 2)}" if c.impact_eur is not None else "")
+                for c in deviations
+            ]
+            lines.append(
+                f"Kurzfassung für die Antwort: Nein, die {name}-Rechnung {year} "
+                f"stimmt nicht. " + "; ".join(parts) + "."
             )
         else:
             unverifiable = sum(c.status is CheckStatus.UNVERIFIABLE for c in report.checks)
@@ -287,7 +321,26 @@ class FactTools:
                 + (f", {unverifiable} nicht prüfbar" if unverifiable else "")
                 + ". Die Rechnung stimmt nach diesen Regeln."
             )
-        return FactToolResult(text="\n".join(lines), hit_numbers=tuple(dict.fromkeys(numbers)))
+            facts = self._store.of_file(bill.file)
+            figures = []
+            for kind, label in (
+                (FactKind.INVOICE_TOTAL, "Rechnungsbetrag"),
+                (FactKind.COST_SHARE, "Anteil"),
+                (FactKind.SERVICE_COSTS, "Ihr Anteil"),
+            ):
+                fact = next((f for f in facts if f.kind is kind), None)
+                if fact is not None:
+                    value = fact.amount if kind is FactKind.SERVICE_COSTS else fact.value
+                    unit = "%" if kind is FactKind.COST_SHARE else "EUR"
+                    figures.append(f"{label} {fmt(value or fact.value, unit, 2)}")
+            if balance is not None:
+                word = "Guthaben" if balance.value < 0 else "Nachzahlung"
+                figures.append(f"{word} {fmt(abs(balance.value), 'EUR', 2)}")
+            lines.append(
+                f"Kurzfassung für die Antwort: Ja, die {name}-Rechnung {year} stimmt mit Vertrag, "
+                f"Preisschreiben und Zählerständen überein. " + "; ".join(figures) + "."
+            )
+        return "\n".join(lines), numbers
 
     def make_overview(self, args: ViewArguments, book: EvidenceBook) -> FactToolResult:
         rows, title = self._rows(args, "Übersicht")

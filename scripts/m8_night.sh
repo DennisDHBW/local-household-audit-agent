@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# M8 night run (ADR-0019): all 21 development questions with B0, P1 and P2 v2 (run-024).
-# The held-out questions run separately at the very end: scripts/m8_night.sh --holdout (run-025).
+# M8 night run (ADR-0019): all 21 development questions with B0, P1 and P2 v2 (run-025).
+# The held-out questions run separately at the very end: scripts/m8_night.sh --holdout (run-026).
 set -uo pipefail
 cd "$(dirname "$0")/.."
 HOST="${AUDIT_OLLAMA_HOST:-http://localhost:11434}"
-RUN=run-024
+RUN=run-025
 SELECT=(--all)
-if [ "${1:-}" = "--holdout" ]; then RUN=run-025; SELECT=(--holdout); fi
+if [ "${1:-}" = "--holdout" ]; then RUN=run-026; SELECT=(--holdout); fi
 LOG="data/eval/$RUN.log"
 
 wait_for_ollama() {
@@ -31,6 +31,7 @@ step() {
 mkdir -p data/eval
 {
     echo "== $RUN gestartet: $(date '+%F %T')"
+    uv run python -m audit_agent.facts build || exit 1  # facts.json must match the code
     { date; uptime; free -h; } > "data/eval/$RUN-env.txt"
     step generate --run-id "$RUN" --variants b0 p1 p2 "${SELECT[@]}"
     uv run python -m audit_agent.evaluation score --run-id "$RUN"

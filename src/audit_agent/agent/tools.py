@@ -36,6 +36,7 @@ from audit_agent.agent.fact_tools import (
     ViewArguments,
 )
 from audit_agent.agent.models import Artifact, EvidenceBook
+from audit_agent.agent.scope import repair_utility_arguments
 from audit_agent.config import Settings
 from audit_agent.corpus import DocType, DocumentCatalog, DocumentMeta, TariffKind, UtilityType
 from audit_agent.facts import FactStore, load_fact_store
@@ -82,62 +83,55 @@ class _Arguments(BaseModel):
 
 
 class FilterArguments(_Arguments):
+    @model_validator(mode="before")
+    @classmethod
+    def _repair(cls, data: object) -> object:
+        return repair_utility_arguments(data)
+
     utility_type: UtilityType | None = Field(
         default=None,
-        description=(
-            "Sparte. Nur setzen, wenn die Frage sie ausdrücklich nennt "
-            "(Strom = electricity, Gas = gas, Wasser = water, Nebenkosten = service_charges)."
-        ),
+        description="Sparte, nur wenn die Frage sie nennt: electricity = Strom, gas, water, "
+        "service_charges = Nebenkosten.",
     )
     tariff_kind: TariffKind | None = Field(
         default=None,
-        description="Nur bei Strom: household = Lichtstrom, heating = Heizstrom (HT/NT).",
+        description="Nur Strom: household = Lichtstrom, heating = Heizstrom.",
     )
     doc_type: DocType | None = Field(
         default=None,
-        description=(
-            "Dokumentart. Nur setzen, wenn die Frage sie eindeutig verlangt "
-            "(bill = Rechnung/Abrechnung, contract = Vertrag, price_adjustment = "
-            "Preisanpassung). Im Zweifel weglassen."
-        ),
+        description="bill = Rechnung, contract = Vertrag, price_adjustment = Preisanpassung; "
+        "im Zweifel weglassen.",
     )
     year: int | None = Field(
         default=None,
         ge=1990,
         le=2100,
-        description=(
-            "Abrechnungsjahr. Nur zusammen mit doc_type=bill setzen. Verträge und "
-            "Preisschreiben haben kein Abrechnungsjahr und würden sonst ausgeschlossen."
-        ),
+        description="Abrechnungsjahr, nur zusammen mit doc_type=bill.",
     )
 
 
 class SearchArguments(_Arguments):
+    @model_validator(mode="before")
+    @classmethod
+    def _repair(cls, data: object) -> object:
+        return repair_utility_arguments(data)
+
     query: str = Field(
         min_length=2,
-        description=(
-            "Suchanfrage auf Deutsch, mit den Fachbegriffen. Jahr und Dokumentart "
-            "(Vertrag, Rechnung) gehören in die Anfrage, nicht in einen Filter."
-        ),
+        description="Suchanfrage auf Deutsch mit Fachbegriffen, Jahr und Dokumentart.",
     )
     utility_type: UtilityType | None = Field(
         default=None,
-        description=(
-            "Sparte. Nur setzen, wenn die Frage sie ausdrücklich nennt "
-            "(Strom = electricity, Gas = gas, Wasser = water, Fernwärme = district_heating, "
-            "Nebenkosten = service_charges)."
-        ),
+        description="Sparte, nur wenn die Frage sie nennt: electricity = Strom, gas, water, "
+        "district_heating = Fernwärme, service_charges = Nebenkosten.",
     )
     tariff_kind: TariffKind | None = Field(
         default=None,
-        description="Nur bei Strom: household = Lichtstrom, heating = Heizstrom (HT/NT).",
+        description="Nur Strom: household = Lichtstrom, heating = Heizstrom.",
     )
     include_counterpart: bool = Field(
         default=False,
-        description=(
-            "true bei Prüffragen (stimmt die Rechnung mit Vertrag oder Preisschreiben "
-            "überein?): liefert zusätzlich Treffer aus dem Gegenstück (Vertrag bzw. Rechnung)."
-        ),
+        description="true bei Prüffragen: zusätzlich Treffer aus Vertrag bzw. Rechnung.",
     )
 
 

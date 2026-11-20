@@ -604,3 +604,11 @@
 - **Korrekte Rechnungen:** 8 von 8 ohne Abweichung (Lichtstrom 2024, Gas 2024/2025, Wasser 2024/2025, Betriebskosten 2024/2025, Heizstrom 2024). Erster Probelauf hatte zwei Scheinabweichungen (Zwischensumme als Position bei Lichtstrom 2024, Vorauszahlungszeile bei Wasser 2024), beide Regeln korrigiert (ISS-111).
 - **Grenzen der Messung:** Regeln und eingebaute Fehler stammen von derselben Person (Claude), die Rate ist deshalb kein Maß für echte Rechnungen (ISS-112). Es prüft nur den Code, nicht den Agenten.
 - **Deutung:** Der Vergleich im Code löst das Problem aus RUN-020/021 (Modell vergleicht mit dem falschen Wert). Ob der Agent `check_bill` richtig nutzt, zeigt erst der Lauf mit Ollama.
+
+### RUN-023 – M8, Smoke-Test Agent v2 (P2, H2, V1, W1, `qwen2.5:7b`)
+- **Datum / Commit:** 2026-11-20 · Stand nach Merge `feat/m8-agent-v2`
+- **Konfiguration:** `scripts/m8_prepare.sh` (Ingestion, Enrichment, Fakten, Index, Quality Gate 402 grün, dann P2 auf drei Fragen); `num_ctx` 8192, Temperatur 0, max. 10 Werkzeugaufrufe
+- **Rohdaten:** `data/eval/run-023-smoke/`, `data/eval/m8-prepare.log`; `score` brach ab (ISS-115), Auswertung von Hand
+- **Ergebnis:** H2 falsch („keine Angaben“, Sparte Fernwärme statt Heizstrom), V1 Grafik und alle Werte richtig, aber Lückensatz angehängt, W1 richtig (Abweichung angerechnete Abschläge, 500 gegen 480 EUR, 20 EUR) nach drei gesperrten Wiederholungen. `plan` nie aufgerufen. Zeiten 212 / 280 / 447 s; erster Modellaufruf je Frage 175–182 s.
+- **Deutung:** Die Prüfregeln liefern das richtige Ergebnis, sobald das Werkzeug richtig aufgerufen wird; die Fehler liegen in den Argumenten (ISS-114). Gegenmaßnahmen im Code, Wiederholung als run-024-smoke vor dem Nachtlauf.
+

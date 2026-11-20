@@ -266,3 +266,23 @@ def unsupported_numbers(answer: str, sources: list[str]) -> list[str]:
             continue
         missing.append(value.replace(".", ","))
     return missing
+
+
+RETRY_BEFORE_GAP_MESSAGE_V2 = (
+    "Bevor du sagst, dass Angaben fehlen: Prüfe mit list_documents, welche Unterlagen es gibt "
+    "(Heizstrom und Lichtstrom sind Sparte electricity), und versuche get_facts, check_bill "
+    "oder search mit anderen Argumenten."
+)
+PLAN_HINT = "Hinweis: Lege jetzt mit plan die weiteren Schritte fest (2 bis 4 Schritte)."
+
+
+def drop_trailing_gap(answer: str) -> str:
+    """Remove a "not in the documents" sentence that the model appended to a real answer.
+
+    run-023 V1: a correct answer with figures and citations ended with the gap sentence, which
+    made it count as a gap answer. Only removed if the rest cites a source.
+    """
+    if GAP_ANSWER not in answer:
+        return answer
+    rest = answer.replace(GAP_ANSWER, "").strip()
+    return rest if rest and has_citation(rest) else answer

@@ -1,0 +1,414 @@
+== M8-Vorbereitung gestartet: 2026-11-20 19:14:45
+Resolved 155 packages in 12ms
+   Building local-household-audit-agent @ file:///home/usr0/PycharmProjects/local-household-audit-agent
+Downloading fonttools (5.2MiB)
+ Downloaded fonttools
+      Built local-household-audit-agent @ file:///home/usr0/PycharmProjects/local-household-audit-agent
+Prepared 2 packages in 794ms
+Uninstalled 38 packages in 162ms
+Installed 7 packages in 20ms
+ - appdirs==1.4.4
+ + contourpy==1.4.0
+ + cycler==0.12.1
+ - datasets==5.2.0
+ - dill==0.4.1
+ - distro==1.9.0
+ - docstring-parser==0.18.0
+ + fonttools==4.68.0
+ - httpx-sse==0.4.3
+ - instructor==1.17.0
+ - jiter==0.14.0
+ - jsonpatch==1.47
+ - jsonpointer==3.12
+ + kiwisolver==1.5.1
+ - langchain==1.5.0
+ - langchain-classic==1.0.8
+ - langchain-community==0.4.2
+ - langchain-core==1.8.0
+ - langchain-openai==1.8.0
+ - langchain-protocol==0.0.21
+ - langchain-text-splitters==1.1.3
+ - langgraph==1.2.22
+ - langgraph-checkpoint==4.3.2
+ - langgraph-prebuilt==1.1.2
+ - langgraph-sdk==0.4.14
+ - langsmith==0.14.17
+ ~ local-household-audit-agent==0.1.0 (from file:///home/usr0/PycharmProjects/local-household-audit-agent)
+ + matplotlib==3.11.2
+ - multiprocess==0.70.19
+ - nest-asyncio==1.6.0
+ - openai==3.3.0
+ - ormsgpack==1.13.1
+ + pyparsing==3.3.3
+ - ragas==0.4.4
+ - regex==2026.11.9
+ - requests-toolbelt==1.0.0
+ - scikit-network==0.33.5
+ - scipy==1.18.1
+ - sniffio==1.3.1
+ - sqlalchemy==2.1.8
+ - tiktoken==0.14.0
+ - uuid-utils==0.19.0
+ - xxhash==4.1.0
+ - zstandard==0.25.0
+01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf: 27 chunks
+01_electricity_suedvolt/02_Strom_Begruessung_Abschlagsplan_2024.pdf: 27 chunks
+01_electricity_suedvolt/03_Strom_Preisanpassung_SuedVolt_2025.pdf: 21 chunks
+01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf: 33 chunks
+01_electricity_suedvolt/05_Strom_Zwischenablesung_Info_2025.pdf: 20 chunks
+01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf: 30 chunks
+02_gas_neckarenergie/07_Gas_Liefervertrag_NeckarEnergie_2024.pdf: 24 chunks
+02_gas_neckarenergie/08_Gas_Jahresabrechnung_2024_NeckarEnergie.pdf: 26 chunks
+02_gas_neckarenergie/09_Gas_Preisanpassung_NeckarEnergie_2026.pdf: 18 chunks
+02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf: 27 chunks
+02_gas_neckarenergie/11_Gas_Abschlagsplan_2026_NeckarEnergie.pdf: 18 chunks
+03_water_stadtwerke_mosbach/12_Wasser_Anmeldebestaetigung_SWM_2024.pdf: 17 chunks
+03_water_stadtwerke_mosbach/13_Wasser_Jahresbescheid_2024_SWM.pdf: 23 chunks
+03_water_stadtwerke_mosbach/14_Wasser_Gebuehrenanpassung_2026_SWM.pdf: 16 chunks
+03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf: 26 chunks
+04_housing_utilities_contractors/16_Mietvertrag_Hauptstrasse42_2023.pdf: 16 chunks
+04_housing_utilities_contractors/17_Uebergabeprotokoll_Wohnung_2023.pdf: 12 chunks
+04_housing_utilities_contractors/18_Nebenkostenabrechnung_2024_Hausverwaltung.pdf: 20 chunks
+04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf: 20 chunks
+04_housing_utilities_contractors/20_Handwerkerrechnung_Heizungswartung_2024.pdf: 15 chunks
+04_housing_utilities_contractors/21_Handwerkerrechnung_Heizungswartung_2025.pdf: 15 chunks
+05_telecom_insurance/22_Internet_Vertragszusammenfassung_GlasfaserPlus_2024.pdf: 13 chunks
+05_telecom_insurance/23_Internet_Monatsrechnung_Dez2025_GlasfaserPlus.pdf: 9 chunks
+05_telecom_insurance/24_Mobilfunk_Vertrag_MobilPlus_2025.pdf: 9 chunks
+05_telecom_insurance/25_Mobilfunk_Monatsrechnung_Dez2025_MobilPlus.pdf: 9 chunks
+05_telecom_insurance/26_Hausrat_Versicherungsschein_AlpenSchutz_2024.pdf: 12 chunks
+05_telecom_insurance/27_Hausrat_Beitragsrechnung_2026_AlpenSchutz.pdf: 7 chunks
+05_telecom_insurance/28_KFZ_Versicherungsschein_Beitrag2025_AlpenSchutz.pdf: 11 chunks
+02_gas_neckarenergie/29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf: 23 chunks
+04_housing_utilities_contractors/30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf: 20 chunks
+01_electricity_suedvolt/31_Heizstrom_Vertragsbestaetigung_SuedVolt_2024.pdf: 25 chunks
+01_electricity_suedvolt/32_Heizstrom_Jahresabrechnung_2024_SuedVolt.pdf: 30 chunks
+01_electricity_suedvolt/33_Heizstrom_Preisanpassung_SuedVolt_2025.pdf: 17 chunks
+01_electricity_suedvolt/34_Heizstrom_Jahresabrechnung_2025_SuedVolt.pdf: 30 chunks
+03_water_stadtwerke_mosbach/35_Wasser_Jahresbescheid_2026_SWM.pdf: 26 chunks
+35 documents, 692 chunks: {'text': 216, 'heading': 98, 'table_row': 373, 'table_summary': 0, 'image': 5}
+written to /home/usr0/PycharmProjects/local-household-audit-agent/data/processed
+[image 1/5] 04_Strom_Jahresabrechnung_2024_SuedVolt_p2_img01 (cache)
+[image 2/5] 06_Strom_Jahresabrechnung_2025_SuedVolt_p2_img01 (cache)
+[image 3/5] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p2_img01 (cache)
+[image 4/5] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p2_img02 (cache)
+[image 5/5] 15_Wasser_Jahresbescheid_2025_SWM_p2_img01 (cache)
+[table 1/82] 01_Strom_Vertragsbestaetigung_SuedVolt_2024_p1_tab01_sum (cache)
+[table 2/82] 01_Strom_Vertragsbestaetigung_SuedVolt_2024_p1_tab02_sum (cache)
+[table 3/82] 01_Strom_Vertragsbestaetigung_SuedVolt_2024_p1_tab03_sum (cache)
+[table 4/82] 02_Strom_Begruessung_Abschlagsplan_2024_p1_tab01_sum (cache)
+[table 5/82] 02_Strom_Begruessung_Abschlagsplan_2024_p1_tab02_sum (cache)
+[table 6/82] 03_Strom_Preisanpassung_SuedVolt_2025_p1_tab01_sum (cache)
+[table 7/82] 03_Strom_Preisanpassung_SuedVolt_2025_p1_tab02_sum (cache)
+  numbers not found in the table: [2.86, 3.2, 15.08]
+[table 8/82] 04_Strom_Jahresabrechnung_2024_SuedVolt_p1_tab01_sum (cache)
+[table 9/82] 04_Strom_Jahresabrechnung_2024_SuedVolt_p1_tab02_sum (cache)
+[table 10/82] 04_Strom_Jahresabrechnung_2024_SuedVolt_p1_tab03_sum (cache)
+[table 11/82] 05_Strom_Zwischenablesung_Info_2025_p1_tab01_sum (cache)
+[table 12/82] 05_Strom_Zwischenablesung_Info_2025_p1_tab02_sum (cache)
+[table 13/82] 06_Strom_Jahresabrechnung_2025_SuedVolt_p1_tab01_sum (cache)
+[table 14/82] 06_Strom_Jahresabrechnung_2025_SuedVolt_p1_tab02_sum (cache)
+[table 15/82] 06_Strom_Jahresabrechnung_2025_SuedVolt_p1_tab03_sum (cache)
+[table 16/82] 07_Gas_Liefervertrag_NeckarEnergie_2024_p1_tab01_sum (cache)
+[table 17/82] 07_Gas_Liefervertrag_NeckarEnergie_2024_p1_tab02_sum (cache)
+[table 18/82] 07_Gas_Liefervertrag_NeckarEnergie_2024_p1_tab03_sum (cache)
+[table 19/82] 08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab01_sum (cache)
+  numbers not found in the table: [7500.0]
+[table 20/82] 08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab02_sum (cache)
+[table 21/82] 08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab03_sum (cache)
+[table 22/82] 08_Gas_Jahresabrechnung_2024_NeckarEnergie_p1_tab04_sum (cache)
+[table 23/82] 09_Gas_Preisanpassung_NeckarEnergie_2026_p1_tab01_sum (cache)
+[table 24/82] 09_Gas_Preisanpassung_NeckarEnergie_2026_p1_tab02_sum (cache)
+[table 25/82] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab01_sum (cache)
+  numbers not found in the table: [1456.5, 7000.0]
+[table 26/82] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab02_sum (cache)
+[table 27/82] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab03_sum (cache)
+[table 28/82] 10_Gas_Jahresabrechnung_2025_NeckarEnergie_p1_tab04_sum (cache)
+[table 29/82] 11_Gas_Abschlagsplan_2026_NeckarEnergie_p1_tab01_sum (cache)
+[table 30/82] 11_Gas_Abschlagsplan_2026_NeckarEnergie_p1_tab02_sum (cache)
+[table 31/82] 12_Wasser_Anmeldebestaetigung_SWM_2024_p1_tab01_sum (cache)
+[table 32/82] 12_Wasser_Anmeldebestaetigung_SWM_2024_p1_tab02_sum (cache)
+[table 33/82] 13_Wasser_Jahresbescheid_2024_SWM_p1_tab01_sum (cache)
+[table 34/82] 13_Wasser_Jahresbescheid_2024_SWM_p1_tab02_sum (cache)
+[table 35/82] 13_Wasser_Jahresbescheid_2024_SWM_p1_tab03_sum (cache)
+[table 36/82] 14_Wasser_Gebuehrenanpassung_2026_SWM_p1_tab01_sum (cache)
+[table 37/82] 14_Wasser_Gebuehrenanpassung_2026_SWM_p1_tab02_sum (cache)
+[table 38/82] 15_Wasser_Jahresbescheid_2025_SWM_p1_tab01_sum (cache)
+[table 39/82] 15_Wasser_Jahresbescheid_2025_SWM_p1_tab02_sum (cache)
+[table 40/82] 15_Wasser_Jahresbescheid_2025_SWM_p1_tab03_sum (cache)
+[table 41/82] 15_Wasser_Jahresbescheid_2025_SWM_p1_tab04_sum (cache)
+[table 42/82] 16_Mietvertrag_Hauptstrasse42_2023_p1_tab01_sum (cache)
+[table 43/82] 17_Uebergabeprotokoll_Wohnung_2023_p1_tab01_sum (cache)
+[table 44/82] 18_Nebenkostenabrechnung_2024_Hausverwaltung_p1_tab01_sum (cache)
+[table 45/82] 18_Nebenkostenabrechnung_2024_Hausverwaltung_p1_tab02_sum (cache)
+[table 46/82] 19_Nebenkostenabrechnung_2025_Hausverwaltung_p1_tab01_sum (cache)
+[table 47/82] 19_Nebenkostenabrechnung_2025_Hausverwaltung_p1_tab02_sum (cache)
+[table 48/82] 20_Handwerkerrechnung_Heizungswartung_2024_p1_tab01_sum (cache)
+[table 49/82] 20_Handwerkerrechnung_Heizungswartung_2024_p1_tab02_sum (cache)
+[table 50/82] 21_Handwerkerrechnung_Heizungswartung_2025_p1_tab01_sum (cache)
+[table 51/82] 21_Handwerkerrechnung_Heizungswartung_2025_p1_tab02_sum (cache)
+[table 52/82] 23_Internet_Monatsrechnung_Dez2025_GlasfaserPlus_p1_tab01_sum (cache)
+[table 53/82] 24_Mobilfunk_Vertrag_MobilPlus_2025_p1_tab01_sum (cache)
+[table 54/82] 25_Mobilfunk_Monatsrechnung_Dez2025_MobilPlus_p1_tab01_sum (cache)
+[table 55/82] 26_Hausrat_Versicherungsschein_AlpenSchutz_2024_p1_tab01_sum (cache)
+[table 56/82] 26_Hausrat_Versicherungsschein_AlpenSchutz_2024_p1_tab02_sum (cache)
+[table 57/82] 27_Hausrat_Beitragsrechnung_2026_AlpenSchutz_p1_tab01_sum (cache)
+  numbers not found in the table: [320.22]
+[table 58/82] 28_KFZ_Versicherungsschein_Beitrag2025_AlpenSchutz_p1_tab01_sum (cache)
+  numbers not found in the table: [31.0]
+[table 59/82] 28_KFZ_Versicherungsschein_Beitrag2025_AlpenSchutz_p1_tab02_sum (cache)
+[table 60/82] 29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab01_sum (cache)
+  numbers not found in the table: [7000.0]
+[table 61/82] 29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab02_sum (cache)
+[table 62/82] 29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab03_sum (cache)
+[table 63/82] 29_Gas_Jahresabrechnung_2026_NeckarEnergie_p1_tab04_sum (cache)
+[table 64/82] 30_Nebenkostenabrechnung_2026_Hausverwaltung_p1_tab01_sum (cache)
+[table 65/82] 30_Nebenkostenabrechnung_2026_Hausverwaltung_p1_tab02_sum (cache)
+[table 66/82] 31_Heizstrom_Vertragsbestaetigung_SuedVolt_2024_p1_tab01_sum (19 s)
+[table 67/82] 31_Heizstrom_Vertragsbestaetigung_SuedVolt_2024_p1_tab02_sum (20 s)
+[table 68/82] 31_Heizstrom_Vertragsbestaetigung_SuedVolt_2024_p1_tab03_sum (19 s)
+[table 69/82] 32_Heizstrom_Jahresabrechnung_2024_SuedVolt_p1_tab01_sum (12 s)
+[table 70/82] 32_Heizstrom_Jahresabrechnung_2024_SuedVolt_p1_tab02_sum (13 s)
+[table 71/82] 32_Heizstrom_Jahresabrechnung_2024_SuedVolt_p1_tab03_sum (20 s)
+[table 72/82] 32_Heizstrom_Jahresabrechnung_2024_SuedVolt_p1_tab04_sum (23 s)
+[table 73/82] 33_Heizstrom_Preisanpassung_SuedVolt_2025_p1_tab01_sum (10 s)
+[table 74/82] 33_Heizstrom_Preisanpassung_SuedVolt_2025_p1_tab02_sum (24 s)
+  numbers not found in the table: [0.35, 0.44, 1.43, 1.6, 2.7]
+[table 75/82] 34_Heizstrom_Jahresabrechnung_2025_SuedVolt_p1_tab01_sum (13 s)
+[table 76/82] 34_Heizstrom_Jahresabrechnung_2025_SuedVolt_p1_tab02_sum (14 s)
+[table 77/82] 34_Heizstrom_Jahresabrechnung_2025_SuedVolt_p1_tab03_sum (18 s)
+[table 78/82] 34_Heizstrom_Jahresabrechnung_2025_SuedVolt_p1_tab04_sum (20 s)
+[table 79/82] 35_Wasser_Jahresbescheid_2026_SWM_p1_tab01_sum (14 s)
+[table 80/82] 35_Wasser_Jahresbescheid_2026_SWM_p1_tab02_sum (14 s)
+[table 81/82] 35_Wasser_Jahresbescheid_2026_SWM_p1_tab03_sum (12 s)
+[table 82/82] 35_Wasser_Jahresbescheid_2026_SWM_p1_tab04_sum (21 s)
+87 jobs: 70 from cache, 17 computed
+model time of this run: 4.8 min
+summaries with numbers not found in the table: 7
+answers cut off by the token limit: 0
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/enrichment/enrichment.json
+172 Fakten nach /home/usr0/PycharmProjects/local-household-audit-agent/data/processed/facts.json: {'advance': 17, 'advances_credited': 13, 'base_price': 18, 'calorific_value': 3, 'consumption': 12, 'cost_share': 3, 'energy_price': 17, 'gas_volume': 3, 'invoice_total': 11, 'living_area': 4, 'meter_reading': 26, 'position': 25, 'service_costs': 3, 'sewage_fee': 5, 'total_area': 4, 'water_price': 5, 'z_factor': 3}
+
+01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf: 0 Abweichung(en), Auswirkung 0,00 EUR
+  stimmt        Arbeitspreis: Soll 34,80 ct/kWh (gültig ab 01.01.2024) | Ist 34,80 ct/kWh
+  stimmt        Grundpreis: Soll 11,50 EUR/Monat (gültig ab 01.01.2024) | Ist 11,50 EUR/Monat
+  stimmt        Verbrauch aus Zählerständen: Soll 17.450 kWh − 14.200 kWh = 3.250 kWh | Ist 3.250 kWh
+  stimmt        Summe der Positionen: Soll 1.189,00 EUR | Ist 1.189,00 EUR
+  stimmt        angerechnete Abschläge: Soll 11 × 105,00 EUR = 1.155,00 EUR | Ist 11 × 105,00 EUR = 1.155,00 EUR
+
+01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf: 1 Abweichung(en), Auswirkung 40,30 EUR
+  ABWEICHUNG    Arbeitspreis: Soll 38,20 ct/kWh (gültig ab 01.01.2025) | Ist 39,50 ct/kWh
+  stimmt        Grundpreis: Soll 12,90 EUR/Monat (gültig ab 01.01.2025) | Ist 12,90 EUR/Monat
+  stimmt        Verbrauch aus Zählerständen: Soll 20.550 kWh − 17.450 kWh = 3.100 kWh | Ist 3.100 kWh
+  stimmt        Summe der Positionen: Soll 1.379,30 EUR | Ist 1.379,30 EUR
+  stimmt        angerechnete Abschläge: Soll 11 × 115,00 EUR = 1.265,00 EUR | Ist 11 × 115,00 EUR = 1.265,00 EUR
+
+02_gas_neckarenergie/08_Gas_Jahresabrechnung_2024_NeckarEnergie.pdf: 0 Abweichung(en), Auswirkung 0,00 EUR
+  stimmt        Arbeitspreis: Soll 10,80 ct/kWh (gültig ab 01.01.2024) | Ist 10,80 ct/kWh
+  stimmt        Grundpreis: Soll 14,50 EUR/Monat (gültig ab 01.01.2024) | Ist 14,50 EUR/Monat
+  stimmt        Verbrauch aus Zählerständen: Soll 8.120 m³ − 6.850 m³ = 1.270 m³ | Ist 1.270 m³
+  stimmt        Umrechnung m³ in kWh: Soll 1.270 m³ × 0,9560 × 11,150 kWh/m³ = 13.537 kWh | Ist 13.538 kWh
+  stimmt        z-Zahl: Soll 0,9560 (wie in den anderen Gasrechnungen) | Ist 0,9560
+  stimmt        Summe der Positionen: Soll 1.636,10 EUR | Ist 1.636,10 EUR
+  stimmt        angerechnete Abschläge: Soll 11 × 130,00 EUR = 1.430,00 EUR | Ist 11 × 130,00 EUR = 1.430,00 EUR
+
+02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf: 0 Abweichung(en), Auswirkung 0,00 EUR
+  stimmt        Arbeitspreis: Soll 10,80 ct/kWh (gültig ab 01.01.2024) | Ist 10,80 ct/kWh
+  stimmt        Grundpreis: Soll 14,50 EUR/Monat (gültig ab 01.01.2024) | Ist 14,50 EUR/Monat
+  stimmt        Verbrauch aus Zählerständen: Soll 9.320 m³ − 8.120 m³ = 1.200 m³ | Ist 1.200 m³
+  stimmt        Umrechnung m³ in kWh: Soll 1.200 m³ × 0,9560 × 11,150 kWh/m³ = 12.791 kWh | Ist 12.791 kWh
+  stimmt        z-Zahl: Soll 0,9560 (wie in den anderen Gasrechnungen) | Ist 0,9560
+  stimmt        Summe der Positionen: Soll 1.555,43 EUR | Ist 1.555,43 EUR
+  stimmt        angerechnete Abschläge: Soll 11 × 130,00 EUR = 1.430,00 EUR | Ist 11 × 130,00 EUR = 1.430,00 EUR
+
+03_water_stadtwerke_mosbach/13_Wasser_Jahresbescheid_2024_SWM.pdf: 0 Abweichung(en), Auswirkung 0,00 EUR
+  stimmt        Trinkwasserpreis: Soll 2,30 EUR/m³ (gültig ab 01.01.2024) | Ist 2,30 EUR/m³
+  stimmt        Grundpreis: Soll 6,50 EUR/Monat (gültig ab 01.01.2024) | Ist 6,50 EUR/Monat
+  stimmt        Schmutzwassergebühr: Soll 2,85 EUR/m³ (gültig ab 01.01.2024) | Ist 2,85 EUR/m³
+  stimmt        Verbrauch aus Zählerständen: Soll 312 m³ − 234 m³ = 78 m³ | Ist 78 m³
+  stimmt        Summe der Positionen: Soll 479,70 EUR | Ist 479,70 EUR
+  stimmt        angerechnete Abschläge: Soll 4 × 120,00 EUR = 480,00 EUR | Ist 4 × 120,00 EUR = 480,00 EUR
+
+03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf: 0 Abweichung(en), Auswirkung 0,00 EUR
+  stimmt        Trinkwasserpreis: Soll 2,30 EUR/m³ (gültig ab 01.01.2024) | Ist 2,30 EUR/m³
+  stimmt        Grundpreis: Soll 6,50 EUR/Monat (gültig ab 01.01.2024) | Ist 6,50 EUR/Monat
+  stimmt        Schmutzwassergebühr: Soll 2,85 EUR/m³ (gültig ab 01.01.2024) | Ist 2,85 EUR/m³
+  stimmt        Verbrauch aus Zählerständen: Soll 386 m³ − 312 m³ = 74 m³ | Ist 74 m³
+  stimmt        Summe der Positionen: Soll 459,10 EUR | Ist 459,10 EUR
+  stimmt        angerechnete Abschläge: Soll 4 × 120,00 EUR = 480,00 EUR | Ist 4 × 120,00 EUR = 480,00 EUR
+
+04_housing_utilities_contractors/18_Nebenkostenabrechnung_2024_Hausverwaltung.pdf: 0 Abweichung(en), Auswirkung 0,00 EUR
+  stimmt        Wohnfläche: Soll 78,00 m² laut Mietvertrag | Ist 78,00 m²
+  stimmt        Summe der Kostenarten: Soll 1.870,00 EUR | Ist 1.870,00 EUR
+  stimmt        angerechnete Abschläge: Soll 12 × 160,00 EUR = 1.920,00 EUR | Ist 12 × 160,00 EUR = 1.920,00 EUR
+
+04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf: 0 Abweichung(en), Auswirkung 0,00 EUR
+  stimmt        Wohnfläche: Soll 78,00 m² laut Mietvertrag | Ist 78,00 m²
+  stimmt        Summe der Kostenarten: Soll 1.830,00 EUR | Ist 1.830,00 EUR
+  stimmt        angerechnete Abschläge: Soll 12 × 160,00 EUR = 1.920,00 EUR | Ist 12 × 160,00 EUR = 1.920,00 EUR
+
+04_housing_utilities_contractors/20_Handwerkerrechnung_Heizungswartung_2024.pdf: 0 Abweichung(en), Auswirkung 0,00 EUR
+
+04_housing_utilities_contractors/21_Handwerkerrechnung_Heizungswartung_2025.pdf: 0 Abweichung(en), Auswirkung 0,00 EUR
+
+02_gas_neckarenergie/29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf: 1 Abweichung(en), Auswirkung 51,74 EUR
+  stimmt        Arbeitspreis: Soll 9,95 ct/kWh (gültig ab 01.01.2026) | Ist 9,95 ct/kWh
+  stimmt        Grundpreis: Soll 16,00 EUR/Monat (gültig ab 01.01.2026) | Ist 16,00 EUR/Monat
+  stimmt        Verbrauch aus Zählerständen: Soll 10.380 m³ − 9.320 m³ = 1.060 m³ | Ist 1.060 m³
+  stimmt        Umrechnung m³ in kWh: Soll 1.060 m³ × 1,0000 × 11,150 kWh/m³ = 11.819 kWh | Ist 11.819 kWh
+  ABWEICHUNG    z-Zahl: Soll 0,9560 (wie in den anderen Gasrechnungen) | Ist 1,0000
+  stimmt        Summe der Positionen: Soll 1.367,99 EUR | Ist 1.367,99 EUR
+  stimmt        angerechnete Abschläge: Soll 11 × 125,00 EUR = 1.375,00 EUR | Ist 11 × 125,00 EUR = 1.375,00 EUR
+
+04_housing_utilities_contractors/30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf: 1 Abweichung(en), Auswirkung 95,78 EUR
+  ABWEICHUNG    Wohnfläche: Soll 78,00 m² laut Mietvertrag | Ist 82,00 m²
+  stimmt        Summe der Kostenarten: Soll 1.963,28 EUR | Ist 1.963,28 EUR
+  stimmt        angerechnete Abschläge: Soll 12 × 160,00 EUR = 1.920,00 EUR | Ist 12 × 160,00 EUR = 1.920,00 EUR
+
+01_electricity_suedvolt/32_Heizstrom_Jahresabrechnung_2024_SuedVolt.pdf: 0 Abweichung(en), Auswirkung 0,00 EUR
+  stimmt        Arbeitspreis HT: Soll 31,90 ct/kWh (gültig ab 01.01.2024) | Ist 31,90 ct/kWh
+  stimmt        Arbeitspreis NT: Soll 22,40 ct/kWh (gültig ab 01.01.2024) | Ist 22,40 ct/kWh
+  stimmt        Grundpreis: Soll 8,90 EUR/Monat (gültig ab 01.01.2024) | Ist 8,90 EUR/Monat
+  stimmt        Verbrauch HT aus Zählerständen: Soll 2.620 kWh − 2.000 kWh = 620 kWh | Ist 620 kWh
+  stimmt        Verbrauch NT aus Zählerständen: Soll 12.680 kWh − 9.500 kWh = 3.180 kWh | Ist 3.180 kWh
+  stimmt        Summe der Positionen: Soll 1.016,90 EUR | Ist 1.016,90 EUR
+  stimmt        angerechnete Abschläge: Soll 11 × 85,00 EUR = 935,00 EUR | Ist 11 × 85,00 EUR = 935,00 EUR
+
+01_electricity_suedvolt/34_Heizstrom_Jahresabrechnung_2025_SuedVolt.pdf: 1 Abweichung(en), Auswirkung 120,50 EUR
+  stimmt        Arbeitspreis HT: Soll 33,50 ct/kWh (gültig ab 01.01.2025) | Ist 33,50 ct/kWh
+  stimmt        Arbeitspreis NT: Soll 24,10 ct/kWh (gültig ab 01.01.2025) | Ist 24,10 ct/kWh
+  stimmt        Grundpreis: Soll 9,90 EUR/Monat (gültig ab 01.01.2025) | Ist 9,90 EUR/Monat
+  stimmt        Verbrauch HT aus Zählerständen: Soll 3.200 kWh − 2.620 kWh = 580 kWh | Ist 580 kWh
+  ABWEICHUNG    Verbrauch NT aus Zählerständen: Soll 16.100 kWh − 12.680 kWh = 3.420 kWh | Ist abgerechnet 3.920 kWh
+  stimmt        Summe der Positionen: Soll 1.257,82 EUR | Ist 1.257,82 EUR
+  stimmt        angerechnete Abschläge: Soll 11 × 95,00 EUR = 1.045,00 EUR | Ist 11 × 95,00 EUR = 1.045,00 EUR
+
+03_water_stadtwerke_mosbach/35_Wasser_Jahresbescheid_2026_SWM.pdf: 1 Abweichung(en), Auswirkung 20,00 EUR
+  stimmt        Trinkwasserpreis: Soll 2,42 EUR/m³ (gültig ab 01.01.2026) | Ist 2,42 EUR/m³
+  stimmt        Grundpreis: Soll 6,80 EUR/Monat (gültig ab 01.01.2026) | Ist 6,80 EUR/Monat
+  stimmt        Schmutzwassergebühr: Soll 2,98 EUR/m³ (gültig ab 01.01.2026) | Ist 2,98 EUR/m³
+  stimmt        Verbrauch aus Zählerständen: Soll 458 m³ − 386 m³ = 72 m³ | Ist 72 m³
+  stimmt        Summe der Positionen: Soll 470,40 EUR | Ist 470,40 EUR
+  ABWEICHUNG    angerechnete Abschläge: Soll 4 × 125,00 EUR = 500,00 EUR | Ist 4 × 120,00 EUR = 480,00 EUR
+indexed 16/676 chunks
+indexed 32/676 chunks
+indexed 48/676 chunks
+indexed 64/676 chunks
+indexed 80/676 chunks
+indexed 96/676 chunks
+indexed 112/676 chunks
+indexed 128/676 chunks
+indexed 144/676 chunks
+indexed 160/676 chunks
+indexed 176/676 chunks
+indexed 192/676 chunks
+indexed 208/676 chunks
+indexed 224/676 chunks
+indexed 240/676 chunks
+indexed 256/676 chunks
+indexed 272/676 chunks
+indexed 288/676 chunks
+indexed 304/676 chunks
+indexed 320/676 chunks
+indexed 336/676 chunks
+indexed 352/676 chunks
+indexed 368/676 chunks
+indexed 384/676 chunks
+indexed 400/676 chunks
+indexed 416/676 chunks
+indexed 432/676 chunks
+indexed 448/676 chunks
+indexed 464/676 chunks
+indexed 480/676 chunks
+indexed 496/676 chunks
+indexed 512/676 chunks
+indexed 528/676 chunks
+indexed 544/676 chunks
+indexed 560/676 chunks
+indexed 576/676 chunks
+indexed 592/676 chunks
+indexed 608/676 chunks
+indexed 624/676 chunks
+indexed 640/676 chunks
+indexed 656/676 chunks
+indexed 672/676 chunks
+indexed 676/676 chunks
+676 chunks from 35 documents indexed
+by type: {'text': 216, 'table_summary': 82, 'table_row': 373, 'image': 5}, headings skipped: 98
+nomic-embed-text, 768 dimensions, 120.9 s
+All checks passed!
+160 files already formatted
+============================= test session starts ==============================
+platform linux -- Python 3.13.15, pytest-9.2.0, pluggy-1.7.0
+rootdir: /home/usr0/PycharmProjects/local-household-audit-agent
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.16.0
+collected 404 items / 1 deselected / 403 selected
+
+tests/test_agent_loop.py ............................................... [ 11%]
+.............                                                            [ 14%]
+tests/test_agent_text_calls.py ..............                            [ 18%]
+tests/test_agent_tools.py .............................................. [ 29%]
+......................                                                   [ 35%]
+tests/test_agent_v2.py ............                                      [ 38%]
+tests/test_audit_flow.py ..............                                  [ 41%]
+tests/test_config.py .....                                               [ 42%]
+tests/test_corpus.py ...................                                 [ 47%]
+tests/test_enrichment.py ........................                        [ 53%]
+tests/test_evaluation.py ................................                [ 61%]
+tests/test_facts.py .........                                            [ 63%]
+tests/test_ingestion_models_pipeline.py ........                         [ 65%]
+tests/test_ingestion_parser.py ..................                        [ 70%]
+tests/test_preflight.py ....                                             [ 71%]
+tests/test_ragas_eval.py .............s.                                 [ 74%]
+tests/test_retrieval.py ................................................ [ 86%]
+..................                                                       [ 91%]
+tests/test_smoke_metrics.py ..........................                   [ 97%]
+tests/test_smoke_runner.py .........                                     [100%]
+
+================ 402 passed, 1 skipped, 1 deselected in 17.90s =================
+
+== P2 Agent H2: Ist die Heizstromabrechnung 2025 korrekt?
+   212.0 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent V1: Erstelle eine Grafik zum Stromverbrauch 2024 und 2025, getrennt nach Licht- und Heizstrom.
+   279.5 s: Die Grafik zeigt den Stromverbrauch getrennt nach Licht- und Heizstrom für die Jahre 2024 und 2025. Hier sind die Details:
+
+- **2024:**
+  - Heizstrom (HT): 620 kWh [1] [2]
+  - Heizstrom (NT): 3.180 kW
+
+== P2 Agent W1: Ist der Wasserbescheid 2026 korrekt?
+   447.2 s: Die Prüfung des Wasserbescheids [35_Wasser_Jahresbescheid_2026_SWM.pdf] ergibt:
+
+- Trinkwasserpreis: Soll 2,42 EUR/m³, Ist 2,42 EUR/m³ [1]
+- Grundpreis: Soll 6,80 EUR/Monat, Ist 6,80 EUR/Monat [3]
+- S
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 301, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 284, in main
+    return _generate(args, settings, client)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 168, in _generate
+    return _score(settings, args.run_id)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 184, in _score
+    by_id = {question.id: question for question in _all_questions(settings, truth)}
+                                                   ^^^^^^^^^^^^^^
+NameError: name '_all_questions' is not defined. Did you mean: 'select_questions'?
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 301, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 279, in main
+    return _score(settings, args.run_id)
+  File "/home/usr0/PycharmProjects/local-household-audit-agent/src/audit_agent/evaluation/__main__.py", line 184, in _score
+    by_id = {question.id: question for question in _all_questions(settings, truth)}
+                                                   ^^^^^^^^^^^^^^
+NameError: name '_all_questions' is not defined. Did you mean: 'select_questions'?
+== M8-Vorbereitung beendet: 2026-11-20 19:38:07

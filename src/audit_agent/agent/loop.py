@@ -38,9 +38,12 @@ from audit_agent.agent.prompts import (
     FORCED_ANSWER_MESSAGE,
     NUMBERS_BEFORE_ANSWER_MESSAGE,
     OVERVIEW_BEFORE_ANSWER_MESSAGE,
+    PLAN_HINT,
     REPEAT_FAILED_OBSERVATION,
     REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
+    RETRY_BEFORE_GAP_MESSAGE_V2,
+    drop_trailing_gap,
     has_citation,
     is_audit_question,
     is_gap_answer,
@@ -50,6 +53,7 @@ from audit_agent.agent.prompts import (
     wants_chart,
     wants_overview,
 )
+from audit_agent.agent.scope import CURRENT_QUESTION, REPAIR_NOTES
 from audit_agent.agent.text_calls import TextCall, parse_text_call
 from audit_agent.agent.tools import AgentTool, ToolError, clean_arguments
 from audit_agent.config import Settings
@@ -193,6 +197,8 @@ class AgentLoop:
             messages.append({"role": "assistant", "content": earlier_answer[:HISTORY_ANSWER_CHARS]})
         messages.append({"role": "user", "content": question})
         context_text = " ".join(q for q, _ in (history or [])[-HISTORY_TURNS:]) + " " + question
+        question_token = CURRENT_QUESTION.set(context_text)
+        is_plan_hinted = not is_v2
 
         def emit(step: AgentStep) -> None:
             steps.append(step)
@@ -237,6 +243,8 @@ class AgentLoop:
                     calls, is_text_call = [_native_call(text_call)], True
             if not calls:
                 answer = (message.content or "").strip()
+                if is_v2:
+                    answer = drop_trailing_gap(answer)
                 if (
                     forced is None
                     and not is_gap_questioned
@@ -244,7 +252,11 @@ class AgentLoop:
                     and is_gap_answer(answer)
                 ):
                     is_gap_questioned = True
-                    nudge(message, "gap", RETRY_BEFORE_GAP_MESSAGE)
+                    nudge(
+                        message,
+                        "gap",
+                        RETRY_BEFORE_GAP_MESSAGE_V2 if is_v2 else RETRY_BEFORE_GAP_MESSAGE,
+                    )
                     continue
                 if verify and forced is None and tool_call_count > 0:
                     reason = self._self_check(question, context_text, answer, steps, asked)
@@ -293,14 +305,19 @@ class AgentLoop:
                 emit(tool_step)
                 if tool_step.tool == "calculate" and tool_step.is_valid and not tool_step.is_repeat:
                     is_calculated = True
-                messages.append(
-                    {"role": "tool", "tool_name": tool_step.tool, "content": tool_step.observation}
-                )
+                content = tool_step.observation
+                if not is_plan_hinted and tool_step.tool != "plan":
+                    is_plan_hinted = True  # cheap: no extra model call (ISS-114)
+                    content += "\n" + PLAN_HINT
+                elif tool_step.tool == "plan":
+                    is_plan_hinted = True
+                messages.append({"role": "tool", "tool_name": tool_step.tool, "content": content})
             if tool_call_count >= agent.max_tool_calls:
                 forced = "tool_limit"
             elif self._is_context_full(messages):
                 forced = "context_limit"
 
+        CURRENT_QUESTION.reset(question_token)
         artifacts = tuple(
             a for s in steps if isinstance(s, ToolCallStep) and not s.is_repeat for a in s.artifacts
         )
@@ -464,6 +481,7 @@ class AgentLoop:
         is_repeat = False
         hit_numbers: tuple[int, ...] = ()
         artifacts: tuple[Artifact, ...] = ()
+        notes_token = None
         tool = self._tools.get(name)
         failed_key = (name, json.dumps(clean_arguments(raw), sort_keys=True, default=str))
         if tool is None:
@@ -475,9 +493,12 @@ class AgentLoop:
             is_valid, is_repeat = False, True
             observation = REPEAT_FAILED_OBSERVATION
         else:
+            notes_token = REPAIR_NOTES.set([])
             try:
                 arguments = tool.arguments.model_validate(clean_arguments(raw))
+                repairs = list(REPAIR_NOTES.get() or [])
             except ValidationError as error:
+                repairs = []
                 is_valid = False
                 memory.failed.add(failed_key)
                 observation = (
@@ -495,10 +516,17 @@ class AgentLoop:
                         result = tool.run(arguments, book)
                         observation, hit_numbers = result.text, result.hit_numbers
                         artifacts = result.artifacts
+                        if repairs:
+                            observation = (
+                                f"Hinweis: Argumente angepasst ({'; '.join(repairs)}).\n"
+                                + observation
+                            )
                     except ToolError as error:
                         is_valid = False
                         memory.failed.add(failed_key)
                         observation = f"FEHLER: {error}"
+        if notes_token is not None:
+            REPAIR_NOTES.reset(notes_token)
         return ToolCallStep(
             index=index,
             tool=name,

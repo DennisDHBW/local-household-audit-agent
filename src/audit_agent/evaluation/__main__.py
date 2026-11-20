@@ -297,13 +297,13 @@ def main() -> int:
         return 1
 
 
-if __name__ == "__main__":
-    sys.exit(main())
-
-
 def _all_questions(settings: Settings, truth: GroundTruth) -> list[Question]:
     """Development questions plus the held-out ones (if the file exists)."""
     questions = list(truth.questions)
     if settings.holdout_file.is_file():
         questions += list(load_question_set(settings.holdout_file).questions)
     return questions
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -276,6 +276,7 @@ def _gas(store: FactStore, meta: DocumentMeta, facts: list[Fact]) -> list[Check]
             source = next(f for f in others if f.value == reference)
             is_ok = z.value == reference
             impact = None
+            energy_note = ""
             if not is_ok and volume and calorific and price:
                 wrong = (volume.value * z.value * calorific.value).quantize(
                     Decimal(1), ROUND_HALF_UP
@@ -284,6 +285,9 @@ def _gas(store: FactStore, meta: DocumentMeta, facts: list[Fact]) -> list[Check]
                     Decimal(1), ROUND_HALF_UP
                 )
                 impact = _euro((wrong - right) * price.value / 100)
+                energy_note = (
+                    f"; richtige Energiemenge {fmt(right, 'kWh')} statt {fmt(wrong, 'kWh')}"
+                )
             checks.append(
                 Check(
                     name="z-Zahl",
@@ -293,7 +297,8 @@ def _gas(store: FactStore, meta: DocumentMeta, facts: list[Fact]) -> list[Check]
                     impact_eur=impact,
                     note=""
                     if is_ok
-                    else "die z-Zahl hängt von Höhe und Druck der Verbrauchsstelle ab",
+                    else "die z-Zahl hängt von Höhe und Druck der Verbrauchsstelle ab"
+                    + energy_note,
                     facts=(source, z, *([price] if price else [])),
                 )
             )
@@ -438,7 +443,12 @@ def _service_area(store: FactStore, meta: DocumentMeta, facts: list[Fact]) -> li
         Check(
             name="Wohnfläche",
             status=CheckStatus.OK if is_ok else CheckStatus.DEVIATION,
-            expected=f"{fmt(agreed.value, 'm²', 2)} laut Mietvertrag",
+            expected=f"{fmt(agreed.value, 'm²', 2)} laut Mietvertrag"
+            + (
+                f" ({fmt((agreed.value / total.value * 100).quantize(CENT), '%', 2)} Anteil)"
+                if total is not None
+                else ""
+            ),
             actual=fmt(billed.value, "m²", 2),
             impact_eur=impact,
             note=note,

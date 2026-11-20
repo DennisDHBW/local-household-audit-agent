@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-115 – Bewertung des Smoke-Tests brach ab (`_all_questions` nicht definiert)
+- **Datum / Meilenstein:** 2026-11-20 / M8
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** `m8_prepare.sh` lief bis zum Ende, `score` brach mit `NameError: _all_questions` ab; die Antworten von run-023-smoke waren gespeichert.
+- **Ursache:** Claude hängte die Funktion ans Dateiende hinter `if __name__ == "__main__": sys.exit(main())`; sie wurde beim Start nie definiert. Unit-Tests rufen `main()` nicht über `python -m` auf, ruff erkennt das nicht.
+- **Lösung / Workaround:** Funktion vor den Startblock verschoben.
+- **Gelernt:** Code nach dem Startblock wird bei `python -m` nie erreicht; neue Funktionen nie ans Dateiende einer `__main__.py` hängen.
+- **Relevant für Ausarbeitung?** nein
+
+### ISS-114 – Smoke-Test: Modell füllt Sparte und Stromart falsch, ruft `plan` nicht auf
+- **Datum / Meilenstein:** 2026-11-20 / M8
+- **Kategorie:** agent
+- **Status:** gelöst (Wirkung im nächsten Lauf zu prüfen)
+- **Symptom:** run-023-smoke: H2 `check_bill(utility_type=district_heating)` für „Heizstrom“ → keine Rechnung → „keine Angaben“; W1 `tariff_kind=household` bei Wasser → keine Rechnung, danach dreimal derselbe gesperrte Aufruf (447 s); V1 `tariff_kind="household,heating"` ungültig und am Ende der richtigen Antwort der Satz „Dazu liegen … keine Angaben vor“. `plan` wurde in keiner Frage aufgerufen. Erster Modellaufruf ca. 175 s Prefill bei 2.600 Token.
+- **Ursache:** 7B-Modell verwechselt Heizstrom mit Fernwärme und überträgt `tariff_kind` auf andere Sparten; der Plan-Schritt stand nur im Prompt.
+- **Lösung / Workaround:** `agent/scope.py`: Argumente werden vor der Prüfung repariert (Heizstrom → electricity/heating, `tariff_kind` nur bei Strom, beide Stromarten → keiner, fehlende Sparte/Jahr aus der Frage) und die Reparatur steht im Ergebnis; `check_bill` prüft bei Strom ohne Stromart beide Rechnungen; Hinweis auf `plan` nach dem ersten Werkzeugergebnis (kein zusätzlicher Modellaufruf); angehängter Lückensatz wird entfernt; `check_bill` liefert eine „Kurzfassung für die Antwort“ mit Saldo; Werkzeugbeschreibungen gekürzt.
+- **Gelernt:** Was der Code aus der Frage sicher ableiten kann, sollte er nicht dem Modell überlassen.
+- **Relevant für Ausarbeitung?** ja → Kapitel 3
+
 ### ISS-113 – Agent v2 noch nicht mit Ollama gelaufen
 - **Datum / Meilenstein:** 2026-11-20 / M8
 - **Kategorie:** agent
