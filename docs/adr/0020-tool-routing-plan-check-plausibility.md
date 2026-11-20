@@ -27,3 +27,10 @@ Smoke-Test run-023 (ISS-114): Das Modell wählte falsche Argumente, rief `plan` 
 
 ## Belege
 run-023-smoke, ISS-112, ISS-114, ADR-0019.
+
+## Nachtrag 2026-11-20 (letzte Runde vor dem Nachtlauf)
+- Selbstprüfung „Urteil“: Widerspricht das Urteil im ersten Satz dem Ergebnis von `check_bill`, fragt die Schleife einmal nach (`NudgeReason` `verdict`).
+- `get_facts(fact=preise)` liefert alle Preise eines Vertrags in einem Aufruf; die Kurzfassung korrekter Rechnungen nennt Verbrauch aus Zählerständen und Gas-Umrechnung.
+- Reine Erwähnung von „Strom“ (ohne Heiz-/Licht, ohne Übersicht/Grafik/„alle“) gilt als Lichtstrom; „seit JJJJ“ lässt das Endjahr einer Übersicht offen.
+- `scripts/dry_run.py`: Trockenlauf des ganzen Nachtlaufs ohne Ollama in einem Temp-Ordner (Hash-Embeddings, regelbasiertes Orakel statt Modell). Findet Abstürze wie ISS-115 vorab; seine Trefferquote ist kein Modellergebnis.
+
