@@ -9,6 +9,7 @@ from __future__ import annotations
 import os
 from collections.abc import Mapping
 from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -108,8 +109,16 @@ class AgentSettings(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    max_tool_calls: int = Field(default=6, ge=1)
-    """Tool calls per question (valid or invalid); protects against endless loops on slow CPUs."""
+    tool_set: Literal["v1", "v2"] = "v2"
+    """v1: search tools of M5/M6 (ADR-0014); v2: plan, fact store, bill audit, overview and
+    chart tools (ADR-0019)."""
+    max_tool_calls: int = Field(default=10, ge=1)
+    """Tool calls per question (valid or invalid); protects against endless loops on slow CPUs.
+
+    6 until M6; 10 since M8 because ``plan`` and the artifact tools add steps (ADR-0019)."""
+    verify_answer: bool = True
+    """v2 self-check before an answer is accepted: audit question without ``check_bill``,
+    requested chart or overview missing, numbers that no tool result contains (ADR-0019)."""
     max_hit_chars: int = Field(default=600, ge=100)
     """Characters of one hit shown to the model; the evidence view keeps the full text."""
     max_list_rows: int = Field(default=40, ge=1)
@@ -188,6 +197,10 @@ class Settings(BaseModel):
     @property
     def ground_truth_file(self) -> Path:
         return self.dataset_dir / "ground_truth.yaml"
+
+    @property
+    def holdout_file(self) -> Path:
+        return self.dataset_dir / "holdout_questions.yaml"
 
     @property
     def data_dir(self) -> Path:

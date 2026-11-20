@@ -4,6 +4,7 @@ from audit_agent.corpus.loader import (
     CorpusError,
     load_document_catalog,
     load_ground_truth,
+    load_question_set,
     missing_files,
 )
 from audit_agent.corpus.models import (
@@ -16,7 +17,9 @@ from audit_agent.corpus.models import (
     PlantedError,
     Question,
     QuestionCategory,
+    QuestionSet,
     SourceRef,
+    TariffKind,
     UtilityType,
 )
 
@@ -31,9 +34,12 @@ __all__ = [
     "PlantedError",
     "Question",
     "QuestionCategory",
+    "QuestionSet",
     "SourceRef",
+    "TariffKind",
     "UtilityType",
     "load_document_catalog",
     "load_ground_truth",
+    "load_question_set",
     "missing_files",
 ]

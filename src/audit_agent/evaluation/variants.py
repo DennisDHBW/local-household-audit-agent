@@ -285,6 +285,8 @@ def answer_from_run(question: Question, run: AgentRun) -> VariantAnswer:
             for step in run.steps
             if isinstance(step, ToolCallStep) and step.is_valid and not step.is_repeat
         ),
+        artifacts=tuple(artifact.markdown for artifact in run.artifacts),
+        artifact_kinds=tuple(artifact.kind for artifact in run.artifacts),
     )
 
 

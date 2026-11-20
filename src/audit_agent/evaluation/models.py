@@ -69,6 +69,10 @@ class VariantAnswer(_Frozen):
     B0: one block per page; P1: one block per hit; P2: the observation of each valid tool
     call (search hits, document lists, calculations). Empty in runs before M6b.
     """
+    artifacts: tuple[str, ...] = ()
+    """Markdown of the tables and charts of the answer (P2 v2, ADR-0019)."""
+    artifact_kinds: tuple[str, ...] = ()
+    """``table`` or ``chart`` per artifact, same order."""
 
     @property
     def prompt_tokens(self) -> int:
@@ -109,6 +113,12 @@ class AnswerScore(_Frozen):
     stop_reason: str
     seconds: float
     prompt_tokens: int
+    expected_artifact: str | None = None
+    artifact_kinds: tuple[str, ...] = ()
+    tool_call_count: int | None = None
+    """Valid tool calls of the agent (``None`` for B0/P1)."""
+    distinct_tools: int | None = None
+    has_plan: bool | None = None
 
     @property
     def facts_found(self) -> int:
@@ -127,11 +137,25 @@ class AnswerScore(_Frozen):
         return self.answer_verdict == self.expected_verdict
 
     @property
+    def is_artifact_ok(self) -> bool | None:
+        """The requested table or chart was made (a chart also satisfies a table request)."""
+        if self.expected_artifact is None:
+            return None
+        if self.expected_artifact == "table":
+            return bool(self.artifact_kinds)
+        return "chart" in self.artifact_kinds
+
+    @property
     def is_correct(self) -> bool:
-        """Negative question: gap admitted. Otherwise: all facts found and the verdict fits."""
+        """Negative question: gap admitted. Otherwise: all facts found, the verdict fits and a
+        requested table or chart exists."""
         if not self.is_answerable:
             return self.admits_gap
-        return not self.missing_facts and self.is_verdict_ok is not False
+        return (
+            not self.missing_facts
+            and self.is_verdict_ok is not False
+            and self.is_artifact_ok is not False
+        )
 
 
 class VariantSummary(_Frozen):
@@ -162,3 +186,8 @@ class VariantSummary(_Frozen):
     seconds_mean: float
     seconds_median: float
     prompt_tokens_mean: float
+    artifact_ok_count: int = 0
+    artifact_count: int = 0
+    tool_calls_mean: float | None = None
+    distinct_tools_mean: float | None = None
+    plan_count: int | None = None

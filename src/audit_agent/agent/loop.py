@@ -19,6 +19,7 @@ from audit_agent.agent.audit_flow import run_audit_flow
 from audit_agent.agent.models import (
     AgentRun,
     AgentStep,
+    Artifact,
     AuditFlowStep,
     EvidenceBook,
     ModelCallStep,
@@ -31,8 +32,12 @@ from audit_agent.agent.models import (
 )
 from audit_agent.agent.prompts import (
     CALCULATE_BEFORE_ANSWER_MESSAGE,
+    CHART_BEFORE_ANSWER_MESSAGE,
+    CHECK_BEFORE_ANSWER_MESSAGE,
     CITE_BEFORE_ANSWER_MESSAGE,
     FORCED_ANSWER_MESSAGE,
+    NUMBERS_BEFORE_ANSWER_MESSAGE,
+    OVERVIEW_BEFORE_ANSWER_MESSAGE,
     REPEAT_FAILED_OBSERVATION,
     REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
@@ -40,12 +45,18 @@ from audit_agent.agent.prompts import (
     is_audit_question,
     is_gap_answer,
     system_prompt,
+    system_prompt_v2,
+    unsupported_numbers,
+    wants_chart,
+    wants_overview,
 )
 from audit_agent.agent.text_calls import TextCall, parse_text_call
 from audit_agent.agent.tools import AgentTool, ToolError, clean_arguments
 from audit_agent.config import Settings
 
 NANOSECONDS_PER_SECOND = 1_000_000_000
+HISTORY_TURNS = 2
+HISTORY_ANSWER_CHARS = 600
 CHARS_PER_TOKEN = 2.4
 """Characters per token of ``llama3.1:8b`` on our German texts, rounded down from measurements.
 
@@ -158,18 +169,30 @@ class AgentLoop:
         self._spec_tokens = estimate_tokens(json.dumps(self._specs, ensure_ascii=False))
 
     def run(
-        self, question: str, model: str | None = None, on_step: StepCallback | None = None
+        self,
+        question: str,
+        model: str | None = None,
+        on_step: StepCallback | None = None,
+        history: list[tuple[str, str]] | None = None,
     ) -> AgentRun:
-        """Answer one question; ``on_step`` sees every step as soon as it is finished."""
+        """Answer one question; ``on_step`` sees every step as soon as it is finished.
+
+        ``history`` holds earlier questions and answers of the same chat (oldest first); the
+        last two turns go into the prompt so that "und jetzt als Grafik?" works (ADR-0019).
+        """
         agent = self._settings.agent
         model = model or self._settings.models.agent
+        is_v2 = agent.tool_set == "v2"
         started = time.perf_counter()
         book = EvidenceBook()
         steps: list[AgentStep] = []
-        messages: list[Any] = [
-            {"role": "system", "content": system_prompt(agent.max_tool_calls)},
-            {"role": "user", "content": question},
-        ]
+        prompt = system_prompt_v2 if is_v2 else system_prompt
+        messages: list[Any] = [{"role": "system", "content": prompt(agent.max_tool_calls)}]
+        for earlier_question, earlier_answer in (history or [])[-HISTORY_TURNS:]:
+            messages.append({"role": "user", "content": earlier_question})
+            messages.append({"role": "assistant", "content": earlier_answer[:HISTORY_ANSWER_CHARS]})
+        messages.append({"role": "user", "content": question})
+        context_text = " ".join(q for q, _ in (history or [])[-HISTORY_TURNS:]) + " " + question
 
         def emit(step: AgentStep) -> None:
             steps.append(step)
@@ -187,6 +210,8 @@ class AgentLoop:
         is_cite_questioned = False
         is_calculated = False
         is_audit = is_audit_question(question)
+        verify = is_v2 and agent.verify_answer
+        asked: set[NudgeReason] = set()
         memory = _CallMemory()
         answer = ""
         stop_reason: StopReason = "answer"
@@ -221,8 +246,15 @@ class AgentLoop:
                     is_gap_questioned = True
                     nudge(message, "gap", RETRY_BEFORE_GAP_MESSAGE)
                     continue
+                if verify and forced is None and tool_call_count > 0:
+                    reason = self._self_check(question, context_text, answer, steps, asked)
+                    if reason is not None:
+                        asked.add(reason[0])
+                        nudge(message, reason[0], reason[1])
+                        continue
                 if (
-                    forced is None
+                    not is_v2
+                    and forced is None
                     and is_audit
                     and not is_calculated
                     and not is_calculate_questioned
@@ -269,6 +301,9 @@ class AgentLoop:
             elif self._is_context_full(messages):
                 forced = "context_limit"
 
+        artifacts = tuple(
+            a for s in steps if isinstance(s, ToolCallStep) and not s.is_repeat for a in s.artifacts
+        )
         return AgentRun(
             question=question,
             model=model,
@@ -278,7 +313,44 @@ class AgentLoop:
             seconds=round(time.perf_counter() - started, 1),
             steps=tuple(steps),
             sources=book.numbered_hits,
+            artifacts=artifacts,
         )
+
+    def _self_check(
+        self,
+        question: str,
+        context_text: str,
+        answer: str,
+        steps: list[AgentStep],
+        asked: set[NudgeReason],
+    ) -> tuple[NudgeReason, str] | None:
+        """The v2 self-check before an answer is accepted; each reason is asked once.
+
+        Order: missing audit, missing chart, missing overview, numbers without source.
+        A "not in the documents" answer is not questioned here (the gap rule handles it).
+        """
+        if is_gap_answer(answer):
+            return None
+        valid = [s for s in steps if isinstance(s, ToolCallStep) and s.is_valid]
+        used = {s.tool for s in valid}
+        if "check" not in asked and is_audit_question(question) and "check_bill" not in used:
+            return "check", CHECK_BEFORE_ANSWER_MESSAGE
+        if "chart" not in asked and wants_chart(context_text) and "make_chart" not in used:
+            return "chart", CHART_BEFORE_ANSWER_MESSAGE
+        if (
+            "overview" not in asked
+            and wants_overview(question)
+            and not used & {"make_overview", "make_chart"}
+        ):
+            return "overview", OVERVIEW_BEFORE_ANSWER_MESSAGE
+        if "numbers" not in asked:
+            sources = [s.observation for s in valid] + [context_text]
+            missing = unsupported_numbers(answer, sources)
+            if missing:
+                return "numbers", NUMBERS_BEFORE_ANSWER_MESSAGE.format(
+                    numbers=", ".join(missing[:6])
+                )
+        return None
 
     def _run_audit_flow(
         self,
@@ -391,6 +463,7 @@ class AgentLoop:
         is_valid = True
         is_repeat = False
         hit_numbers: tuple[int, ...] = ()
+        artifacts: tuple[Artifact, ...] = ()
         tool = self._tools.get(name)
         failed_key = (name, json.dumps(clean_arguments(raw), sort_keys=True, default=str))
         if tool is None:
@@ -421,6 +494,7 @@ class AgentLoop:
                     try:
                         result = tool.run(arguments, book)
                         observation, hit_numbers = result.text, result.hit_numbers
+                        artifacts = result.artifacts
                     except ToolError as error:
                         is_valid = False
                         memory.failed.add(failed_key)
@@ -436,4 +510,5 @@ class AgentLoop:
             is_repeat=is_repeat,
             is_text_call=is_text_call,
             is_flow_call=is_flow_call,
+            artifacts=artifacts,
         )

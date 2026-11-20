@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 from pydantic import ValidationError
 
-from audit_agent.corpus.models import DocumentCatalog, GroundTruth
+from audit_agent.corpus.models import DocumentCatalog, GroundTruth, QuestionSet
 
 
 class CorpusError(Exception):
@@ -35,6 +35,14 @@ def load_ground_truth(path: Path) -> GroundTruth:
     """Read ``ground_truth.yaml`` into a validated ground truth."""
     try:
         return GroundTruth.model_validate(_read_yaml(path))
+    except ValidationError as error:
+        raise CorpusError(f"{path.name}: {error}") from error
+
+
+def load_question_set(path: Path) -> QuestionSet:
+    """Read the held-out questions (``holdout_questions.yaml``)."""
+    try:
+        return QuestionSet.model_validate(_read_yaml(path))
     except ValidationError as error:
         raise CorpusError(f"{path.name}: {error}") from error
 

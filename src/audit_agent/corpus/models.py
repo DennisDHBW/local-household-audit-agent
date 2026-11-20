@@ -10,7 +10,7 @@ from collections import Counter
 from datetime import date
 from decimal import Decimal
 from enum import StrEnum
-from typing import Self
+from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -27,6 +27,15 @@ class UtilityType(StrEnum):
     TELECOM = "telecom"
     INSURANCE = "insurance"
     OTHER = "other"
+
+
+class TariffKind(StrEnum):
+    """Kind of electricity supply; only set for electricity documents (ADR-0018)."""
+
+    HOUSEHOLD = "household"
+    """Haushaltsstrom (Lichtstrom), one-rate meter."""
+    HEATING = "heating"
+    """Heizstrom for night storage heaters, two-rate meter (HT/NT)."""
 
 
 class DocType(StrEnum):
@@ -46,6 +55,8 @@ class QuestionCategory(StrEnum):
     EDGE_CASE = "edge_case"
     NEGATIVE = "negative"
     ADDITIONAL = "additional"
+    VISUAL = "visual"
+    """Overview table or chart requested (M8, ADR-0019)."""
 
 
 REQUIRED_QUESTION_COUNTS: dict[QuestionCategory, int] = {
@@ -54,7 +65,7 @@ REQUIRED_QUESTION_COUNTS: dict[QuestionCategory, int] = {
     QuestionCategory.NEGATIVE: 2,
     QuestionCategory.ADDITIONAL: 3,
 }
-"""Lecture minimum 5/2/2 plus 3 additional questions; G3 and G4 cover the errors E2/E3 (ISS-040)."""
+"""Minimum per category: lecture 5/2/2 plus 3 additional (ISS-040); M8 adds more (ADR-0019)."""
 
 
 class _Frozen(BaseModel):
@@ -73,12 +84,15 @@ class DocumentMeta(_Frozen):
     billing_period_start: date | None = None
     billing_period_end: date | None = None
     valid_from: date | None = None
+    tariff_kind: TariffKind | None = None
     is_noise_document: bool = False
 
     @model_validator(mode="after")
     def _check_consistency(self) -> Self:
         if not self.file.lower().endswith(".pdf"):
             raise ValueError(f"{self.file}: file must be a .pdf")
+        if self.tariff_kind is not None and self.utility_type is not UtilityType.ELECTRICITY:
+            raise ValueError(f"{self.file}: tariff_kind is only allowed for electricity")
         if (self.billing_period_start is None) != (self.billing_period_end is None):
             raise ValueError(f"{self.file}: billing period needs both start and end")
         if (
@@ -124,7 +138,7 @@ class ExpectedFact(_Frozen):
 
 
 class Question(_Frozen):
-    id: str = Field(pattern=r"^[SGNZ]\d$")
+    id: str = Field(pattern=r"^[SGNZHWVT]\d{1,2}$")
     category: QuestionCategory
     question: str
     expected_answer: str
@@ -134,6 +148,8 @@ class Question(_Frozen):
     is_answerable: bool = True
     planted_error: str | None = None
     """Id of the built-in error this question should uncover (``E1`` …), if any."""
+    expected_artifact: Literal["table", "chart"] | None = None
+    """The answer must come with this artifact (``make_overview`` or ``make_chart``)."""
     tests: str
 
     @model_validator(mode="after")
@@ -183,10 +199,10 @@ class GroundTruth(_Frozen):
             raise ValueError("duplicate question ids")
         counts = Counter(q.category for q in self.questions)
         for category, required in REQUIRED_QUESTION_COUNTS.items():
-            if counts[category] != required:
+            if counts[category] < required:
                 found = counts[category]
                 raise ValueError(
-                    f"expected {required} questions of category {category}, found {found}"
+                    f"expected at least {required} questions of category {category}, found {found}"
                 )
         error_ids = {e.id for e in self.planted_errors}
         if len(error_ids) != len(self.planted_errors):
@@ -214,3 +230,16 @@ class GroundTruth(_Frozen):
         files |= {f for e in self.planted_errors for f in e.related_files}
         files |= {c.file for c in self.audit_checks}
         return files
+
+
+class QuestionSet(_Frozen):
+    """Held-out questions (``holdout_questions.yaml``): only for the final run (ISS-108)."""
+
+    questions: tuple[Question, ...]
+
+    @model_validator(mode="after")
+    def _check_ids(self) -> Self:
+        ids = [q.id for q in self.questions]
+        if len(set(ids)) != len(ids):
+            raise ValueError("duplicate question ids")
+        return self

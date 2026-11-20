@@ -126,6 +126,7 @@ def chunk_record(chunk: DocumentChunk) -> dict[str, str | int | bool]:
         else None,
         "period_end": date_number(meta.billing_period_end) if meta.billing_period_end else None,
         "valid_from": date_number(meta.valid_from) if meta.valid_from else None,
+        "tariff_kind": meta.tariff_kind.value if meta.tariff_kind else None,
         "table_id": meta.table_id,
         "image_path": meta.image_path,
     }

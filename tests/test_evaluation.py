@@ -285,7 +285,7 @@ def test_summary_counts_per_variant_in_fixed_order():
 def test_select_questions_keeps_order_and_rejects_unknown_ids():
     truth = load_ground_truth(PROJECT_ROOT / "dataset" / "ground_truth.yaml")
     assert [q.id for q in select_questions(truth, ["N1", "S2", "N1"])] == ["N1", "S2"]
-    assert len(select_questions(truth)) == 14
+    assert len(select_questions(truth)) == 21
     with pytest.raises(CorpusError, match="X9"):
         select_questions(truth, ["X9"])
 

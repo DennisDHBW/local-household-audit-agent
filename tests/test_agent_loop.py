@@ -55,7 +55,10 @@ CALCULATE = ("calculate", {"expression": "2*3"})
 def _loop(replies, backend=None, is_flow_enabled=False, **settings_options):
     """Loop with scripted replies; the audit flow is off unless a test asks for it (ADR-0016)."""
     agent = settings_options.pop("agent", AgentSettings())
-    agent = agent.model_copy(update={"audit_flow_enabled": is_flow_enabled})
+    v1 = {"tool_set": "v1"} if "tool_set" not in agent.model_fields_set else {}
+    if "max_tool_calls" not in agent.model_fields_set:
+        v1["max_tool_calls"] = 6  # the M5/M6 tests were written for the v1 limit
+    agent = agent.model_copy(update={"audit_flow_enabled": is_flow_enabled, **v1})
     settings = Settings(agent=agent, **settings_options)
     backend = backend or FakeBackend(lambda query, options: [make_hit()])
     chat = ScriptedChat(replies)
@@ -723,7 +726,8 @@ def test_streamlit_app_renders_the_first_page_without_ollama():
     # Assert
     assert not page.exception
     assert page.title[0].value == "Energie- & Nebenkosten-Auditor"
-    assert page.button[0].disabled  # no question yet
+    assert len(page.chat_input) == 1  # chat UI (ADR-0019): waits for the first question
+    assert not page.chat_message  # nothing asked yet
 
 
 def test_answer_with_numbers_and_no_hit_number_is_questioned_once():

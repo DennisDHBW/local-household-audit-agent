@@ -123,6 +123,7 @@ def test_arguments_are_validated_and_liberal():
 
 
 def _toolbox(tmp_path, backend=None, **agent_options):
+    agent_options = {"tool_set": "v1", **agent_options}
     settings = Settings(project_root=tmp_path, agent=AgentSettings(**agent_options))
     backend = backend or FakeBackend(lambda query, options: [make_hit()])
     return ToolBox(settings, backend, make_catalog()), backend, settings
@@ -185,7 +186,9 @@ def test_usage_shows_the_call_shape_with_required_arguments(tmp_path):
 
     # Assert
     assert tools["calculate"].usage() == "calculate(expression*)"
-    assert tools["search"].usage() == "search(query*, utility_type, include_counterpart)"
+    assert tools["search"].usage() == (
+        "search(query*, utility_type, tariff_kind, include_counterpart)"
+    )
 
 
 def test_search_result_text_numbers_hits_and_registers_them(tmp_path):
@@ -237,7 +240,7 @@ def test_search_offers_the_sparte_filter_but_neither_document_type_nor_year():
     fields = set(SearchArguments.model_fields)
 
     # Assert
-    assert fields == {"query", "utility_type", "include_counterpart"}
+    assert fields == {"query", "utility_type", "tariff_kind", "include_counterpart"}
 
 
 def test_search_filters_by_utility_type_only(tmp_path):

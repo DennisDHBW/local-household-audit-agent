@@ -150,7 +150,8 @@ def score_answer(
     ]
 
     by_number = {source.number: source for source in answer.sources}
-    numbers = cited_numbers(answer.answer)
+    full_text = "\n".join([answer.answer, *answer.artifacts])
+    numbers = cited_numbers(full_text)
     cited = [by_number[n] for n in sorted(numbers) if n in by_number]
     cited_pairs = {(source.filename, source.page_number) for source in cited}
 
@@ -163,7 +164,7 @@ def score_answer(
         is_answerable=question.is_answerable,
         facts_total=len(question.facts),
         missing_facts=tuple(
-            fact.label for fact in question.facts if not is_fact_in_answer(fact, answer.answer)
+            fact.label for fact in question.facts if not is_fact_in_answer(fact, full_text)
         ),
         cited_count=len(cited),
         invalid_citations=len(numbers - by_number.keys()),
@@ -187,6 +188,21 @@ def score_answer(
         stop_reason=answer.stop_reason,
         seconds=answer.seconds,
         prompt_tokens=answer.prompt_tokens,
+        expected_artifact=question.expected_artifact,
+        artifact_kinds=answer.artifact_kinds,
+        tool_call_count=(
+            sum(1 for t in answer.tool_uses if t.is_valid and t.name != "plan")
+            if is_agent
+            else None
+        ),
+        distinct_tools=(
+            len({t.name for t in answer.tool_uses if t.is_valid and t.name != "plan"})
+            if is_agent
+            else None
+        ),
+        has_plan=(
+            any(t.name == "plan" and t.is_valid for t in answer.tool_uses) if is_agent else None
+        ),
     )
 
 
@@ -233,6 +249,16 @@ def summarize(scores: Iterable[AnswerScore]) -> list[VariantSummary]:
                 seconds_mean=round(statistics.fmean(seconds), 1),
                 seconds_median=round(statistics.median(seconds), 1),
                 prompt_tokens_mean=round(statistics.fmean(row.prompt_tokens for row in rows), 0),
+                artifact_ok_count=sum(row.is_artifact_ok is True for row in rows),
+                artifact_count=sum(row.expected_artifact is not None for row in rows),
+                tool_calls_mean=_mean([row.tool_call_count for row in rows]),
+                distinct_tools_mean=_mean([row.distinct_tools for row in rows]),
+                plan_count=(sum(bool(row.has_plan) for row in rows) if variant == "p2" else None),
             )
         )
     return summaries
+
+
+def _mean(values: list[int | None]) -> float | None:
+    present = [v for v in values if v is not None]
+    return round(statistics.fmean(present), 1) if present else None

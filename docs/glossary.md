@@ -171,3 +171,20 @@
 | Zitier-Rückfrage | `CITE_BEFORE_ANSWER_MESSAGE`, `has_citation`, `NudgeStep.reason="cite"`, `AgentSettings.require_citation` | Einmalige Rückfrage des Loops, wenn eine Antwort Zahlen, aber keine Treffernummer `[n]` enthält (ADR-0017) | |
 | Text-Aufruf | `parse_text_call`, `TextCall`, `ToolCallStep.is_text_call` | Werkzeugaufruf, den das Modell als JSON ans Ende seines Antworttexts schreibt statt als nativen Tool Call; der Loop führt ihn wie einen nativen aus (ISS-061) | |
 | Geldfakt | `MONEY_UNITS`, `_is_money` | Erwarteter Fakt mit Einheit ct oder EUR; nur bei ihm gilt der Umrechnungsfaktor 100 bzw. 0,01 der Metrik (ISS-050) | |
+
+## M8: Heizstrom, Faktenspeicher und Agent v2
+
+| Begriff | Code (EN) | Kurzdefinition | In meinen Worten |
+|---|---|---|---|
+| Lichtstrom / Heizstrom | `TariffKind.HOUSEHOLD` / `TariffKind.HEATING`, `tariff_kind` | Haushaltsstrom (Eintarifzähler) und Strom für die Nachtspeicherheizung mit Zweitarifzähler; nur bei Sparte Strom gesetzt (ADR-0018) | |
+| HT / NT | `zone` | Hochtarif (06–22 Uhr) und Niedertarif (22–06 Uhr) des Heizstroms; je Zone eigener Preis und eigener Zählerstand | |
+| Faktenspeicher | `FactStore`, `facts.json` | Alle per Regel gelesenen Zahlen des Korpus mit Rolle, Gültigkeit, Zone und Quell-Chunk (ADR-0018) | |
+| Fakt | `Fact`, `FactKind` | Eine Zahl mit Bedeutung, z. B. Arbeitspreis NT 24,10 ct/kWh gültig ab 01.01.2025 aus Dok. 33 | |
+| Vereinbart / abgerechnet | `Role.AGREED` / `Role.STATED` | Sollwert aus Vertrag, Preisschreiben, Abschlagsplan, Mietvertrag gegen Istwert aus Rechnung oder Mitteilung | |
+| Geltender Wert | `FactStore.agreed()` | Der vereinbarte Wert mit dem spätesten „gültig ab“ vor dem Stichtag | |
+| Prüfregel | `check_bill`, `Check`, `CheckStatus` | Vergleich im Code: Preis, Zählerstände, Umrechnung und z-Zahl, Rechenweg, Abschläge, Wohnfläche; Ergebnis stimmt / ABWEICHUNG / nicht prüfbar mit Auswirkung in EUR | |
+| Werkzeugsatz v1 / v2 | `AgentSettings.tool_set` | v1: Suchwerkzeuge aus M5/M6; v2: plan, list_documents, check_bill, get_facts, search, make_overview, make_chart, calculate (ADR-0019) | |
+| Plan-Schritt | `plan`, `AgentRun.plan` | Erster Werkzeugaufruf des Agenten v2: 2–5 Schritte mit Werkzeug und Ziel | |
+| Selbstprüfung | `_self_check`, `NudgeReason` (`check`, `chart`, `overview`, `numbers`) | Prüfung vor der Antwort: Prüffrage ohne `check_bill`, fehlende Grafik oder Übersicht, Zahlen ohne Werkzeugergebnis; je Grund eine Rückfrage | |
+| Artefakt | `Artifact` | Tabelle oder Grafik eines Werkzeugs, die an die Antwort angehängt wird (Markdown, PNG, JSON) | |
+| Zurückgehaltene Fragen | `holdout_questions.yaml`, `--holdout` | 8 Testfragen (T1–T8), vor M8 geschrieben, nur für den Endlauf (ISS-108) | |

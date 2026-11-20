@@ -19,7 +19,14 @@ from ollama import Client, ResponseError
 
 from audit_agent.agent.factory import create_agent
 from audit_agent.config import Settings
-from audit_agent.corpus import CorpusError, load_document_catalog, load_ground_truth
+from audit_agent.corpus import (
+    CorpusError,
+    GroundTruth,
+    Question,
+    load_document_catalog,
+    load_ground_truth,
+    load_question_set,
+)
 from audit_agent.enrichment.llm import installed_models
 from audit_agent.evaluation.metrics import score_answer, summarize
 from audit_agent.evaluation.models import (
@@ -77,6 +84,11 @@ def _parser() -> argparse.ArgumentParser:
     )
     generate.add_argument("--ids", nargs="+", default=list(DEFAULT_QUESTION_IDS))
     generate.add_argument("--all", action="store_true", help="all questions of the catalog")
+    generate.add_argument(
+        "--holdout",
+        action="store_true",
+        help="the held-out questions of holdout_questions.yaml (final run only, ISS-108)",
+    )
     generate.add_argument("--model", help="answer model (default: AUDIT_MODEL_AGENT)")
 
     score = commands.add_parser("score", help="score stored answers (no Ollama needed)")
@@ -122,7 +134,10 @@ def _generate(args: argparse.Namespace, settings: Settings, client: Client) -> i
     used_models = [model, settings.models.embedding] if needs_index(variants) else [model]
     ensure_models_available(installed_models(client), used_models)
     truth = load_ground_truth(settings.ground_truth_file)
-    questions = select_questions(truth, None if args.all else args.ids)
+    if args.holdout:
+        questions = list(load_question_set(settings.holdout_file).questions)
+    else:
+        questions = select_questions(truth, None if args.all else args.ids)
     run_dir = settings.eval_dir / args.run_id
     manifest = _read_manifest(run_dir)
     manifest.update({"model": model, "num_ctx": settings.num_ctx})
@@ -166,7 +181,7 @@ def _score(settings: Settings, run_id: str) -> int:
     answers = load_run(run_dir)
     truth = load_ground_truth(settings.ground_truth_file)
     catalog = load_document_catalog(settings.documents_file)
-    by_id = {question.id: question for question in truth.questions}
+    by_id = {question.id: question for question in _all_questions(settings, truth)}
     unknown = sorted({a.question_id for a in answers} - by_id.keys())
     if unknown:
         raise EvaluationError(f"answers for unknown questions: {unknown}")
@@ -182,7 +197,13 @@ def _score(settings: Settings, run_id: str) -> int:
         json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8"
     )
     report = render_report(
-        run_id, truth.questions, answers, scores, summaries, _read_manifest(run_dir), ragas
+        run_id,
+        _all_questions(settings, truth),
+        answers,
+        scores,
+        summaries,
+        _read_manifest(run_dir),
+        ragas,
     )
     (run_dir / "report.md").write_text(report, encoding="utf-8")
     print(f"report: {run_dir / 'report.md'}")
@@ -225,7 +246,7 @@ def _ragas(args: argparse.Namespace, settings: Settings, client: Client) -> int:
         asyncio.run(
             evaluate_run(
                 answers,
-                {question.id: question for question in truth.questions},
+                {question.id: question for question in _all_questions(settings, truth)},
                 judge,
                 settings,
                 ragas_path(run_dir),
@@ -278,3 +299,11 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+def _all_questions(settings: Settings, truth: GroundTruth) -> list[Question]:
+    """Development questions plus the held-out ones (if the file exists)."""
+    questions = list(truth.questions)
+    if settings.holdout_file.is_file():
+        questions += list(load_question_set(settings.holdout_file).questions)
+    return questions

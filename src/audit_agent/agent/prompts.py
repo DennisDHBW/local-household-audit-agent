@@ -156,3 +156,113 @@ def system_prompt(max_tool_calls: int) -> str:
 def plan_prompt(max_checks: int) -> str:
     """System prompt of the planning call of the audit flow."""
     return PLAN_SYSTEM_PROMPT.format(max_checks=max_checks)
+
+
+# --- Agent v2 (ADR-0019) --------------------------------------------------------------------
+
+SYSTEM_PROMPT_V2 = """\
+Du bist ein Prüf-Agent für die Haushaltsunterlagen eines Nutzers: Strom (Lichtstrom und \
+Heizstrom mit HT/NT), Gas, Wasser und Betriebskosten. Du arbeitest in Schritten mit \
+Werkzeugen und antwortest nur anhand ihrer Ergebnisse.
+
+Ablauf:
+1. Rufe zuerst plan auf: 2 bis 5 kurze Schritte mit Werkzeug und Ziel.
+2. Arbeite den Plan ab und lies jedes Ergebnis. Zeigt es Neues (eine Abweichung, eine \
+fehlende Unterlage), passe das weitere Vorgehen an.
+3. Antworte erst, wenn jeder Teil der Frage belegt ist. Höchstens {max_tool_calls} \
+Werkzeugaufrufe.
+
+Werkzeugwahl:
+- Stimmt eine Rechnung, wurde ein Preis angewendet, passt der Verbrauch? check_bill \
+(Sparte, Jahr). Übernimm Urteil, Soll, Ist und Auswirkung aus dem Ergebnis.
+- Preise, Abschläge, Verbräuche, Zählerstände, Beträge, z-Zahl, Wohnfläche: get_facts mit \
+Jahr; der markierte Wert gilt in diesem Jahr.
+- Klauseln, Kündigungsfristen, Laufzeiten und alles Übrige: search.
+- Übersicht oder Tabelle gewünscht: make_overview. Grafik, Diagramm oder Verlauf gewünscht: \
+make_chart.
+- Ob es eine Unterlage gibt: list_documents. Jede Rechnung: calculate.
+- Strom: Lichtstrom oder Haushaltsstrom = tariff_kind household, Heizstrom (Nachtspeicher, \
+HT/NT) = tariff_kind heating.
+
+Antwort: Deutsch, kurz, Preise brutto. Belege jede Zahl mit der Nummer aus den Ergebnissen, \
+z. B. [2]. Prüffragen: zuerst das Urteil (stimmt / stimmt nicht), dann Soll, Ist, \
+Unterschied und Auswirkung in EUR. Übersicht oder Grafik: sage in zwei Sätzen, was sie \
+zeigt; sie wird automatisch angehängt. Findest du nichts, schreibe "{gap_answer}" und rate \
+nicht.\
+"""
+
+CHECK_BEFORE_ANSWER_MESSAGE = (
+    "Selbstprüfung: Das ist eine Prüffrage. Prüfe die Rechnung zuerst mit check_bill (Sparte, "
+    "Jahr, bei Strom tariff_kind) und übernimm Urteil, Soll, Ist und Auswirkung aus dem Ergebnis."
+)
+CHART_BEFORE_ANSWER_MESSAGE = (
+    "Selbstprüfung: Die Frage verlangt eine Grafik. Erstelle sie mit make_chart (topic, Sparte, "
+    "Jahre) und beschreibe sie dann kurz."
+)
+OVERVIEW_BEFORE_ANSWER_MESSAGE = (
+    "Selbstprüfung: Die Frage verlangt eine Übersicht. Erstelle sie mit make_overview (topic, "
+    "Sparte, Jahre) und fasse sie dann kurz zusammen."
+)
+NUMBERS_BEFORE_ANSWER_MESSAGE = (
+    "Selbstprüfung: Diese Zahlen deiner Antwort stehen in keinem Werkzeugergebnis: {numbers}. "
+    "Belege sie mit einem Werkzeug, rechne sie mit calculate oder lass sie weg. Antworte "
+    "sonst unverändert."
+)
+
+CHART_PHRASES = ("grafik", "diagramm", "chart", "visualis", "schaubild", "plot")
+OVERVIEW_PHRASES = ("uebersicht", "tabelle", "aufstellung", "auflistung", "gegenueberstell")
+_NUMBER = re.compile(r"(?<![\d.,])-?\d{1,3}(?:\.\d{3})+(?:,\d+)?|(?<![\d.,])-?\d+(?:,\d+)?")
+_DATE = re.compile(r"\d{1,2}\.\d{1,2}\.\d{2,4}")
+
+
+def system_prompt_v2(max_tool_calls: int) -> str:
+    return SYSTEM_PROMPT_V2.format(max_tool_calls=max_tool_calls, gap_answer=GAP_ANSWER)
+
+
+def wants_chart(question: str) -> bool:
+    return any(phrase in fold(question) for phrase in CHART_PHRASES)
+
+
+def wants_overview(question: str) -> bool:
+    return any(phrase in fold(question) for phrase in OVERVIEW_PHRASES) and not wants_chart(
+        question
+    )
+
+
+def _numbers(text: str) -> set[str]:
+    """Normalized numbers of a text: ``1.234,50`` -> ``1234.5``; dates and citations dropped."""
+    text = _CITATION.sub(" ", _DATE.sub(" ", text))
+    values = set()
+    for token in _NUMBER.findall(text):
+        plain = token.replace(".", "").replace(",", ".")
+        try:
+            value = float(plain)
+        except ValueError:
+            continue
+        values.add(f"{value:.4f}".rstrip("0").rstrip("."))
+    return values
+
+
+def unsupported_numbers(answer: str, sources: list[str]) -> list[str]:
+    """Numbers of the answer that appear in no tool result and not in the question.
+
+    Years, counts up to 12 and percentages of the question are ignored. A value also counts
+    as supported if it appears with a factor of 100 (ct and EUR).
+    """
+    known: set[str] = set()
+    for text in sources:
+        known |= _numbers(text)
+    extended = set(known)
+    for value in known:
+        number = float(value)
+        for scaled in (number * 100, number / 100, -number):
+            extended.add(f"{scaled:.4f}".rstrip("0").rstrip("."))
+    missing = []
+    for value in sorted(_numbers(answer), key=float):
+        number = float(value)
+        if value in extended or (
+            number.is_integer() and (abs(number) <= 12 or 1990 <= number <= 2100)
+        ):
+            continue
+        missing.append(value.replace(".", ","))
+    return missing

@@ -73,7 +73,7 @@ def build_where(options: SearchOptions) -> dict[str, Any] | None:
     """ChromaDB ``where`` clause for the filter options (``None`` = no restriction)."""
     selected: MetadataFilter = options.metadata_filter
     conditions: list[dict[str, Any]] = []
-    for field in ("utility_type", "doc_type", "contract_id"):
+    for field in ("utility_type", "tariff_kind", "doc_type", "contract_id"):
         value = getattr(selected, field)
         if value is not None:
             conditions.append({field: {"$eq": getattr(value, "value", value)}})

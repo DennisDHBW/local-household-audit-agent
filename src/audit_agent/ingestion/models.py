@@ -13,7 +13,7 @@ from typing import Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from audit_agent.corpus import DocType, DocumentMeta, UtilityType
+from audit_agent.corpus import DocType, DocumentMeta, TariffKind, UtilityType
 
 
 class ChunkType(StrEnum):
@@ -42,6 +42,7 @@ class ChunkMetadata(_Frozen):
     billing_period_start: date | None = None
     billing_period_end: date | None = None
     valid_from: date | None = None
+    tariff_kind: TariffKind | None = None
     table_id: str | None = None
     columns: tuple[str, ...] = ()
     image_path: str | None = Field(
@@ -60,6 +61,7 @@ class ChunkMetadata(_Frozen):
             billing_period_start=meta.billing_period_start,
             billing_period_end=meta.billing_period_end,
             valid_from=meta.valid_from,
+            tariff_kind=meta.tariff_kind,
         )
 
 
