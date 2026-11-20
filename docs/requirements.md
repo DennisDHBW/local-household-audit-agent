@@ -83,7 +83,7 @@ Laut Folie ist der lauffähige Prototyp optional. Die Zusatzanforderungen des Pr
 | Quellen / Literaturverzeichnis | 5 Quellen mit Literaturverzeichnis (Entscheidung 2026-11-19, ersetzt „keine Literatur“ vom 2026-11-14) |
 | Abgabetermin, Coaching-Termine | für die Planung nicht relevant |
 
-> Hinweis: Das Bewertungskriterium „Literaturbezug & Reflexion“ (10 %) bleibt bestehen. Seit 2026-11-19 zitiert die Ausarbeitung fünf Paper (ReAct, Self-RAG, RAGAS, Xiang et al. 2026, Ferrazzi et al. 2026; Auswahl und Reserve in `sources.md`). Der Reflexionsteil stützt sich weiter vor allem auf eigene Ergebnisse.
+> Hinweis: Das Bewertungskriterium „Literaturbezug & Reflexion“ (10 %) bleibt bestehen. Die Ausarbeitung zitiert höchstens fünf Quellen (Entscheidung 2026-11-20, ISS-103): ReAct, Gao et al. 2023, RAGAS, Xiang et al. 2026, Ferrazzi et al. 2026; Auswahl und Reserve in `sources.md`. Der Reflexionsteil stützt sich weiter vor allem auf eigene Ergebnisse.
 
 ---
 

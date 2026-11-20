@@ -47,6 +47,8 @@
 | Evidence-First | – | Belege anzeigen, bevor das LLM antwortet | |
 | ReAct | `AuditAgent` | Schleife aus Thought → Action → Observation | |
 | Act (ReAct-Variante) | – | Variante aus dem ReAct-Paper ohne Thought, nur Action → Observation; so laufen P2 und `qwen2.5:7b`, weil der Prompt keinen Thought verlangt (ISS-102) | |
+| Orchestrierung | `AgentLoop` (`agent/loop.py`) | Wer den Ablauf steuert: in P2 wählt das Modell zur Laufzeit Werkzeug und Argumente, die eigene Schleife führt die Aufrufe aus und setzt Grenzen (6 Aufrufe, Kontext, Rückfragen); in P1 legt der Code den Ablauf fest | |
+| Naive RAG / Modular RAG | – | Begriffe aus Gao et al. 2023: Naive RAG sucht einmal mit der Frage (Top-K) und antwortet; Modular RAG besteht aus Bausteinen, die sich austauschen oder umkonfigurieren lassen; Metadaten im Index und Query-Rewriting zählen dort zum Advanced RAG | |
 | Tool | `AuditTool` | Funktion, die der Agent aufrufen kann | |
 | Tool-Ergebnis | `AuditToolResult` | Normalisiertes Ergebnis eines Tools mit Quellen | |
 | Ground Truth | `ground_truth` | Bekannte richtige Antwort für eine Testfrage | |

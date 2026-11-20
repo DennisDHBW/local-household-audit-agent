@@ -23,6 +23,22 @@
 
 ## Einträge
 
+### 2026-11-20 – Endprüfung der Ausarbeitung (Quellen, KI-Klang, Verständnis)
+**Ziel der Sitzung:** Auf Wunsch des Nutzers die Qualität final prüfen: Passen die Quellen zu den Aussagen, sind es die besten, was klingt nach KI, wo wirkt der Text, als sei das Thema nicht verstanden?
+**Was wurde gemacht:**
+- Lese-Prüfung aller Kapitel gegen `sources.md`, `writing-guide.md`, `requirements.md` und `evaluation-log.md`; Befunde und Plan vorgelegt, Umsetzung erst nach Freigabe
+- Quellen auf Wunsch des Nutzers auf höchstens fünf begrenzt: Gao et al. 2023 (Literaturliste der Vorlesung) neu, Self-RAG und RAGAS-Dokumentation entfernt; Gao vorher auf arxiv.org (v5) gelesen; Reserve (Lewis, Panickssery, Zhang et al.) geprüft, nicht aufgenommen
+- Neun Stellen korrigiert, die widersprüchlich oder unverstanden wirkten (ISS-103), Orchestrierung in Kapitel 3 benannt
+- KI-Klang: Begriffe zum Abhaken umformuliert, Komma-Ketten getrennt, Kapitel 6 neu geschrieben
+- Mehrzeilen durch Kürzungen ausgeglichen, alt und neu gebaut und Zeilen je Kapitel verglichen; Inhalt 8 Seiten, Literatur Seite 9
+- Fragen des Nutzers beantwortet: Deckblatt bleibt „Konzeptentwurf“ (Name der Prüfungsleistung); Orchestrierung in P2 liegt beim Modell (Werkzeugwahl zur Laufzeit) und bei `AgentLoop` (Ausführung, Grenzen)
+**Gelieferte Dateien / Funktionen:** `paper/bibliographie.bib`, `paper/content/chapter/0{1..6}*/main.tex`, `docs/sources.md`, `docs/issues-log.md`, `docs/glossary.md`, `docs/paper-questions.md`, `docs/requirements.md`, `docs/writing-guide.md`, `docs/status.md`, `Claude outputs/Ausarbeitung-Endpruefung.pdf` (nicht versioniert); kein Python-Code geändert
+**Entscheidungen:** höchstens fünf Quellen (Nutzer); Deckblatt bleibt „Konzeptentwurf“; Reflexion ohne O-Ton, mit Lehren aus dem dokumentierten Vorgehen; keine ADR
+**Probleme / Überraschungen:** ISS-103 (darunter eigene Fehler: Widerspruch ReAct/Act aus ISS-102, drei in den Endkontrollen übersehene Formulierungen, „Modular RAG“ ohne Quelle gestrichen statt Gao zu zitieren)
+**Offen / unklar:** Persönlicher Teil in Kapitel 6 (ISS-087); Nutzer beantwortet Fragen 7–10 in `paper-questions.md`; Einordnung von P1 nach Gao (Advanced oder Modular RAG) als mögliche Prüferfrage
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1,5 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `docs(paper)`, `docs`
+
 ### 2026-11-20 – Quellenprüfung der Ausarbeitung
 **Ziel der Sitzung:** Auf Wunsch des Nutzers die fünf Quellen prüfen und kontrollieren, ob sie im Text korrekt verwendet sind.
 **Was wurde gemacht:**
