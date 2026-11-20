@@ -188,3 +188,7 @@
 | Selbstprüfung | `_self_check`, `NudgeReason` (`check`, `chart`, `overview`, `numbers`) | Prüfung vor der Antwort: Prüffrage ohne `check_bill`, fehlende Grafik oder Übersicht, Zahlen ohne Werkzeugergebnis; je Grund eine Rückfrage | |
 | Artefakt | `Artifact` | Tabelle oder Grafik eines Werkzeugs, die an die Antwort angehängt wird (Markdown, PNG, JSON) | |
 | Zurückgehaltene Fragen | `holdout_questions.yaml`, `--holdout` | 8 Testfragen (T1–T8), vor M8 geschrieben, nur für den Endlauf (ISS-108) | |
+| Werkzeugauswahl nach Fragetyp | `route_tools`, `AgentSettings.route_tools` | Code bietet je Fragetyp (Prüffrage, Grafik, Übersicht, sonst) nur passende Werkzeuge an (ADR-0020) | |
+| Argument-Reparatur | `scope.repair_utility_arguments` | Korrigiert Sparte, Stromart und Jahr der Werkzeugargumente anhand der Frage; steht als „Hinweis: Argumente angepasst“ im Ergebnis (ISS-114) | |
+| Hinweis (Prüfung) | `CheckStatus.NOTICE` | Plausibilitätshinweis, z. B. Verbrauch über 25 % anders als im Vorjahr; kein Fehler | |
+
