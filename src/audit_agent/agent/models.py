@@ -43,6 +43,17 @@ class ModelCallStep(_Frozen):
     tool_calls: tuple[ToolInvocation, ...]
 
 
+class Artifact(_Frozen):
+    """A table or chart that a tool made; the answer shows it below the text (ADR-0019)."""
+
+    kind: Literal["table", "chart"]
+    title: str
+    markdown: str
+    """The data as a Markdown table with citation numbers."""
+    image_path: str | None = None
+    data_path: str | None = None
+
+
 class ToolCallStep(_Frozen):
     """One executed (or rejected) tool call and the observation given back to the model."""
 
@@ -60,6 +71,7 @@ class ToolCallStep(_Frozen):
     """The model wrote the call as text in its message, not as a native tool call (ISS-061)."""
     is_flow_call: bool = False
     """The call was made by the audit flow (code), not chosen by the model (ADR-0016)."""
+    artifacts: tuple[Artifact, ...] = ()
 
     @property
     def state(self) -> str:
@@ -69,12 +81,16 @@ class ToolCallStep(_Frozen):
         return "Wiederholung" if self.is_repeat else "ok"
 
 
-NudgeReason = Literal["gap", "calculate", "cite"]
+NudgeReason = Literal["gap", "calculate", "cite", "check", "chart", "overview", "numbers"]
 
 NUDGE_LABELS: dict[NudgeReason, str] = {
     "gap": "Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen",
     "calculate": "Rückfrage: Prüffrage ohne calculate beantwortet",
     "cite": "Rückfrage: Antwort mit Zahlen ohne Treffernummer",
+    "check": "Selbstprüfung: Prüffrage ohne check_bill beantwortet",
+    "chart": "Selbstprüfung: Grafik verlangt, aber nicht erstellt",
+    "overview": "Selbstprüfung: Übersicht verlangt, aber nicht erstellt",
+    "numbers": "Selbstprüfung: Zahlen ohne Werkzeugergebnis",
 }
 
 
@@ -160,6 +176,16 @@ class AgentRun(_Frozen):
     seconds: float
     steps: tuple[AgentStep, ...]
     sources: tuple[NumberedHit, ...]
+    artifacts: tuple[Artifact, ...] = ()
+    """Tables and charts of the run, in the order they were made (ADR-0019)."""
+
+    @property
+    def plan(self) -> tuple[str, ...]:
+        """Steps of the first valid ``plan`` call (empty if the model did not plan)."""
+        for step in self.steps:
+            if isinstance(step, ToolCallStep) and step.tool == "plan" and step.is_valid:
+                return tuple(str(s) for s in step.arguments.get("steps", []) or [])
+        return ()
 
     @property
     def called_tools(self) -> tuple[str, ...]:

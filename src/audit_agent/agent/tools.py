@@ -27,9 +27,18 @@ from audit_agent.agent.calculator import (
     format_result,
     normalize_expression,
 )
-from audit_agent.agent.models import EvidenceBook
+from audit_agent.agent.errors import ToolError
+from audit_agent.agent.fact_tools import (
+    BillArguments,
+    FactsArguments,
+    FactTools,
+    PlanArguments,
+    ViewArguments,
+)
+from audit_agent.agent.models import Artifact, EvidenceBook
 from audit_agent.config import Settings
-from audit_agent.corpus import DocType, DocumentCatalog, DocumentMeta, UtilityType
+from audit_agent.corpus import DocType, DocumentCatalog, DocumentMeta, TariffKind, UtilityType
+from audit_agent.facts import FactStore, load_fact_store
 from audit_agent.ingestion import ChunkType, chunks_path, load_parsed_document
 from audit_agent.retrieval import (
     MetadataFilter,
@@ -52,10 +61,6 @@ MAX_AMBIGUOUS_FILES = 5
 _EMPTY_VALUES = frozenset({"", "null", "none"})
 
 
-class ToolError(Exception):
-    """A tool call that cannot be answered; the message goes back to the model."""
-
-
 class SearchBackend(Protocol):
     """What the search tools need from the retrieval (lets tests inject a fake)."""
 
@@ -69,6 +74,7 @@ class ToolResult(BaseModel):
 
     text: str
     hit_numbers: tuple[int, ...] = ()
+    artifacts: tuple[Artifact, ...] = ()
 
 
 class _Arguments(BaseModel):
@@ -82,6 +88,10 @@ class FilterArguments(_Arguments):
             "Sparte. Nur setzen, wenn die Frage sie ausdrücklich nennt "
             "(Strom = electricity, Gas = gas, Wasser = water, Nebenkosten = service_charges)."
         ),
+    )
+    tariff_kind: TariffKind | None = Field(
+        default=None,
+        description="Nur bei Strom: household = Lichtstrom, heating = Heizstrom (HT/NT).",
     )
     doc_type: DocType | None = Field(
         default=None,
@@ -117,6 +127,10 @@ class SearchArguments(_Arguments):
             "(Strom = electricity, Gas = gas, Wasser = water, Fernwärme = district_heating, "
             "Nebenkosten = service_charges)."
         ),
+    )
+    tariff_kind: TariffKind | None = Field(
+        default=None,
+        description="Nur bei Strom: household = Lichtstrom, heating = Heizstrom (HT/NT).",
     )
     include_counterpart: bool = Field(
         default=False,
@@ -301,13 +315,39 @@ def _file_name(path: str) -> str:
 class ToolBox:
     """Builds the tools; holds the shared, read-only dependencies."""
 
-    def __init__(self, settings: Settings, backend: SearchBackend, catalog: DocumentCatalog):
+    def __init__(
+        self,
+        settings: Settings,
+        backend: SearchBackend,
+        catalog: DocumentCatalog,
+        facts: FactStore | None = None,
+        artifact_dir: Path | None = None,
+    ):
         self._settings = settings
         self._backend = backend
         self._catalog = catalog
+        self._facts = facts
+        self._artifact_dir = artifact_dir or settings.data_dir / "outputs"
+        self._fact_tools: FactTools | None = None
+
+    @property
+    def fact_tools(self) -> FactTools:
+        """The v2 tools; the fact store is loaded (or built) on first use."""
+        if self._fact_tools is None:
+            store = self._facts if self._facts is not None else load_fact_store(self._settings)
+            self._fact_tools = FactTools(self._settings, self._catalog, store, self._artifact_dir)
+        return self._fact_tools
+
+    def set_artifact_dir(self, path: Path) -> None:
+        """Where charts of the next questions go (the evaluation uses one folder per run)."""
+        self._artifact_dir = path
+        if self._fact_tools is not None:
+            self._fact_tools.artifact_dir = path
 
     def tools(self) -> dict[str, AgentTool]:
-        """The five tools by name, in the order they are offered to the model."""
+        """The tools by name, in the order they are offered to the model."""
+        if self._settings.agent.tool_set == "v2":
+            return self._tools_v2()
         tools = [
             AgentTool(
                 "list_documents",
@@ -350,11 +390,96 @@ class ToolBox:
         ]
         return {tool.name: tool for tool in tools}
 
+    def _tools_v2(self) -> dict[str, AgentTool]:
+        """Plan, look up, check, compute, present (ADR-0019)."""
+        tools = [
+            AgentTool(
+                "plan",
+                "Zuerst aufrufen: Plane in 2 bis 5 kurzen Schritten, welche Werkzeuge du in "
+                "welcher Reihenfolge nutzt. Bei neuer Lage (Abweichung, fehlende Unterlage) "
+                "darfst du neu planen.",
+                PlanArguments,
+                self._wrap(lambda a, b: self.fact_tools.plan(a, b)),
+            ),
+            AgentTool(
+                "list_documents",
+                "Listet die vorhandenen Unterlagen (Datei, Sparte, Art, Vertragsnummer, "
+                "Zeitraum). Nutze es, wenn unklar ist, ob es ein Dokument gibt. Leere Liste "
+                "heißt: Die Unterlage liegt nicht vor.",
+                FilterArguments,
+                self._list_documents,
+            ),
+            AgentTool(
+                "check_bill",
+                "Prüft eine Rechnung im Code gegen Vertrag, Preisschreiben, Zählerstände, "
+                "Abschläge und Mietvertrag. Liefert je Prüfung Soll, Ist, Auswirkung in EUR "
+                "und Belege. Das Werkzeug für jede Frage, ob eine Rechnung stimmt.",
+                BillArguments,
+                self._wrap(lambda a, b: self.fact_tools.check_bill(a, b)),
+            ),
+            AgentTool(
+                "get_facts",
+                "Liefert Preise, Grundpreise, Abschläge, Verbräuche, Zählerstände, "
+                "Rechnungsbeträge, z-Zahl oder Wohnfläche mit Gültigkeit und Beleg, getrennt "
+                "nach vereinbart und abgerechnet. Mit Jahr wird der dann geltende Wert markiert.",
+                FactsArguments,
+                self._wrap(lambda a, b: self.fact_tools.get_facts(a, b)),
+            ),
+            AgentTool(
+                "search",
+                "Durchsucht Text, Tabellen und Diagrammbeschreibungen aller Dokumente. Für "
+                "Klauseln, Kündigungsfristen, Laufzeiten, Tarifnamen und alles, was get_facts "
+                "nicht kennt.",
+                SearchArguments,
+                self._search_v2,
+            ),
+            AgentTool(
+                "make_overview",
+                "Erstellt eine Übersichtstabelle (Verbrauch, Kosten oder Preise je Sparte und "
+                "Jahr) mit Belegen. Nutze es, wenn eine Übersicht, Tabelle oder Aufstellung "
+                "gewünscht ist.",
+                ViewArguments,
+                self._wrap(lambda a, b: self.fact_tools.make_overview(a, b)),
+            ),
+            AgentTool(
+                "make_chart",
+                "Erstellt eine Grafik (Balken für Verbrauch und Kosten, Linien für Preise) mit "
+                "Belegen. Nutze es, wenn eine Grafik, ein Diagramm oder ein Verlauf gewünscht ist.",
+                ViewArguments,
+                self._wrap(lambda a, b: self.fact_tools.make_chart(a, b)),
+            ),
+            AgentTool(
+                "calculate",
+                "Rechnet einen arithmetischen Ausdruck exakt aus (Summen, Differenzen, Prozent). "
+                "Nie im Kopf rechnen.",
+                CalculateArguments,
+                self._calculate,
+            ),
+        ]
+        return {tool.name: tool for tool in tools}
+
+    @staticmethod
+    def _wrap(
+        function: Callable[[Any, EvidenceBook], Any],
+    ) -> Callable[[Any, EvidenceBook], ToolResult]:
+        def run(arguments: Any, book: EvidenceBook) -> ToolResult:
+            result = function(arguments, book)
+            return ToolResult(
+                text=result.text, hit_numbers=result.hit_numbers, artifacts=result.artifacts
+            )
+
+        return run
+
+    def _search_v2(self, args: SearchArguments, book: EvidenceBook) -> ToolResult:
+        types = {ChunkType.TEXT, ChunkType.TABLE_ROW, ChunkType.IMAGE}
+        return self._search(args, book, frozenset(types))
+
     def _list_documents(self, args: FilterArguments, book: EvidenceBook) -> ToolResult:
         rows = [
             document
             for document in self._catalog.documents
             if (args.utility_type is None or document.utility_type is args.utility_type)
+            and (args.tariff_kind is None or document.tariff_kind is args.tariff_kind)
             and (args.doc_type is None or document.doc_type is args.doc_type)
             and (args.year is None or matches_year(document, args.year))
         ]
@@ -383,8 +508,9 @@ class ToolBox:
         else:
             when = f"Datum {document.document_date}"
         contract = document.contract_id or "-"
+        kind = f" ({document.tariff_kind.value})" if document.tariff_kind else ""
         return (
-            f"{_file_name(document.file)} | {document.utility_type.value} / "
+            f"{_file_name(document.file)} | {document.utility_type.value}{kind} / "
             f"{document.doc_type.value} | {contract} | {when}"
         )
 
@@ -400,7 +526,9 @@ class ToolBox:
     def _search(
         self, args: SearchArguments, book: EvidenceBook, chunk_types: frozenset[ChunkType]
     ) -> ToolResult:
-        metadata_filter = MetadataFilter(utility_type=args.utility_type)
+        metadata_filter = MetadataFilter(
+            utility_type=args.utility_type, tariff_kind=args.tariff_kind
+        )
         options = SearchOptions(metadata_filter=metadata_filter, chunk_types=chunk_types)
         hits = self._backend.search(args.query, options)
         # The extra searches drop the utility words of the query, so they keep it as a filter.

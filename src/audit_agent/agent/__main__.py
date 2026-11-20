@@ -81,6 +81,9 @@ def _answer(agent, question: str, model: str, log_path: Path) -> AgentRun:
 
 def _print_run(run: AgentRun) -> None:
     print(f"\n{run.answer}\n")
+    for artifact in run.artifacts:
+        where = f" ({artifact.image_path})" if artifact.image_path else ""
+        print(f"{artifact.title}{where}\n{artifact.markdown}\n")
     print(f"[{run.stop_reason}, {run.tool_call_count} Werkzeugaufrufe, {run.seconds} s]")
     for source in run.sources:
         hit = source.hit

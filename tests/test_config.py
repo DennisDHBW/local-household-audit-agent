@@ -61,6 +61,7 @@ def test_agent_settings_defaults_match_the_concept():
     agent = Settings().agent
 
     # Assert
-    assert agent.max_tool_calls == 6
+    assert agent.max_tool_calls == 10
+    assert agent.tool_set == "v2"
     assert agent.temperature == 0
     assert agent.max_hit_chars >= 100
