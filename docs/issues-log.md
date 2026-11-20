@@ -24,6 +24,56 @@
 
 ## Einträge
 
+### ISS-113 – Agent v2 noch nicht mit Ollama gelaufen
+- **Datum / Meilenstein:** 2026-11-20 / M8
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** Werkzeuge, Plan-Schritt, Selbstprüfung und Chat sind nur mit gescripteten Antworten getestet (Unit-Tests). Ob `qwen2.5:7b` `plan` zuerst aufruft, `check_bill` mit `tariff_kind` richtig füllt und die Befunde korrekt wiedergibt, ist unbekannt.
+- **Ursache:** Claudes Shell erreicht Ollama nicht.
+- **Lösung / Workaround:** `scripts/m8_prepare.sh` endet mit einem Smoke-Test (H2, V1, W1); erst danach der Nachtlauf.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 3 und 5
+
+### ISS-112 – Prüfregeln und eingebaute Fehler stammen beide von Claude
+- **Datum / Meilenstein:** 2026-11-20 / M8
+- **Kategorie:** ki-assistent
+- **Status:** akzeptiert
+- **Symptom:** RUN-022 erkennt 5 von 5 eingebauten Fehlern ohne Fehlalarm. Die Fehler E4/E5 und die Regeln wurden in derselben Sitzung geschrieben; die Regeln decken genau die Fehlerarten ab, die es im Korpus gibt (Preis, Zählerstand, z-Zahl, Abschläge, Wohnfläche).
+- **Ursache:** Testdaten und Prüflogik vom selben Autor, kein unabhängiger Fehlerkatalog.
+- **Lösung / Workaround:** In der Ausarbeitung als Grenze nennen: Die Regeln prüfen bekannte Fehlerarten, unbekannte (z. B. falscher Steuersatz, doppelte Position) erkennen sie nicht. Die zurückgehaltenen Fragen enthalten bewusst keinen neuen Fehlertyp, prüfen also nur die Agentik.
+- **Gelernt:** Eine Erkennungsrate von 100 % auf selbst gebauten Fehlern sagt wenig über echte Rechnungen.
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 (Grenzen)
+
+### ISS-111 – Faktenregeln auf die Layouts des Korpus zugeschnitten
+- **Datum / Meilenstein:** 2026-11-20 / M8
+- **Kategorie:** daten
+- **Status:** akzeptiert
+- **Symptom:** `facts/extract.py` erkennt Zeilen an Spaltennamen wie „Preis Brutto“, „Neu Brutto (ab …)“, „Zählwerk“ und an festen Sätzen („Ihr neuer monatlicher Abschlag beträgt ab …“). Ein anderer Anbieter bräuchte neue Regeln. Erster Probelauf: zwei Scheinabweichungen (Zwischensumme als Position, Vorauszahlungen in einer „Position“-Zeile), beide behoben.
+- **Ursache:** Regelbasiert ohne Layoutmodell, wie der Parser (ADR-0007).
+- **Lösung / Workaround:** Regeln mit Unit-Tests auf Beispielzeilen und einem Test über den echten Korpus (`test_facts.py`); nicht erkannte Zeilen führen zu „nicht prüfbar“, nicht zu „stimmt“.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 2 und 4
+
+### ISS-110 – Qualitätsgewinn von M8 kommt aus Code, nicht aus dem Modell
+- **Datum / Meilenstein:** 2026-11-20 / M8
+- **Kategorie:** konzept
+- **Status:** akzeptiert
+- **Symptom:** Mit `check_bill` vergleicht der Code, nicht das Modell. Ein Vergleich P1 (unverändert) gegen P2 v2 misst deshalb Agent plus Faktenspeicher, nicht Agentik allein.
+- **Ursache:** Bewusste Architekturentscheidung (ADR-0018).
+- **Lösung / Workaround:** In der Ausarbeitung offen trennen: Werkzeugsatz v1 bleibt einstellbar; was der Agent beiträgt (Werkzeugwahl, Plan, Nachprüfung, Grafik auf Anfrage), wird mit eigenen Kennzahlen gemessen.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 3 und 5
+
+### ISS-109 – Heizstrom (Nachtspeicher) neben Gas-Etagenheizung
+- **Datum / Meilenstein:** 2026-11-20 / M8
+- **Kategorie:** daten
+- **Status:** akzeptiert
+- **Symptom:** Der Mietvertrag (Dok. 16) nennt eine Gas-Etagenheizung; der Nutzer wünscht Heizstrom mit HT/NT (Nachtspeicher). Die neuen Dokumente 31–34 beschreiben zwei Nachtspeicheröfen mit eigenem Zweitarifzähler und eigenem Vertrag. Beides zusammen ist ungewöhnlich, aber nicht unmöglich.
+- **Ursache:** Nachträgliche Erweiterung des erfundenen Haushalts (Entscheidung des Nutzers, 2026-11-20).
+- **Lösung / Workaround:** Keine Änderung an Dok. 16; in der Ausarbeitung den Heizstrom als Zusatzheizung beschreiben.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 1 und 2
+
 ### ISS-108 – Testfragen waren zugleich Entwicklungsfragen
 - **Datum / Meilenstein:** 2026-11-20 / M7 (Befund), M8 (Lösung)
 - **Kategorie:** evaluation

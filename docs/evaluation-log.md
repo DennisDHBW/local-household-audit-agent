@@ -585,3 +585,22 @@
 - **Fehler und Fehlalarme nach Handprüfung:** eingebaute Fehler mit tragfähiger Begründung 0 / 0 / 0; Fehlalarme 0 / 0 / 1 (P2/G2: Abweichung „−90 EUR“ bei richtiger Abrechnung).
 - **Ursachen RUN-010/011 in Kapitel 5:** „19-mal die Werkzeugaufrufe (P2)“ = Tool-Wahl 8 + Filter 10 + Argumente 1; Kapitel 3 nennt 18 von 23 (ohne Argumente). Summe mit Kontextbudget 14, Retrieval 12 und Synthese 16: 61.
 - **Grenzen:** Die Kategoriezahlen hängen an der Handprüfung (von Claude, nicht gegengelesen; ISS-094).
+
+### RUN-022 – M8, Offline-Prüfung aller Rechnungen mit dem Faktenspeicher (ohne Ollama)
+- **Datum / Commit:** 2026-11-20 · Branch `feat/m8-agent-v2`
+- **Varianten:** keine Modellvariante; `check_bill` (ADR-0018) direkt auf allen 13 Rechnungen aus `audit_checks`
+- **Konfiguration:** 35 PDFs (neu: 31–35), Ingestion in der Cloud-Umgebung von Claude (692 Chunks ohne Enrichment), 172 Fakten; Befehl `uv run python -m audit_agent.facts audit`
+- **Dauer:** wenige Sekunden
+- **Rohdaten:** Konsolenausgabe; als Test festgeschrieben in `tests/test_facts.py::test_all_five_planted_errors_and_no_false_alarm_on_the_real_corpus`
+
+| Fehler | Rechnung | Befund von `check_bill` | Auswirkung (Ground Truth) |
+|---|---|---|---|
+| E1 | Lichtstrom 2025 | Arbeitspreis 39,50 statt 38,20 ct/kWh (gültig ab 01.01.2025) | 40,30 EUR (40,30) |
+| E2 | Gas 2026 | z-Zahl 1,0000 statt 0,9560 | 51,74 EUR (51,74) |
+| E3 | Betriebskosten 2026 | Wohnfläche 82 statt 78 m² | 95,78 EUR (1.963,28 − 1.867,50) |
+| E4 | Heizstrom 2025 | NT-Verbrauch 3.920 statt 3.420 kWh laut Zählerständen | 120,50 EUR (120,50) |
+| E5 | Wasser 2026 | Vorauszahlungen 4 × 120 statt 4 × 125 EUR angerechnet | 20,00 EUR (20,00) |
+
+- **Korrekte Rechnungen:** 8 von 8 ohne Abweichung (Lichtstrom 2024, Gas 2024/2025, Wasser 2024/2025, Betriebskosten 2024/2025, Heizstrom 2024). Erster Probelauf hatte zwei Scheinabweichungen (Zwischensumme als Position bei Lichtstrom 2024, Vorauszahlungszeile bei Wasser 2024), beide Regeln korrigiert (ISS-111).
+- **Grenzen der Messung:** Regeln und eingebaute Fehler stammen von derselben Person (Claude), die Rate ist deshalb kein Maß für echte Rechnungen (ISS-112). Es prüft nur den Code, nicht den Agenten.
+- **Deutung:** Der Vergleich im Code löst das Problem aus RUN-020/021 (Modell vergleicht mit dem falschen Wert). Ob der Agent `check_bill` richtig nutzt, zeigt erst der Lauf mit Ollama.
