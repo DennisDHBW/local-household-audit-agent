@@ -21,3 +21,6 @@ dataset/private/
 
 # OS
 .DS_Store
+
+# Charts and tables of the agent (M8)
+data/outputs/
