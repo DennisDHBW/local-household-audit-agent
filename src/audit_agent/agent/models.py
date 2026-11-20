@@ -81,7 +81,9 @@ class ToolCallStep(_Frozen):
         return "Wiederholung" if self.is_repeat else "ok"
 
 
-NudgeReason = Literal["gap", "calculate", "cite", "check", "chart", "overview", "numbers", "plan"]
+NudgeReason = Literal[
+    "gap", "calculate", "cite", "check", "chart", "overview", "numbers", "plan", "verdict"
+]
 
 NUDGE_LABELS: dict[NudgeReason, str] = {
     "gap": "Rückfrage: Antwort „keine Angaben“ nach zu wenigen Suchen",
@@ -92,6 +94,7 @@ NUDGE_LABELS: dict[NudgeReason, str] = {
     "overview": "Selbstprüfung: Übersicht verlangt, aber nicht erstellt",
     "numbers": "Selbstprüfung: Zahlen ohne Werkzeugergebnis",
     "plan": "Selbstprüfung: geplanter Schritt nicht ausgeführt",
+    "verdict": "Selbstprüfung: Urteil widerspricht check_bill",
 }
 
 

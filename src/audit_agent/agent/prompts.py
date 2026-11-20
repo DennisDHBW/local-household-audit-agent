@@ -176,7 +176,7 @@ Werkzeugwahl:
 - Stimmt eine Rechnung, wurde ein Preis angewendet, passt der Verbrauch? check_bill \
 (Sparte, Jahr). Übernimm Urteil, Soll, Ist und Auswirkung aus dem Ergebnis.
 - Preise, Abschläge, Verbräuche, Zählerstände, Beträge, z-Zahl, Wohnfläche: get_facts mit \
-Jahr; der markierte Wert gilt in diesem Jahr.
+Jahr; der markierte Wert gilt in diesem Jahr (fact=preise: alle Preise auf einmal).
 - Klauseln, Kündigungsfristen, Laufzeiten und alles Übrige: search.
 - Übersicht oder Tabelle gewünscht: make_overview. Grafik, Diagramm oder Verlauf gewünscht: \
 make_chart.
@@ -292,3 +292,32 @@ PLAN_STEP_MISSING_MESSAGE = (
     "Selbstprüfung: Dein Plan sah noch {tools} vor. Führe den Schritt aus oder antworte, "
     "wenn er nicht mehr nötig ist, unverändert."
 )
+
+VERDICT_MISMATCH_MESSAGE = (
+    "Selbstprüfung: Dein Urteil widerspricht dem Ergebnis von check_bill ({result}). Übernimm "
+    "Urteil, Soll, Ist und Auswirkung aus der Kurzfassung von check_bill."
+)
+_NEGATIVE = (
+    "stimmt nicht",
+    "nicht korrekt",
+    "nicht richtig",
+    "passt nicht",
+    "nein",
+    "abweich",
+    "fehler",
+    "falsch",
+    "zu viel",
+    "zu wenig",
+)
+_POSITIVE = ("stimmt", "korrekt", "richtig", "passt", "ja", "in ordnung")
+
+
+def answer_says_correct(answer: str) -> bool | None:
+    """Verdict of the first sentence: True (correct), False (wrong) or None (no verdict)."""
+    first = fold(re.split(r"(?<=[.!?])\s", answer.strip(), maxsplit=1)[0]) if answer else ""
+    if any(word in first for word in _NEGATIVE):
+        return False
+    words = set(re.findall(r"[a-z]+", first))
+    if any((w in words) if " " not in w else (w in first) for w in _POSITIVE):
+        return True
+    return None
