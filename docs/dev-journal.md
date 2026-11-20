@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-20 – Text-Befunde und M8 Agent v2 (Heizstrom, Faktenspeicher, Plan, Grafiken)
+**Ziel der Sitzung:** Befunde zur Ausarbeitung einarbeiten; danach Architektur so umbauen, dass der Agent mehr als Agent handelt, die Qualität deutlich steigt und auf Anfrage Übersichten und Grafiken entstehen; Dokumentenfokus Strom (Licht- und Heizstrom), Gas, Wasser mit Verträgen.
+**Was wurde gemacht:**
+- Fragen des Nutzers beantwortet (schwache Ergebnisse, Herkunft `final_score`, 55/60), Text in Kapitel 1–5 angepasst, PDF gebaut (ca. 12 Zeilen über 8 Seiten, ISS-107)
+- Plan M8 mit vier Rückfragen vorgelegt (Heizstrom als Nachtspeicher HT/NT, Nebenkosten bleiben, Claude schreibt zurückgehaltene Fragen, Plan freigegeben)
+- Dok. 31–35 mit WeasyPrint erzeugt, `tariff_kind` in Metadaten, Index und Filter
+- Faktenspeicher und Prüfregeln; Offline-Prüfung RUN-022: 5 von 5 eingebauten Fehlern mit richtiger Auswirkung, 0 Fehlalarme (nach zwei korrigierten Scheinabweichungen)
+- Werkzeugsatz v2, Planungsschritt, Selbstprüfung, Artefakte, Chat-UI mit Verlauf; Testmodul mit 21 Entwicklungs- und 8 zurückgehaltenen Fragen, Kennzahlen für Artefakte und Agentik; 402 Tests grün (Cloud-Umgebung)
+**Gelieferte Dateien / Funktionen:** `src/audit_agent/facts/` (`extract`, `audit.check_bill`, `views`, `chart`), `agent/fact_tools.py`, `agent/errors.py`, Änderungen in `agent/loop.py`, `tools.py`, `prompts.py`, `models.py`, `app.py`, `evaluation/*`, `corpus/*`; `dataset/holdout_questions.yaml`; `scripts/generate_m8_documents.py`, `m8_prepare.sh`, `m8_night.sh`; Tests `test_facts.py`, `test_agent_v2.py`
+**Entscheidungen:** ADR-0018 (Faktenspeicher, regelbasierte Prüfung), ADR-0019 (Agent v2)
+**Probleme / Überraschungen:** ISS-107 (Text, Seitenbudget), ISS-108 (Test = Entwicklung), ISS-109 (Heizstrom neben Gasheizung), ISS-110 (Gewinn aus Code), ISS-111 (Regeln layoutgebunden), ISS-112 (zirkuläre Erkennungsrate), ISS-113 (noch kein Ollama-Lauf)
+**Offen / unklar:** Verhalten von `qwen2.5:7b` mit acht Werkzeugen; Laufzeit je Frage; RAGAS für M8
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 3 h · **Modell/Effort:** Opus 5.5 / Medium · **Commit(s):** `docs(paper)`, `feat(dataset)`, `feat(facts)`, `feat(agent)`, `feat(evaluation)`, `docs`
+
 ### 2026-11-20 – Kapitel 6 entfernt, Kapitel 1–5 sprachlich überarbeitet
 **Ziel der Sitzung:** Auf Wunsch des Nutzers Kapitel 6 ohne Ersatz entfernen und den übrigen Text so überarbeiten, dass er weniger nach KI klingt; kein „synthetischer Korpus“, keine Ketten von Fragen-Kürzeln.
 **Was wurde gemacht:**

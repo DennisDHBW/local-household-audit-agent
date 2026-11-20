@@ -460,3 +460,8 @@ Festgelegt am 2026-11-18. Seiten sind im kompilierten PDF gemessen (12 pt, 1,5-z
 - [x] Tool-Calling: natives Ollama-Tool-Calling (ADR-0006), Bestätigung in M5
 - [ ] Referenzprototyp als Basis oder eigener Aufbau? (Code liegt nicht im Repo)
 - [ ] UI: Streamlit (Evidence-First wie Referenz) + CLI für Tests (Empfehlung)
+
+## Nachtrag M8 (2026-11-20): Agent v2
+
+Auf Wunsch des Nutzers zurück in die Umsetzung. Neu: Heizstrom (Nachtspeicher, Zweitarifzähler HT/NT, Dok. 31–34) neben dem Lichtstrom, Wasserbescheid 2026 (Dok. 35), eingebaute Fehler E4 (NT-Verbrauch) und E5 (angerechnete Vorauszahlungen). Ein Faktenspeicher liest Preise, Zählerstände, Abschläge und Flächen per Regel mit Gültigkeit und Quelle; `check_bill` vergleicht im Code (ADR-0018). Der Agent plant zuerst (`plan`), nutzt `get_facts`, `check_bill`, `search`, `make_overview`, `make_chart`, `calculate` und prüft seine Antwort vor der Abgabe (ADR-0019). Die Oberfläche ist ein Chat mit Tabellen und Grafiken. Das Testmodul trennt 21 Entwicklungsfragen von 8 zurückgehaltenen Fragen (ISS-108).
+
