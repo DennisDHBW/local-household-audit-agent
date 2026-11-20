@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-108 – Testfragen waren zugleich Entwicklungsfragen
+- **Datum / Meilenstein:** 2026-11-20 / M7 (Befund), M8 (Lösung)
+- **Kategorie:** evaluation
+- **Status:** offen
+- **Symptom:** Alle 14 Fragen dienten seit RUN-010 der Entwicklung. Größen-Anfrage, Spartenfilter, Lücken-, Rechen- und Zitier-Rückfrage gehen auf einzelne dieser Fragen zurück. Die Ergebnisse (P1 8, P2 6 von 14) sind deshalb eher zu günstig.
+- **Ursache:** Kein zurückgehaltener Fragensatz von Anfang an (Fehler im Vorgehen, von Claude nicht angesprochen).
+- **Lösung / Workaround:** In Kapitel 5 als Grenze genannt. Ab M8 gibt es einen zurückgehaltenen Fragensatz (`dataset/holdout_questions.yaml`), der erst im Endlauf läuft.
+- **Gelernt:** Wer am Testset entwickelt, misst am Ende auch die eigene Anpassung.
+- **Relevant für Ausarbeitung?** ja → Kapitel 5
+
+### ISS-107 – Text-Befunde eingearbeitet, Ausarbeitung ca. 12 Zeilen über 8 Seiten
+- **Datum / Meilenstein:** 2026-11-20 / M7
+- **Kategorie:** ki-assistent
+- **Status:** offen
+- **Symptom:** Nutzer fragte nach schlechten Ergebnissen, Herkunft von `final_score` und der missverständlichen Angabe „0 von 55 statt 4 von 60“. Befunde: Herkunft der Formel fehlte, 55/60 doppelt mit verschiedener Bedeutung und mit 10 statt 12 Fragen, Schluss „Grenze eines 7B-Modells“ nicht gemessen, Prüffragen nur bei korrekten Abrechnungen richtig, interne Begriffe (Nachtlauf, Dokument 29, Rechennachfrage), Pointen und Inversionen.
+- **Ursache:** Claudes Text (ISS-105) prüfte die Zahlen, aber nicht, wie ein Leser sie versteht; die 7B-Einordnung war eine ungemessene Behauptung (ISS-106).
+- **Lösung / Workaround:** Branch `docs/paper-findings`: alle Punkte umformuliert, Schluss neu (Architektur überlässt den schwersten Schritt dem Modell, Faktentabelle). Trotz Kürzungen endet Kapitel 5 ca. 12 Zeilen auf Seite 9. Keine weitere Kürzung, weil der Text nach M8 ohnehin neu überarbeitet wird; Architekturabbildung und Ausblick folgen dann.
+- **Gelernt:** Eine Zahl kann stimmen und trotzdem falsch gelesen werden.
+- **Relevant für Ausarbeitung?** ja → Kapitel 4 und 5; Seitenbudget bei der Überarbeitung nach M8
+
 ### ISS-106 – Reflexion nach Entfernen von Kapitel 6 nur noch knapp
 - **Datum / Meilenstein:** 2026-11-20 / M7
 - **Kategorie:** konzept
