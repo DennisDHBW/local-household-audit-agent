@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-116 – Trockenlauf mit Orakel: Obergrenze der Werkzeuge, Ausgaben der zurückgehaltenen Fragen kurz sichtbar
+- **Datum / Meilenstein:** 2026-11-20 / M8
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** `scripts/dry_run.py` lief ohne Absturz durch (B0, P1, P2 auf 21 Entwicklungsfragen, P2 auf den zurückgehaltenen Fragen, `score`, `check_evidence`). Mit dem regelbasierten Orakel statt des Modells kam P2 zunächst auf 14, nach drei Ergänzungen (`fact=preise`, Verbrauch in der Kurzfassung, „seit JJJJ“) auf 17 von 21 Entwicklungsfragen; offen S1 (Orakel liest Suchtreffer nicht), S4 (Diagrammwerte nur über die Suche), N1/N2 (Orakel kennt keine Lücke). Beim ersten Lauf erschienen im Fehlerkanal Bruchstücke der Orakel-Antworten auf zurückgehaltene Fragen.
+- **Ursache:** Der Trockenlauf prüft bewusst auch den `--holdout`-Weg; die Ausgabe der Antworten war nicht abgeschaltet.
+- **Lösung / Workaround:** Für die zurückgehaltenen Fragen druckt das Skript nur noch „ohne Fehler“; der Bericht wird nicht gelesen. An den gesehenen Bruchstücken wurde nichts angepasst. Die 17 von 21 sind eine Obergrenze bei perfekter Werkzeugwahl, kein Ergebnis des Agenten, und dürfen nicht so berichtet werden.
+- **Gelernt:** Ein Trockenlauf mit Orakel trennt „Werkzeuge liefern es nicht“ von „Modell wählt falsch“.
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 (Obergrenze der Werkzeuge gegen tatsächliches Modellergebnis)
+
 ### ISS-115 – Bewertung des Smoke-Tests brach ab (`_all_questions` nicht definiert)
 - **Datum / Meilenstein:** 2026-11-20 / M8
 - **Kategorie:** ki-assistent

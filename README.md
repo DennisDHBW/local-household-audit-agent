@@ -91,6 +91,7 @@ uv run python scripts/check_evidence.py --run-id run-010   # Belegabgleich ohne 
 uv run python scripts/analyze_timing.py --run-id run-010 --run-id run-012   # P2-Zeit je Lauf: Prefill gegen Dekodieren, erste gegen spätere Aufrufe, ohne Ollama
 uv run python -m audit_agent.facts build    # Faktenspeicher data/processed/facts.json aus den Chunks (ohne Ollama, M8)
 uv run python -m audit_agent.facts audit    # prüft alle Rechnungen mit den Prüfregeln (ohne Ollama), zeigt Abweichungen
+uv run python scripts/dry_run.py              # Trockenlauf des Nachtlaufs ohne Ollama (Temp-Ordner, Orakel statt Modell), findet Abstürze vorab
 ./scripts/m8_prepare.sh                     # M8: Ingestion, Enrichment, Fakten, Index, Quality Gate, Smoke-Test (braucht Ollama)
 ./scripts/m8_night.sh                       # M8: Nachtlauf B0/P1/P2 über alle Entwicklungsfragen (run-025)
 ./scripts/m8_night.sh --holdout             # M8: Endlauf mit den zurückgehaltenen Fragen (run-026), erst ganz am Schluss

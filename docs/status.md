@@ -2,7 +2,7 @@
 
 > Diese Datei liest Claude zu Beginn jeder Sitzung. Kurz halten (max. 1 Seite). Alte Einträge überschreiben; die Historie steht in `dev-journal.md` und in Git.
 
-**Letzte Aktualisierung:** 2026-11-20 (Smoke-Test run-023 ausgewertet; Argument-Reparatur, Kurzfassung, Werkzeugauswahl nach Fragetyp, Planprüfung, Plausibilitätsregeln; ADR-0020)
+**Letzte Aktualisierung:** 2026-11-20 (Smoke-Test run-023 ausgewertet; Argument-Reparatur, Kurzfassung, Werkzeugauswahl nach Fragetyp, Planprüfung, Plausibilitätsregeln, Urteilsprüfung, Trockenlauf; ADR-0020, ISS-116)
 **Phase:** zurück in Phase 1 (Umsetzung M8) auf Wunsch des Nutzers; die Ausarbeitung wird erst nach besseren Ergebnissen neu überarbeitet
 **Aktueller Meilenstein:** M8 Agent v2
 **Version:** v1.0.0 (M8 wird v2.0.0 nach dem Nachtlauf)
@@ -21,7 +21,7 @@
 - M8 (Branch `feat/m8-agent-v2`): Dok. 31–35 (Heizstrom-Vertrag, -Preisanpassung, -Rechnungen 2024/2025 mit E4, Wasser 2026 mit E5), `tariff_kind`; Faktenspeicher und Prüfregeln (ADR-0018); Werkzeugsatz v2 mit `plan`, `get_facts`, `check_bill`, `make_overview`, `make_chart`, Selbstprüfung, max. 10 Aufrufe, Chat-UI mit Verlauf (ADR-0019); 21 Entwicklungsfragen, 8 zurückgehaltene Fragen T1–T8, Kennzahlen für Artefakte und Agentik; Skripte `m8_prepare.sh`, `m8_night.sh`
 
 ## Nächstes Arbeitspaket
-Nutzer startet über Nacht: Fakten neu bauen, Smoke-Test run-024-smoke (H2, V1, W1, G2, Z2), danach Nachtlauf run-025 (`m8_night.sh`, 21 Fragen, B0/P1/P2). Danach: beide Läufe auswerten (Handprüfung, Kennzahlen Agentik, Grafiken), evaluation-log, Nachbesserungen nur an Entwicklungsfragen; dann Endlauf run-026 mit `--holdout`.
+Nutzer startet über Nacht: Trockenlauf (`scripts/dry_run.py`, ohne Ollama), Fakten neu bauen, Smoke-Test run-024-smoke (H2, V1, W1, G2, Z2), danach Nachtlauf run-025 (`m8_night.sh`, 21 Fragen, B0/P1/P2). Danach: beide Läufe auswerten (Handprüfung, Kennzahlen Agentik, Grafiken), evaluation-log, Nachbesserungen nur an Entwicklungsfragen; dann Endlauf run-026 mit `--holdout`.
 
 **Empfohlenes Modell:** Opus 5.5, Effort High (Auswertung der Evaluation und Fehlersuche; laut `ai-workflow.md`, Abschnitt 4)
 

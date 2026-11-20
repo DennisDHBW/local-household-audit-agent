@@ -191,4 +191,4 @@
 | Werkzeugauswahl nach Fragetyp | `route_tools`, `AgentSettings.route_tools` | Code bietet je Fragetyp (Prüffrage, Grafik, Übersicht, sonst) nur passende Werkzeuge an (ADR-0020) | |
 | Argument-Reparatur | `scope.repair_utility_arguments` | Korrigiert Sparte, Stromart und Jahr der Werkzeugargumente anhand der Frage; steht als „Hinweis: Argumente angepasst“ im Ergebnis (ISS-114) | |
 | Hinweis (Prüfung) | `CheckStatus.NOTICE` | Plausibilitätshinweis, z. B. Verbrauch über 25 % anders als im Vorjahr; kein Fehler | |
-
+| Trockenlauf / Orakel | `scripts/dry_run.py`, `FakeOllama` | Nachtlauf ohne Ollama in einem Temp-Ordner; ein regelbasiertes Orakel wählt Werkzeuge statt des Modells; zeigt Abstürze und die Obergrenze der Werkzeuge (ISS-116) | |

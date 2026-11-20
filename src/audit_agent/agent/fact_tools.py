@@ -57,6 +57,8 @@ class PlanArguments(_Arguments):
 
 
 class FactName(StrEnum):
+    PREISE = "preise"
+    """All prices at once (Arbeits-, Grund-, Wasserpreis, Schmutzwassergebühr)."""
     ARBEITSPREIS = "arbeitspreis"
     GRUNDPREIS = "grundpreis"
     WASSERPREIS = "wasserpreis"
@@ -70,6 +72,12 @@ class FactName(StrEnum):
 
 
 FACT_KINDS: dict[FactName, tuple[FactKind, ...]] = {
+    FactName.PREISE: (
+        FactKind.ENERGY_PRICE,
+        FactKind.BASE_PRICE,
+        FactKind.WATER_PRICE,
+        FactKind.SEWAGE_FEE,
+    ),
     FactName.ARBEITSPREIS: (FactKind.ENERGY_PRICE,),
     FactName.GRUNDPREIS: (FactKind.BASE_PRICE,),
     FactName.WASSERPREIS: (FactKind.WATER_PRICE,),
@@ -89,7 +97,7 @@ class FactsArguments(_Arguments):
     def _repair(cls, data: object) -> object:
         return repair_utility_arguments(data)
 
-    fact: FactName = Field(description="Gesuchte Größe.")
+    fact: FactName = Field(description="Gesuchte Größe; preise = alle Preise eines Vertrags.")
     utility_type: UtilityType | None = Field(default=None, description=UTILITY_HELP)
     tariff_kind: TariffKind | None = Field(default=None, description=TARIFF_HELP)
     year: int | None = Field(
@@ -340,6 +348,11 @@ class FactTools:
             if balance is not None:
                 word = "Guthaben" if balance.value < 0 else "Nachzahlung"
                 figures.append(f"{word} {fmt(abs(balance.value), 'EUR', 2)}")
+            for check in report.checks:  # the measured quantities support "passt" answers
+                if check.status is CheckStatus.OK and (
+                    check.name.startswith("Verbrauch") or check.name.startswith("Umrechnung")
+                ):
+                    figures.insert(0, f"{check.name}: {check.expected}")
             lines.append(
                 f"Kurzfassung für die Antwort: Ja, die {name}-Rechnung {year} stimmt mit Vertrag, "
                 f"Preisschreiben und Zählerständen überein. " + "; ".join(figures) + "."

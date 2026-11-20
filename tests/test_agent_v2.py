@@ -265,3 +265,41 @@ def test_planned_result_tool_that_never_ran_is_questioned(tmp_path: Path):
     run = loop.run("Wie hoch war der Heizstromverbrauch?")
     assert [s.reason for s in run.steps if isinstance(s, NudgeStep)] == ["plan"]
     assert run.artifacts
+
+
+def test_verdict_against_check_bill_is_questioned(tmp_path: Path):
+    replies = [
+        tool_reply(CHECK),
+        answer_reply("Ja, die Heizstromabrechnung 2025 stimmt [1]."),
+        answer_reply(
+            "Nein, die Heizstrom-Rechnung 2025 stimmt nicht: NT 3.920 statt 3.420 kWh [1]."
+        ),
+    ]
+    loop, _ = _loop(tmp_path, replies)
+    run = loop.run("Ist die Heizstromabrechnung 2025 korrekt?")
+    assert [s.reason for s in run.steps if isinstance(s, NudgeStep)] == ["verdict"]
+    assert run.answer.startswith("Nein")
+
+
+def test_answer_verdict_detection():
+    from audit_agent.agent.prompts import answer_says_correct
+
+    assert answer_says_correct("Nein, die Rechnung stimmt nicht. Ja doch.") is False
+    assert answer_says_correct("Ja, die Rechnung ist korrekt [1].") is True
+    assert answer_says_correct("Der Verbrauch beträgt 72 m³ [1].") is None
+
+
+def test_plain_strom_means_household_and_seit_keeps_the_end_open():
+    from audit_agent.agent.fact_tools import FactsArguments, ViewArguments
+    from audit_agent.agent.scope import CURRENT_QUESTION
+
+    token = CURRENT_QUESTION.set(
+        "Wie haben sich die Gaspreise seit 2024 entwickelt? Mein Stromabschlag?"
+    )
+    try:
+        view = ViewArguments.model_validate({"topic": "preise", "from_year": 2024, "to_year": 2024})
+        facts = FactsArguments.model_validate({"fact": "abschlag", "utility_type": "electricity"})
+    finally:
+        CURRENT_QUESTION.reset(token)
+    assert view.to_year is None
+    assert facts.tariff_kind == "household"

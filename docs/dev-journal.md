@@ -23,6 +23,19 @@
 
 ## Einträge
 
+### 2026-11-20 – M8 letzte Runde vor dem Nachtlauf
+**Ziel der Sitzung:** Ein letztes Mal so viel wie möglich verbessern, ohne Ollama.
+**Was wurde gemacht:**
+- Trockenlauf `scripts/dry_run.py` (ganzer Nachtlauf mit Hash-Embeddings und Orakel im Temp-Ordner): kein Absturz; Orakel-Obergrenze P2 von 14 auf 17 von 21 Entwicklungsfragen gehoben (ISS-116)
+- Urteilsprüfung gegen `check_bill`, `get_facts(fact=preise)`, Verbrauch/Umrechnung in der Kurzfassung, „Strom“ = Lichtstrom, „seit JJJJ“; `check_evidence.py` kennt die zurückgehaltenen Fragen
+- 414 Tests grün
+**Gelieferte Dateien / Funktionen:** `scripts/dry_run.py`, Änderungen in `loop.py`, `prompts.py`, `scope.py`, `fact_tools.py`, `models.py`, `scripts/check_evidence.py`, Tests
+**Entscheidungen:** ADR-0020 (Nachtrag)
+**Probleme / Überraschungen:** ISS-116
+**Offen / unklar:** Modellverhalten erst im Nachtlauf
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 / Medium · **Commit(s):** `feat(agent)`, `test(evaluation)`, `docs`
+
 ### 2026-11-20 – M8 Nachbesserung nach Smoke-Test run-023
 **Ziel der Sitzung:** Fehler des Smoke-Tests beheben und vor dem Nachtlauf so viel wie möglich verbessern.
 **Was wurde gemacht:**

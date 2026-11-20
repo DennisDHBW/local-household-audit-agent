@@ -44,6 +44,8 @@ from audit_agent.agent.prompts import (
     REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
     RETRY_BEFORE_GAP_MESSAGE_V2,
+    VERDICT_MISMATCH_MESSAGE,
+    answer_says_correct,
     drop_trailing_gap,
     has_citation,
     is_audit_question,
@@ -383,6 +385,20 @@ class AgentLoop:
             and not used & {"make_overview", "make_chart"}
         ):
             return "overview", OVERVIEW_BEFORE_ANSWER_MESSAGE
+        if "verdict" not in asked:
+            audits = [s.observation for s in valid if s.tool == "check_bill"]
+            results: set[bool] = set()  # True = check_bill found the bill wrong
+            for observation in audits:
+                if "Die Rechnung stimmt nicht." in observation:
+                    results.add(True)
+                if "Die Rechnung stimmt nach diesen Regeln." in observation:
+                    results.add(False)
+            says_correct = answer_says_correct(answer)
+            if len(results) == 1 and says_correct is not None:
+                is_wrong = next(iter(results))
+                if says_correct == is_wrong:
+                    result = "Rechnung stimmt nicht" if is_wrong else "Rechnung stimmt"
+                    return "verdict", VERDICT_MISMATCH_MESSAGE.format(result=result)
         if "plan" not in asked:
             missing_steps = self._unplanned(steps, used)
             if missing_steps:

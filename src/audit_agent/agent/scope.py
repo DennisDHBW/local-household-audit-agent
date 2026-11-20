@@ -60,6 +60,9 @@ def question_scope(question: str) -> tuple[set[str], set[str], set[int]]:
         tariffs |= {"household", "heating"}
     if "fernwaerme" in folded:
         utilities.add("district_heating")
+    is_view = any(w in folded for w in ("grafik", "diagramm", "uebersicht", "tabelle", "vergleich"))
+    if "electricity" in utilities and not tariffs and not is_view and "alle" not in folded:
+        tariffs.add("household")  # plain "Strom" means the household supply (ADR-0020)
     years = {int(y) for y in re.findall(r"\b(20\d{2})\b", question)}
     return utilities, tariffs, years
 
@@ -112,6 +115,10 @@ def repair_utility_arguments(
     ):
         tariff = next(iter(tariffs))
         notes.append(f"tariff_kind aus der Frage ergänzt: {tariff}")
+    since = re.search(r"\bseit (20\d{2})\b", CURRENT_QUESTION.get())
+    if since and data.get("to_year") and int(str(data["to_year"])) <= int(since.group(1)):
+        data["to_year"] = None
+        notes.append(f"„seit {since.group(1)}“: Endjahr entfernt")
     if needs_year and not data.get("year") and len(years) == 1:
         data["year"] = next(iter(years))
         notes.append(f"Jahr aus der Frage ergänzt: {data['year']}")
