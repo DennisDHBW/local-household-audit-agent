@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-104 – Text klang, als sei agentisches RAG generell schlecht; Rechtsberatung entfernt
+- **Datum / Meilenstein:** 2026-11-20 / M7 (Endprüfung)
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Der Nutzer las Kapitel 5 und 6 so, als sei agentisches RAG schlecht. Die Sätze „Die Annahme … hat sich nicht bestätigt“, „Der Agent ist nicht besser als die Pipeline“ und „lohnt sich nur, wenn …“ galten ohne Einschränkung, obwohl nur ein 7B-Modell auf der CPU mit 14 Fragen gemessen wurde. Außerdem soll der Text nichts zum Hinweis „keine Rechtsberatung“ enthalten und das Wort „Inferenz“ vermeiden (Wunsch des Nutzers).
+- **Ursache:** Befund beim Schreiben verallgemeinert, die Einordnung (mehr Sollfakten im Kontext, Engpass beim Lesen und Vergleichen) stand nur in Kapitel 5.
+- **Lösung / Workaround:** Kapitel 5 „In diesem Aufbau“, Kapitel 6 „in diesem Prototyp“ und neue Einordnung: spricht nicht gegen agentisches RAG an sich, P2 hatte mehr Sollfakten im Kontext (18 gegen 16), scheiterte am Lesen und Vergleichen, also vor allem an den Grenzen eines 7B-Modells auf der CPU. Rechtsberatung aus Kapitel 1 und 6 gestrichen (ISS-088 bleibt als Lücke im Code, steht aber nicht mehr im Text). „Telekommunikations-“ ersetzt (Überlauf). Inhalt 8 Seiten.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 1, 5, 6
+
 ### ISS-103 – Endprüfung: Quellenlücken, widersprüchlich wirkende Stellen und KI-Klang
 - **Datum / Meilenstein:** 2026-11-20 / M7 (Endprüfung)
 - **Kategorie:** ki-assistent (auch konzept)

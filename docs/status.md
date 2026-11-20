@@ -24,6 +24,7 @@
 - Quellen auf höchstens fünf begrenzt (Entscheidung Nutzer): Gao et al. 2023 neu (Kapitel 1 „einfaches RAG“, Kapitel 4 Modular RAG), Self-RAG und RAGAS-Dokumentation raus
 - Neun Stellen korrigiert (ISS-103): Xiang mit den Prüffragen verknüpft, ReAct/Act einheitlich, 8.192 Token als eigene Einstellung, Filter-Satz, „vermutlich“, „keine zusätzliche richtige Antwort“, Grenzfälle ohne „vorn“; Orchestrierung in Kapitel 3 benannt
 - KI-Klang überarbeitet, Kapitel 6 neu; Deckblatt bleibt „Konzeptentwurf“
+- Agentisches RAG eingeordnet (Befund gilt für diesen Aufbau, ISS-104); Rechtsberatung und das Wort „Inferenz“ aus dem Text entfernt
 - Neues PDF `Claude outputs/Ausarbeitung-Endpruefung.pdf` (Inhalt endet unten auf Seite 8, Literatur Seite 9)
 
 ## Nächstes Arbeitspaket
@@ -34,7 +35,7 @@ Kein Claude-Paket geplant. Erst wenn der Nutzer Ergänzungen liefert (persönlic
 ## Nächste Schritte
 1. Nutzer vor der Abgabe: `Ausarbeitung-Endpruefung.pdf` laut lesen; Abstract und Ergebnisse der fünf Paper selbst lesen (Kernaussagen in `sources.md`); Fragen 4, 6–10 in `paper-questions.md` beantworten (v. a. 7: P1 nach Gao, 8: Orchestrierung); Stichproben der Handprüfung lesen (ISS-094); 2–3 Sätze je Kapitel selbst umformulieren; persönlichen Teil in Kapitel 6 ergänzen (ISS-087); Abgabe über Moodle, optional mit Link zum Repository
 2. Danach ggf. das Paket oben
-3. Nur bei Zeit: ISS-080/081/086/088
+3. Nur bei Zeit: ISS-080/081/086
 
 ## Offene Entscheidungen / Fragen
 - Reflexion ohne O-Ton: Kapitel 6 bewertet jetzt das Vorgehen, persönliche Eindrücke fehlen weiter; Ergänzung nur gegen Kürzung (ISS-087)
