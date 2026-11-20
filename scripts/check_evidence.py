@@ -21,7 +21,7 @@ from typing import Any
 
 from audit_agent.agent.prompts import GAP_ANSWER
 from audit_agent.config import Settings
-from audit_agent.corpus.loader import load_ground_truth
+from audit_agent.corpus.loader import load_ground_truth, load_question_set
 from audit_agent.corpus.models import Question
 from audit_agent.evaluation.metrics import is_fact_in_answer
 from audit_agent.evaluation.models import VariantAnswer
@@ -88,6 +88,8 @@ def main(argv: list[str] | None = None) -> int:
     settings = Settings.from_env()
     run_dir = settings.eval_dir / args.run_id
     questions = {q.id: q for q in load_ground_truth(settings.ground_truth_file).questions}
+    if settings.holdout_file.is_file():  # held-out run (ISS-108)
+        questions |= {q.id: q for q in load_question_set(settings.holdout_file).questions}
     manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
     full_text_files = set(manifest.get("b0_context", {}).get("complete_files", []))
     ragas = {score.key: score for score in load_ragas_scores(ragas_path(run_dir))}
