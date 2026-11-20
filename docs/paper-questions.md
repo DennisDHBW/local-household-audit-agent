@@ -5,6 +5,21 @@
 
 **Stand 2026-11-19:** Überarbeitung Teil 2 entfällt (Entscheidung Nutzer, ISS-096). Die Fragen bleiben als Vorbereitung auf Nachfragen zur Abgabe; Antworten werden nicht mehr in den Text eingearbeitet.
 
+## Endprüfung (2026-11-20): geänderte Stellen
+
+- Literatur: genau fünf Quellen, [1] Gao et al., [2] ReAct, [3] Xiang et al., [4] RAGAS, [5] Ferrazzi et al.; Self-RAG und RAGAS-Dokumentation entfernt (ISS-103).
+- Kapitel 1: Kontextfenster als eigene Einstellung (Korpus 17.000 bis 20.000 Token, dafür 8 GB und 18 Minuten Prefill, deshalb 8.192 Token); „Ein einfaches RAG [1]“; Agent „wie bei ReAct“.
+- Kapitel 3: Orchestrierung benannt (Modell wählt zur Laufzeit, eigene Schleife führt aus und begrenzt); Self-RAG-Halbsatz gestrichen; Prüfablauf „keine zusätzliche richtige Antwort (6 von 14)“; Act-Satz neu.
+- Kapitel 4: „Wie bei Modular RAG [1]“ bei den abschaltbaren Bausteinen; Filter-Satz getrennt (Test von Hand, Agent selbst); „Vermutlich prägte das Jahr …“; Größen-Anfrage als Query-Rewriting, BM25 als eigener Satz; Evidence-First mit Zweck; GraphRAG: Prüffrage verknüpft zwei Fakten immer gleich, jeder Schritt bleibt Faktensuche; Rechnung zu S2 gestrichen.
+- Kapitel 5: Bewerter beurteilt seine eigenen Antworten; Context Recall als Metrik der RAGAS-Bibliothek; „nur eine begrenzte Qualität“ statt „Die Qualitätsaussage lautet damit“.
+- Kapitel 6: neu gegliedert: Ergebnis mit Ferrazzi, Lehre zum Vorgehen (jede Änderung einzeln messen), Grenzen der Prüfungen im Code, nächster Schritt. „P1 lag vorn“ und Self-RAG entfallen.
+
+Neue Fragen:
+7. Gao et al. unterscheiden Naive, Advanced und Modular RAG. In welche Kategorie fällt P1 nach Gao, und warum heißt P1 im Text trotzdem modulare Pipeline?
+8. Wer orchestriert in P1, wer in P2? Was genau entscheidet das Modell zur Laufzeit, und was setzt die Schleife durch?
+9. Nach Xiang et al. helfen Graphen bei Fragen, die mehrere Fakten verknüpfen. G1 verknüpft zwei Fakten. Warum lohnt sich der Graph trotzdem nicht, und wann würde er sich lohnen?
+10. Kapitel 6 sagt, jede Änderung hätte einen eigenen Lauf gebraucht. Wie viel Laufzeit hätte das bei den drei Änderungen von M6e gekostet, und wie hättest du die Läufe geplant?
+
 ## Quellenprüfung (2026-11-20): geänderte Stellen
 
 - Literatur: neu [5] RAGAS-Dokumentation zu Context Recall; Ferrazzi et al. jetzt [6], mit DOI statt „Adresse: https://…“.
@@ -15,7 +30,7 @@
 
 Neue Fragen zu den Quellen:
 4. Das ReAct-Paper vergleicht ReAct mit einer Variante „Act“. Was unterscheidet beide, und warum entspricht P2 eher Act? Würde ein Prompt, der einen Thought verlangt, bei einem 7B-Modell helfen?
-5. Self-RAG bewertet, ob der Beleg die Antwort stützt. Warum ist das nicht dasselbe wie eine richtige Antwort, und wo trennt Kapitel 5 dieselben Begriffe bei RAGAS?
+5. (Entfällt seit ISS-103, Self-RAG steht nicht mehr im Text.) Self-RAG bewertet, ob der Beleg die Antwort stützt. Warum ist das nicht dasselbe wie eine richtige Antwort, und wo trennt Kapitel 5 dieselben Begriffe bei RAGAS?
 6. Ferrazzi et al. nennen im Mittel 3,3-mal so viele Eingabe-Token. Welche Zahl aus Kapitel 5 zeigt den Mehraufwand von P2, und ist sie mit Ferrazzis Token-Zahl vergleichbar?
 
 ## Quellen eingebaut (2026-11-19): geänderte Stellen
