@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-106 – Reflexion nach Entfernen von Kapitel 6 nur noch knapp
+- **Datum / Meilenstein:** 2026-11-20 / M7
+- **Kategorie:** konzept
+- **Status:** akzeptiert
+- **Symptom:** Kapitel 6 (Reflexion und Ausblick) ist auf Wunsch des Nutzers ganz entfallen, ohne Ersatzkapitel. Das Kriterium „Literaturbezug & Reflexion“ (10 %) verlangt aber kritische Reflexion, Grenzen und Ausblick. Weggefallen sind die Lehre zum Vorgehen (mehrere Änderungen in einem Lauf gemessen, P2 fiel von 9 auf 6), die Grenzen der Prüfungen im Code (ein gültiger `calculate`-Aufruf belegt keine richtige Rechnung, G2) und der nächste Versuch (Soll und Ist getrennt nach Dokumentart suchen).
+- **Ursache:** Entscheidung des Nutzers.
+- **Lösung / Workaround:** Mit Freigabe des Nutzers ein Absatz in Kapitel 5: Annahme aus Kapitel 1 nicht bestätigt, Ferrazzi et al. (die fünfte Quelle bleibt so im Literaturverzeichnis), Einordnung „spricht nicht gegen agentisches RAG an sich, Grenze eines 7B-Modells auf der CPU“. Grenzen der Messung bleiben in Kapitel 5, Grenzen von Parser und Suche in Kapitel 2 und 4, Ausblick nur noch Faktentabelle und Hausverwaltung in Kapitel 4.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 5; mögliche Prüferfrage nach Reflexion und Ausblick
+
+### ISS-105 – Text klang nach KI, Fragen-Kürzel schwer lesbar; erste Überarbeitung drei Seiten zu lang
+- **Datum / Meilenstein:** 2026-11-20 / M7
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Der Nutzer fand Stellen, die nach KI klingen, und wollte „synthetischer Korpus“ nicht mehr lesen. Sätze wie „Bei den Prüffragen G1, G3 und G4 steckt je ein eingebauter Fehler …, bei S5, G2 und Z1 zählt eine gemeldete Abweichung als Fehlalarm“ setzen voraus, dass man sich die Kürzel merkt. Eigener Fehler: Der erste Entwurf der Überarbeitung war rund 470 Wörter länger und die neue Fragentabelle stand mit vielen Umbrüchen auf einer eigenen Gleitseite; das PDF hatte 11 statt 8 Seiten Inhalt.
+- **Ursache:** Text stark verdichtet (eine Zahl je Satz, viele Kurzsätze, Inversionen wie „Messbar half …“, Pointen am Absatzende); die Kürzel S/G/N/Z wurden nach Kapitel 1 vorausgesetzt (Hinweis in `status.md`). Beim Umschreiben die Wortzahl nicht vorab gegen das Seitenbudget gerechnet, obwohl der Hinweis dazu in `status.md` steht.
+- **Lösung / Workaround:** Kürzel aus dem Fließtext entfernt, Fragen über ihren Inhalt benannt; Tabelle 5.1 zeigt alle 14 Fragen (gekürzt) mit Abrechnung (korrekt / mit Fehler) und Ergebnis je Variante, darunter die Kennzahlen; RAGAS-Werte stehen jetzt im Text. „Synthetisch“ ersetzt durch „selbst erstellte PDFs eines erfundenen Haushalts“ bzw. „Testdokumente“. Sätze mit ausgeschriebenen Begründungen und Übergängen neu formuliert. Zum Ausgleich gestrichen: Gas-„Preissenkung“ (Kapitel 1), Laufzeiten von P1/P2 am Ende von Kapitel 3 (stehen in Tabelle 5.1), einzelne Nebensätze; Tabelle in `\footnotesize` und `[!t]`. Inhalt endet auf Seite 8 mit gut einer Zeile frei.
+- **Gelernt:** Bei Umformulierungen die Wortzahl je Kapitel vor dem ersten Build gegen das alte PDF rechnen.
+- **Relevant für Ausarbeitung?** ja → Kapitel 1–5
+
 ### ISS-104 – Text klang, als sei agentisches RAG generell schlecht; Rechtsberatung entfernt
 - **Datum / Meilenstein:** 2026-11-20 / M7 (Endprüfung)
 - **Kategorie:** ki-assistent

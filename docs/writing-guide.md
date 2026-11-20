@@ -61,6 +61,8 @@ Schritt 7 ist kurz, macht aber viel aus: Eigene Formulierungen und Antworten aus
 **Satzmuster:**
 - „Nicht nur …, sondern auch …“
 - „Inferenz“ (Wunsch des Nutzers, ISS-104); nichts zum Hinweis „keine Rechtsberatung“
+- „synthetischer Korpus“ (Wunsch des Nutzers, ISS-105); stattdessen „selbst erstellte PDFs eines erfundenen Haushalts“ oder „Testdokumente“
+- Kürzel der Testfragen (S1, G1, Z1 …) im Fließtext, erst recht als Kette; Fragen über ihren Inhalt benennen („die Frage nach dem Arbeitspreis 2025“), alle Fragen stehen in Tabelle 5.1 (ISS-105)
 - Dreierreihen von Adjektiven oder Nomen („schnell, präzise und zuverlässig“)
 - „Dabei zeigt sich, dass …“ am Anfang jedes zweiten Absatzes
 - Rhetorische Fragen („Doch wie lässt sich dieses Problem lösen?“)
@@ -89,11 +91,11 @@ Schritt 7 ist kurz, macht aber viel aus: Eigene Formulierungen und Antworten aus
 - [x] Alle Bewertungskriterien abgedeckt (`requirements.md`, Abschnitt 11; Literaturbezug mit fünf Quellen, seit 2026-11-20 mit Gao statt Self-RAG; Orchestrierung in Kapitel 3 benannt)
 - [x] Testmodul-Abschnitt vorhanden, mit Ergebnissen und Qualitätsaussage
 - [x] GraphRAG-Entscheidung begründet
-- [x] 14 Testfragen und Ergebnisse dargestellt (Kategorien in Tabelle 5.1, Einzelergebnisse im evaluation-log)
+- [x] 14 Testfragen und Ergebnisse dargestellt (Tabelle 5.1 mit allen Fragen, Ergebnis je Variante und Kennzahlen, seit 2026-11-20)
 - [x] Jede Zahl durch `evaluation-log.md` belegt (Endkontrolle 2026-11-19, vier Korrekturen: ISS-098)
 - [x] Begriffe einheitlich laut Glossar
 - [x] Keine Ich-/Wir-Form
 - [x] Keine Wörter und Muster aus Abschnitt 3.3 (Suchlauf über die `.tex`-Dateien)
 - [ ] Ich kann jeden Absatz mündlich erklären und die Verständnisfragen beantworten
 - [ ] In jedem Kapitel eigene Formulierungen ergänzt
-- [ ] Laut gelesen, Seitenzahl 5–8 eingehalten (Seitenzahl geprüft: 8 Seiten am 2026-11-19; laut lesen offen)
+- [ ] Laut gelesen, Seitenzahl 5–8 eingehalten (Seitenzahl geprüft: 8 Seiten am 2026-11-20 nach Entfernen von Kapitel 6; laut lesen offen)

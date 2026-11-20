@@ -3,42 +3,58 @@
 \chapter{Testmodul und Evaluation}
 \label{chap:05-evaluation}
 
-% Bewertungskriterium: Test- & Evaluationsstrategie (15 %)
+% Bewertungskriterium: Test- & Evaluationsstrategie (15 %), Literaturbezug & Reflexion (10 %)
 
-Das Testmodul \texttt{audit\_agent.evaluation} trennt das Erzeugen der Antworten vom Bewerten. \texttt{generate} stellt jede Frage über Ollama an B0, P1 und P2 und speichert jede Antwort sofort mit ihren Belegtexten als JSON-Zeile im Laufordner (Kennung wie RUN-021). \texttt{score} berechnet die eigenen Metriken, \texttt{ragas} die RAGAS-Werte. Eine geänderte Metrik braucht so keinen neuen Lauf. Dazu kommen 382 Unit-Tests ohne Ollama.
+Das Testmodul \texttt{audit\_agent.evaluation} trennt das Erzeugen der Antworten vom Bewerten. \texttt{generate} stellt jede Frage über Ollama an B0, P1 und P2 und speichert jede Antwort sofort mit ihren Belegtexten als JSON-Zeile in einem Laufordner mit eigener Kennung (etwa RUN-021). Danach berechnet \texttt{score} die eigenen Metriken und \texttt{ragas} die RAGAS-Werte. Eine geänderte Metrik braucht so keinen neuen Lauf. Dazu kommen 382 Unit-Tests, die ohne Ollama laufen.
 
-Die 14 Testfragen sind eigene Szenarien zum synthetischen Korpus. Zu jeder gehören in \texttt{ground\_truth.yaml} Sollfakten (insgesamt 27) und erwartete Quellen mit Datei und Seite (18). Bei den Prüffragen G1, G3 und G4 steckt je ein eingebauter Fehler in der Abrechnung, bei S5, G2 und Z1 zählt eine gemeldete Abweichung als Fehlalarm.
+Die 14 Testfragen in Tabelle~\ref{tab:questions} sind passend zu den Testdokumenten selbst formuliert. Zu den geforderten Standardfragen, Grenzfällen und Negativfragen kommen drei Zusatzfragen. Für jede Frage legt \texttt{ground\_truth.yaml} die Sollfakten fest, also die Angaben, die eine richtige Antwort enthalten muss (insgesamt 27), und die erwarteten Quellen mit Datei und Seite (18). Die Negativfragen lassen sich aus den Unterlagen nicht beantworten, denn eine Stromrechnung für 2023 und Fernwärme gibt es nicht.
 
-Ein Sollfakt gilt als gefunden, wenn die Zahl in der Antwort steht. Das Prüfurteil liest die Metrik aus dem ersten oder letzten Satz. Bei S5 steht der Sollwert 1.189,00\,EUR aber in der Rechnung selbst. Eine Antwort, die ihn abschreibt und \enquote{Ja} sagt, besteht ohne Blick in den Vertrag. So zählten anfangs vier Antworten als richtig, deren Begründung nicht trug. Deshalb wurde jede Antwort auch von Hand gelesen. Der Belegabgleich prüft, ob die Sollfakten im Kontext standen, und trennt so Retrieval- von Synthesefehlern.
+Sechs Fragen sind Prüffragen, bei denen der Prototyp eine Abrechnung mit Vertrag, Preisschreiben, Mietvertrag oder Zählerständen vergleichen soll. Drei dieser Abrechnungen enthalten einen eingebauten Fehler. Die Stromabrechnung 2025 setzt den falschen Arbeitspreis an, die Gasabrechnung 2026 rechnet mit der z-Zahl 1,0000 statt 0,9560, und die Betriebskostenabrechnung 2026 legt 82 statt der vereinbarten 78\,m\textsuperscript{2} zugrunde. Die anderen drei Abrechnungen stimmen, eine gemeldete Abweichung zählt dort als Fehlalarm.
 
-Als zweite Sicht bewertet RAGAS~\cite{es2024ragas} dieselben Antworten mit dem Bewerter \texttt{audit-\allowbreak judge}, also \texttt{qwen2.5:7b}, das so seine eigenen Antworten bewertet. Schon Faithfulness und Context Recall dauerten für 28 Antworten 3,1~Stunden, weitere Metriken und ein synthetisches Testset entfielen deshalb. Für B0 sind die Bewerter-Prompts mit über 8.192~Token zu lang. Faithfulness misst Belegtreue, nicht Richtigkeit. Bei P2 haben richtige und falsche Antworten im Mittel denselben Wert (0,69). Context Recall aus der RAGAS-Bibliothek prüft je Aussage der Referenzantwort, ob sie in den Belegen steht. Prüffragen erhalten fast immer 0,00, weil berechnete Werte wie die Differenz in keinem Beleg stehen.
-
-\begin{table}[htbp]
+\begin{table}[!t]
 \centering
-\small
-\renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{@{}X c c c@{}}
+\footnotesize
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{@{}l X l c c c@{}}
 \hline
-Metrik (14 Fragen) & B0 & P1 & P2 \\
+Art & Testfrage (gekürzt) & Abrechnung & B0 & P1 & P2 \\
 \hline
-Richtig nach Handprüfung (laut Metrik) & 3 (4) & 8 (6) & 6 (4) \\
-\quad davon Standardfragen (von 5) & 0 & 3 & 2 \\
-\quad davon Grenzfälle (von 4) & 0 & 1 & 0 \\
-\quad davon Negativfragen (von 2) & 2 & 2 & 2 \\
-\quad davon Zusatzfragen (von 3) & 1 & 2 & 2 \\
-Sollfakten in der Antwort (von 27) & 6 & 12 & 8 \\
-Erwartete Quellen zitiert (von 18) & 3 & 9 & 8 \\
-Eingebaute Fehler erkannt / Fehlalarme (je von 3) & 0 / 0 & 0 / 0 & 0 / 1 \\
-Sekunden je Frage (Mittel) & 90 & 107 & 308 \\
-RAGAS Faithfulness / Context Recall & zu lang & 0,72 / 0,38 & 0,69 / 0,46 \\
+Standard & Kündigungsfrist und Laufzeit Gasvertrag & & \ding{55} & \ding{51} & \ding{51} \\
+ & Arbeits- und Grundpreis Stromvertrag & & \ding{55} & \ding{55} & \ding{51} \\
+ & Wasserverbrauch 2025 (Zählerstände) & & \ding{55} & \ding{51} & \ding{55} \\
+ & Stromverbrauch 2022 und 2023 & & \ding{55} & \ding{55} & \ding{55} \\
+ & Stromabrechnung 2024 wie im Vertrag? & korrekt & \ding{55} & \ding{51} & \ding{55} \\
+\hline
+Grenzfall & Neuer Arbeitspreis 2025 abgerechnet? & mit Fehler & \ding{55} & \ding{55} & \ding{55} \\
+ & Betriebskostenanteil 2025 korrekt? & korrekt & \ding{55} & (\ding{51}) & \ding{55} \\
+ & Gasabrechnung 2026 korrekt? & mit Fehler & \ding{55} & \ding{55} & \ding{55} \\
+ & Betriebskostenanteil 2026 korrekt? & mit Fehler & \ding{55} & \ding{55} & \ding{55} \\
+\hline
+Negativ & Höhe der Stromrechnung 2023 & & \ding{51} & \ding{51} & \ding{51} \\
+ & Grundpreis für Fernwärme & & \ding{51} & \ding{51} & \ding{51} \\
+\hline
+Zusatz & Gasverbrauch 2025 gegen Zählerstände & korrekt & \ding{55} & (\ding{51}) & (\ding{51}) \\
+ & Aktueller monatlicher Stromabschlag & & \ding{55} & \ding{55} & \ding{55} \\
+ & Kündigungsfrist des Stromvertrags & & \ding{51} & \ding{51} & \ding{51} \\
+\hline
+\multicolumn{2}{@{}l}{Richtig nach Handprüfung (laut Metrik), von 14} & & 3 (4) & 8 (6) & 6 (4) \\
+\multicolumn{2}{@{}l}{Sollfakten in der Antwort (von 27)} & & 6 & 12 & 8 \\
+\multicolumn{2}{@{}l}{Erwartete Quellen zitiert (von 18)} & & 3 & 9 & 8 \\
+\multicolumn{2}{@{}l}{Eingebaute Fehler erkannt / Fehlalarme (je von 3)} & & 0/0 & 0/0 & 0/1 \\
+\multicolumn{2}{@{}l}{Sekunden je Frage (Mittel)} & & 90 & 107 & 308 \\
 \hline
 \end{tabularx}
-\caption{Endfassung mit \texttt{qwen2.5:7b} (B0 aus RUN-011, Code seither gleich; P1 und P2 aus RUN-020/021). Knapp als richtig gewertet: P1 zwei, P2 eine Antwort.}
-\label{tab:eval}
+\caption{Testfragen und Ergebnisse der Endfassung mit \texttt{qwen2.5:7b} (\ding{51} richtig, (\ding{51}) knapp als richtig gewertet, \ding{55} falsch). B0 aus RUN-011 (Code von B0 seither unverändert), P1 und P2 aus RUN-020 und RUN-021.}
+\label{tab:questions}
 \end{table}
 
-P1 beantwortet 8 der 14 Fragen richtig, P2 6 und B0 3 (Tabelle~\ref{tab:eval}). Einen eingebauten Fehler erkennt keine Variante mit tragfähiger Begründung, P2 meldet bei G2 außerdem einen Fehlalarm. Dem Prototyp lässt sich damit nur eine begrenzte Qualität zuschreiben. Von den acht Fragen ohne Prüfung beantworten P1 und P2 je fünf richtig, darunter beide Negativfragen, und seit der Zitier-Rückfrage tragen bei P2 alle 9 Antworten mit Zahlen eine Belegnummer. Fehler in Abrechnungen findet der Prototyp dagegen nicht. In diesem Aufbau ist der Agent nicht besser als die Pipeline, braucht aber fast dreimal so lange.
+Ein Sollfakt gilt als gefunden, wenn die Zahl in der Antwort steht, und das Prüfurteil liest die Metrik aus dem ersten oder letzten Satz. Bei der Frage zur Stromabrechnung 2024 steht der Sollwert von 1.189,00\,EUR aber schon in der Rechnung. Eine Antwort, die ihn abschreibt und \enquote{Ja} sagt, besteht, ohne dass der Vertrag je herangezogen wurde. So zählten anfangs vier Antworten als richtig, deren Begründung nicht trug. Deshalb wurde jede Antwort auch von Hand gelesen. Der Belegabgleich prüft außerdem, ob die Sollfakten im Kontext standen, und trennt so Fehler bei der Suche von Fehlern beim Antworten.
 
-Jede der 61 falschen Antworten des ersten Nachtlaufs bekam von Hand eine Hauptursache: 14-mal das Kontextbudget (B0), 12-mal das Retrieval (P1), 19-mal die Werkzeugaufrufe (P2, davon einmal die Argumente), 16-mal die Synthese und nie der Parser. Nach den Umbauten aus Kapitel~\ref{chap:03-architecture} und~\ref{chap:04-retrieval} liegt der Engpass vor allem beim Lesen und Vergleichen. P1 hatte 16 und P2 18 der 27 Sollfakten im Kontext, genannt wurden 12 und 8. Bei G1 lagen beide Arbeitspreise vor, P1 verglich trotzdem mit dem alten Vertragspreis. G3 scheitert weiter am Retrieval, die Vorjahresrechnung mit der richtigen z-Zahl fehlt.
+Als zweite Sicht bewertet RAGAS~\cite{es2024ragas} dieselben Antworten. Bewerter ist \texttt{audit-\allowbreak judge}, also \texttt{qwen2.5:7b}, das damit seine eigenen Antworten beurteilt. Schon Faithfulness und Context Recall dauerten für 28 Antworten 3,1~Stunden, weitere Metriken und ein von RAGAS erzeugtes Testset entfielen deshalb. Für B0 sind die Bewerter-Prompts mit über 8.192~Token zu lang. P1 erreicht im Mittel eine Faithfulness von 0,72 und einen Context Recall von 0,38, P2 kommt auf 0,69 und 0,46. Faithfulness misst aber Belegtreue und nicht Richtigkeit. Bei P2 haben richtige und falsche Antworten im Mittel sogar denselben Wert. Context Recall aus der RAGAS-Bibliothek prüft je Aussage der Referenzantwort, ob sie in den Belegen steht. Prüffragen erhalten fast immer 0,00, weil berechnete Werte wie die Differenz in keinem Beleg stehen.
+P1 beantwortet 8 der 14 Fragen richtig, P2 6 und B0 3. Von den acht Fragen, die keine Prüffragen sind, schaffen P1 und P2 je fünf, und seit der Zitier-Rückfrage tragen bei P2 alle 9 Antworten mit Zahlen eine Belegnummer. Bei den Prüffragen erkennt keine Variante einen eingebauten Fehler mit tragfähiger Begründung, und P2 meldet bei der korrekten Betriebskostenabrechnung 2025 einen Fehlalarm. Dem Prototyp lässt sich damit nur eine begrenzte Qualität zuschreiben. Einzelne Angaben findet und belegt er, Fehler in Abrechnungen deckt er nicht auf.
 
-Die Zahlen beruhen auf 14 Fragen und je einem Lauf, und die Handprüfung wurde nicht unabhängig gegengelesen. Eine Wiederholung mit gleichem Code lieferte bei Temperatur 0 wortgleiche Antworten. Ein Abstand von ein bis zwei Fragen bleibt trotzdem unsicher.
+Für die Fehleranalyse des ersten Nachtlaufs bekam jede der 61 falschen Antworten von Hand eine Hauptursache: 14-mal das Kontextbudget (B0), 12-mal das Retrieval (P1), 19-mal die Werkzeugaufrufe (P2, davon einmal die Argumente), 16-mal die Synthese und nie der Parser. Nach den Umbauten aus Kapitel~\ref{chap:03-architecture} und~\ref{chap:04-retrieval} liegt der Engpass vor allem beim Lesen und Vergleichen. P1 hatte 16 und P2 18 der 27 Sollfakten im Kontext, genannt wurden nur 12 und 8. Bei der Frage zum Arbeitspreis 2025 lagen beiden Varianten beide Preise vor. Trotzdem verglich P1 mit dem alten Vertragspreis, und P2 gab eine leere Antwort. Die Gasabrechnung 2026 scheitert dagegen schon an der Suche, weil die Vorjahresrechnung mit der richtigen z-Zahl fehlt.
+
+Die Annahme aus Kapitel~\ref{chap:01-problem-use-case}, dass Prüffragen einen Agenten brauchen, hat sich in diesem Aufbau nicht bestätigt. P2 war nicht besser als P1, brauchte aber fast dreimal so lange. Auch Ferrazzi et al. fanden keinen generellen Vorteil von agentischem RAG gegenüber einer ausgebauten Pipeline, wohl aber im Mittel 3,3-mal so viele Eingabe-Token~\cite{ferrazzi2026agentic}. Gegen agentisches RAG an sich spricht das nicht, denn P2 scheiterte vor allem am Lesen der Belege und damit an den Grenzen eines 7B-Modells auf der CPU.
+
+Die Zahlen beruhen auf 14 Fragen und je einem Lauf, und die Handprüfung wurde nicht unabhängig gegengelesen. Eine Wiederholung mit gleichem Code lieferte bei Temperatur 0 wortgleiche Antworten, ein Abstand von ein bis zwei Fragen bleibt trotzdem unsicher.

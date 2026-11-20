@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-20 – Kapitel 6 entfernt, Kapitel 1–5 sprachlich überarbeitet
+**Ziel der Sitzung:** Auf Wunsch des Nutzers Kapitel 6 ohne Ersatz entfernen und den übrigen Text so überarbeiten, dass er weniger nach KI klingt; kein „synthetischer Korpus“, keine Ketten von Fragen-Kürzeln.
+**Was wurde gemacht:**
+- Anforderungen (`requirements.md`, Projektdoku „Anforderungen“), `writing-guide.md` und alle Kapitel gelesen; Plan mit zwei Rückfragen vorgelegt (Ferrazzi-Absatz in Kapitel 5, Testfragen-Tabelle), beide freigegeben
+- Kapitel 6 und sein `\input` gelöscht, Verweis in Kapitel 3 entfernt
+- Kapitel 1–5 umformuliert: Fragen über ihren Inhalt benannt, Begründungen ausgeschrieben, Inversionen und Pointen umgestellt, „synthetisch“ ersetzt; neue Tabelle 5.1 mit allen 14 Fragen, Abrechnung (korrekt / mit Fehler) und Ergebnis je Variante plus Kennzahlen; Absatz zu Annahme, Ferrazzi et al. und 7B-Grenze in Kapitel 5
+- Erster Entwurf drei Seiten zu lang (ISS-105), danach in vier Builds auf 8 Seiten gekürzt; Zahlen unverändert aus dem alten Text bzw. `evaluation-log.md` (Einzelergebnisse aus dem Nachtrag für Kapitel 5)
+**Gelieferte Dateien / Funktionen:** `paper/main.tex`, `paper/content/chapter/0{1..5}*/main.tex`, Kapitel 6 gelöscht; `docs/status.md`, `docs/issues-log.md`, `docs/concept.md`, `docs/requirements.md`, `docs/writing-guide.md`, `docs/sources.md`, `docs/paper-questions.md`; `Claude outputs/Ausarbeitung-ohne-Kapitel6.pdf` (nicht versioniert); kein Python-Code geändert
+**Entscheidungen:** Kapitel 6 entfällt (Nutzer); Ferrazzi-Absatz in Kapitel 5 und Testfragen-Tabelle (vom Nutzer freigegeben); keine ADR
+**Probleme / Überraschungen:** ISS-105 (KI-Klang, Kürzel, eigener Fehler beim Seitenbudget), ISS-106 (Reflexion nur noch knapp)
+**Offen / unklar:** Reflexion und Ausblick sind dünn (ISS-106); Nutzer liest das neue PDF laut und beantwortet die neuen Fragen 11–14 in `paper-questions.md`
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 / Medium · **Commit(s):** `docs(paper)`, `docs`
+
 ### 2026-11-20 – Endprüfung der Ausarbeitung (Quellen, KI-Klang, Verständnis)
 **Ziel der Sitzung:** Auf Wunsch des Nutzers die Qualität final prüfen: Passen die Quellen zu den Aussagen, sind es die besten, was klingt nach KI, wo wirkt der Text, als sei das Thema nicht verstanden?
 **Was wurde gemacht:**
