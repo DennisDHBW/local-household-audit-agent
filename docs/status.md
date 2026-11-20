@@ -2,7 +2,7 @@
 
 > Diese Datei liest Claude zu Beginn jeder Sitzung. Kurz halten (max. 1 Seite). Alte Einträge überschreiben; die Historie steht in `dev-journal.md` und in Git.
 
-**Letzte Aktualisierung:** 2026-11-20 (Text-Befunde eingearbeitet, M8 Agent v2 umgesetzt, noch ohne Ollama-Lauf)
+**Letzte Aktualisierung:** 2026-11-20 (Smoke-Test run-023 ausgewertet, Argument-Reparatur und Kurzfassung ergänzt, ISS-114/115)
 **Phase:** zurück in Phase 1 (Umsetzung M8) auf Wunsch des Nutzers; die Ausarbeitung wird erst nach besseren Ergebnissen neu überarbeitet
 **Aktueller Meilenstein:** M8 Agent v2
 **Version:** v1.0.0 (M8 wird v2.0.0 nach dem Nachtlauf)
@@ -21,14 +21,14 @@
 - M8 (Branch `feat/m8-agent-v2`): Dok. 31–35 (Heizstrom-Vertrag, -Preisanpassung, -Rechnungen 2024/2025 mit E4, Wasser 2026 mit E5), `tariff_kind`; Faktenspeicher und Prüfregeln (ADR-0018); Werkzeugsatz v2 mit `plan`, `get_facts`, `check_bill`, `make_overview`, `make_chart`, Selbstprüfung, max. 10 Aufrufe, Chat-UI mit Verlauf (ADR-0019); 21 Entwicklungsfragen, 8 zurückgehaltene Fragen T1–T8, Kennzahlen für Artefakte und Agentik; Skripte `m8_prepare.sh`, `m8_night.sh`
 
 ## Nächstes Arbeitspaket
-Nutzer startet `./scripts/m8_prepare.sh` (Ingestion, Enrichment, Fakten, Index, Quality Gate, Smoke-Test P2 auf H2, V1, W1). Danach: `data/eval/m8-prepare.log` und `data/eval/run-023-smoke/` auswerten (ruft qwen `plan` und `check_bill` richtig auf?), Fehler beheben, Nachtlauf `./scripts/m8_night.sh` (run-024) freigeben.
+Nutzer startet über Nacht: Fakten neu bauen, Smoke-Test run-024-smoke (H2, V1, W1, G2, Z2), danach Nachtlauf run-025 (`m8_night.sh`, 21 Fragen, B0/P1/P2). Danach: beide Läufe auswerten (Handprüfung, Kennzahlen Agentik, Grafiken), evaluation-log, Nachbesserungen nur an Entwicklungsfragen; dann Endlauf run-026 mit `--holdout`.
 
 **Empfohlenes Modell:** Opus 5.5, Effort High (Auswertung der Evaluation und Fehlersuche; laut `ai-workflow.md`, Abschnitt 4)
 
 ## Nächste Schritte
-1. Smoke-Test auswerten und nachbessern (ISS-113)
-2. Nachtlauf run-024 (21 Fragen, B0/P1/P2), Handprüfung, evaluation-log
-3. Erst danach Endlauf mit zurückgehaltenen Fragen: `./scripts/m8_night.sh --holdout` (run-025), keine Nachbesserung mehr an Hand dieser Fragen (ISS-108)
+1. run-024-smoke und Nachtlauf run-025 auswerten (ISS-113/114)
+2. Nachbesserungen nur an Entwicklungsfragen, ggf. zweiter Nachtlauf
+3. Erst danach Endlauf mit zurückgehaltenen Fragen: `./scripts/m8_night.sh --holdout` (run-026), keine Nachbesserung mehr an Hand dieser Fragen (ISS-108)
 4. Tag v2.0.0, Reverse-Engineering-Runde M8, dann Ausarbeitung neu (Architekturabbildung, Ausblick, Seitenbudget, ISS-107)
 
 ## Offene Entscheidungen / Fragen
