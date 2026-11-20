@@ -47,7 +47,10 @@ class Row(BaseModel):
 
 def utility_label(utility: UtilityType, tariff: TariffKind | None) -> str:
     if utility is UtilityType.ELECTRICITY:
-        return "Heizstrom" if tariff is TariffKind.HEATING else "Lichtstrom"
+        return {TariffKind.HEATING: "Heizstrom", TariffKind.HOUSEHOLD: "Lichtstrom"}.get(
+            tariff,
+            "Strom",  # type: ignore[arg-type]
+        )
     return {
         UtilityType.GAS: "Gas",
         UtilityType.WATER: "Wasser",

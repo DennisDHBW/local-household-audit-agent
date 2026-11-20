@@ -60,7 +60,8 @@ def test_check_bill_tool_reports_the_deviation_with_citations(tmp_path: Path):
 
     # Assert
     assert "ABWEICHUNG: Verbrauch NT aus Zählerständen" in result.text
-    assert "120,50 EUR zu viel berechnet" in result.text
+    assert "120,50 EUR zu Ihren Lasten" in result.text
+    assert "Kurzfassung für die Antwort: Nein" in result.text
     assert "Die Rechnung stimmt nicht." in result.text
     assert result.hit_numbers and len(book.numbered_hits) == max(result.hit_numbers)
 
@@ -178,3 +179,56 @@ def test_unsupported_numbers_ignore_years_counts_dates_and_cent_euro_scaling():
 def test_request_detection_for_charts_and_overviews():
     assert wants_chart("Zeig das als Diagramm") and not wants_overview("Zeig das als Diagramm")
     assert wants_overview("Gib mir eine Übersicht über alle Kosten 2025")
+
+
+def test_arguments_from_the_smoke_test_are_repaired(tmp_path: Path):
+    # Arrange: the three wrong calls of run-023 (ISS-114)
+    replies = [
+        tool_reply(
+            (
+                "check_bill",
+                {"utility_type": "district_heating", "year": 2025, "tariff_kind": "heating"},
+            )
+        ),
+        answer_reply("Nein, NT 3.920 statt 3.420 kWh, 120,50 EUR zu viel [1]."),
+    ]
+    loop, _ = _loop(tmp_path, replies)
+
+    # Act
+    run = loop.run("Ist die Heizstromabrechnung 2025 korrekt?")
+
+    # Assert
+    (step,) = [s for s in run.steps if getattr(s, "tool", "") == "check_bill"]
+    assert step.is_valid and step.observation.startswith("Hinweis: Argumente angepasst")
+    assert "ABWEICHUNG" in step.observation
+
+
+def test_repair_drops_tariff_for_water_and_both_tariffs_and_fills_from_question():
+    from audit_agent.agent.fact_tools import BillArguments, ViewArguments
+    from audit_agent.agent.scope import CURRENT_QUESTION
+
+    token = CURRENT_QUESTION.set("Ist der Heizstromabrechnung 2025 korrekt?")
+    try:
+        water = BillArguments.model_validate(
+            {"utility_type": "water", "year": 2026, "tariff_kind": "household"}
+        )
+        both = ViewArguments.model_validate(
+            {"topic": "verbrauch", "tariff_kind": "household,heating"}
+        )
+        filled = BillArguments.model_validate({})
+    finally:
+        CURRENT_QUESTION.reset(token)
+    assert water.tariff_kind is None and water.utility_type == "water"
+    assert both.tariff_kind is None
+    assert (filled.utility_type, filled.tariff_kind, filled.year) == (
+        "electricity",
+        "heating",
+        2025,
+    )
+
+
+def test_trailing_gap_sentence_after_a_real_answer_is_dropped():
+    from audit_agent.agent.prompts import GAP_ANSWER, drop_trailing_gap
+
+    assert drop_trailing_gap(f"3.420 kWh [1].\n\n{GAP_ANSWER}") == "3.420 kWh [1]."
+    assert drop_trailing_gap(GAP_ANSWER) == GAP_ANSWER

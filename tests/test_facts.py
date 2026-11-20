@@ -229,3 +229,10 @@ def test_all_five_planted_errors_and_no_false_alarm_on_the_real_corpus():
     for audit in truth.audit_checks:
         report = check_bill(store, catalog.by_file(audit.file))
         assert bool(report.deviations) is not audit.is_correct, audit.file
+
+
+def test_balance_is_negative_for_a_credit_and_positive_for_a_back_payment():
+    rows = [*BILL_ROWS, "Nachzahlungsbetrag (fällig am 05.02.2026): 212,82 EUR"]
+    store = FactStore(facts=tuple(extract_document(_document(BILL, rows), BILL)))
+    (balance,) = store.of_file(BILL.file, FactKind.BALANCE)
+    assert balance.value == Decimal("212.82")

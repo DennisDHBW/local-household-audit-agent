@@ -286,6 +286,9 @@ def _bill_position(b: _Builder, chunk: DocumentChunk, label: str, columns: dict[
         if amount is not None:
             _credited(b, chunk, label, amount)
         return
+    if folded.startswith(("guthaben", "nachzahlung")) and amount is not None:
+        _balance(b, chunk, label, amount)
+        return
     if any(word in folded for word in ("zwischensumme", "guthaben", "nachzahlung")):
         return  # subtotals and balances are no line items
     if "rechnungsbetrag" in folded or "gesamtkosten" in folded:
@@ -373,6 +376,14 @@ def _summary_row(b: _Builder, chunk: DocumentChunk, key: str, value: str) -> Non
         b.add(chunk, FactKind.INVOICE_TOTAL, number, unit="EUR", label=key)
     elif folded.startswith("abzüglich geleistete"):
         _credited(b, chunk, key, number)
+    elif folded.startswith(("guthaben", "nachzahlung")):
+        _balance(b, chunk, key, number)
+
+
+def _balance(b: _Builder, chunk: DocumentChunk, label: str, number: Decimal) -> None:
+    """Guthaben is stored negative, Nachzahlung positive, whatever sign the PDF prints."""
+    value = -abs(number) if label.lower().startswith("guthaben") else abs(number)
+    b.add(chunk, FactKind.BALANCE, value, unit="EUR", label=label)
 
 
 def _credited(b: _Builder, chunk: DocumentChunk, key: str, total: Decimal) -> None:
@@ -400,6 +411,9 @@ def _service_row(
     if folded.startswith("abzüglich geleistete"):
         if share_amount is not None:
             _credited(b, chunk, label, share_amount)
+        return
+    if folded.startswith(("guthaben", "nachzahlung")) and share_amount is not None:
+        _balance(b, chunk, label, share_amount)
         return
     total = first_number(columns.get("Gesamtkosten Objekt"))
     if total is None or share_amount is None:

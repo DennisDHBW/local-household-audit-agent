@@ -51,6 +51,8 @@ class FactKind(StrEnum):
     TOTAL_AREA = "total_area"
     COST_SHARE = "cost_share"
     """Share of the tenant in percent."""
+    BALANCE = "balance"
+    """Nachzahlung (positive) or Guthaben (negative) a bill states."""
     SERVICE_COSTS = "service_costs"
     """Sum of a service charge statement: object costs in ``value``, tenant share in ``amount``."""
 
@@ -84,6 +86,7 @@ KIND_LABELS: dict[FactKind, str] = {
     FactKind.TOTAL_AREA: "Gesamtwohnfläche",
     FactKind.COST_SHARE: "Umlageanteil",
     FactKind.SERVICE_COSTS: "umlagefähige Betriebskosten",
+    FactKind.BALANCE: "Saldo",
 }
 
 
