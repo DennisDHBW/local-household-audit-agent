@@ -6,6 +6,7 @@ documents:
     utility_type: electricity
     doc_type: contract
     provider: "SüdVolt Energie GmbH"
+    tariff_kind: household
     contract_id: "SV-2024-99104"
     document_date: 2023-12-12
     valid_from: 2024-01-01
@@ -13,6 +14,7 @@ documents:
     utility_type: electricity
     doc_type: payment_plan
     provider: "SüdVolt Energie GmbH"
+    tariff_kind: household
     contract_id: "SV-2024-99104"
     document_date: 2023-12-21
     billing_period_start: 2024-01-01
@@ -22,6 +24,7 @@ documents:
     utility_type: electricity
     doc_type: price_adjustment
     provider: "SüdVolt Energie GmbH"
+    tariff_kind: household
     contract_id: "SV-2024-99104"
     document_date: 2024-11-15
     valid_from: 2025-01-01
@@ -29,6 +32,7 @@ documents:
     utility_type: electricity
     doc_type: bill
     provider: "SüdVolt Energie GmbH"
+    tariff_kind: household
     contract_id: "SV-2024-99104"
     document_date: 2025-01-18
     billing_period_start: 2024-01-01
@@ -37,6 +41,7 @@ documents:
     utility_type: electricity
     doc_type: notice
     provider: "SüdVolt Energie GmbH"
+    tariff_kind: household
     contract_id: "SV-2024-99104"
     document_date: 2025-07-04
     billing_period_start: 2025-01-01
@@ -45,6 +50,7 @@ documents:
     utility_type: electricity
     doc_type: bill
     provider: "SüdVolt Energie GmbH"
+    tariff_kind: household
     contract_id: "SV-2024-99104"
     document_date: 2026-01-20
     billing_period_start: 2025-01-01
@@ -233,5 +239,47 @@ documents:
     provider: "Hausverwaltung Kraichgau & Neckar GmbH"
     contract_id: "OB-104-WE03"
     document_date: 2027-03-11
+    billing_period_start: 2026-01-01
+    billing_period_end: 2026-12-31
+  - file: 01_electricity_suedvolt/31_Heizstrom_Vertragsbestaetigung_SuedVolt_2024.pdf
+    utility_type: electricity
+    doc_type: contract
+    provider: "SüdVolt Energie GmbH"
+    tariff_kind: heating
+    contract_id: "SV-2024-99317"
+    document_date: 2023-12-12
+    valid_from: 2024-01-01
+  - file: 01_electricity_suedvolt/32_Heizstrom_Jahresabrechnung_2024_SuedVolt.pdf
+    utility_type: electricity
+    doc_type: bill
+    provider: "SüdVolt Energie GmbH"
+    tariff_kind: heating
+    contract_id: "SV-2024-99317"
+    document_date: 2025-01-18
+    billing_period_start: 2024-01-01
+    billing_period_end: 2024-12-31
+  - file: 01_electricity_suedvolt/33_Heizstrom_Preisanpassung_SuedVolt_2025.pdf
+    utility_type: electricity
+    doc_type: price_adjustment
+    provider: "SüdVolt Energie GmbH"
+    tariff_kind: heating
+    contract_id: "SV-2024-99317"
+    document_date: 2024-11-15
+    valid_from: 2025-01-01
+  - file: 01_electricity_suedvolt/34_Heizstrom_Jahresabrechnung_2025_SuedVolt.pdf
+    utility_type: electricity
+    doc_type: bill
+    provider: "SüdVolt Energie GmbH"
+    tariff_kind: heating
+    contract_id: "SV-2024-99317"
+    document_date: 2026-01-20
+    billing_period_start: 2025-01-01
+    billing_period_end: 2025-12-31
+  - file: 03_water_stadtwerke_mosbach/35_Wasser_Jahresbescheid_2026_SWM.pdf
+    utility_type: water
+    doc_type: bill
+    provider: "Stadtwerke Mosbach GmbH"
+    contract_id: "SWM-33910"
+    document_date: 2027-02-01
     billing_period_start: 2026-01-01
     billing_period_end: 2026-12-31

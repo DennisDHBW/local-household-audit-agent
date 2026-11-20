@@ -1,0 +1,98 @@
+# Zurückgehaltene Testfragen (ISS-108, ADR-0019).
+# Geschrieben am 2026-11-20 vor der Umsetzung von M8. Diese Fragen laufen NUR im Endlauf
+# (`generate ... --holdout`) und werden nicht zum Entwickeln oder Nachbessern benutzt.
+# Wird eine davon doch zur Fehlersuche benutzt, gehört das ins issues-log.
+questions:
+  - id: T1
+    category: standard
+    question: Welche Kündigungsfrist gilt für den Heizstromvertrag?
+    expected_answer: 1 Monat zum Ende der Erstlaufzeit (31.12.2024), danach jederzeit mit 1 Monat Frist.
+    facts:
+      - { label: Kündigungsfrist Heizstrom, value: "1 Monat" }
+    sources:
+      - { file: 01_electricity_suedvolt/31_Heizstrom_Vertragsbestaetigung_SuedVolt_2024.pdf, page: 1 }
+    expected_tools: [search]
+    tests: Klausel im Text, Heizstrom statt Lichtstrom
+
+  - id: T2
+    category: standard
+    question: Wie viel Wasser wurde 2026 verbraucht?
+    expected_answer: 72 m³ (Zählerstand 386 auf 458 m³).
+    facts:
+      - { label: Wasserverbrauch 2026, value: 72, unit: m³, tolerance: 0 }
+    sources:
+      - { file: 03_water_stadtwerke_mosbach/35_Wasser_Jahresbescheid_2026_SWM.pdf, page: 1 }
+    expected_tools: [get_facts]
+    tests: Verbrauch aus Zählerständen
+
+  - id: T3
+    category: edge_case
+    question: Wurde in der Gasabrechnung 2026 der neue Arbeitspreis berechnet?
+    expected_answer: Ja, 9,95 ct/kWh laut Preisanpassung ab 01.01.2026. Die Rechnung hat aber einen anderen Fehler (z-Zahl 1,0000 statt 0,9560).
+    facts:
+      - { label: Arbeitspreis 2026, value: 9.95, unit: ct/kWh }
+    sources:
+      - { file: 02_gas_neckarenergie/09_Gas_Preisanpassung_NeckarEnergie_2026.pdf, page: 1 }
+      - { file: 02_gas_neckarenergie/29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf, page: 1 }
+    expected_tools: [check_bill]
+    tests: Teilfrage einer fehlerhaften Rechnung
+
+  - id: T4
+    category: additional
+    question: Wie hoch ist der monatliche Heizstromabschlag ab Februar 2026?
+    expected_answer: 105,00 EUR brutto (11 Abschläge Feb–Dez 2026).
+    facts:
+      - { label: Heizstromabschlag 2026, value: 105.00, unit: EUR/Monat }
+    sources:
+      - { file: 01_electricity_suedvolt/34_Heizstrom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
+    expected_tools: [get_facts]
+    tests: neuester Abschlag, Heizstrom statt Lichtstrom
+
+  - id: T5
+    category: visual
+    question: Zeig mir den Wasserverbrauch der letzten Jahre als Diagramm.
+    expected_answer: 78 m³ (2024), 74 m³ (2025), 72 m³ (2026).
+    facts:
+      - { label: Wasser 2024, value: 78, unit: m³, tolerance: 0 }
+      - { label: Wasser 2025, value: 74, unit: m³, tolerance: 0 }
+      - { label: Wasser 2026, value: 72, unit: m³, tolerance: 0 }
+    sources:
+      - { file: 03_water_stadtwerke_mosbach/13_Wasser_Jahresbescheid_2024_SWM.pdf, page: 1 }
+      - { file: 03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf, page: 1 }
+      - { file: 03_water_stadtwerke_mosbach/35_Wasser_Jahresbescheid_2026_SWM.pdf, page: 1 }
+    expected_tools: [make_chart]
+    expected_artifact: chart
+    tests: Grafik auf Anfrage
+
+  - id: T6
+    category: additional
+    question: Ist die Wasserabrechnung 2025 in Ordnung?
+    expected_answer: Ja, Preise, Verbrauch (74 m³) und Vorauszahlungen passen; Gesamtkosten 459,10 EUR.
+    facts:
+      - { label: Abrechnung korrekt, value: "ja" }
+      - { label: Gesamtkosten 2025, value: 459.10, unit: EUR }
+    sources:
+      - { file: 03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf, page: 1 }
+    expected_tools: [check_bill]
+    tests: keine Fehlalarme
+
+  - id: T7
+    category: negative
+    question: Was kostet bei mir die Kilowattstunde Fernwärme?
+    expected_answer: Dazu liegen keine Unterlagen vor; der Haushalt hat keinen Fernwärmevertrag.
+    is_answerable: false
+    tests: Negativfrage
+
+  - id: T8
+    category: visual
+    question: Stelle die Stromkosten 2024 für Licht- und Heizstrom in einer Tabelle gegenüber.
+    expected_answer: Lichtstrom 1.189,00 EUR, Heizstrom 1.016,90 EUR.
+    facts:
+      - { label: Lichtstrom 2024, value: 1189.00, unit: EUR }
+      - { label: Heizstrom 2024, value: 1016.90, unit: EUR }
+    sources:
+      - { file: 01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, page: 1 }
+      - { file: 01_electricity_suedvolt/32_Heizstrom_Jahresabrechnung_2024_SuedVolt.pdf, page: 1 }
+    expected_tools: [make_overview]
+    expected_artifact: table
+    tests: Übersicht auf Anfrage

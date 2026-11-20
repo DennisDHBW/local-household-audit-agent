@@ -37,7 +37,7 @@ def test_every_pdf_has_exactly_one_metadata_entry(settings: Settings, catalog: D
 
     # Assert
     assert problems == []
-    assert len(catalog.documents) == 30
+    assert len(catalog.documents) == 35
 
 
 def test_noise_documents_are_telecom_and_insurance(catalog: DocumentCatalog):
@@ -70,10 +70,11 @@ def test_ground_truth_has_required_question_mix(ground_truth: GroundTruth):
 
     # Assert
     assert counts == {
-        QuestionCategory.STANDARD: 5,
-        QuestionCategory.EDGE_CASE: 4,
+        QuestionCategory.STANDARD: 6,
+        QuestionCategory.EDGE_CASE: 6,
         QuestionCategory.NEGATIVE: 2,
-        QuestionCategory.ADDITIONAL: 3,
+        QuestionCategory.ADDITIONAL: 4,
+        QuestionCategory.VISUAL: 3,
     }
 
 
@@ -107,13 +108,13 @@ def test_every_bill_is_covered_by_an_audit_check(
     assert checked == expected
 
 
-def test_three_planted_errors_among_ten_checked_bills(ground_truth: GroundTruth):
+def test_five_planted_errors_among_thirteen_checked_bills(ground_truth: GroundTruth):
     # Arrange / Act
     faulty = [c for c in ground_truth.audit_checks if not c.is_correct]
 
     # Assert
-    assert len(ground_truth.audit_checks) == 10
-    assert {c.planted_error_id for c in faulty} == {"E1", "E2", "E3"}
+    assert len(ground_truth.audit_checks) == 13
+    assert {c.planted_error_id for c in faulty} == {"E1", "E2", "E3", "E4", "E5"}
 
 
 def test_negative_questions_have_no_sources(ground_truth: GroundTruth):
@@ -184,10 +185,10 @@ def test_duplicate_file_is_rejected(tmp_path: Path):
 def test_wrong_question_mix_is_rejected(tmp_path: Path, ground_truth: GroundTruth):
     # Arrange: drop one standard question
     data = ground_truth.model_dump(mode="json")
-    data["questions"] = [q for q in data["questions"] if q["id"] != "S1"]
+    data["questions"] = [q for q in data["questions"] if q["category"] != "negative"][:-1]
 
     # Act / Assert
-    with pytest.raises(ValueError, match="expected 5 questions"):
+    with pytest.raises(ValueError, match="expected at least 2 questions"):
         GroundTruth.model_validate(data)
 
 
@@ -196,7 +197,7 @@ def test_every_planted_error_has_one_question(ground_truth: GroundTruth):
     covered = {q.planted_error: q.id for q in ground_truth.questions if q.planted_error}
 
     # Assert
-    assert covered == {"E1": "G1", "E2": "G3", "E3": "G4"}
+    assert covered == {"E1": "G1", "E2": "G3", "E3": "G4", "E4": "H2", "E5": "W1"}
     assert all(
         q.expected_answer.startswith("Nein") for q in ground_truth.questions if q.planted_error
     )

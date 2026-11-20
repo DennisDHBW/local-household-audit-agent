@@ -7,7 +7,7 @@ from typing import Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from audit_agent.corpus import DocType, UtilityType
+from audit_agent.corpus import DocType, TariffKind, UtilityType
 from audit_agent.ingestion import ChunkType
 
 
@@ -27,6 +27,8 @@ class MetadataFilter(_Frozen):
     """
 
     utility_type: UtilityType | None = None
+    tariff_kind: TariffKind | None = None
+    """Lichtstrom (household) or Heizstrom (heating); electricity only (ADR-0018)."""
     doc_type: DocType | None = None
     contract_id: str | None = None
     period_start: date | None = None

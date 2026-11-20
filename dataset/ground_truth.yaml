@@ -175,6 +175,114 @@ questions:
     expected_tools: [search]
     tests: Ablenker (Distractor Rate)
 
+  # --- M8 (ADR-0019): Heizstrom (Nachtspeicher, HT/NT), Wasser 2026, Übersichten und Grafiken ---
+  - id: H1
+    category: standard
+    question: Welche HT- und NT-Arbeitspreise gelten 2025 für den Heizstrom?
+    expected_answer: Ab 01.01.2025 gelten 33,50 ct/kWh im Hochtarif (HT) und 24,10 ct/kWh im Niedertarif (NT), jeweils brutto.
+    facts:
+      - { label: Arbeitspreis HT 2025, value: 33.50, unit: ct/kWh }
+      - { label: Arbeitspreis NT 2025, value: 24.10, unit: ct/kWh }
+    sources:
+      - { file: 01_electricity_suedvolt/33_Heizstrom_Preisanpassung_SuedVolt_2025.pdf, page: 1 }
+    expected_tools: [get_facts]
+    tests: Gültigkeit nach Datum, Heizstrom statt Lichtstrom, zwei Zonen
+
+  - id: H2
+    category: edge_case
+    question: Ist die Heizstromabrechnung 2025 korrekt?
+    expected_answer: Nein. Laut Zählerständen (12.680 auf 16.100 kWh) wurden im NT 3.420 kWh verbraucht, abgerechnet sind 3.920 kWh; das sind 500 kWh und 120,50 EUR zu viel.
+    facts:
+      - { label: NT-Verbrauch laut Zählerständen, value: 3420, unit: kWh, tolerance: 0 }
+      - { label: Abgerechneter NT-Verbrauch, value: 3920, unit: kWh, tolerance: 0 }
+      - { label: Zu viel berechnet, value: 120.50, unit: EUR }
+    sources:
+      - { file: 01_electricity_suedvolt/34_Heizstrom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
+    expected_tools: [check_bill]
+    planted_error: E4
+    tests: Zählerstände gegen abgerechnete Menge, Zweitarifzähler
+
+  - id: H3
+    category: additional
+    question: Stimmt die Heizstromabrechnung 2024?
+    expected_answer: Ja. Preise, Zählerstände (HT 620 kWh, NT 3.180 kWh) und Abschläge passen, der Rechnungsbetrag von 1.016,90 EUR stimmt.
+    facts:
+      - { label: Rechnungsbetrag 2024, value: 1016.90, unit: EUR }
+      - { label: Abrechnung korrekt, value: "ja" }
+    sources:
+      - { file: 01_electricity_suedvolt/31_Heizstrom_Vertragsbestaetigung_SuedVolt_2024.pdf, page: 1 }
+      - { file: 01_electricity_suedvolt/32_Heizstrom_Jahresabrechnung_2024_SuedVolt.pdf, page: 1 }
+    expected_tools: [check_bill]
+    tests: keine Fehlalarme
+
+  - id: W1
+    category: edge_case
+    question: Ist der Wasserbescheid 2026 korrekt?
+    expected_answer: Nein. Seit Q1/2026 beträgt die Vorauszahlung 125,00 EUR je Quartal, gezahlt wurden also 500,00 EUR; angerechnet sind nur 4 × 120,00 = 480,00 EUR. Das Guthaben ist um 20,00 EUR zu niedrig.
+    facts:
+      - { label: Geleistete Vorauszahlungen, value: 500.00, unit: EUR }
+      - { label: Angerechnete Vorauszahlungen, value: 480.00, unit: EUR }
+      - { label: Zu wenig angerechnet, value: 20.00, unit: EUR }
+    sources:
+      - { file: 03_water_stadtwerke_mosbach/35_Wasser_Jahresbescheid_2026_SWM.pdf, page: 1 }
+      - { file: 03_water_stadtwerke_mosbach/14_Wasser_Gebuehrenanpassung_2026_SWM.pdf, page: 1 }
+    expected_tools: [check_bill]
+    planted_error: E5
+    tests: Abschläge gegen Gebührenmitteilung, Fehler ohne Preisabweichung
+
+  - id: V1
+    category: visual
+    question: Erstelle eine Grafik zum Stromverbrauch 2024 und 2025, getrennt nach Licht- und Heizstrom.
+    expected_answer: Lichtstrom 3.250 kWh (2024) und 3.100 kWh (2025); Heizstrom HT 620 und 580 kWh, NT 3.180 und 3.420 kWh laut Zählerständen.
+    facts:
+      - { label: Lichtstrom 2024, value: 3250, unit: kWh, tolerance: 0 }
+      - { label: Lichtstrom 2025, value: 3100, unit: kWh, tolerance: 0 }
+      - { label: Heizstrom NT 2024, value: 3180, unit: kWh, tolerance: 0 }
+      - { label: Heizstrom NT 2025, value: 3420, unit: kWh, tolerance: 0 }
+    sources:
+      - { file: 01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, page: 1 }
+      - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
+      - { file: 01_electricity_suedvolt/32_Heizstrom_Jahresabrechnung_2024_SuedVolt.pdf, page: 1 }
+      - { file: 01_electricity_suedvolt/34_Heizstrom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
+    expected_tools: [make_chart]
+    expected_artifact: chart
+    tests: Grafik auf Anfrage, Werte aus Zählerständen
+
+  - id: V2
+    category: visual
+    question: Gib mir eine Übersicht über alle Kosten 2025.
+    expected_answer: Lichtstrom 1.379,30 EUR, Heizstrom 1.257,82 EUR, Gas 1.555,43 EUR, Wasser 459,10 EUR, Betriebskosten (Anteil) 1.830,00 EUR.
+    facts:
+      - { label: Lichtstrom 2025, value: 1379.30, unit: EUR }
+      - { label: Heizstrom 2025, value: 1257.82, unit: EUR }
+      - { label: Gas 2025, value: 1555.43, unit: EUR }
+      - { label: Wasser 2025, value: 459.10, unit: EUR }
+      - { label: Betriebskosten 2025, value: 1830.00, unit: EUR }
+    sources:
+      - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
+      - { file: 01_electricity_suedvolt/34_Heizstrom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
+      - { file: 02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf, page: 1 }
+      - { file: 03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf, page: 1 }
+      - { file: 04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf, page: 1 }
+    expected_tools: [make_overview]
+    expected_artifact: table
+    tests: Übersicht über alle Sparten
+
+  - id: V3
+    category: visual
+    question: Wie haben sich die Gaspreise seit 2024 entwickelt? Zeig das als Grafik.
+    expected_answer: Arbeitspreis 10,80 ct/kWh (2024–2025), ab 01.01.2026 9,95 ct/kWh; Grundpreis 14,50 EUR/Monat, ab 01.01.2026 16,00 EUR/Monat.
+    facts:
+      - { label: Arbeitspreis bis 2025, value: 10.80, unit: ct/kWh }
+      - { label: Arbeitspreis ab 2026, value: 9.95, unit: ct/kWh }
+      - { label: Grundpreis ab 2026, value: 16.00, unit: EUR/Monat }
+    sources:
+      - { file: 02_gas_neckarenergie/07_Gas_Liefervertrag_NeckarEnergie_2024.pdf, page: 1 }
+      - { file: 02_gas_neckarenergie/09_Gas_Preisanpassung_NeckarEnergie_2026.pdf, page: 1 }
+    expected_tools: [make_chart]
+    expected_artifact: chart
+    tests: Preisverlauf als Grafik
+
 planted_errors:
   - id: E1
     file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf
@@ -210,6 +318,27 @@ planted_errors:
       - { label: Korrektes Guthaben, value: 52.50, unit: EUR }
       - { label: Abgerechnete Nachzahlung, value: 43.28, unit: EUR }
 
+  - id: E4
+    file: 01_electricity_suedvolt/34_Heizstrom_Jahresabrechnung_2025_SuedVolt.pdf
+    related_files: [01_electricity_suedvolt/33_Heizstrom_Preisanpassung_SuedVolt_2025.pdf]
+    description: NT-Verbrauch 3.920 kWh abgerechnet, die Zählerstände (12.680 auf 16.100 kWh) ergeben 3.420 kWh.
+    facts:
+      - { label: NT-Verbrauch laut Zählerständen, value: 3420, unit: kWh, tolerance: 0 }
+      - { label: Abgerechneter NT-Verbrauch, value: 3920, unit: kWh, tolerance: 0 }
+      - { label: Korrekter Rechnungsbetrag, value: 1137.32, unit: EUR }
+      - { label: Abgerechneter Rechnungsbetrag, value: 1257.82, unit: EUR }
+      - { label: Zu viel berechnet, value: 120.50, unit: EUR }
+  - id: E5
+    file: 03_water_stadtwerke_mosbach/35_Wasser_Jahresbescheid_2026_SWM.pdf
+    related_files: [03_water_stadtwerke_mosbach/14_Wasser_Gebuehrenanpassung_2026_SWM.pdf]
+    description: Angerechnet sind 4 × 120,00 EUR Vorauszahlungen, vereinbart und gezahlt wurden seit Q1/2026 4 × 125,00 EUR.
+    facts:
+      - { label: Geleistete Vorauszahlungen, value: 500.00, unit: EUR }
+      - { label: Angerechnete Vorauszahlungen, value: 480.00, unit: EUR }
+      - { label: Korrektes Guthaben, value: 29.60, unit: EUR }
+      - { label: Ausgewiesenes Guthaben, value: 9.60, unit: EUR }
+      - { label: Zu wenig angerechnet, value: 20.00, unit: EUR }
+
 audit_checks:
   - { file: 01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, is_correct: true }
   - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, is_correct: false, planted_error_id: E1 }
@@ -221,3 +350,6 @@ audit_checks:
   - { file: 04_housing_utilities_contractors/18_Nebenkostenabrechnung_2024_Hausverwaltung.pdf, is_correct: true }
   - { file: 04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf, is_correct: true }
   - { file: 04_housing_utilities_contractors/30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf, is_correct: false, planted_error_id: E3 }
+  - { file: 01_electricity_suedvolt/32_Heizstrom_Jahresabrechnung_2024_SuedVolt.pdf, is_correct: true }
+  - { file: 01_electricity_suedvolt/34_Heizstrom_Jahresabrechnung_2025_SuedVolt.pdf, is_correct: false, planted_error_id: E4 }
+  - { file: 03_water_stadtwerke_mosbach/35_Wasser_Jahresbescheid_2026_SWM.pdf, is_correct: false, planted_error_id: E5 }
