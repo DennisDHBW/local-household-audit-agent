@@ -74,6 +74,7 @@
 - **Lösung / Workaround:** Keine; nach ISS-108 keine Nachbesserung an den zurückgehaltenen Fragen. Mögliche Abhilfe für später: `check_bill` immer anbieten oder Prüffragen allgemeiner erkennen; Aufrufe nicht angebotener Werkzeuge erkennen und ausführen; nach einer leeren Antwort ohne bisherige Ergebnisse die Werkzeuge weiter anbieten; Belegnummern ohne Treffer entfernen und unbelegte Zahlen nicht annehmen. Ob Ollama solche Aufrufe verwirft, ließe sich mit einem einzelnen Modellaufruf prüfen (nicht gemacht).
 - **Gelernt:** Ein Rettungspfad, den die Entwicklungsfragen nie auslösen, ist praktisch ungetestet, auch wenn ein Unit-Test ihn abdeckt.
 - **Relevant für Ausarbeitung?** ja → Kapitel 5 (Endlauf, Grenzen der Werkzeugauswahl und der Rückfragen)
+- **Nachtrag 2026-11-21 (M9-0, eigener Fehler in der Probe):** Der erste Probeaufruf (run-029-probe) prüfte nur den ersten P2-Aufruf. Der ist immer `plan` (in `ALWAYS_OFFERED`, Beschreibung „Zuerst aufrufen“); das Modell plante „check_bill Heizstrom 2024“, Chat und Rohausgabe stimmen überein. Leer kamen in run-028 aber die Aufrufe direkt nach der Plan-Beobachtung „Führe jetzt Schritt 1 aus.“ (T6: 30 erzeugte Token, kein Text, kein Werkzeugaufruf). Beim Entwurf der Probe nicht nachgesehen, welcher Aufruf leer war. Korrektur: Die Probe spielt jetzt auch diesen zweiten Aufruf nach (`--only-iss126`), als Chat und als Rohtext.
 
 ### ISS-125 – Nebenwirkungen der Lückenregel v2 in run-027: Mischantwort ohne Beleg, erfundene Belegnummer nach `repeat_limit`
 - **Datum / Meilenstein:** 2026-11-21 / M8

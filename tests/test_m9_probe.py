@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import importlib.util
-import json
 import sys
 from types import ModuleType
 from typing import Any
@@ -180,7 +179,10 @@ def test_render_markdown_lists_models_and_mismatches(probe: ModuleType) -> None:
             "m": {"calls": calls, "summary": probe.summarize_model(calls), "memory_mb": 5000},
             "n": {"missing": True},
         },
-        "iss126": {"chat": {"generated_tokens": 31, "content": ""}, "raw": {"content": "x"}},
+        "iss126": {
+            "offered_tools": ["plan", "search"],
+            "cases": {"after_plan": {"chat": {"generated_tokens": 31}, "raw": {"content": "x"}}},
+        },
     }
 
     # Act
@@ -190,16 +192,26 @@ def test_render_markdown_lists_models_and_mismatches(probe: ModuleType) -> None:
     assert "| m | 9/9 | 0/9 |" in text
     assert "| n | nicht geladen |" in text
     assert "- m F1:" in text and "## ISS-126" in text
+    assert "- after_plan / chat: None Prompt-Token, 31 Token" in text
 
 
-def test_render_qwen25_prompt_puts_tools_into_the_system_block(probe: ModuleType) -> None:
+def test_render_qwen25_prompt_follows_the_ollama_template(probe: ModuleType) -> None:
     # Arrange
     spec = {"type": "function", "function": {"name": "search", "description": "Suche"}}
+    messages = probe.after_plan_messages("Frage?", ["check_bill Heizstrom 2024"])
 
     # Act
-    prompt = probe.render_qwen25_prompt("System", [spec], "Frage?")
+    prompt = probe.render_qwen25_prompt("System", [spec], messages)
 
     # Assert
     assert prompt.startswith("<|im_start|>system\nSystem\n\n# Tools")
-    assert json.dumps({"type": "function", "function": spec["function"]}) in prompt
-    assert prompt.endswith("<|im_start|>user\nFrage?<|im_end|>\n<|im_start|>assistant\n")
+    assert '\n{"type": "function", "function": {"name":"search","description":"Suche"}}' in prompt
+    assert "<|im_start|>user\nFrage?<|im_end|>\n" in prompt
+    assert (
+        '<|im_start|>assistant\n<tool_call>\n{"name": "plan", "arguments": '
+        '{"steps":["check_bill Heizstrom 2024"]}}\n</tool_call><|im_end|>\n'
+    ) in prompt
+    assert prompt.endswith(
+        "<tool_response>\nPlan notiert: 1. check_bill Heizstrom 2024. Führe jetzt Schritt 1 aus."
+        "\n</tool_response><|im_end|>\n<|im_start|>assistant\n"
+    )
