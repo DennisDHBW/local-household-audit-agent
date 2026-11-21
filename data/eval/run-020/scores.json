@@ -8,7 +8,7 @@
       "facts_total": 27,
       "cited_count": 20,
       "invalid_citations": 0,
-      "cited_expected": 9,
+      "cited_expected": 16,
       "expected_count": 18,
       "expected_cited": 9,
       "cited_distractors": 0,
@@ -25,7 +25,12 @@
       "correct_bill_count": 3,
       "seconds_mean": 106.6,
       "seconds_median": 102.2,
-      "prompt_tokens_mean": 1207.0
+      "prompt_tokens_mean": 1207.0,
+      "artifact_ok_count": 0,
+      "artifact_count": 0,
+      "tool_calls_mean": null,
+      "distinct_tools_mean": null,
+      "plan_count": null
     }
   ],
   "ragas": [
@@ -58,7 +63,7 @@
       "missing_facts": [],
       "cited_count": 2,
       "invalid_citations": 0,
-      "cited_expected": 1,
+      "cited_expected": 2,
       "expected_count": 2,
       "expected_cited": 1,
       "cited_distractors": 0,
@@ -75,7 +80,12 @@
       "answer_verdict": null,
       "stop_reason": "answer",
       "seconds": 110.2,
-      "prompt_tokens": 1203
+      "prompt_tokens": 1203,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -105,7 +115,12 @@
       "answer_verdict": null,
       "stop_reason": "answer",
       "seconds": 119.2,
-      "prompt_tokens": 1343
+      "prompt_tokens": 1343,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -133,7 +148,12 @@
       "answer_verdict": null,
       "stop_reason": "answer",
       "seconds": 95.5,
-      "prompt_tokens": 1291
+      "prompt_tokens": 1291,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -164,7 +184,12 @@
       "answer_verdict": null,
       "stop_reason": "answer",
       "seconds": 69.8,
-      "prompt_tokens": 1142
+      "prompt_tokens": 1142,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -175,7 +200,7 @@
       "missing_facts": [],
       "cited_count": 3,
       "invalid_citations": 0,
-      "cited_expected": 1,
+      "cited_expected": 3,
       "expected_count": 2,
       "expected_cited": 1,
       "cited_distractors": 0,
@@ -193,7 +218,12 @@
       "answer_verdict": "ja",
       "stop_reason": "answer",
       "seconds": 121.0,
-      "prompt_tokens": 1018
+      "prompt_tokens": 1018,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -225,7 +255,12 @@
       "answer_verdict": "ja",
       "stop_reason": "answer",
       "seconds": 103.1,
-      "prompt_tokens": 1377
+      "prompt_tokens": 1377,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -256,7 +291,12 @@
       "answer_verdict": "ja",
       "stop_reason": "answer",
       "seconds": 95.1,
-      "prompt_tokens": 1203
+      "prompt_tokens": 1203,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -271,7 +311,7 @@
       ],
       "cited_count": 4,
       "invalid_citations": 0,
-      "cited_expected": 1,
+      "cited_expected": 4,
       "expected_count": 2,
       "expected_cited": 1,
       "cited_distractors": 0,
@@ -289,7 +329,12 @@
       "answer_verdict": "ja",
       "stop_reason": "answer",
       "seconds": 213.7,
-      "prompt_tokens": 1074
+      "prompt_tokens": 1074,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -322,7 +367,12 @@
       "answer_verdict": "ja",
       "stop_reason": "answer",
       "seconds": 101.3,
-      "prompt_tokens": 1203
+      "prompt_tokens": 1203,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -350,7 +400,12 @@
       "answer_verdict": null,
       "stop_reason": "answer",
       "seconds": 51.2,
-      "prompt_tokens": 776
+      "prompt_tokens": 776,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -378,7 +433,12 @@
       "answer_verdict": null,
       "stop_reason": "answer",
       "seconds": 66.4,
-      "prompt_tokens": 1103
+      "prompt_tokens": 1103,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -410,7 +470,12 @@
       "answer_verdict": "ja",
       "stop_reason": "answer",
       "seconds": 124.3,
-      "prompt_tokens": 1588
+      "prompt_tokens": 1588,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -441,7 +506,12 @@
       "answer_verdict": null,
       "stop_reason": "answer",
       "seconds": 101.0,
-      "prompt_tokens": 1453
+      "prompt_tokens": 1453,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     },
     {
       "variant": "p1",
@@ -452,7 +522,7 @@
       "missing_facts": [],
       "cited_count": 3,
       "invalid_citations": 0,
-      "cited_expected": 1,
+      "cited_expected": 2,
       "expected_count": 1,
       "expected_cited": 1,
       "cited_distractors": 0,
@@ -469,7 +539,12 @@
       "answer_verdict": "nein",
       "stop_reason": "answer",
       "seconds": 120.4,
-      "prompt_tokens": 1125
+      "prompt_tokens": 1125,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": null,
+      "distinct_tools": null,
+      "has_plan": null
     }
   ]
 }

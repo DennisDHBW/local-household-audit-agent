@@ -8,7 +8,7 @@ B0-Kontext: 6 Dateien vollständig, teilweise: -, fehlend: 29; ca. 6727 von 6961
 |---|---|---|---|
 | Richtig (gesamt) | 4/21 (19 %) | 6/21 (29 %) | 9/21 (43 %) |
 | Zahlen/Fakten gefunden | 7/49 (14 %) | 16/49 (33 %) | 27/49 (55 %) |
-| Zitate auf erwartete Quelle (Präzision) | 3/8 (38 %) | 14/39 (36 %) | 18/36 (50 %) |
+| Zitate auf erwartete Quelle (Präzision) | 3/8 (38 %) | 25/39 (64 %) | 34/36 (94 %) |
 | Erwartete Quellen zitiert (Recall) | 3/35 (9 %) | 14/35 (40 %) | 18/35 (51 %) |
 | Erfundene Belegnummern | 0 | 0 | 5 |
 | Ablenker in Zitaten | 0/8 (0 %) | 0/39 (0 %) | 0/36 (0 %) |
