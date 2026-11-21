@@ -6,7 +6,7 @@ Modell: `qwen2.5:7b`. Metriken deterministisch (concept.md 11.3, ADR-0011); Urte
 |---|---|
 | Richtig (gesamt) | 6/14 (43 %) |
 | Zahlen/Fakten gefunden | 12/27 (44 %) |
-| Zitate auf erwartete Quelle (Präzision) | 9/20 (45 %) |
+| Zitate auf erwartete Quelle (Präzision) | 16/20 (80 %) |
 | Erwartete Quellen zitiert (Recall) | 9/18 (50 %) |
 | Erfundene Belegnummern | 0 |
 | Ablenker in Zitaten | 0/20 (0 %) |

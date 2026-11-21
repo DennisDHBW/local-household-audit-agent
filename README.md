@@ -93,8 +93,8 @@ uv run python -m audit_agent.facts build    # Faktenspeicher data/processed/fact
 uv run python -m audit_agent.facts audit    # prüft alle Rechnungen mit den Prüfregeln (ohne Ollama), zeigt Abweichungen
 uv run python scripts/dry_run.py              # Trockenlauf des Nachtlaufs ohne Ollama (Temp-Ordner, Orakel statt Modell), findet Abstürze vorab
 ./scripts/m8_prepare.sh                     # M8: Ingestion, Enrichment, Fakten, Index, Quality Gate, Smoke-Test (braucht Ollama)
-./scripts/m8_night.sh                       # M8: Nachtlauf P2 über alle Entwicklungsfragen (run-026, nach ISS-117)
-./scripts/m8_night.sh --holdout             # M8: Endlauf B0/P1/P2 mit den zurückgehaltenen Fragen (run-027), erst ganz am Schluss
+./scripts/m8_night.sh                       # M8: Kontrolllauf P2 über alle Entwicklungsfragen (run-027, nach ISS-121 bis ISS-123)
+./scripts/m8_night.sh --holdout             # M8: Endlauf B0/P1/P2 mit den zurückgehaltenen Fragen (run-028), erst ganz am Schluss
 uv run python scripts/analyze_agentics.py --run-id run-025   # Kennzahlen zur Agentik eines Laufs (ohne Ollama)
 ```
 

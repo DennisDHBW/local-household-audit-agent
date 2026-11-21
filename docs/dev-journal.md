@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-21 – M8 Fix-Paket vor dem Endlauf (ISS-121 bis ISS-123)
+**Ziel der Sitzung:** Die drei offenen Befunde aus run-026 beheben, bevor der Kontrolllauf run-027 und der Endlauf laufen.
+**Was wurde gemacht:**
+- ISS-123: `score_answer` zählt `cited_expected` je zitiertem Beleg; Test mit mehreren Belegen derselben Seite; run-020, 021, 025, 026 mit `evaluation score` offline neu bewertet und mit der Nachrechnung in ISS-123 abgeglichen
+- ISS-121: Kontextschätzung je Frage aus den angebotenen Schemas (`_is_context_full`); Test mit einem Fenster, in das nur die geroutete Teilmenge passt; mit dem alten Code schlägt er fehl
+- ISS-122: `is_pure_gap_answer` (Lückensatz, keine Zahl, keine Belegnummer); in v2 löst nur sie die Lückenrückfrage aus; Text `RETRY_BEFORE_GAP_MESSAGE_V2` ohne Hinweise auf das Korpus; v1 unverändert (Vergleichbarkeit mit M6)
+- Prüfumgebung in der VM-Shell aufgebaut (`/tmp`, weil das Home der VM fast voll ist); `m8_night.sh` auf run-027/run-028 gesetzt
+**Gelieferte Dateien / Funktionen:** `evaluation/metrics.py` (`score_answer`), `agent/loop.py` (`_is_context_full`, Bedingung der Lückenrückfrage), `agent/prompts.py` (`is_pure_gap_answer`, `RETRY_BEFORE_GAP_MESSAGE_V2`), 6 neue Tests, neu bewertete `data/eval/run-02{0,1,5,6}`, `scripts/m8_night.sh`, Doku (Glossar, ADR-0021-Nachtrag, concept, evaluation-log)
+**Entscheidungen:** Nachtrag zu ADR-0021 (Punkt 5); `min_searches_before_gap` und der Faktor 2,4 Zeichen je Token bleiben unverändert (B0, ISS-120)
+**Probleme / Überraschungen:** ISS-124 (Skript hätte run-026 fortgesetzt, eigener Fehler, vor dem Start gefunden). Restrisiko ISS-122: N1 ist eine reine Lückenantwort und wird weiter einmal hinterfragt; S4 bleibt vermutlich falsch.
+**Offen / unklar:** Wirkung der drei Fixes erst mit run-027; RAGAS für M8 ja oder nein
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Sonnet 5.5 / High · **Commit(s):** `fix(evaluation): count source precision per cited source`, `test(evaluation): rescore runs 020, 021, 025, 026 with per-source precision`, `fix(agent): estimate context from the schemas of the offered tools`, `fix(agent): question only pure gap answers with a neutral message`, `docs: close fix package for ISS-121 to ISS-123`
+
 ### 2026-11-21 – M8 Auswertung Nachtlauf run-026
 **Ziel der Sitzung:** run-026 (P2 nach den Fixes aus ADR-0021) auswerten und entscheiden, ob vor dem Endlauf noch etwas behoben wird.
 **Was wurde gemacht:**

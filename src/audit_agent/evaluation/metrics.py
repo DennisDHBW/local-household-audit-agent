@@ -184,7 +184,9 @@ def score_answer(
         ),
         cited_count=len(cited),
         invalid_citations=len(numbers - by_number.keys()),
-        cited_expected=sum(1 for pair in cited_pairs if pair in expected),
+        cited_expected=sum(
+            1 for source in cited if (source.filename, source.page_number) in expected
+        ),
         expected_count=len(expected),
         expected_cited=sum(1 for pair in expected if pair in cited_pairs),
         cited_distractors=sum(1 for source in cited if source.filename in noise),

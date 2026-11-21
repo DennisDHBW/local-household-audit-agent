@@ -112,7 +112,7 @@
 | Lauf | `AgentRun` | Frage, Antwort, Endgrund, alle Schritte und die nummerierten Quellen einer Frage | |
 | Endgrund | `stop_reason` | `answer`, `tool_limit`, `context_limit`, `repeat_limit` oder `empty_answer` | |
 | Werkzeuglimit | `max_tool_calls` | Höchstens 6 Tool-Aufrufe je Frage, gültige und ungültige | |
-| Kontextwächter | `context_reserve_tokens` | Beendet die Suche, wenn Prompt und Beobachtungen den Platz für die Antwort aufbrauchen würden | |
+| Kontextwächter | `context_reserve_tokens`, `_is_context_full` | Beendet die Suche, wenn Prompt, Schemas der angebotenen Werkzeuge und Beobachtungen den Platz für die Antwort aufbrauchen würden (ISS-121) | |
 | Rechner | `calculate` | Rechnet Ausdrücke über den Syntaxbaum (`ast`) mit `Decimal`, ohne `eval` | |
 | Jahresfilter-Regel | `YEAR_FILTER_DOC_TYPES` | Der Jahresfilter gilt nur für Dokumente mit Abrechnungszeitraum (Rechnung, Hinweis, Abschlagsplan) | |
 | Laufprotokoll | `RunLog` | Schreibt jeden Schritt sofort als JSON-Zeile nach `data/eval/<run>/` | |
@@ -131,7 +131,7 @@
 | Generieren / Bewerten | `generate`, `score` | Getrennte Schritte: Antworten erzeugen (Ollama, langsam) und deterministisch bewerten (ohne Ollama) | |
 | Bewertung einer Antwort | `AnswerScore`, `score_answer` | Alle eigenen Metriken einer Antwort gegen die Ground Truth | |
 | Zusammenfassung je Variante | `VariantSummary`, `summarize` | Summen und Quoten einer Variante über alle Fragen (Tabelle Variante × Metrik) | |
-| Quellen-Präzision | `cited_expected / cited_count` | Anteil der zitierten Belege, deren Datei und Seite erwartet sind (der Code zählt bis zur Korrektur im Zähler Seiten statt Belege, ISS-123) | |
+| Quellen-Präzision | `cited_expected / cited_count` | Anteil der zitierten Belege, deren Datei und Seite erwartet sind (Zähler und Nenner zählen Belege; bis run-026 zählte der Zähler Seiten, ISS-123, korrigiert und neu bewertet) | |
 | Quellen-Recall | `expected_cited / expected_count` | Anteil der erwarteten Quellen, die die Antwort zitiert | |
 | Erfundene Belegnummer | `invalid_citations` | Zitierte `[n]`, die das Modell nie gesehen hat | |
 | Ablenkerquote | `cited_distractors`, `shown_distractors` | Anteil von Ablenkungsdokumenten (`is_noise_document`) in den Zitaten bzw. im Kontext | |
@@ -158,7 +158,8 @@
 | Wiederholungssperre | `_CallMemory`, `REPEAT_OBSERVATION`, `REPEAT_FAILED_OBSERVATION`, `ToolCallStep.is_repeat` | Ein Aufruf mit gleichem Werkzeug und gleichen (bereinigten) Argumenten wird in derselben Frage nicht erneut ausgeführt, ebenso ein schon fehlgeschlagener; das Modell bekommt einen Hinweis, der Aufruf zählt zum Limit (ADR-0015) | |
 | Prüffrage | `is_audit_question` | Frage, die eine Rechnung gegen Vertrag, Preisschreiben oder Zählerstände prüfen lässt; erkannt am Wortlaut (korrekt, stimmt, passt, …) | |
 | Rechennachfrage | `CALCULATE_BEFORE_ANSWER_MESSAGE`, `NudgeStep.reason` | Einmalige Rückfrage des Loops, wenn eine Prüffrage ohne `calculate` beantwortet werden soll (ISS-058, ADR-0015) | |
-| Lückenrückfrage | `RETRY_BEFORE_GAP_MESSAGE`, `NudgeStep.reason="gap"`, `AgentSettings.min_searches_before_gap` | Einmalige Rückfrage des Loops, wenn das Modell nach weniger als 2 Werkzeugaufrufen „keine Angaben“ antwortet: noch einmal anders suchen und mit `list_documents` prüfen (ADR-0010, ISS-036) | |
+| Reine Lückenantwort (v2) | `is_pure_gap_answer` | Lückenantwort ohne Zahl und ohne Belegnummer; nur sie löst in v2 die Lückenrückfrage aus, Mischantworten nicht (ISS-122) | |
+| Lückenrückfrage | `RETRY_BEFORE_GAP_MESSAGE`, `RETRY_BEFORE_GAP_MESSAGE_V2`, `NudgeStep.reason="gap"`, `AgentSettings.min_searches_before_gap` | Einmalige Rückfrage des Loops, wenn das Modell nach weniger als 2 Werkzeugaufrufen „keine Angaben“ antwortet: noch einmal anders suchen und mit `list_documents` prüfen (ADR-0010, ISS-036) | |
 | Prüfablauf | `agent/audit_flow.py`, `run_audit_flow`, `AuditFlowStep` | Fester Ablauf für Prüffragen: Modell plant Prüfgrößen und Suchanfragen, Code sucht, Modell liest Soll- und Istzahl, Code prüft die Herkunft und rechnet die Differenz (ADR-0016) | |
 | Prüfgröße | `PlannedCheck`, `AuditCheckResult.quantity` | Eine Größe, die der Prüfablauf vergleicht (Arbeitspreis, Wohnfläche, z-Zahl, …) mit Sollwert (Vertrag, Preisschreiben) und Istwert (Rechnung) | |
 | Strukturierte Ausgabe | `format` (JSON-Schema) im Ollama-Chat-Aufruf | Das Modell darf nur JSON nach einem Schema erzeugen; der Prüfablauf nutzt sie für Plan und Lesen | |

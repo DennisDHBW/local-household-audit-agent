@@ -2,7 +2,7 @@
 
 > Diese Datei liest Claude zu Beginn jeder Sitzung. Kurz halten (max. 1 Seite). Alte Einträge überschreiben; die Historie steht in `dev-journal.md` und in Git.
 
-**Letzte Aktualisierung:** 2026-11-21 (Nachtlauf run-026 ausgewertet; ISS-121 bis ISS-123, Entscheidung: Fix-Paket vor dem Endlauf)
+**Letzte Aktualisierung:** 2026-11-21 (Fix-Paket ISS-121 bis ISS-123 umgesetzt und getestet; Kontrolllauf run-027 offen)
 **Phase:** Phase 1 (Umsetzung M8); die Ausarbeitung wird erst nach dem Endlauf neu überarbeitet
 **Aktueller Meilenstein:** M8 Agent v2
 **Version:** v1.0.0 (M8 wird v2.0.0 nach dem Endlauf)
@@ -12,23 +12,25 @@
 | # | Meilenstein | Status | Tag |
 |---|---|---|---|
 | M0–M5 | Setup bis Agent mit Streamlit | fertig (Reverse-Engineering-Fragen offen) | v0.1.0, v0.2.0 |
-| M6 | Testmodul & Evaluation | fertig (P1 8, P2 6 von 14, eingebaute Fehler 0 von 3); Zitat-Präzision falsch gemessen (ISS-123) | v1.0.0 |
+| M6 | Testmodul & Evaluation | fertig (P1 8, P2 6 von 14, eingebaute Fehler 0 von 3); Zitat-Präzision falsch gemessen, jetzt je Beleg korrigiert (ISS-123) | v1.0.0 |
 | M7 | Ausarbeitung | Zwischenstand (`Claude outputs/Ausarbeitung-Befunde.pdf`, ca. 12 Zeilen zu lang, ISS-107); wird nach M8 neu überarbeitet | – |
-| M8 | Agent v2 | run-026: P2 15/21 (run-025: 9/21), 42/49 Fakten, 5/5 eingebaute Fehler, 0 Fehlalarme; zu günstig (ISS-108); Fix-Paket, Kontrolllauf und Endlauf offen | – |
+| M8 | Agent v2 | run-026: P2 15/21, 5/5 eingebaute Fehler, 0 Fehlalarme; zu günstig (ISS-108); Fix-Paket fertig (ISS-121 bis ISS-123), Kontrolllauf run-027 und Endlauf run-028 offen | – |
 
 ## Zuletzt erledigt
-- run-026 von Hand geprüft (alle 21 Antworten und Schrittprotokolle): 6 Fragen besser, keine schlechter; Hand 15/21 (Z1 richtig, Z3 Mischantwort); 47/49 Sollfakten im Kontext
-- Befunde: Lücken-Rückfrage 5-mal, 0-mal geholfen, 2-mal verschlechtert (ISS-122); `context_limit` zu früh, weil alle Werkzeugschemas gezählt werden (ISS-121); Zitat-Präzision mischt Seiten und Belege, seit M6 zu niedrig (ISS-123)
-- Entscheidungen des Nutzers: Fix-Paket vor dem Endlauf; B0-Budget im Endlauf unverändert (ISS-120)
+- ISS-123: Quellen-Präzision je Beleg (`score_answer`, Test); run-020, 021, 025, 026 offline neu bewertet (z. B. run-026 P2 55/72 = 76 %, run-025 P2 34/36 = 94 %)
+- ISS-121: `_is_context_full` schätzt die Schemas der angebotenen Werkzeuge, nicht aller 8 (Test schlägt auf altem Code fehl)
+- ISS-122: v2-Lückenrückfrage nur bei reiner Lückenantwort (`is_pure_gap_answer`), neuer Text ohne Korpus-Hinweise; Nachtrag in ADR-0021
+- `m8_night.sh`: Standardlauf run-027, `--holdout` run-028 (ISS-124; vorher hätte es run-026 fortgesetzt)
+- Quality Gates: `ruff check`, `ruff format --check` grün, `pytest -m "not slow"` 443 bestanden, 1 übersprungen
 
 ## Nächstes Arbeitspaket
-Fix-Paket vor dem Endlauf: (1) Zitat-Präzision je Beleg zählen, Test dazu, alle Läufe offline neu bewerten (ISS-123); (2) Kontextschätzung aus den angebotenen Werkzeugschemas (ISS-121); (3) Lücken-Rückfrage nur bei reiner Lückenantwort und ohne Korpus-Hinweise (ISS-122). Danach startet der Nutzer den Kontrolllauf `./scripts/m8_night.sh` (run-027, nur P2, ca. 75 min).
+Auswertung des Kontrolllaufs run-027 (P2, 21 Entwicklungsfragen, ca. 75 min; Nutzer startet `./scripts/m8_night.sh` im Projektordner). Nur prüfen, ob etwas schlechter wurde als in run-026 (Handprüfung der Fragen mit anderem Ergebnis, Lückenrückfragen, `context_limit`, Zitat-Präzision je Beleg); keine weitere Nachbesserung an den Entwicklungsfragen.
 
-**Empfohlenes Modell:** Sonnet 5.5, Effort High (ReAct-Schleife und Testmodul, `ai-workflow.md` Abschnitt 4)
+**Empfohlenes Modell:** Opus 5.5, Effort High (Auswertung der Evaluation, `ai-workflow.md` Abschnitt 4)
 
 ## Nächste Schritte
-1. Fix-Paket, Kontrolllauf run-027 auswerten (nur prüfen, ob etwas schlechter wurde; keine weitere Nachbesserung an den Entwicklungsfragen)
-2. Endlauf `./scripts/m8_night.sh --holdout` (run-028: B0, P1, P2 auf T1–T8), danach keine Nachbesserung mehr an diesen Fragen (ISS-108)
+1. Kontrolllauf run-027 auswerten (siehe oben)
+2. Endlauf `./scripts/m8_night.sh --holdout` (run-028: B0, P1, P2 auf T1–T8; das Skript nimmt die Nummer selbst), danach keine Nachbesserung mehr an diesen Fragen (ISS-108)
 3. Tag v2.0.0, Reverse-Engineering-Runde M8, Grafiken, dann Ausarbeitung neu (ISS-107, Präzisionswerte aus ISS-123 nachziehen)
 
 ## Offene Entscheidungen / Fragen
@@ -45,9 +47,9 @@ Fix-Paket vor dem Endlauf: (1) Zitat-Präzision je Beleg zählen, Test dazu, all
 ## Hinweise für die nächste Sitzung
 - Git: Branch pro Arbeitspaket, `merge --no-ff`, keine Claude-Hinweise; Löschrecht zu Beginn anfragen
 - Nicht nach dem O-Ton fragen (ISS-087); im Journal „(nicht geliefert, ISS-087)“
-- Tests: Repo als Archiv nach `.cache/` packen, mit `device_stage_files` in die Cloud-Umgebung holen, dort `uv sync --group dev` und `uv run pytest -m "not slow"`; Änderungen als Archiv mit Prüfsummen zurückspielen (ISS-078)
-- Sollwerte nach dem Präzisions-Fix: Spalte „je Beleg“ der Tabelle in ISS-123 (zum Abgleich nach dem Neubewerten)
-- Lücken-Rückfrage: `is_gap_answer`, `drop_trailing_gap`, `RETRY_BEFORE_GAP_MESSAGE_V2` (`prompts.py`), Bedingung in `AgentLoop.run` (`loop.py`); Kontext: `_spec_tokens`, `_is_context_full`
+- Tests laufen direkt in der VM-Shell: `export UV_PROJECT_ENVIRONMENT=/tmp/venv-test UV_CACHE_DIR=/tmp/uv-cache`, dann `uv sync --group dev --frozen` und `uv run --frozen pytest -m "not slow"` (Home der VM hat nur ca. 100 MB frei, deshalb `/tmp`; das `.venv` im Repo nicht anfassen). Das Archivverfahren (ISS-078) nur als Rückfall
+- Präzisions-Fix abgeglichen: Neubewertung stimmt mit der Spalte „je Beleg“ in ISS-123 überein; Werte in `evaluation-log.md` (RUN-026, Neubewertung)
+- Lücken-Rückfrage: `is_pure_gap_answer`, `drop_trailing_gap`, `RETRY_BEFORE_GAP_MESSAGE_V2` (`prompts.py`), Bedingung in `AgentLoop.run` (`loop.py`); Kontext: `_is_context_full` (rechnet mit `_active_specs`)
 - Dateizeiten der VM stehen in UTC, das Ollama-Journal in MEZ (ISS-120)
 - Zurückgehaltene Fragen (`dataset/holdout_questions.yaml`) nicht lesen, um daran zu entwickeln
 - Ausarbeitung: Regeln aus `writing-guide.md`, Bauanleitung LaTeX wie bisher (ISS-089)
