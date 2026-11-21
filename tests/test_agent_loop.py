@@ -186,6 +186,27 @@ def test_context_guard_stops_searching_when_the_window_is_nearly_full():
     assert "tools" not in chat.requests[1]
 
 
+def test_context_guard_counts_only_the_schemas_of_the_offered_tools():
+    # Arrange: a window that fits the routed tool subset but not the schemas of all tools (ISS-121)
+    options = {"agent": AgentSettings(tool_set="v2", route_tools=True)}
+    probe, probe_chat = _loop([answer_reply("Antwort.")], **options)
+    probe.run("Welche Kündigungsfrist gilt?")
+    offered = estimate_tokens(json.dumps(probe_chat.requests[0]["tools"], ensure_ascii=False))
+    every = estimate_tokens(json.dumps(probe._specs, ensure_ascii=False))
+    agent = probe._settings.agent
+    free = offered + 900  # room for the system prompt, the question and one observation
+    num_ctx = free + agent.num_predict + agent.context_reserve_tokens
+    assert every > free
+
+    loop, chat = _loop([tool_reply(CALCULATE), answer_reply("Sechs.")], num_ctx=num_ctx, **options)
+
+    # Act
+    run = loop.run("Welche Kündigungsfrist gilt?")
+
+    # Assert
+    assert run.stop_reason == "answer" and "tools" in chat.requests[1]
+
+
 def test_context_guard_leaves_the_default_window_alone_after_one_small_call():
     # Arrange
     loop, chat = _loop([tool_reply(CALCULATE), answer_reply("Sechs.")])

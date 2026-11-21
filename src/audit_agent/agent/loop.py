@@ -187,7 +187,6 @@ class AgentLoop:
         self._tools = dict(tools)
         self._specs = [tool.spec() for tool in tools.values()]
         self._active_specs = self._specs
-        self._spec_tokens = estimate_tokens(json.dumps(self._specs, ensure_ascii=False))
 
     def run(
         self,
@@ -536,9 +535,12 @@ class AgentLoop:
 
         The size is estimated from the text itself: Ollama's ``prompt_eval_count`` leaves out
         tokens that came from its prompt cache, so it cannot tell how full the window is.
+        The schemas count only for the tools offered to this question (``_active_specs``,
+        ADR-0020), not for all tools (ISS-121).
         """
         agent = self._settings.agent
-        used = self._spec_tokens + sum(estimate_tokens(_message_text(m)) for m in messages)
+        spec_tokens = estimate_tokens(json.dumps(self._active_specs, ensure_ascii=False))
+        used = spec_tokens + sum(estimate_tokens(_message_text(m)) for m in messages)
         free = self._settings.num_ctx - agent.num_predict - agent.context_reserve_tokens
         return used > free
 
