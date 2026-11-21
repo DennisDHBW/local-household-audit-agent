@@ -1,6 +1,6 @@
 # ADR-0022: Agent v3 – Verstehen, Ausführen, Prüfen mit festen JSON-Schemas
 
-- **Status:** vorgeschlagen (wartet auf Freigabe; Plan in `docs/m9-plan.md`)
+- **Status:** angenommen (Freigabe durch den Nutzer am 2026-11-21; Plan in `docs/m9-plan.md`)
 - **Datum:** 2026-11-21
 - **Meilenstein:** M9
 

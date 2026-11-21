@@ -95,6 +95,7 @@ uv run python scripts/dry_run.py              # Trockenlauf des Nachtlaufs ohne 
 ./scripts/m8_prepare.sh                     # M8: Ingestion, Enrichment, Fakten, Index, Quality Gate, Smoke-Test (braucht Ollama)
 ./scripts/m8_night.sh                       # M8: Kontrolllauf P2 über alle Entwicklungsfragen (run-027, nach ISS-121 bis ISS-123)
 ./scripts/m8_night.sh --holdout             # M8: Endlauf B0/P1/P2 mit den zurückgehaltenen Fragen (run-028), erst ganz am Schluss
+uv run python scripts/m9_probe.py --run-id run-029-probe   # M9-0: Schema-Treue, Tempo und Cache je Kandidatenmodell, ISS-126 (ca. 30–45 min)
 uv run python scripts/analyze_agentics.py --run-id run-025   # Kennzahlen zur Agentik eines Laufs (ohne Ollama)
 ```
 

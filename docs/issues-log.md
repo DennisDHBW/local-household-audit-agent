@@ -34,15 +34,16 @@
 - **Gelernt:** Eine Quelle erst nach dem Ergebnisteil zitieren, nicht nach dem Abstract.
 - **Relevant für Ausarbeitung?** nein (nur Arbeitsweise)
 
-### ISS-128 – Präfix-Cache greift zwischen den P2-Fragen nicht: erster Aufruf jeder Frage 79–97 s
+### ISS-128 – Präfix-Cache greift zwischen den P2-Fragen nicht: erster Aufruf jeder Frage 79–97 s (Ursache war schon bekannt, eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-21 / M8 (gefunden bei der Planung von M9)
 - **Kategorie:** llm
-- **Status:** offen
+- **Status:** geklärt, Lösung in M9c
 - **Symptom:** In run-028 braucht der erste Modellaufruf jeder P2-Frage 79–97 s Prefill für ca. 1.670 Token (T1–T8, auch T2 → T3 mit gleichem Werkzeugsatz). Spätere Aufrufe derselben Frage brauchen 4–17 s, weil der Anfang wiederverwendet wird. Bei B0 klappt die Wiederverwendung zwischen den Fragen (RUN-028: erste Frage 477 s, danach Median 15 s). Der erste Aufruf macht damit rund 40 % der 195 s je P2-Frage aus.
 - **Ursache:** Nicht geprüft. Möglich: Systemprompt oder Werkzeugschemas unterscheiden sich früh im Prompt; ein Zwischenaufruf mit anderem Präfix (Antwortaufruf ohne Werkzeuge) überschreibt den Cache; Verhalten der Ollama-Engine bei Anfragen mit Werkzeugen.
 - **Lösung / Workaround:** In M9-0 mit einer Cache-Probe messen (zwei Fragen mit gleichem Präfix, mit und ohne Werkzeuge); in P3 den festen Teil des Prompts vorne und gleich halten.
 - **Gelernt:** Bei 18 Token/s Prefill entscheidet die Reihenfolge im Prompt über die Laufzeit mehr als die Zahl der Aufrufe.
 - **Relevant für Ausarbeitung?** ja → Kapitel 3 (Laufzeit, Modellbetrieb)
+- **Nachtrag 2026-11-21 (M9-0, eigener Fehler):** Die Ursache stand schon in ISS-057: `generate` entlädt nach jeder P1/P2-Frage beide Modelle (`unloads_after_each_question`, Schutz vor dem OOM-Kill aus ISS-043), jede P2-Frage beginnt also mit kaltem Modell und leerem Cache. Das Ollama-Journal von run-028 zeigt es ebenfalls: Der llama-server beginnt zu Beginn jeder P2-Frage wieder bei `task 0`, wird also neu gestartet. Bei der Planung von M9 wurde das ältere Issue nicht gelesen und die Ursache als ungeklärt eingetragen. Innerhalb einer Frage zeigen die Schrittprotokolle zusätzlich: Nach einem Aufruf ohne Werkzeuge muss der nächste Aufruf mit Werkzeugen den Werkzeugteil des Prompts neu berechnen (T3: 65 s statt 4–13 s), weil das Qwen-Template die Werkzeuge in den Systemblock schreibt. `prompt_eval_count` nennt auch bei Cache-Treffern die volle Prompt-Länge; ein Treffer zeigt sich nur in der Prefill-Zeit. Folge für M9: Die Probe misst, ob ein geladenes Modell den Präfix zwischen Fragen und zwischen den Stufen (Rahmen → Antwort → Rahmen) behält und wie viel RAM es belegt; ob die Auswertung für P3 auf das Entladen nach jeder Frage verzichten kann, entscheidet M9c mit Blick auf ISS-043.
 
 ### ISS-127 – `make_chart` mit erfundenem Zeitraum: die Argument-Reparatur kennt nur `year`
 - **Datum / Meilenstein:** 2026-11-21 / M8
