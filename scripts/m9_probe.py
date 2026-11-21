@@ -613,14 +613,21 @@ def render_markdown(result: Mapping[str, Any]) -> str:
         lines += ["", "## Abweichungen vom Gold-Rahmen", "", *mismatches]
     iss126 = result.get("iss126")
     if iss126:
-        lines += ["", "## ISS-126", ""]
-        for key in ("chat", "raw"):
-            call = iss126.get(key, {})
-            lines.append(
-                f"- {key}: {call.get('generated_tokens')} Token, done_reason "
-                f"{call.get('done_reason')}, Werkzeugaufrufe {call.get('tool_calls')}, "
-                f"Text {call.get('content', '')[:300]!r}, Fehler {call.get('error')}"
-            )
+        lines += [
+            "",
+            "## ISS-126",
+            "",
+            f"Angeboten: {', '.join(iss126.get('offered_tools', []))}",
+            "",
+        ]
+        for name, case in iss126.get("cases", {}).items():
+            for kind, call in case.items():
+                lines.append(
+                    f"- {name} / {kind}: {call.get('prompt_tokens')} Prompt-Token, "
+                    f"{call.get('generated_tokens')} Token, done_reason {call.get('done_reason')}, "
+                    f"Werkzeugaufrufe {call.get('tool_calls')}, "
+                    f"Text {call.get('content', '')[:300]!r}, Fehler {call.get('error')}"
+                )
     return "\n".join(lines) + "\n"
 
 
@@ -642,20 +649,41 @@ For each function call, return a json object with function name and arguments wi
 </tool_call>"""
 
 
-def render_qwen25_prompt(system: str, specs: Sequence[Mapping[str, Any]], question: str) -> str:
+def _compact(value: Any, sort_keys: bool = False) -> str:
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=sort_keys)
+
+
+def render_qwen25_prompt(
+    system: str, specs: Sequence[Mapping[str, Any]], messages: Sequence[Mapping[str, Any]]
+) -> str:
     """The chat prompt as Qwen2.5's Ollama template renders it (reconstructed, ISS-126).
 
-    The real template is saved next to the result; a fast prefill of the raw call shows
-    that the rendering matched the preceding chat call.
+    Go writes the tool schemas as compact JSON with sorted property names; this rendering
+    keeps Python's key order, so the token count differs slightly. The real template is
+    saved next to the result.
     """
     tools = "".join(
-        "\n" + json.dumps({"type": "function", "function": spec["function"]}, ensure_ascii=False)
-        for spec in specs
+        f'\n{{"type": "function", "function": {_compact(spec["function"])}}}' for spec in specs
     )
-    return (
+    parts = [
         f"<|im_start|>system\n{system}{QWEN25_TOOLS_INTRO}{tools}{QWEN25_TOOLS_OUTRO}<|im_end|>\n"
-        f"<|im_start|>user\n{question}<|im_end|>\n<|im_start|>assistant\n"
-    )
+    ]
+    for message in messages:
+        if message["role"] == "user":
+            parts.append(f"<|im_start|>user\n{message['content']}<|im_end|>\n")
+        elif message["role"] == "assistant":
+            calls = "".join(
+                f'{{"name": "{call["function"]["name"]}", "arguments": '
+                f"{_compact(call['function']['arguments'], sort_keys=True)}}}\n"
+                for call in message.get("tool_calls", [])
+            )
+            parts.append(f"<|im_start|>assistant\n<tool_call>\n{calls}</tool_call><|im_end|>\n")
+        elif message["role"] == "tool":
+            parts.append(
+                f"<|im_start|>user\n<tool_response>\n{message['content']}\n</tool_response><|im_end|>\n"
+            )
+    parts.append("<|im_start|>assistant\n")
+    return "".join(parts)
 
 
 # --- Calls against Ollama -------------------------------------------------------------
@@ -782,8 +810,37 @@ ISS126_QUESTION = "Wurde die Heizstromrechnung 2024 richtig berechnet?"
 """Same bill as the development question H3; not a held-out question."""
 
 
+FALLBACK_PLAN = ["check_bill Heizstrom 2024", "get_facts verbrauch Heizstrom 2024"]
+
+
+def plan_observation(steps: Sequence[str]) -> str:
+    """The text of P2's plan tool (``FactTools.plan``), so the replay matches run-028."""
+    numbered = "; ".join(f"{index}. {step}" for index, step in enumerate(steps, start=1))
+    return f"Plan notiert: {numbered}. Führe jetzt Schritt 1 aus."
+
+
+def after_plan_messages(question: str, steps: Sequence[str]) -> list[dict[str, Any]]:
+    """P2's second call: the plan was called and noted, now step 1 (``check_bill``) is due.
+
+    In run-028 (T3, T5, T6) exactly this call came back empty (ISS-126).
+    """
+    return [
+        {"role": "user", "content": question},
+        {
+            "role": "assistant",
+            "content": "",
+            "tool_calls": [{"function": {"name": "plan", "arguments": {"steps": list(steps)}}}],
+        },
+        {"role": "tool", "content": plan_observation(steps)},
+    ]
+
+
 def probe_iss126(client: Client, settings: Settings, options: Mapping[str, Any]) -> dict[str, Any]:
-    """P2's first call with the default tool set, then the same prompt raw (ISS-126)."""
+    """P2's first and second call with the default tool set, each also sent raw (ISS-126).
+
+    The raw calls show the text the model writes before Ollama parses tool calls out of it.
+    Order: both chat calls, then both raw calls, so each second call reuses the cache.
+    """
     from audit_agent.agent.prompts import system_prompt_v2
     from audit_agent.agent.scope import route_tools
     from audit_agent.agent.tools import ToolBox
@@ -796,28 +853,42 @@ def probe_iss126(client: Client, settings: Settings, options: Mapping[str, Any])
     offered = route_tools(ISS126_QUESTION, ISS126_QUESTION)
     specs = [tool.spec() for name, tool in tools.items() if name in offered]
     system = system_prompt_v2(settings.agent.max_tool_calls)
-    agent_options = {**options, "num_predict": settings.agent.num_predict}
-    chat = _timed(
-        client.chat,
-        model=ISS126_MODEL,
-        messages=[
-            {"role": "system", "content": system},
-            {"role": "user", "content": ISS126_QUESTION},
-        ],
-        tools=specs,
-        options=agent_options,
-        keep_alive=settings.agent.keep_alive,
+    common = {
+        "model": ISS126_MODEL,
+        "options": {**options, "num_predict": settings.agent.num_predict},
+        "keep_alive": settings.agent.keep_alive,
+    }
+    system_message = {"role": "system", "content": system}
+    first = [{"role": "user", "content": ISS126_QUESTION}]
+    cases: dict[str, dict[str, Any]] = {"first": {}, "after_plan": {}}
+    cases["first"]["chat"] = _timed(
+        client.chat, messages=[system_message, *first], tools=specs, **common
     )
-    _log(f"  ISS-126 chat: {chat.get('generated_tokens')} Token, {chat.get('tool_calls')}")
-    raw = _timed(
-        client.generate,
-        model=ISS126_MODEL,
-        prompt=render_qwen25_prompt(system, specs, ISS126_QUESTION),
-        raw=True,
-        options=agent_options,
-        keep_alive=settings.agent.keep_alive,
+    planned = [
+        call for call in cases["first"]["chat"].get("tool_calls", []) if call["name"] == "plan"
+    ]
+    steps = (
+        [str(step) for step in planned[0]["arguments"].get("steps", [])]
+        if planned
+        else FALLBACK_PLAN
     )
-    _log(f"  ISS-126 raw: {raw.get('content', '')[:200]!r}")
+    second = after_plan_messages(ISS126_QUESTION, steps)
+    cases["after_plan"]["chat"] = _timed(
+        client.chat, messages=[system_message, *second], tools=specs, **common
+    )
+    for name, messages in (("first", first), ("after_plan", second)):
+        cases[name]["raw"] = _timed(
+            client.generate,
+            prompt=render_qwen25_prompt(system, specs, messages),
+            raw=True,
+            **common,
+        )
+    for name, case in cases.items():
+        for kind, call in case.items():
+            _log(
+                f"  ISS-126 {name} {kind}: {call.get('generated_tokens')} Token, "
+                f"{call.get('tool_calls')}, {call.get('content', '')[:160]!r}"
+            )
     try:
         template = client.show(ISS126_MODEL).template
     except CALL_ERRORS as error:
@@ -825,8 +896,8 @@ def probe_iss126(client: Client, settings: Settings, options: Mapping[str, Any])
     return {
         "question": ISS126_QUESTION,
         "offered_tools": sorted(offered),
-        "chat": chat,
-        "raw": raw,
+        "plan_steps": steps,
+        "cases": cases,
         "template": template,
     }
 
@@ -868,11 +939,33 @@ def _write(out_dir: Path, result: Mapping[str, Any]) -> None:
     (out_dir / "m9-probe.md").write_text(render_markdown(result), encoding="utf-8")
 
 
+def _rerun_iss126(
+    client: Client, settings: Settings, options: Mapping[str, Any], out_dir: Path
+) -> int:
+    """Replace the ISS-126 part of an existing result (the model calls stay as they were)."""
+    path = out_dir / "m9-probe.json"
+    if not path.exists():
+        _log(f"{path} fehlt: erst den ganzen Lauf mit dieser --run-id starten")
+        return 1
+    result = json.loads(path.read_text(encoding="utf-8"))
+    result["iss126"] = probe_iss126(client, settings, options)
+    result["iss126"]["started"] = time.strftime("%Y-%m-%d %H:%M")
+    _unload(client, [ISS126_MODEL])
+    _write(out_dir, result)
+    _log(f"probe: {out_dir / 'm9-probe.md'}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--models", nargs="+", default=list(CANDIDATES))
     parser.add_argument("--skip-iss126", action="store_true")
+    parser.add_argument(
+        "--only-iss126",
+        action="store_true",
+        help="only the ISS-126 calls; updates the existing result of --run-id",
+    )
     args = parser.parse_args()
     settings = Settings.from_env()
     client = Client(host=settings.ollama_host, timeout=settings.ollama_timeout_s)
@@ -886,6 +979,8 @@ def main() -> int:
         _log(f"Ollama nicht erreichbar ({settings.ollama_host}): {error}")
         return 1
     _unload(client, [model["model"] for model in _loaded(client)])
+    if args.only_iss126:
+        return _rerun_iss126(client, settings, options, out_dir)
     result: dict[str, Any] = {
         "run_id": args.run_id,
         "started": time.strftime("%Y-%m-%d %H:%M"),
