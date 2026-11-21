@@ -1,0 +1,36 @@
+# Zurückgehaltener Fragesatz H2 für den Endlauf von M9 (m9-plan.md, Abschnitt 6; ADR-0022).
+# Geschrieben von Claude am 2026-11-21, vor jeder Zeile Code von P3 (Entscheidung des Nutzers,
+# ISS-130). Versiegelt: SHA-256 in dataset/holdout_h2.sha256, Prüfung mit
+#   sha256sum -c dataset/holdout_h2.sha256
+# Regeln: Die Datei wird bis zum Code-Freeze (M9f) nicht geöffnet, nicht ausgegeben und nicht
+# zum Entwickeln benutzt. Erwartete Antworten, Fakten und Quellen ergänzt Claude erst nach dem
+# Code-Freeze in einer eigenen Datei; diese Datei bleibt unverändert.
+# kind: value · check · check_error (eingebauter Fehler) · overview · clause · negative ·
+#       follow_up · multi
+# follows: Folgefrage; im Lauf gehen die Vorfrage und die eigene Antwort der Variante darauf
+#          als Verlauf mit (Umsetzung in M9c).
+questions:
+  - { id: U1, kind: value, category: standard, question: "Wie viel Miete zahle ich insgesamt im Monat?" }
+  - { id: U2, kind: value, category: standard, question: "Was hat die Heizungswartung 2025 gekostet?" }
+  - { id: U3, kind: value, category: standard, question: "wie hoch war der gaszählerstand beim einzug?" }
+  - { id: U4, kind: value, category: additional, question: "Welchen Abschlag muss ich 2026 monatlich fürs Gas zahlen?" }
+  - { id: U5, kind: value, category: standard, question: "Wie viel Strom hat der Haushalt 2025 verbraucht? Nur Lichtstrom, nicht die Heizung." }
+  - { id: U6, kind: value, category: additional, question: "Was kostet der Kubikmeter Schmutzwasser seit der Gebührenanpassung?" }
+  - { id: U7, kind: check_error, category: edge_case, question: "Hat mir SüdVolt beim Haushaltsstrom 2025 zu viel berechnet?" }
+  - { id: U8, kind: check_error, category: edge_case, question: "Sind bei der Wasserabrechnung 2026 alle meine Vorauszahlungen berücksichtigt worden?" }
+  - { id: U9, kind: check, category: additional, question: "Ist bei der Gasrechnung für 2024 alles richtig?" }
+  - { id: U10, kind: check, category: additional, question: "Passt der Wasserbescheid 2024 zu den Preisen aus der Anmeldebestätigung?" }
+  - { id: U11, kind: check, category: additional, question: "Kann ich die Betriebskostenabrechnung 2024 so akzeptieren?" }
+  - { id: U12, kind: overview, category: visual, question: "Mach mir eine Tabelle mit den monatlichen Abschlägen für Strom, Heizstrom und Gas im Jahr 2025." }
+  - { id: U13, kind: overview, category: visual, question: "Zeig mir grafisch, wie sich die Wasserpreise entwickelt haben." }
+  - { id: U14, kind: overview, category: visual, question: "Gib mir eine Übersicht über die Betriebskosten 2025 nach Kostenart." }
+  - { id: U15, kind: clause, category: standard, question: "Bis wann muss ich die Hausratversicherung kündigen, damit sie nicht weiterläuft?" }
+  - { id: U16, kind: clause, category: standard, question: "Was passiert mit meinem Mobilfunkvertrag nach der Mindestlaufzeit?" }
+  - { id: U17, kind: clause, category: additional, question: "Wie hoch ist die Selbstbeteiligung bei der Vollkasko?" }
+  - { id: U18, kind: negative, category: negative, question: "Was zahle ich für den Tiefgaragenstellplatz?" }
+  - { id: U19, kind: negative, category: negative, question: "Wie hoch ist die Heizkostenabrechnung der Hausverwaltung für 2025?" }
+  - { id: U20, kind: negative, category: negative, question: "Welche Kosten hatte ich 2025 für den Kabelanschluss fürs Fernsehen?" }
+  - { id: U21, kind: value, category: additional, question: "Welcher Grundpreis gilt aktuell für den Heizstrom?" }
+  - { id: U22, kind: follow_up, category: additional, follows: U21, question: "Und vorher?" }
+  - { id: U23, kind: multi, category: additional, question: "Wie viel Wasser habe ich 2024 und 2025 verbraucht und was hat es jeweils insgesamt gekostet?" }
+  - { id: U24, kind: follow_up, category: visual, follows: U12, question: "Kannst du das auch als Diagramm zeigen?" }

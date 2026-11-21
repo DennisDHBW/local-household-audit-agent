@@ -189,7 +189,7 @@ Zum Vergleich P2 v2: 195 s (run-028). Ein 4B-Modell wäre schneller; das misst M
 | Entwicklung (21 Fragen) | entwickeln, Fehler suchen | wie bisher |
 | Umformulierungen der Entwicklungsfragen (2 je Frage, von Claude) | Robustheit gegen Wortlaut | nur zur Entwicklung |
 | T1–T8 | Vergleich mit run-028 | an T1–T8 wird nicht entwickelt |
-| **H2 (neu, 20–24 Fragen)** | Endmessung | **schreibt Dennis** in eigenen Worten nach Vorgabe der Mischung; Datei wird mit Hash versiegelt; Claude ergänzt die erwarteten Antworten erst nach dem Code-Freeze |
+| **H2 (neu, 24 Fragen)** | Endmessung | **schreibt Claude** (Entscheidung 2026-11-21, ISS-130) vor jeder Zeile P3-Code; `dataset/holdout_h2.yaml`, versiegelt mit SHA-256 (`dataset/holdout_h2.sha256`, Test `tests/test_holdout_h2.py`); Datei bis M9f nicht öffnen; Claude ergänzt die erwarteten Antworten erst nach dem Code-Freeze in einer eigenen Datei |
 
 Mischung für H2 (Vorschlag): 6 Wertfragen, 5 Prüffragen (davon 2 mit eingebautem Fehler), 3 Übersichten/Grafiken, 3 Vertragsfragen, 3 Negativfragen, 2–4 Folgefragen oder Mehrfachfragen. Erfüllt die Vorgabe 5 Standard / 2 Grenzfall / 2 Negativ.
 
@@ -216,7 +216,7 @@ Mischung für H2 (Vorschlag): 6 Wertfragen, 5 Prüffragen (davon 2 mit eingebaut
 | M9-0 Machbarkeitsprobe | Skript: je Kandidat Schema-Treue mit `format` und ohne Thinking, Geschwindigkeit, Cache-Probe (zwei Fragen mit gleichem Präfix), 8 neutrale Testfragen für den Auftragsrahmen; dazu ein Aufruf zur Klärung der leeren Antworten (ISS-126) | Sonnet 5.5 / High | Modelle laden (je 2–5 GB), einen Befehl starten | ca. 30–45 min |
 | M9a Verstehen & Ausführen | `QueryFrame`, Zeitraum-Auflösung, Skills, Belege, Evidenzprüfung, Neuplanung; Unit-Tests mit aufgezeichneten Modellantworten | Opus 5.5 / High | – | – |
 | M9b Formulieren & Verifizieren | `AnswerDraft` mit Beleg-`enum`, Verifikation, Renderer, Rückfall, Zustandsautomat, Protokoll; Streamlit auf P3 | Opus 5.5 / High | – | Smoke-Test ca. 15 min |
-| M9c Testmodul | Variante P3, Umformulierungen, neue Kennzahlen, Wilson und McNemar, Nachtlauf-Skript; H2-Vorlage | Sonnet 5.5 / High | H2-Fragen schreiben (ca. 30 min, kann parallel) | – |
+| M9c Testmodul | Variante P3, Umformulierungen, neue Kennzahlen, Wilson und McNemar, Nachtlauf-Skript; H2 ins Datenmodell (IDs `U`, Folgefragen `follows`) | Sonnet 5.5 / High | – (H2 schreibt Claude, ISS-130) | – |
 | M9d Entwicklungslauf | P3 mit 2 Modellen auf 21 + 42 Fragen, Auswertung, Modellentscheidung | Opus 5.5 / High | Nachtlauf starten | ca. 3–4 h (Nacht) |
 | M9e Nachbesserung (optional) | nur Fehlerklassen aus M9d, Kontrolllauf | Opus 5.5 / High | Befehl starten | ca. 2 h |
 | M9f Endlauf H2 | Code-Freeze, erwartete Antworten für H2, Lauf B0/P1/P2 v2/P3 auf H2 und T1–T8, Handprüfung | Opus 5.5 / High | Nachtlauf starten | ca. 3–4 h (Nacht; B0/P1/P2 v2 nur auf H2, weil sich ihr Code nicht ändert) |
@@ -256,7 +256,7 @@ Mischung für H2 (Vorschlag): 6 Wertfragen, 5 Prüffragen (davon 2 mit eingebaut
 
 ## 10. Entscheidungen, die Dennis treffen muss
 
-**Getroffen am 2026-11-21:** (1) H2 schreibt Claude jetzt und versiegelt die Datei per Hash (nicht die empfohlene Variante; ISS-112 bleibt damit bestehen, siehe Nachtrag dort); (2) alle drei Modelle werden für M9-0 geladen; (3) P2 v2 läuft im Endlauf auf H2 mit.
+**Getroffen am 2026-11-21:** (1) H2 schreibt Claude jetzt und versiegelt die Datei per Hash (nicht die empfohlene Variante; ISS-112 bleibt damit bestehen, siehe ISS-130); (2) alle drei Modelle werden für M9-0 geladen; (3) P2 v2 läuft im Endlauf auf H2 mit.
 
 1. **H2-Fragen:** selbst schreiben (empfohlen, ca. 30 min, verringert ISS-112) oder Claude schreibt sie jetzt versiegelt
 2. **Modelle laden:** `qwen3:8b`, `qwen3.5:4b`, `granite4:tiny-h` für M9-0 (zusammen ca. 12–14 GB Download und Plattenplatz)

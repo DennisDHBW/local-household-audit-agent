@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-130 – H2 von Claude statt von Dennis geschrieben: gleicher Autor wie Code und Regeln, Fehlerfälle aus der Entwicklung bekannt
+- **Datum / Meilenstein:** 2026-11-21 / M9-0
+- **Kategorie:** evaluation
+- **Status:** akzeptiert
+- **Symptom:** Der neue zurückgehaltene Satz H2 (`dataset/holdout_h2.yaml`, 24 Fragen U1–U24) stammt von Claude, nicht vom Nutzer. Damit bleibt ISS-112 (Fragen und Regeln vom selben Autor) bestehen. Die beiden Prüffragen mit eingebautem Fehler (U7, U8) zielen auf Rechnungen mit Fehlern, die schon Entwicklungsfragen prüfen (E1 wie G1, E5 wie W1), weil der Korpus nur diese fünf Fehler enthält; neu sind Wortlaut und Blickwinkel, nicht die Fehlerart.
+- **Ursache:** Entscheidung des Nutzers am 2026-11-21 (Option „Claude, jetzt versiegelt“), empfohlen war die Variante mit eigenen Fragen.
+- **Lösung / Workaround:** H2 vor jeder Zeile P3-Code geschrieben; Überschneidungen mit Entwicklungsfragen, T1–T8, den Fragen und Beispielen der Machbarkeitsprobe und der ISS-126-Frage vermieden; Wortlaut bewusst uneinheitlich (umgangssprachlich, klein geschrieben, ohne Prüfwörter wie „korrekt“). Siegel: SHA-256 in `dataset/holdout_h2.sha256`, Test `tests/test_holdout_h2.py`. Erwartete Antworten erst nach dem Code-Freeze in einer eigenen Datei. Grenze: Das Siegel erkennt Änderungen, nicht das Lesen; künftige Sitzungen öffnen die Datei laut status.md erst in M9f. Mischung: 7 Wertfragen (davon eine als Anker einer Folgefrage), 5 Prüffragen (2 mit eingebautem Fehler), 3 Übersichten/Grafiken, 3 Vertragsfragen, 3 Negativfragen, 2 Folgefragen, 1 Mehrfachfrage. Die Folgefragen (`follows`) und das Präfix `U` der IDs muss M9c im Datenmodell `Question` ergänzen.
+- **Gelernt:** Eine Trennung zwischen Entwickler und Testautor lässt sich nicht nachträglich herstellen; das Siegel sichert nur den Zeitpunkt.
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 (Grenzen der Messung, Herkunft der Testfragen)
+
 ### ISS-129 – Quellenaussage im M9-Plan zuerst nach dem Abstract überzogen (eigener Fehler, vor dem Commit korrigiert)
 - **Datum / Meilenstein:** 2026-11-21 / M9-Plan
 - **Kategorie:** ki-assistent
