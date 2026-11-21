@@ -220,6 +220,9 @@
 | Renderer | `render.py` (geplant) | Code setzt aus dem Antwortentwurf den Antworttext mit [n]-Verweisen, Tabellen und Grafiken zusammen | |
 | Plan-then-Execute | – | Muster: erst den Plan festlegen, dann ausführen; Werkzeugausgaben können die Wahl der Aktionen nicht ändern | |
 | Präfix-Cache | Ollama KV-Cache, ISS-128 | Gleicher Prompt-Anfang wird nicht neu berechnet; spart bei 18 Token/s Prefill viel Zeit | |
+| Machbarkeitsprobe | `scripts/m9_probe.py`, M9-0 | Kurzer Lauf je Kandidatenmodell vor dem Umbau: hält das Modell das JSON-Schema ein, wie schnell ist es, greift der Cache | |
+| Gold-Rahmen | `ProbeQuestion.gold_tasks` | Erwarteter Auftragsrahmen einer Frage; je Feld sind mehrere zulässige Werte möglich, nicht genannte Felder werden nicht bewertet | |
+| Stufenwechsel | `alt-separate`, `alt-shared` | Cache-Probe: Folge Rahmen → Antwort → Rahmen, einmal mit getrennten Systemprompts, einmal mit einem gemeinsamen; zeigt, ob der Wechsel den Präfix verdrängt | |
 | Umformulierungs-Konsistenz | geplant in M9c | Anteil der Fragen, bei denen bedeutungsgleiche Umformulierungen dasselbe Ergebnis liefern (metamorphes Testen) | |
 | H2 | `dataset/holdout_h2.yaml` (geplant) | Neuer zurückgehaltener Fragesatz für den Endlauf von M9, von Dennis geschrieben und per Hash versiegelt | |
 | Wilson-Intervall | geplant in M9c | Konfidenzintervall für eine Quote, auch bei kleinen Fragezahlen brauchbar | |
