@@ -1,6 +1,6 @@
 # ADR-0020: Werkzeugauswahl nach Fragetyp, Planprüfung und Plausibilitätsregeln
 
-- **Status:** akzeptiert (Wirkung noch nicht mit Ollama gemessen)
+- **Status:** akzeptiert, gemessen in run-024/run-025 (Nachtrag 2026-11-21, ADR-0021)
 - **Datum:** 2026-11-20
 - **Meilenstein:** M8
 
@@ -34,3 +34,8 @@ run-023-smoke, ISS-112, ISS-114, ADR-0019.
 - Reine Erwähnung von „Strom“ (ohne Heiz-/Licht, ohne Übersicht/Grafik/„alle“) gilt als Lichtstrom; „seit JJJJ“ lässt das Endjahr einer Übersicht offen.
 - `scripts/dry_run.py`: Trockenlauf des ganzen Nachtlaufs ohne Ollama in einem Temp-Ordner (Hash-Embeddings, regelbasiertes Orakel statt Modell). Findet Abstürze wie ISS-115 vorab; seine Trefferquote ist kein Modellergebnis.
 
+## Nachtrag 2026-11-21 (gemessen in run-025)
+- Werkzeugauswahl: laut Metrik 11 von 21 Fragen mit passendem Werkzeug; kein Fall, in dem ein ausgeblendetes Werkzeug gefehlt hätte.
+- Plan-Nachfrage: 3-mal ausgelöst (S1, G2, G4); zweimal danach eine schlechtere Antwort (S1 leer, G4 Lückenantwort statt des richtigen Urteils). Bleibt, aber mit Rückfall auf die frühere Antwort (ADR-0021).
+- `plan` selbst wurde nur in 4 von 21 Fragen aufgerufen. Der Plan-Hinweis aus ISS-114 führte eher dazu, dass das Modell den Plan als Text schrieb; er entfällt (ADR-0021).
+- Plausibilitätsregeln: griffen im Korpus wie erwartet nicht.

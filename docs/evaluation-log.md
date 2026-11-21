@@ -612,3 +612,36 @@
 - **Ergebnis:** H2 falsch („keine Angaben“, Sparte Fernwärme statt Heizstrom), V1 Grafik und alle Werte richtig, aber Lückensatz angehängt, W1 richtig (Abweichung angerechnete Abschläge, 500 gegen 480 EUR, 20 EUR) nach drei gesperrten Wiederholungen. `plan` nie aufgerufen. Zeiten 212 / 280 / 447 s; erster Modellaufruf je Frage 175–182 s.
 - **Deutung:** Die Prüfregeln liefern das richtige Ergebnis, sobald das Werkzeug richtig aufgerufen wird; die Fehler liegen in den Argumenten (ISS-114). Gegenmaßnahmen im Code, Wiederholung als run-024-smoke vor dem Nachtlauf.
 
+
+### RUN-024 – M8, Smoke-Test nach den Reparaturen (P2, G2, Z2, H2, W1, V1, `qwen2.5:7b`)
+- **Datum / Commit:** 2026-11-20 · Stand nach Merge `feat/m8-final-checks` (2347d37)
+- **Konfiguration:** nur P2, 5 Fragen; `num_ctx` 8192, Temperatur 0, max. 10 Werkzeugaufrufe, Werkzeugauswahl nach Fragetyp (ADR-0020); vorher Trockenlauf und `facts build`
+- **Rohdaten:** `data/eval/run-024-smoke/` (am 2026-11-21 mit korrigierter Tool-Wahl-Kennzahl neu bewertet, ISS-118), `agentics.json`
+- **Ergebnis:** 3 von 5 richtig laut Metrik (G2, H2, W1), 11 von 14 Fakten, Fehler erkannt 2 von 2, Fehlalarme 0 von 1, Tool-Wahl 4 von 5 (vorher gezählt 3 von 5). V1 zeigt nur den Lichtstrom (2 von 4 Werten), Z2 sucht im erfundenen Jahr 2023 und meldet eine Lücke. 218 s je Frage.
+- **Deutung:** Die Argumentfehler aus run-023 sind behoben (H2 jetzt richtig über `check_bill`). Die fünf Antworten sind im Nachtlauf run-025 wortgleich (Temperatur 0); das zeigt Reproduzierbarkeit, ist aber keine unabhängige Wiederholung.
+
+### RUN-025 – M8, Nachtlauf B0 / P1 / P2 v2 (21 Entwicklungsfragen, `qwen2.5:7b`)
+- **Datum / Commit:** 2026-11-20, 22:59 bis 01:33 · Stand 2347d37 (`scripts/m8_night.sh`)
+- **Konfiguration:** wie RUN-024; B0 mit 6 von 35 Dateien im Kontext (nur Strom 01–06, ca. 6.700 Token, ISS-039); P1 Pipeline wie RUN-020; P2 Werkzeugsatz v2
+- **Dauer:** B0 36 min (103 s je Frage, Median 22 s), P1 39 min (112 s), P2 79 min (224 s); Journal: eine Kontextverschiebung um 23:27 bei B0/V2 (7.695 Prompt- plus 548 Antwort-Token über 8.192, ISS-120)
+- **Rohdaten:** `data/eval/run-025/` (`report.md`, `scores.json`, `evidence.json`, `agentics.json`), `run-025.log`, `run-025-env.txt`, `run-025-journal.txt`; am 2026-11-21 neu bewertet (nur Tool-Wahl geändert, ISS-118)
+
+| Metrik | B0 | P1 | P2 |
+|---|---|---|---|
+| Richtig laut Metrik (von 21) | 4 | 6 | 9 |
+| Richtig nach Handprüfung (von 21) | 4 (N1, N2 nur mangels Kontext) | 6 + 2 Grenzfälle (G2, Z1) | 9 + 2 Grenzfälle (Z1, H3) |
+| Fakten in der Antwort (von 49) | 7 | 16 | 27 |
+| Fakten im Kontext (von 49) | 15 | 22 | 41 |
+| Erwartete Quellen zitiert (von 35) | 3 | 14 | 18 |
+| Erfundene Belegnummern | 0 | 0 | 5 (H3 4, N1 1) |
+| Fehler erkannt (von 5) | 0 | 0 | 5 |
+| Fehlalarme (von 4) | 0 | 0 | 0 |
+| Negativfragen erkannt (von 2) | 2 | 1 | 1 |
+| Tool-Wahl korrekt (von 21) | – | – | 19 (vorher gezählt 11) |
+| Sekunden je Frage (Mittel) | 103 | 112 | 224 |
+
+- **Handprüfung P2 (alle 21 Antworten und Schrittprotokolle gelesen):** Richtig S3, S5, G1, G2, G3, H2, W1, V3, N2 (N2 nennt nach dem Lücken-Satz trotzdem einen Heizstrom-Grundpreis, Grenzfall zur Gegenseite). Grenzfälle Z1 (Urteil, 1.200 m³ und 12.791 kWh richtig, Zählerstände fehlen) und H3 (Urteil richtig, keine Zahlen, angehängter Plan mit erfundenen Nummern [15] bis [18]). Falsch: S1 und Z3 leer; S2 und H1 nur Plan-Text, obwohl H1 vorher die richtigen Preise genannt hatte (auf Englisch, „24.10“); G4 richtiges Urteil, nach der Plan-Nachfrage Lückenantwort; N1 Schleife aus `list_documents`/`get_facts` bis zum Limit, der Lücken-Satz fiel durch `drop_trailing_gap` weg; Z2 Jahr 2023 erfunden; S4 Lücke ohne Volltextsuche (Werte stehen im Diagramm); V1 Grafik nur Lichtstrom; V2 Übersicht nur Strom.
+- **Hauptursachen P2 (12 Fehlschläge laut Metrik):** 8 Steuerung (S1, Z3 leer; S2, H1, H3 Schritt-Text; G4 durch Rückfrage verschlechtert; N1 Schleife; S4 Lücke ohne Volltextsuche), 3 Argumente (Z2 Jahr, V1 Stromart, V2 Sparte), 1 Synthese (Z1, Fakt weggelassen). Kein Fehlschlag geht auf das Retrieval zurück: Die Sollfakten standen in 41 von 49 Fällen im Kontext; verloren gingen sie in S1, S2, G4, Z3, H1, H3 und teilweise Z1.
+- **Agentik (`agentics.json`):** 3,9 Modell- und 2,0 Werkzeugaufrufe je Frage; `plan` in 4 von 21 Fragen (3-mal als erster Schritt); Rückfragen 17 (Zitat 9, Plan 3, Lücke 3, Zahlen 2); 10 Argumentreparaturen; 8 Wiederholungen (davon 7 in N1); Schritt-Text in 10 Endantworten, in 3 ausschließlich; 3 Antworten durch eine Rückfrage verschlechtert (G4, H1, S2). Zeitanteile: Prefill 63 %, Dekodieren 33 %.
+- **B0 und P1 (alle Antworten überflogen):** B0 antwortet bei den meisten Nicht-Strom-Fragen „keine Angaben“, weil nur Strom in den Kontext passt, oder deutet Strom-Angaben um (G2, G4: Netzentgelte als Betriebskosten); seine 2 von 2 Negativfragen und 0 Fehlalarme sind deshalb kein Verdienst (ISS-039). P1 erkennt keinen eingebauten Fehler (G1, G4, H2 als korrekt bewertet, G3 und W1 ohne tragfähiges Urteil), nennt für Fernwärme einen Heizstrom-Preis (N2) und für Z2 den alten Abschlag 115 EUR.
+- **Deutung:** P2 v2 liegt klar vor P1 und B0 und erkennt alle eingebauten Fehler ohne Fehlalarm; das kommt aus dem Code (`check_bill`), nicht aus dem Modell (ISS-110, ISS-112). Die verbleibenden Fehler liegen in der Schleife, die gute Zwischenantworten verschenkt. Die Gegenmaßnahmen (ADR-0021, ISS-117) sind aus genau diesen Fragen abgeleitet; ein besseres Ergebnis in run-026 ist deshalb zu günstig, aussagekräftig ist erst der Endlauf run-027 (ISS-108).

@@ -24,6 +24,46 @@
 
 ## Einträge
 
+### ISS-120 – B0: Kontext für `qwen2.5:7b` zu knapp geschätzt, Kontextverschiebung bei V2
+- **Datum / Meilenstein:** 2026-11-21 / M8
+- **Kategorie:** evaluation
+- **Status:** akzeptiert (vor run-027 noch einmal ansehen)
+- **Symptom:** Im Ollama-Journal von run-025 steht um 23:27:10 „truncated = 1, n_tokens = 4149“. Zur selben Zeit lief B0/V2: 7.695 Prompt-Token plus 548 erzeugte Token, zusammen mehr als `num_ctx` 8.192. Ollama hat den Kontext verschoben und dabei die Hälfte verworfen; das Ende der B0-Antwort entstand mit gekürztem Kontext.
+- **Ursache:** Das B0-Budget schätzt mit 2,4 Zeichen je Token (gemessen an `llama3.1:8b`, ISS-041) 6.727 Token; der Tokenizer von `qwen2.5:7b` braucht für denselben Text 7.695 (+14 %). Reserviert sind 600 Token für die Antwort, real bleiben knapp 500. Betroffen ist nur V2, die einzige B0-Antwort über 497 Token; sie war ohnehin falsch.
+- **Lösung / Workaround:** Für run-025 hingenommen. B0 läuft erst wieder im Endlauf run-027; ändert man das Budget, ist B0 nicht mehr mit run-025 vergleichbar. Empfehlung: unverändert lassen und im Bericht nennen. Eigener Fehler bei der ersten Auswertung: Die Dateizeiten der VM stehen in UTC, das Journal in MEZ; deshalb wurde die Kürzung zuerst P2/S4 zugeordnet.
+- **Gelernt:** Token-Schätzungen hängen am Tokenizer; nach einem Modellwechsel muss man sie neu messen.
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 (Grenze von B0)
+
+### ISS-119 – Offene Antwortschwächen nach run-025 (bewusst nicht behoben)
+- **Datum / Meilenstein:** 2026-11-21 / M8
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** (1) Mischantworten: „Dazu liegen … keine Angaben vor.“ und danach doch ein Inhalt (Z3, N2, N1). (2) Prüfantworten „stimmt“ ohne Zahlen (H3), obwohl die Kurzfassung von `check_bill` die Werte nennt. (3) S2 „laut Stromvertrag“: `get_facts` ohne Jahr markiert den neuesten Stand (Preisanpassung 2025), der Vertrag ist von 2024. (4) `plan` nur in 4 von 21 Fragen. (5) Die Wortlisten für Schritt-Text und Englisch (ADR-0021) stammen aus den Antworten auf die Entwicklungsfragen. (6) `AgentLoop.run` ist mit allen Rückfragen rund 190 Zeilen lang und schwer zu lesen.
+- **Ursache:** (1) ist nicht automatisch lösbar: Bei N2 ist die Lücke richtig und der Inhalt falsch, bei Z3 umgekehrt. (2)–(4) liegen am Modell; Code-Regeln dafür wären auf diese Fragen zugeschnitten.
+- **Lösung / Workaround:** Nicht in diesem Paket, um nicht weiter auf die Entwicklungsfragen hin zu optimieren (ISS-108, ISS-111). Nach run-026 entscheiden, ob (2) und (6) noch angegangen werden.
+- **Gelernt:**
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 und 6 (Grenzen)
+
+### ISS-118 – Kennzahl Tool-Wahl prüfte v2-Läufe gegen die v1-Werkzeuge (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-21 / M8
+- **Kategorie:** evaluation
+- **Status:** gelöst
+- **Symptom:** run-025 meldete für P2 „Tool-Wahl korrekt 11/21“. Bei G1–G4, S5 und Z1 nutzte der Agent richtig `check_bill`, erwartet waren aber `search` und `calculate`; bei S2, S3 und Z2 `get_facts` statt `search`.
+- **Ursache:** Die erwarteten Werkzeuge der 14 alten Fragen stammen aus M6 (Werkzeugsatz v1). Beim Umbau auf v2 (ADR-0019) wurden sie nicht angepasst.
+- **Lösung / Workaround:** Neues Feld `expected_tools_v2` in `ground_truth.yaml` für S2–S5, G1–G4, Z1, Z2. Die Bewertung erkennt einen v2-Lauf daran, dass irgendeine P2-Antwort ein reines v2-Werkzeug aufrief (`uses_tool_set_v2`); alte v1-Läufe werden unverändert bewertet. run-024-smoke und run-025 neu bewertet: Tool-Wahl 4/5 statt 3/5 und 19/21 statt 11/21, alle anderen Zahlen gleich. Die zwei verbleibenden Fehlgriffe sind echt (S4 ohne Suche, Z2 ohne gültiges `get_facts`).
+- **Gelernt:** Wenn sich die Werkzeuge ändern, muss die Messung mit umziehen.
+- **Relevant für Ausarbeitung?** ja → Kapitel 5
+
+### ISS-117 – Nachtlauf run-025: Die Schleife verschenkt richtige Antworten
+- **Datum / Meilenstein:** 2026-11-21 / M8
+- **Kategorie:** agent
+- **Status:** gelöst (Wirkung in run-026 zu prüfen)
+- **Symptom:** P2 9 von 21 richtig, aber 41 von 49 Sollfakten im Kontext. 10 Endantworten enthielten angekündigte Schritte („Plan: 1. check_bill …“), 3 nur diese (S2, H1, N1); 3 richtige oder fast richtige Antworten wurden durch eine Rückfrage schlechter (G4: Lücke statt Urteil, H1: richtige Preise auf Englisch, nach der Zahlen-Rückfrage nur noch Plan-Text, S2); 2 leere Antworten (S1, Z3); N1 wiederholte zwei Aufrufe bis zum Limit; Z2 suchte im erfundenen Jahr 2023; N2 wurde von „Fernwärme“ zu Heizstrom umgedeutet; V1 und V2 zeigten nur einen Teil.
+- **Ursache:** (1) Der Plan-Hinweis nach dem ersten Werkzeugergebnis (ISS-114) brachte das Modell dazu, Pläne als Text zu schreiben; die Schleife nahm jeden Text ohne Werkzeugaufruf als Antwort. (2) Die Antwort nach einer Rückfrage ersetzte die vorige ohne Vergleich. (3) Keine Rückfallebene für leere Antworten; bei S1 lief die Selbstprüfung sogar auf eine leere Antwort. (4) Wiederholungen wurden erkannt, aber nicht begrenzt. (5) Eigener Fehler in `drop_trailing_gap`: Die Fußnote „[1] Hinweis: Argumente angepasst …“ galt als Beleg, deshalb fiel bei N1 der richtige Lücken-Satz weg. (6) Eigener Fehler aus ISS-114: Die Umdeutung Fernwärme → Heizstrom griff auch, wenn die Frage „Fernwärme“ sagt. (7) Die Zahlen-Prüfung las „24.10“ als 24.
+- **Lösung / Workaround:** ADR-0021: Plan-Hinweis entfernt; `strip_step_talk` entfernt Schritt-Text, reine Ankündigung wird einmal nachgefragt (`steps`); leere Antwort bekommt einen Antwortaufruf ohne Werkzeuge (`empty`); Rückfall auf die letzte echte Antwort nach Rückfragen außer `verdict` und `check`; `REPEAT_LIMIT` 2; Lücke erst nach Volltextsuche; Sprach-Rückfrage; Dezimalpunkt; Argumente: Jahr nur aus der Frage, Fernwärme bleibt, Umfang von Übersicht und Grafik aus der Frage. Außerdem setzt `run()` die aktuelle Frage jetzt auch nach einer Ausnahme zurück (vorher blieb sie im Kontext stehen). 22 neue Tests mit den echten Ausgaben aus run-025, 21 davon schlagen auf dem alten Code fehl. Offline liefern V1, V2, Z2 und N2 mit den reparierten Argumenten die erwarteten Werte.
+- **Gelernt:** Jede Rückfrage ist ein Risiko; sie darf eine schon belegte Antwort höchstens verbessern, nie ersetzen.
+- **Relevant für Ausarbeitung?** ja → Kapitel 3 (Steuerung der Schleife) und 5 (Fehleranalyse)
+
 ### ISS-116 – Trockenlauf mit Orakel: Obergrenze der Werkzeuge, Ausgaben der zurückgehaltenen Fragen kurz sichtbar
 - **Datum / Meilenstein:** 2026-11-20 / M8
 - **Kategorie:** evaluation
@@ -53,11 +93,12 @@
 - **Lösung / Workaround:** `agent/scope.py`: Argumente werden vor der Prüfung repariert (Heizstrom → electricity/heating, `tariff_kind` nur bei Strom, beide Stromarten → keiner, fehlende Sparte/Jahr aus der Frage) und die Reparatur steht im Ergebnis; `check_bill` prüft bei Strom ohne Stromart beide Rechnungen; Hinweis auf `plan` nach dem ersten Werkzeugergebnis (kein zusätzlicher Modellaufruf); angehängter Lückensatz wird entfernt; `check_bill` liefert eine „Kurzfassung für die Antwort“ mit Saldo; Werkzeugbeschreibungen gekürzt.
 - **Gelernt:** Was der Code aus der Frage sicher ableiten kann, sollte er nicht dem Modell überlassen.
 - **Relevant für Ausarbeitung?** ja → Kapitel 3
+- **Nachtrag 2026-11-21 (run-025):** Der Plan-Hinweis hat geschadet (Pläne als Text statt Aufrufe) und ist entfernt; die Umdeutung Fernwärme → Heizstrom gilt nicht mehr, wenn die Frage „Fernwärme“ nennt (ISS-117, ADR-0021).
 
 ### ISS-113 – Agent v2 noch nicht mit Ollama gelaufen
 - **Datum / Meilenstein:** 2026-11-20 / M8
 - **Kategorie:** agent
-- **Status:** offen
+- **Status:** gelöst (run-024-smoke und run-025 mit Ollama, 2026-11-20/21; Befunde in ISS-117)
 - **Symptom:** Werkzeuge, Plan-Schritt, Selbstprüfung und Chat sind nur mit gescripteten Antworten getestet (Unit-Tests). Ob `qwen2.5:7b` `plan` zuerst aufruft, `check_bill` mit `tariff_kind` richtig füllt und die Befunde korrekt wiedergibt, ist unbekannt.
 - **Ursache:** Claudes Shell erreicht Ollama nicht.
 - **Lösung / Workaround:** `scripts/m8_prepare.sh` endet mit einem Smoke-Test (H2, V1, W1); erst danach der Nachtlauf.
@@ -804,6 +845,7 @@
 - **Lösung / Workaround:** Bewusst so gelassen: Genau das ist die Aussage von B0 („Volltext passt auf dieser Hardware nicht“). Im Bericht steht, welche Dateien im Kontext waren (`manifest.json`). Die Schätzung Zeichen/3 ist vorsichtig; real ist der Prompt kürzer.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Evaluation (Varianten, Grenzen)
+- **Nachtrag 2026-11-21 (M8, run-025):** Inzwischen 6 von 35 Dokumenten. B0 antwortet bei den meisten Nicht-Strom-Fragen „keine Angaben“; seine Werte „Negativfragen 2 von 2“ und „Fehlalarme 0“ entstehen dadurch und sind kein Verdienst. Mit `qwen2.5:7b` ist die Schätzung zudem zu niedrig (ISS-120).
 
 ### ISS-038 – Fakten- und Urteilsprüfung der eigenen Metriken sind Heuristiken
 - **Datum / Meilenstein:** 2026-11-14 / M6a
