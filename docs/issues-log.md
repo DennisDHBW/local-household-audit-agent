@@ -24,10 +24,20 @@
 
 ## Einträge
 
+### ISS-124 – `m8_night.sh` hätte run-026 fortgesetzt statt einen neuen Lauf zu starten (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-21 / M8
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Das Skript trug für den Standardlauf fest `run-026` ein; status.md nennt den Kontrolllauf run-027. `generate` setzt einen vorhandenen Lauf mit derselben `--run-id` fort und hätte nichts neu erzeugt; die Daten von run-026 wären mit den alten Antworten neu bewertet worden.
+- **Ursache:** Beim Auswerten von run-026 wurde die Lauf-Nummer im Skript nicht mit der Planung in status.md abgeglichen. Gefunden beim Sitzungsabschluss, bevor der Lauf gestartet wurde.
+- **Lösung / Workaround:** Standardlauf `run-027`, `--holdout` `run-028` (Skript, README).
+- **Gelernt:** Vor dem Start eines langen Laufs die Lauf-Nummer im Skript gegen die Planung prüfen.
+- **Relevant für Ausarbeitung?** nein
+
 ### ISS-123 – Kennzahl Zitat-Präzision mischt zwei Zählweisen (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-21 / M8
 - **Kategorie:** evaluation
-- **Status:** offen
+- **Status:** gelöst
 - **Symptom:** Die gemeldete Präzision von P2 fiel von 50 % (run-025) auf 33 % (run-026), obwohl die Handprüfung kaum falsche Zitate zeigt. H3 zitiert 14 Belege, alle auf die beiden erwarteten Seiten (Vertrag 4, Rechnung 10); gezählt werden 2 von 14.
 - **Ursache:** `score_answer` zählt im Zähler (`cited_expected`) die verschiedenen erwarteten Paare aus Datei und Seite, im Nenner (`cited_count`) die zitierten Belegnummern. Mehrere Belege derselben Seite zählen im Nenner mehrfach, im Zähler einmal. Das Glossar beschreibt die Kennzahl richtig („Anteil der zitierten Belege“), der Code nicht. So seit M6; kein Test mit mehreren Belegen derselben Seite.
 - **Nachgerechnet** (mit der heutigen `ground_truth.yaml`; für run-020/021 vorläufig, weil sich Quellenangaben seit M6 geändert haben können):
@@ -41,27 +51,27 @@
 | run-025 | P2 | 18/36 (50 %) | 34/36 (94 %) | 18/20 (90 %) |
 | run-026 | P2 | 24/72 (33 %) | 55/72 (76 %) | 24/37 (65 %) |
 
-- **Lösung / Workaround:** Im nächsten Paket: Zähler je Beleg zählen, Test mit mehreren Belegen derselben Seite, alle Läufe offline neu bewerten, Zahlen in `evaluation-log.md` und in der Ausarbeitung nachziehen.
+- **Lösung / Workaround:** Im nächsten Paket: Zähler je Beleg zählen, Test mit mehreren Belegen derselben Seite, alle Läufe offline neu bewerten, Zahlen in `evaluation-log.md` und in der Ausarbeitung nachziehen. Umgesetzt (2026-11-21): `score_answer` zählt `cited_expected` je zitiertem Beleg, neuer Test mit mehreren Belegen derselben Seite; run-020, 021, 025 und 026 offline neu bewertet (Werte wie in der Spalte „je Beleg“). Zahlen in der Ausarbeitung folgen in Phase 2.
 - **Gelernt:** Bei einer Quote müssen Zähler und Nenner dieselben Dinge zählen.
 - **Relevant für Ausarbeitung?** ja → Kapitel 5 (alle Präzisionswerte betroffen)
 
 ### ISS-122 – Lücken-Rückfrage schadet in run-026 mehr, als sie nützt
 - **Datum / Meilenstein:** 2026-11-21 / M8
 - **Kategorie:** agent
-- **Status:** offen
+- **Status:** gelöst
 - **Symptom:** Die Lücken-Rückfrage kam in 5 von 21 Fragen (N1, S1, S4, Z2, Z3). Geholfen hat sie in keiner, verschlechtert in zwei: N1 (die erste Antwort „keine Angaben“ war richtig, danach eine Vermutung, die Rechnung 2023 liege „in der Nähe“ von 2024 und 2025) und S1 (die erste Antwort war inhaltlich richtig, danach Heizstromvertrag und Jahr 2024). In S4, Z2 und Z3 blieb das Ergebnis gleich, kostete aber 120 bis 270 s je Frage (Schritte nach der Rückfrage).
 - **Ursache:** (1) `is_gap_answer` findet den Lückensatz irgendwo in der Antwort, Mischantworten (S1, Z2, Z3) zählen als Lücke; `drop_trailing_gap` entfernt nur den exakten Satz und nur, wenn der Rest zitiert. (2) `min_searches_before_gap` zählt Werkzeugaufrufe, nicht Suchen; nach einem einzigen Aufruf wird immer nachgefragt. (3) Der Text der v2-Rückfrage nennt Heizstrom, Lichtstrom und Vergleichsdiagramme; er stammt aus S4 und N1 (ISS-111) und lenkt bei der Gasfrage S1 auf Strom.
-- **Lösung / Workaround:** Im nächsten Paket: Rückfrage nur bei einer reinen Lückenantwort, Text ohne Hinweise auf das Korpus. S4 (Werte nur im Diagramm) bleibt dann vermutlich falsch; das wird hingenommen.
+- **Lösung / Workaround:** Im nächsten Paket: Rückfrage nur bei einer reinen Lückenantwort, Text ohne Hinweise auf das Korpus. S4 (Werte nur im Diagramm) bleibt dann vermutlich falsch; das wird hingenommen. Umgesetzt (2026-11-21, Tests): Die v2-Rückfrage kommt nur noch bei einer reinen Lückenantwort (`is_pure_gap_answer`: Lückensatz, keine Zahl, kein Beleg); Text ohne Hinweise auf das Korpus. Restrisiko: N1 (reine Lückenantwort nach einer Suche) wird weiter einmal hinterfragt. Wirkung erst mit run-027 gemessen.
 - **Gelernt:** Eine Regel, die Antworten verbessern soll, muss man auch daran messen, wie oft sie eine richtige Antwort verschlechtert.
 - **Relevant für Ausarbeitung?** ja → Kapitel 5 (Rückfragen der Schleife)
 
 ### ISS-121 – Kontextschätzung zählt alle Werkzeugschemas, `context_limit` greift zu früh (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-21 / M8
 - **Kategorie:** agent
-- **Status:** offen
+- **Status:** gelöst
 - **Symptom:** In run-026 enden S1 und Z2 nach 4 Werkzeugaufrufen mit `context_limit`. Laut Ollama-Journal waren die Anfragen höchstens 3.737 bzw. 3.654 Token lang; frei wären 6.392 (8.192 − 600 Antwort − 1.200 Reserve).
 - **Ursache:** `AgentLoop._spec_tokens` wird einmal im Konstruktor aus den Schemas aller 8 Werkzeuge geschätzt (ca. 3.000 Token). Seit ADR-0020 werden je Frage nur 4 bis 5 Werkzeuge angeboten (ca. 1.800 Token geschätzt); die Schätzung wurde dabei nicht angepasst. Auch mit den angebotenen Schemas liegt die Schätzung beim ersten Aufruf rund 45 % über dem Wert von Ollama (ca. 2.500 gegen 1.720 Token), weil 2,4 Zeichen je Token für JSON-Schemas zu wenig sind.
-- **Lösung / Workaround:** Im nächsten Paket: Schätzung je Frage aus den angebotenen Schemas (`_active_specs`). In run-026 hat der frühe Abbruch kein Ergebnis gekippt (beide Antworten waren vorher schon falsch), er nimmt aber längeren Ketten den Spielraum.
+- **Lösung / Workaround:** Im nächsten Paket: Schätzung je Frage aus den angebotenen Schemas (`_active_specs`). In run-026 hat der frühe Abbruch kein Ergebnis gekippt (beide Antworten waren vorher schon falsch), er nimmt aber längeren Ketten den Spielraum. Umgesetzt (2026-11-21, Test): `_is_context_full` schätzt die Schemas der angebotenen Werkzeuge (`_active_specs`) statt aller 8. Die Schätzung liegt weiter etwa 45 % über Ollama (2,4 Zeichen je Token), bewusst nicht geändert wegen B0 (ISS-120). Wirkung erst mit run-027 gemessen.
 - **Gelernt:** Wer eine Größe an einer Stelle verkleinert, muss jede Stelle nachziehen, an der sie gerechnet wird.
 - **Relevant für Ausarbeitung?** ja → Kapitel 4 (Grenzen der Schleife), knapp
 
