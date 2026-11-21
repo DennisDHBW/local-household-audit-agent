@@ -209,6 +209,27 @@ def test_filter_excludes_follows_the_tool_rules():
     assert filter_excludes({"query": "x", "utility_type": "Strom"}, bill) is False
 
 
+def test_source_precision_counts_every_cited_source_of_an_expected_page():
+    # Arrange: three sources on the expected bill page 1 and one distractor (ISS-123)
+    answer = _answer(
+        "Preis 39,50 ct/kWh [1][4][5], Arbeitspreis 38,20 [6], Ablenker [2].",
+        sources=(
+            ShownSource(number=1, filename=BILL_FILE, page_number=1),
+            ShownSource(number=2, filename=NOISE_FILE, page_number=1),
+            ShownSource(number=4, filename=BILL_FILE, page_number=1),
+            ShownSource(number=5, filename=BILL_FILE, page_number=1),
+            ShownSource(number=6, filename=NOTICE_FILE, page_number=1),
+        ),
+    )
+
+    # Act
+    score = score_answer(_audit_question(), answer, _catalog_with_noise())
+
+    # Assert: numerator and denominator both count sources, not distinct pages
+    assert (score.cited_count, score.cited_expected) == (5, 4)
+    assert (score.expected_cited, score.expected_count) == (2, 2)
+
+
 def test_score_of_an_agent_answer():
     # Arrange
     answer = _answer(
