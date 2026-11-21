@@ -24,10 +24,51 @@
 
 ## Einträge
 
+### ISS-123 – Kennzahl Zitat-Präzision mischt zwei Zählweisen (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-21 / M8
+- **Kategorie:** evaluation
+- **Status:** offen
+- **Symptom:** Die gemeldete Präzision von P2 fiel von 50 % (run-025) auf 33 % (run-026), obwohl die Handprüfung kaum falsche Zitate zeigt. H3 zitiert 14 Belege, alle auf die beiden erwarteten Seiten (Vertrag 4, Rechnung 10); gezählt werden 2 von 14.
+- **Ursache:** `score_answer` zählt im Zähler (`cited_expected`) die verschiedenen erwarteten Paare aus Datei und Seite, im Nenner (`cited_count`) die zitierten Belegnummern. Mehrere Belege derselben Seite zählen im Nenner mehrfach, im Zähler einmal. Das Glossar beschreibt die Kennzahl richtig („Anteil der zitierten Belege“), der Code nicht. So seit M6; kein Test mit mehreren Belegen derselben Seite.
+- **Nachgerechnet** (mit der heutigen `ground_truth.yaml`; für run-020/021 vorläufig, weil sich Quellenangaben seit M6 geändert haben können):
+
+| Lauf | Variante | bisher | je Beleg | je Seite |
+|---|---|---|---|---|
+| run-020 | P1 | 9/20 (45 %) | 16/20 (80 %) | 9/12 (75 %) |
+| run-021 | P2 | 8/17 (47 %) | 10/17 (59 %) | 8/14 (57 %) |
+| run-025 | B0 | 3/8 (38 %) | 3/8 (38 %) | 3/8 (38 %) |
+| run-025 | P1 | 14/39 (36 %) | 25/39 (64 %) | 14/26 (54 %) |
+| run-025 | P2 | 18/36 (50 %) | 34/36 (94 %) | 18/20 (90 %) |
+| run-026 | P2 | 24/72 (33 %) | 55/72 (76 %) | 24/37 (65 %) |
+
+- **Lösung / Workaround:** Im nächsten Paket: Zähler je Beleg zählen, Test mit mehreren Belegen derselben Seite, alle Läufe offline neu bewerten, Zahlen in `evaluation-log.md` und in der Ausarbeitung nachziehen.
+- **Gelernt:** Bei einer Quote müssen Zähler und Nenner dieselben Dinge zählen.
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 (alle Präzisionswerte betroffen)
+
+### ISS-122 – Lücken-Rückfrage schadet in run-026 mehr, als sie nützt
+- **Datum / Meilenstein:** 2026-11-21 / M8
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** Die Lücken-Rückfrage kam in 5 von 21 Fragen (N1, S1, S4, Z2, Z3). Geholfen hat sie in keiner, verschlechtert in zwei: N1 (die erste Antwort „keine Angaben“ war richtig, danach eine Vermutung, die Rechnung 2023 liege „in der Nähe“ von 2024 und 2025) und S1 (die erste Antwort war inhaltlich richtig, danach Heizstromvertrag und Jahr 2024). In S4, Z2 und Z3 blieb das Ergebnis gleich, kostete aber 120 bis 270 s je Frage (Schritte nach der Rückfrage).
+- **Ursache:** (1) `is_gap_answer` findet den Lückensatz irgendwo in der Antwort, Mischantworten (S1, Z2, Z3) zählen als Lücke; `drop_trailing_gap` entfernt nur den exakten Satz und nur, wenn der Rest zitiert. (2) `min_searches_before_gap` zählt Werkzeugaufrufe, nicht Suchen; nach einem einzigen Aufruf wird immer nachgefragt. (3) Der Text der v2-Rückfrage nennt Heizstrom, Lichtstrom und Vergleichsdiagramme; er stammt aus S4 und N1 (ISS-111) und lenkt bei der Gasfrage S1 auf Strom.
+- **Lösung / Workaround:** Im nächsten Paket: Rückfrage nur bei einer reinen Lückenantwort, Text ohne Hinweise auf das Korpus. S4 (Werte nur im Diagramm) bleibt dann vermutlich falsch; das wird hingenommen.
+- **Gelernt:** Eine Regel, die Antworten verbessern soll, muss man auch daran messen, wie oft sie eine richtige Antwort verschlechtert.
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 (Rückfragen der Schleife)
+
+### ISS-121 – Kontextschätzung zählt alle Werkzeugschemas, `context_limit` greift zu früh (eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-21 / M8
+- **Kategorie:** agent
+- **Status:** offen
+- **Symptom:** In run-026 enden S1 und Z2 nach 4 Werkzeugaufrufen mit `context_limit`. Laut Ollama-Journal waren die Anfragen höchstens 3.737 bzw. 3.654 Token lang; frei wären 6.392 (8.192 − 600 Antwort − 1.200 Reserve).
+- **Ursache:** `AgentLoop._spec_tokens` wird einmal im Konstruktor aus den Schemas aller 8 Werkzeuge geschätzt (ca. 3.000 Token). Seit ADR-0020 werden je Frage nur 4 bis 5 Werkzeuge angeboten (ca. 1.800 Token geschätzt); die Schätzung wurde dabei nicht angepasst. Auch mit den angebotenen Schemas liegt die Schätzung beim ersten Aufruf rund 45 % über dem Wert von Ollama (ca. 2.500 gegen 1.720 Token), weil 2,4 Zeichen je Token für JSON-Schemas zu wenig sind.
+- **Lösung / Workaround:** Im nächsten Paket: Schätzung je Frage aus den angebotenen Schemas (`_active_specs`). In run-026 hat der frühe Abbruch kein Ergebnis gekippt (beide Antworten waren vorher schon falsch), er nimmt aber längeren Ketten den Spielraum.
+- **Gelernt:** Wer eine Größe an einer Stelle verkleinert, muss jede Stelle nachziehen, an der sie gerechnet wird.
+- **Relevant für Ausarbeitung?** ja → Kapitel 4 (Grenzen der Schleife), knapp
+
 ### ISS-120 – B0: Kontext für `qwen2.5:7b` zu knapp geschätzt, Kontextverschiebung bei V2
 - **Datum / Meilenstein:** 2026-11-21 / M8
 - **Kategorie:** evaluation
-- **Status:** akzeptiert (vor run-027 noch einmal ansehen)
+- **Status:** akzeptiert (Entscheidung des Nutzers 2026-11-21: B0-Budget im Endlauf unverändert, Grenze im Bericht nennen)
 - **Symptom:** Im Ollama-Journal von run-025 steht um 23:27:10 „truncated = 1, n_tokens = 4149“. Zur selben Zeit lief B0/V2: 7.695 Prompt-Token plus 548 erzeugte Token, zusammen mehr als `num_ctx` 8.192. Ollama hat den Kontext verschoben und dabei die Hälfte verworfen; das Ende der B0-Antwort entstand mit gekürztem Kontext.
 - **Ursache:** Das B0-Budget schätzt mit 2,4 Zeichen je Token (gemessen an `llama3.1:8b`, ISS-041) 6.727 Token; der Tokenizer von `qwen2.5:7b` braucht für denselben Text 7.695 (+14 %). Reserviert sind 600 Token für die Antwort, real bleiben knapp 500. Betroffen ist nur V2, die einzige B0-Antwort über 497 Token; sie war ohnehin falsch.
 - **Lösung / Workaround:** Für run-025 hingenommen. B0 läuft erst wieder im Endlauf run-027; ändert man das Budget, ist B0 nicht mehr mit run-025 vergleichbar. Empfehlung: unverändert lassen und im Bericht nennen. Eigener Fehler bei der ersten Auswertung: Die Dateizeiten der VM stehen in UTC, das Journal in MEZ; deshalb wurde die Kürzung zuerst P2/S4 zugeordnet.
@@ -43,6 +84,7 @@
 - **Lösung / Workaround:** Nicht in diesem Paket, um nicht weiter auf die Entwicklungsfragen hin zu optimieren (ISS-108, ISS-111). Nach run-026 entscheiden, ob (2) und (6) noch angegangen werden.
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Kapitel 5 und 6 (Grenzen)
+- **Nachtrag 2026-11-21 (run-026):** (1) Mischantworten weiter in S1, Z2, Z3 und S3 („keine weiteren Grafiken“); sie lösen jetzt die Lücken-Rückfrage aus (ISS-122). (2) H3 nennt jetzt alle Soll- und Ist-Werte; Z1 lässt die z-Zahl aus der Kurzfassung weg. (3) S2 nennt jetzt den abgerechneten, falschen Arbeitspreis 39,50 ct/kWh. Neu: Z2 nennt 115,00 EUR, obwohl `get_facts` 120,00 EUR als „neuester Stand“ markiert; das Modell liest die Werkzeugausgabe falsch. (4) `plan` in 3 von 21 Fragen. (7) Neu: Zitate passen nicht immer genau zur Aussage (G4 ohne Belegnummern; V3 belegt die Preise ab 2026 mit den Belegen für 2024; G3 belegt den Ist-Wert 1,0000 nur mit der Rechnung 2024). (8) Neu: Füllsätze aus der Kurzfassung von `check_bill` („stimmt mit Vertrag, Preisschreiben und Zählerständen überein“ auch bei den Betriebskosten G2). Entscheidung: (1) bis (8) werden nicht mehr angegangen; vor dem Endlauf nur ISS-121 bis ISS-123.
 
 ### ISS-118 – Kennzahl Tool-Wahl prüfte v2-Läufe gegen die v1-Werkzeuge (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-21 / M8
@@ -154,6 +196,7 @@
 - **Lösung / Workaround:** In Kapitel 5 als Grenze genannt. Ab M8 gibt es einen zurückgehaltenen Fragensatz (`dataset/holdout_questions.yaml`), der erst im Endlauf läuft.
 - **Gelernt:** Wer am Testset entwickelt, misst am Ende auch die eigene Anpassung.
 - **Relevant für Ausarbeitung?** ja → Kapitel 5
+- **Nachtrag 2026-11-21 (run-026):** P2 steigt auf den Entwicklungsfragen von 9 auf 15 von 21. Die Fixes (ADR-0021) stammen aus genau diesen Fragen, der Anstieg ist deshalb zu günstig; aussagekräftig ist erst der Endlauf auf `holdout_questions.yaml`.
 
 ### ISS-107 – Text-Befunde eingearbeitet, Ausarbeitung ca. 12 Zeilen über 8 Seiten
 - **Datum / Meilenstein:** 2026-11-20 / M7

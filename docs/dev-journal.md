@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-21 – M8 Auswertung Nachtlauf run-026
+**Ziel der Sitzung:** run-026 (P2 nach den Fixes aus ADR-0021) auswerten und entscheiden, ob vor dem Endlauf noch etwas behoben wird.
+**Was wurde gemacht:**
+- Rohdaten von run-026 committet; alle 21 Antworten und Schrittprotokolle von Hand geprüft, Frage für Frage mit run-025 verglichen
+- Ursachen der 6 Fehlschläge eingeordnet (Steuerung, Lesefehler des Modells, Werkzeugwahl, Formulierung); Kennzahlen aus `agentics.json` gegenübergestellt
+- Kontextabbrüche mit dem Ollama-Journal abgeglichen und die Schätzung im Code nachgemessen (alle 8 Schemas statt der angebotenen)
+- Zitat-Präzision für run-020, run-021, run-025 und run-026 nachgerechnet; Messfehler gefunden
+**Gelieferte Dateien / Funktionen:** `data/eval/run-026*`, Eintrag RUN-026 in `evaluation-log.md`, ISS-121 bis ISS-123 und Nachträge zu ISS-108, ISS-119, ISS-120, Glossar (`repeat_limit`, Hinweis Quellen-Präzision); kein Code geändert
+**Entscheidungen:** Nutzer: Fix-Paket (ISS-121 bis ISS-123) mit Kontrolllauf vor dem Endlauf; B0-Budget im Endlauf unverändert. Endlauf heißt damit run-028. Keine ADR (noch keine Architekturänderung).
+**Probleme / Überraschungen:** ISS-122 (Lücken-Rückfrage verschlechtert N1 und S1), ISS-121 (`context_limit` bei ca. 3.700 statt 6.400 Token, eigener Fehler), ISS-123 (Zitat-Präzision seit M6 falsch gemessen, eigener Fehler; betrifft die Zahlen der Ausarbeitung)
+**Offen / unklar:** RAGAS für M8; ob die Lücken-Rückfrage nach dem Fix überhaupt noch nützt
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `test(evaluation): add night run-026 data (M8, P2 only, qwen2.5:7b)`, `docs: record run-026 evaluation and ISS-121 to ISS-123`
+
 ### 2026-11-21 – M8 Auswertung run-024-smoke und Nachtlauf run-025, Nachbesserung
 **Ziel der Sitzung:** Smoke-Test und Nachtlauf auswerten (Handprüfung, Kennzahlen Agentik) und die Fehler an den Entwicklungsfragen beheben.
 **Was wurde gemacht:**
