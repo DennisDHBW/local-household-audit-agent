@@ -5,6 +5,11 @@ became ``district_heating`` (Fernwärme), ``tariff_kind=household`` was set for 
 ``"household,heating"`` for "Licht- und Heizstrom". The model chooses the tool; the code repairs
 arguments that contradict the question or the schema before validation. Every repair is noted in
 the observation, so the log shows it.
+
+run-025 added three repairs (ISS-117): a year the question does not name is dropped (the model
+filled in 2023 for "aktuell"), "Fernwärme" in the question is never turned into Heizstrom, and
+tables and charts take their scope from the question (all utilities if it names none, both
+kinds of electricity if it names both).
 """
 
 from __future__ import annotations
@@ -82,21 +87,27 @@ def _tariff(value: Any) -> str | None:
 
 
 def repair_utility_arguments(
-    data: Any, *, needs_utility: bool = False, needs_year: bool = False
+    data: Any, *, needs_utility: bool = False, needs_year: bool = False, is_view: bool = False
 ) -> Any:
     """Make ``utility_type``/``tariff_kind`` (and ``year``) consistent with each other and the
-    question. Returns the data unchanged if it is not a mapping."""
+    question. ``is_view``: arguments of a table or chart, whose scope follows the question.
+    Returns the data unchanged if it is not a mapping."""
     if not isinstance(data, dict):
         return data
     data = dict(data)
     notes: list[str] = []
     utilities, tariffs, years = question_scope(CURRENT_QUESTION.get())
+    has_question = bool(CURRENT_QUESTION.get().strip())
     raw_utility = data.get("utility_type")
     utility = _UTILITY_VALUES.get(fold(str(raw_utility))) if raw_utility else None
     tariff = _tariff(data.get("tariff_kind")) if data.get("tariff_kind") else None
     if data.get("tariff_kind") and tariff is None:
         notes.append("tariff_kind entfernt (beide Stromarten)")
-    if utility == "district_heating" and ("heating" in tariffs or tariff == "heating"):
+    if (
+        utility == "district_heating"
+        and "district_heating" not in utilities
+        and ("heating" in tariffs or tariff == "heating")
+    ):
         utility, tariff = "electricity", "heating"
         notes.append("Heizstrom ist Sparte electricity mit tariff_kind heating, nicht Fernwärme")
     if tariff is not None and utility not in (None, "electricity"):
@@ -104,6 +115,12 @@ def repair_utility_arguments(
         tariff = None
     if tariff is not None and utility is None:
         utility = "electricity"
+    if is_view and has_question and utility is not None and not utilities:
+        notes.append("utility_type entfernt (die Frage nennt keine Sparte)")
+        utility, tariff = None, None
+    if tariff is not None and not needs_utility and {"household", "heating"} <= tariffs:
+        notes.append("tariff_kind entfernt (die Frage nennt Licht- und Heizstrom)")
+        tariff = None
     if utility is None and needs_utility and len(utilities - {"district_heating"}) == 1:
         utility = next(iter(utilities - {"district_heating"}))
         notes.append(f"utility_type aus der Frage ergänzt: {utility}")
@@ -119,6 +136,9 @@ def repair_utility_arguments(
     if since and data.get("to_year") and int(str(data["to_year"])) <= int(since.group(1)):
         data["to_year"] = None
         notes.append(f"„seit {since.group(1)}“: Endjahr entfernt")
+    if not needs_year and has_question and data.get("year") and not years:
+        notes.append(f"Jahr {data['year']} entfernt (die Frage nennt kein Jahr)")
+        data["year"] = None
     if needs_year and not data.get("year") and len(years) == 1:
         data["year"] = next(iter(years))
         notes.append(f"Jahr aus der Frage ergänzt: {data['year']}")
