@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-127 – `make_chart` mit erfundenem Zeitraum: die Argument-Reparatur kennt nur `year`
+- **Datum / Meilenstein:** 2026-11-21 / M8
+- **Kategorie:** agent
+- **Status:** akzeptiert
+- **Symptom:** Endlauf run-028, P2, T5 („Zeig mir den Wasserverbrauch der letzten Jahre als Diagramm.“): `make_chart` mit `from_year` 2020 und `to_year` 2023 → „FEHLER: Keine Daten für verbrauch (Wasser)“, keine Grafik. Die Werte 2024 bis 2026 liegen im Faktenspeicher.
+- **Ursache:** `repair_utility_arguments` entfernt ein Jahr, das die Frage nicht nennt, nur im Argument `year`; `from_year`/`to_year` passt sie nur bei „seit JJJJ“ an. Beide Regeln stammen aus run-025 (Z2: 2023 für „aktuell“; „seit“ aus den Übersichtsfragen). „Der letzten Jahre“ kam in den Entwicklungsfragen nicht vor.
+- **Lösung / Workaround:** Keine; nach ISS-108 keine Nachbesserung an den zurückgehaltenen Fragen. Möglich wäre: Zeitraum leeren, wenn die Frage kein Jahr nennt; ohne `from_year` und `to_year` zeigt `make_chart` alle vorhandenen Jahre.
+- **Gelernt:** Eine Argument-Reparatur deckt genau die Fehlerformen ab, die man schon gesehen hat.
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 (Endlauf, Grenzen)
+
+### ISS-126 – Endlauf: Prüffragen nicht erkannt, `check_bill` nicht angeboten; nach leerer Antwort Antwortzwang ohne Werkzeuge (T6 erfunden; teils eigener Fehler)
+- **Datum / Meilenstein:** 2026-11-21 / M8
+- **Kategorie:** agent
+- **Status:** akzeptiert
+- **Symptom:** Endlauf run-028, P2. T3 („Wurde in der Gasabrechnung 2026 der neue Arbeitspreis berechnet?“) und T6 („Ist die Wasserabrechnung 2025 in Ordnung?“) sind Prüffragen; `check_bill` lief in keiner (run-027: 9-mal). In T3, T5 und T6 kam je eine leere Modellantwort (30 bis 40 erzeugte Token, kein Text, kein Werkzeugaufruf), in run-026 und run-027 nie. Danach folgte ein Antwortaufruf ohne Werkzeuge: T3 und T5 „keine Angaben“, T6 eine erfundene Prüfung („stimmt [1]“, 1.200 und 1.150 Liter, 0,02 EUR/l [2]; keine Treffer, beide Belegnummern erfunden), die trotz Zahlen-Rückfrage angenommen wurde. Die Kennzahl wertet T6 als richtiges Urteil ohne Fehlalarm.
+- **Ursache:** (1) `route_tools` bietet `check_bill` nur an, wenn `is_audit_question` anschlägt. Die Wortliste `AUDIT_PHRASES` (korrekt, stimmt, passt, angewendet, …) stammt aus den Entwicklungsfragen und kennt „berechnet“ und „in Ordnung“ nicht. Der Systemprompt schickt dieselben Fragen aber zu `check_bill`, und der Plan in T6 nennt es als ersten Schritt. Bei Grafikfragen fehlt `search`, die Lücken-Rückfrage verlangt es trotzdem (T5). (2) Vermutung, nicht geprüft: Die leeren Antworten sind Aufrufe eines nicht angebotenen Werkzeugs, die nicht als Werkzeugaufruf ankommen; das Protokoll speichert die Rohausgabe nicht. ADR-0020 nahm an, dass das Modell ausgeblendete Werkzeuge trotzdem aufrufen kann; im Endlauf gelang das in keinem Fall. (3) Die Rückfrage `empty` (ADR-0021) erzwingt die nächste Antwort ohne Werkzeuge (`answer_now`). Lag vorher kein Ergebnis vor, bleibt dem Modell nur „keine Angaben“ oder Erfinden. Die Zahlen-Rückfrage kommt nur einmal, eine danach weiter unbelegte Antwort wird angenommen, und Belegnummern ohne Treffer werden nicht entfernt. Der Pfad lief in run-026 und run-027 nie und war nur mit einem Unit-Test belegt (`test_empty_answer_gets_one_answer_call_without_tools`). Eigener Fehler beim Entwurf von ADR-0021: nicht geprüft, ob es vor dem Antwortzwang überhaupt Ergebnisse gibt.
+- **Lösung / Workaround:** Keine; nach ISS-108 keine Nachbesserung an den zurückgehaltenen Fragen. Mögliche Abhilfe für später: `check_bill` immer anbieten oder Prüffragen allgemeiner erkennen; Aufrufe nicht angebotener Werkzeuge erkennen und ausführen; nach einer leeren Antwort ohne bisherige Ergebnisse die Werkzeuge weiter anbieten; Belegnummern ohne Treffer entfernen und unbelegte Zahlen nicht annehmen. Ob Ollama solche Aufrufe verwirft, ließe sich mit einem einzelnen Modellaufruf prüfen (nicht gemacht).
+- **Gelernt:** Ein Rettungspfad, den die Entwicklungsfragen nie auslösen, ist praktisch ungetestet, auch wenn ein Unit-Test ihn abdeckt.
+- **Relevant für Ausarbeitung?** ja → Kapitel 5 (Endlauf, Grenzen der Werkzeugauswahl und der Rückfragen)
+
 ### ISS-125 – Nebenwirkungen der Lückenregel v2 in run-027: Mischantwort ohne Beleg, erfundene Belegnummer nach `repeat_limit`
 - **Datum / Meilenstein:** 2026-11-21 / M8
 - **Kategorie:** agent
@@ -33,6 +53,7 @@
 - **Lösung / Workaround:** Keine. Beide Fälle kippen kein Ergebnis (S1 ist trotzdem besser als in run-026, S4 war schon vorher falsch), und jede weitere Regel wäre auf die Entwicklungsfragen zugeschnitten (ISS-108). Entscheidung des Nutzers (2026-11-21): unverändert in den Endlauf. Mögliche Abhilfe für später: Zitat-Rückfrage auch für Mischantworten, Belegnummern ohne Treffer aus Zwangsantworten entfernen.
 - **Gelernt:** Wenn eine Prüfung enger wird, muss man nachsehen, welche anderen Prüfungen sich auf die alte, weitere Bedingung verlassen haben.
 - **Relevant für Ausarbeitung?** ja → Kapitel 5 (Rückfragen der Schleife, Grenzen)
+- **Nachtrag 2026-11-21 (run-028):** T1 zeigt dasselbe Muster wie S1: Lückensatz, danach die richtige Frist, keine Belegnummer. Zusätzlich greift dort die Lücken-Rückfrage, weil `needs_citation` „1 Monat“ nicht als belegpflichtige Angabe erkennt und die Antwort als reine Lückenantwort gilt; ohne Wirkung, +69 s. Bleibt akzeptiert.
 
 ### ISS-124 – `m8_night.sh` hätte run-026 fortgesetzt statt einen neuen Lauf zu starten (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-21 / M8
@@ -94,6 +115,7 @@
 - **Lösung / Workaround:** Für run-025 hingenommen. B0 läuft erst wieder im Endlauf run-027; ändert man das Budget, ist B0 nicht mehr mit run-025 vergleichbar. Empfehlung: unverändert lassen und im Bericht nennen. Eigener Fehler bei der ersten Auswertung: Die Dateizeiten der VM stehen in UTC, das Journal in MEZ; deshalb wurde die Kürzung zuerst P2/S4 zugeordnet.
 - **Gelernt:** Token-Schätzungen hängen am Tokenizer; nach einem Modellwechsel muss man sie neu messen.
 - **Relevant für Ausarbeitung?** ja → Kapitel 5 (Grenze von B0)
+- **Nachtrag 2026-11-21 (run-028):** Wieder eine Kontextverschiebung bei B0, diesmal T8 (17:38:25, „truncated = 1, n_tokens = 4209“): Die Tabelle der Lichtstrom-Abschläge bricht mitten in der Summe ab. Die Antwort war ohnehin falsch, das Ergebnis ändert sich nicht.
 
 ### ISS-119 – Offene Antwortschwächen nach run-025 (bewusst nicht behoben)
 - **Datum / Meilenstein:** 2026-11-21 / M8
@@ -105,6 +127,8 @@
 - **Gelernt:**
 - **Relevant für Ausarbeitung?** ja → Kapitel 5 und 6 (Grenzen)
 - **Nachtrag 2026-11-21 (run-026):** (1) Mischantworten weiter in S1, Z2, Z3 und S3 („keine weiteren Grafiken“); sie lösen jetzt die Lücken-Rückfrage aus (ISS-122). (2) H3 nennt jetzt alle Soll- und Ist-Werte; Z1 lässt die z-Zahl aus der Kurzfassung weg. (3) S2 nennt jetzt den abgerechneten, falschen Arbeitspreis 39,50 ct/kWh. Neu: Z2 nennt 115,00 EUR, obwohl `get_facts` 120,00 EUR als „neuester Stand“ markiert; das Modell liest die Werkzeugausgabe falsch. (4) `plan` in 3 von 21 Fragen. (7) Neu: Zitate passen nicht immer genau zur Aussage (G4 ohne Belegnummern; V3 belegt die Preise ab 2026 mit den Belegen für 2024; G3 belegt den Ist-Wert 1,0000 nur mit der Rechnung 2024). (8) Neu: Füllsätze aus der Kurzfassung von `check_bill` („stimmt mit Vertrag, Preisschreiben und Zählerständen überein“ auch bei den Betriebskosten G2). Entscheidung: (1) bis (8) werden nicht mehr angegangen; vor dem Endlauf nur ISS-121 bis ISS-123.
+- **Nachtrag 2026-11-21 (run-028):** Neue Formfehler auf den zurückgehaltenen Fragen: T4 hängt an die richtige Antwort einen Soll/Ist-Block ohne Sinn (Soll = Ist, Auswirkung 0 EUR); T8 schreibt „[2024]“ in die Spalte Zeitraum der Tabelle, die Kennzahl zählt das als erfundene Belegnummer. Mischantwort T1 wie S1 (ISS-125). Werden nicht behoben.
+
 
 ### ISS-118 – Kennzahl Tool-Wahl prüfte v2-Läufe gegen die v1-Werkzeuge (eigener Fehler)
 - **Datum / Meilenstein:** 2026-11-21 / M8
@@ -210,13 +234,14 @@
 ### ISS-108 – Testfragen waren zugleich Entwicklungsfragen
 - **Datum / Meilenstein:** 2026-11-20 / M7 (Befund), M8 (Lösung)
 - **Kategorie:** evaluation
-- **Status:** offen
+- **Status:** akzeptiert (Endlauf run-028 gemacht; die Zahlen der Entwicklungsfragen bleiben zu günstig und stehen in Kapitel 5 neben dem Endlauf)
 - **Symptom:** Alle 14 Fragen dienten seit RUN-010 der Entwicklung. Größen-Anfrage, Spartenfilter, Lücken-, Rechen- und Zitier-Rückfrage gehen auf einzelne dieser Fragen zurück. Die Ergebnisse (P1 8, P2 6 von 14) sind deshalb eher zu günstig.
 - **Ursache:** Kein zurückgehaltener Fragensatz von Anfang an (Fehler im Vorgehen, von Claude nicht angesprochen).
 - **Lösung / Workaround:** In Kapitel 5 als Grenze genannt. Ab M8 gibt es einen zurückgehaltenen Fragensatz (`dataset/holdout_questions.yaml`), der erst im Endlauf läuft.
 - **Gelernt:** Wer am Testset entwickelt, misst am Ende auch die eigene Anpassung.
 - **Relevant für Ausarbeitung?** ja → Kapitel 5
 - **Nachtrag 2026-11-21 (run-026):** P2 steigt auf den Entwicklungsfragen von 9 auf 15 von 21. Die Fixes (ADR-0021) stammen aus genau diesen Fragen, der Anstieg ist deshalb zu günstig; aussagekräftig ist erst der Endlauf auf `holdout_questions.yaml`.
+- **Nachtrag 2026-11-21 (run-028, Endlauf):** Auf den 8 zurückgehaltenen Fragen erreicht P2 laut Metrik 5/8 (62 %), nach Handprüfung 4 + 2 Grenzfälle (50 %, mit Grenzfällen 75 %); auf den Entwicklungsfragen (run-027) waren es 17/21 bzw. 16 + 1 Grenzfall (76 %). Fakten in der Antwort 55 statt 88 %. Alle drei Ausfälle gehen auf Regeln zurück, die an den Entwicklungsfragen gebaut wurden (ISS-126, ISS-127). Die Reihenfolge B0 < P1 < P2 hält (B0 1/8, P1 3/8 laut Metrik). Grenze: 8 Fragen, eine Frage entspricht 12,5 Prozentpunkten.
 
 ### ISS-107 – Text-Befunde eingearbeitet, Ausarbeitung ca. 12 Zeilen über 8 Seiten
 - **Datum / Meilenstein:** 2026-11-20 / M7

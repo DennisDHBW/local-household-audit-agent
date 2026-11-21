@@ -1,6 +1,6 @@
 # ADR-0021: Antwortbereinigung, Rückfall auf die belegte Antwort und Wiederholungsgrenze
 
-- **Status:** akzeptiert; Punkt 5 geändert am 2026-11-21 (Nachtrag unten); Wirkung des Nachtrags erst mit run-027 gemessen
+- **Status:** akzeptiert; Punkt 5 geändert am 2026-11-21 (Nachtrag unten); Wirkung des Nachtrags erst mit run-027 gemessen; Antwortzwang nach leerer Antwort im Endlauf run-028 als Schwachstelle bestätigt (ISS-126)
 - **Datum:** 2026-11-21
 - **Meilenstein:** M8
 
@@ -40,3 +40,9 @@ RUN-025, `data/eval/run-025/agentics.json`, ISS-114, ISS-117, ADR-0019, ADR-0020
 - **Punkt 5 geändert:** Die Lückenrückfrage in v2 kommt nur noch bei einer reinen Lückenantwort (`is_pure_gap_answer`: Lückensatz, keine Zahl, keine Belegnummer). Mischantworten werden nicht mehr zurückgeschickt. Der Text (`RETRY_BEFORE_GAP_MESSAGE_V2`) nennt keine Dokumente des Korpus mehr, sondern nur `list_documents` und `search` und die Anweisung, nicht zu raten. Grund: In run-026 half die Rückfrage in 0 von 5 Fällen und verschlechterte 2 (N1, S1); der alte Text stammte aus S4 und N1 (ISS-111). Erwartet: S4 bleibt falsch (Werte nur im Diagramm); N1 wird weiter einmal hinterfragt.
 - **Kontextschätzung:** `_is_context_full` zählt die Schemas der angebotenen Werkzeuge (`_active_specs`), nicht aller 8 (ISS-121).
 - **Messung:** Die Quellen-Präzision zählt Zähler und Nenner je Beleg (ISS-123).
+
+## Nachtrag 2026-11-21 (Endlauf run-028, zurückgehaltene Fragen)
+- **Leere Antwort (Punkt 2):** In run-026 und run-027 nie ausgelöst, im Endlauf 3-mal (T3, T5, T6). Der Antwortaufruf ohne Werkzeuge kam jedes Mal, bevor ein brauchbares Ergebnis vorlag: T3 und T5 antworten „keine Angaben“, T6 erfindet eine Prüfung mit Zahlen und zwei Belegnummern ohne Treffer. Die einmalige Zahlen-Rückfrage hält das nicht auf.
+- **Rückfall und Schritt-Text:** Im Endlauf kein Schritt-Text, kein Englisch, keine Rückfall-Antwort; `repeat_limit` nicht erreicht.
+- **Lückenrückfrage:** 4-mal, einmal geholfen (T3), keinmal verschlechtert; in T1 greift sie bei einer Mischantwort, weil „1 Monat“ nicht als belegpflichtige Angabe zählt (ISS-125).
+- Keine Änderung für M8 (ISS-108). Für eine spätere Version: den Antwortzwang nur zulassen, wenn schon Werkzeugergebnisse vorliegen.

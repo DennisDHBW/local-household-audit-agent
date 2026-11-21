@@ -726,3 +726,58 @@
 - **Neue Nebenwirkungen (ISS-125):** (1) Eine Mischantwort mit Lückensatz bekommt weder die Lücken-Rückfrage (keine reine Lückenantwort) noch die Zitat-Rückfrage (Bedingung `not is_gap_answer`) und wird ohne Beleg angenommen (S1). (2) Die Abschlussantwort nach `repeat_limit` läuft ohne Werkzeuge und ohne Prüfung; das Modell setzt „[1]“ als Fußnote, ohne Treffer ist das eine erfundene Belegnummer (S4).
 - **Deutung:** Das Fix-Paket wirkt wie geplant: kein früher Abbruch mehr, keine Rückfrage auf Mischantworten, 36 s weniger je Frage, zwei Fragen besser, keine im Ergebnis schlechter. Der Gewinn kommt aus der Steuerung der Schleife, nicht aus dem Modell; die Lesefehler (S2, Z2) und S4 (Werte nur im Diagramm) bleiben. Präzision und Recall steigen teils nur formal: In Z2 zeigt das Zitat auf die richtige Seite, die Zahl daneben ist falsch, weil die Kennzahl die Quelle prüft, nicht die Aussage. Wie in RUN-026 ist das Ergebnis zu günstig, weil die Fixes aus denselben Fragen stammen (ISS-108); unabhängig ist erst der Endlauf auf den zurückgehaltenen Fragen.
 - **Entscheidung (Nutzer, 2026-11-21):** Unverändert in den Endlauf; ISS-125 bleibt als Befund ohne weitere Anpassung an den Entwicklungsfragen (ISS-108). Nächster Lauf: run-028 mit `--holdout` (B0, P1, P2).
+
+### RUN-028 – M8, Endlauf B0 / P1 / P2 auf den zurückgehaltenen Fragen (T1–T8, `qwen2.5:7b`)
+- **Datum / Commit:** 2026-11-21, 17:23 bis 18:17 · Stand 9c0e10d (`./scripts/m8_night.sh --holdout`)
+- **Konfiguration:** P2 wie RUN-027 (Werkzeugsatz v2, ADR-0019 bis ADR-0021, ISS-121 bis ISS-123); B0 und P1 unverändert seit RUN-025 (B0 mit 6 von 35 Dateien im Kontext, ca. 6.700 Token, ISS-039); `num_ctx` 8192, Temperatur 0, max. 10 Werkzeugaufrufe. Fragen aus `dataset/holdout_questions.yaml` (geschrieben am 2026-11-20 vor M8, bis zu dieser Auswertung nicht gelesen)
+- **Dauer:** 53 min; B0 15 min (111 s je Frage, Median 15 s; die erste Frage 477 s für das Prefill der 7.700 Token, danach wird der gleiche Anfang wiederverwendet), P1 12 min (93 s), P2 26 min (195 s, Median 179 s). Journal im Laufzeitfenster: eine Kontextverschiebung um 17:38 bei B0/T8 (`truncated = 1`, die Antwort bricht ab, ISS-120); P2 höchstens 3.292 Token je Anfrage
+- **Rohdaten:** `data/eval/run-028/` (`report.md`, `scores.json`, `evidence.json`, `agentics.json`, `p2-*.jsonl`), `run-028.log`, `run-028-env.txt`, `run-028-journal.txt`
+
+| Metrik | B0 | P1 | P2 |
+|---|---|---|---|
+| Richtig laut Metrik (von 8) | 1 | 3 | 5 |
+| Richtig nach Handprüfung (von 8) | 1 (T7, nur mangels Kontext) | 2 + 1 Grenzfall (T3) | 4 + 2 Grenzfälle (T1, T3) |
+| Fakten in der Antwort (von 11) | 0 | 3 | 6 |
+| Fakten im Kontext (von 11) | 4 (davon 3 Zufallstreffer) | 5 (davon 1 Zufallstreffer) | 6 |
+| Erwartete Quellen zitiert (von 11) | 0 | 3 | 5 |
+| Zitat-Präzision je Beleg | 0/1 | 3/6 (50 %) | 6/6 (100 %, in T3 nur formal) |
+| Erfundene Belegnummern | 0 | 0 | 3 (T6 zwei, T8 „[2024]“) |
+| Negativfrage erkannt (von 1) | 1 | 0 | 1 |
+| Fehlalarme (von 2 korrekten Prüffällen) | 0 | 0 | 0 (T6 nur formal) |
+| Tool-Wahl korrekt (von 8) | – | – | 5 |
+| Artefakt wie gewünscht (von 2) | 0 | 0 | 1 (T8 Tabelle; T5 keine Grafik) |
+| Sekunden je Frage (Mittel / Median) | 111 / 15 | 93 / 85 | 195 / 179 |
+| Prompt-Token je Frage (Mittel) | 7.698 | 1.340 | 8.312 |
+
+- **Handprüfung P2 (alle 8 Antworten und Schrittprotokolle gelesen):**
+
+| Frage | Metrik | Hand | Was passierte |
+|---|---|---|---|
+| T1 Kündigungsfrist Heizstrom | ✓ | Grenzfall | `search` trifft die Klausel [1]. Die Antwort beginnt mit „Dazu liegen in den Unterlagen keine Angaben vor.“ und nennt dann 1 Monat zum Ablauf der Erstlaufzeit, danach 1 Monat; ohne Datum und ohne Belegnummer. Die Lücken-Rückfrage greift trotzdem, weil „1 Monat“ nicht als belegpflichtige Angabe zählt; danach `list_documents`, wiederholte Suche, gleiche Antwort (+69 s). Muster wie S1 (ISS-125) |
+| T2 Wasser 2026 | ✓ | richtig | `get_facts` → 72 m³ [1] |
+| T3 Arbeitspreis Gas 2026 | ✗ | Grenzfall | Erste Antwort leer → Antwortaufruf ohne Werkzeuge → „keine Angaben“ → Lücken-Rückfrage → `list_documents`, `search` (nur Treffer aus dem Preisschreiben 09). „Ja“ (sinngemäß) und 9,95 ct/kWh stimmen, aber „in der Gasabrechnung 2026 angewendet [2]“ ist mit der Grundpreis-Zeile des Preisschreibens belegt. Die Rechnung 29 wurde nie gelesen, der z-Zahl-Fehler nicht erwähnt. `check_bill` war nicht angeboten (ISS-126) |
+| T4 Heizstromabschlag 2026 | ✓ | richtig | `plan`, `get_facts` → 105,00 EUR [3] (als „gilt 2026“ markiert); angehängter Soll/Ist-Block ohne Sinn (Soll = Ist, Auswirkung 0 EUR) |
+| T5 Diagramm Wasser | ✗ | falsch | `make_chart` mit erfundenem Zeitraum 2020–2023 → „Keine Daten“ → „keine Angaben“; die Lücken-Rückfrage verlangt `search`, das bei Grafikfragen nicht angeboten ist; danach leere Antwort → Antwortaufruf ohne Werkzeuge → „keine Angaben [1-5]“. Die Werte liegen im Faktenspeicher (ISS-126, ISS-127) |
+| T6 Wasserabrechnung 2025 | ✗ | falsch | `plan` (check_bill, get_facts, make_overview), dann leere Antwort → Antwortaufruf ohne Werkzeuge → erfundene Prüfung: „stimmt [1]“, Soll 1.200 l, Ist 1.150 l, 0,02 EUR/l [2]; es gab keinen Treffer, beide Belegnummern sind erfunden. Plan- und Zahlen-Rückfrage greifen je einmal, das Modell ändert nur die Differenz (50 → 100 l), die Antwort wird angenommen. Laut Metrik Urteil „ja“ wie erwartet und kein Fehlalarm (ISS-126) |
+| T7 Fernwärme (Negativfrage) | ✓ | richtig | `plan`, `get_facts` (Fehler: keine Fernwärme), Lücken-Rückfrage, `list_documents`, `search` → „keine Angaben“ (+37 s durch die Rückfrage) |
+| T8 Tabelle Licht-/Heizstrom 2024 | ✓ | richtig | `make_overview` → Heizstrom 1.016,90 EUR [1], Lichtstrom 1.189,00 EUR [2]; das Modell schreibt „[2024]“ in die Spalte Zeitraum, das zählt als erfundene Belegnummer (Formfehler) |
+
+- **Ursachen der Fehlschläge P2:** (1) Werkzeugauswahl nach Wortliste (ADR-0020): T3 und T6 sind Prüffragen, „berechnet“ und „in Ordnung“ stehen aber nicht in `AUDIT_PHRASES`; `check_bill` wird nicht angeboten, obwohl der Systemprompt solche Fragen zu `check_bill` schickt und der Plan in T6 es als ersten Schritt nennt. `check_bill` lief 0-mal (run-027: 9-mal). (2) Leere Antwort (ADR-0021): 3-mal (T3, T5, T6), in run-026 und run-027 nie; jedes Mal nach einer Aufforderung zu einem Werkzeug, das nicht angeboten war (T3, T6 `check_bill`, T5 `search`), mit 30 bis 40 erzeugten Token ohne Text und ohne Werkzeugaufruf. Vermutung, nicht geprüft: ein Aufruf eines nicht angebotenen Werkzeugs, der nicht als Werkzeugaufruf ankommt. Die Rückfrage `empty` erzwingt danach eine Antwort ohne Werkzeuge; ohne Ergebnisse bleiben „keine Angaben“ (T3, T5) oder Erfinden (T6). (3) Argumente: Zeitraum 2020–2023 für „der letzten Jahre“; die Reparatur entfernt nur ein erfundenes `year` (ISS-127). (4) Mischantwort T1 wie S1 (ISS-125). Kein Fehlschlag geht auf das Retrieval zurück; wo das passende Werkzeug angeboten war und lief (T2, T4, T8), stimmt die Antwort.
+- **B0 (alle Antworten gelesen):** richtig nur T7, und das nur, weil Wasser, Gas und Heizstrom nicht in den Kontext passen (ISS-039); 6 von 8 Antworten lauten „keine Angaben“. T4 nennt den Lichtstrom-Abschlag 120 EUR als Heizstromabschlag; T8 listet die Lichtstrom-Abschläge 2024 und bricht nach der Kontextverschiebung mitten in der Summe ab. Von den 4 Fakten „im Kontext“ sind 3 Zufallstreffer: dieselbe Zahl steht in einer Strom-Unterlage („1 Monat“, „105,00“, „78“).
+- **P1 (alle Antworten und Kontexte gelesen):** richtig T1 und T4 (mit Beleg); Grenzfall T3 („Ja“, 9,95 ct/kWh, belegt mit dem Abschlagsplan 2026; die Rechnung 29 war nicht im Kontext). Falsch: T2 (Verbrauch 2026 nicht im Kontext, ehrliche Lücke), T5 (kein Diagrammwerkzeug, im Kontext nur Bildbeschreibungen von Strom und Gas; die „78“ dort ist ein Zufallstreffer), T6 (Gesamtkosten nicht im Kontext; zitiert den Bescheid 2025 und schreibt dann, die Abrechnung 2025 fehle; kein Urteil), T7 (Heizstrom-Arbeitspreis 24,10 ct/kWh als Fernwärmepreis, wie N2 in RUN-025), T8 (Heizstrom im Kontext, Lichtstrom nicht; Lückenantwort). Ursachen: Retrieval T2, T5, T6, T8; Synthese T6, T7.
+- **Agentik (`agentics.json`, run-027 → run-028, 21 bzw. 8 Fragen):** Modellaufrufe je Frage 2,8 → 4,2, Werkzeugaufrufe 1,5 → 2,0; Rückfragen 7 in 21 Fragen → 10 in 8 Fragen (Lücke 4, leer 3, Plan 2, Zahlen 1); `check_bill` 9 → 0 Aufrufe; `plan` in T4, T6, T7, jeweils zuerst; 5 Argumentreparaturen; 2 ungültige Aufrufe (T5 `make_chart`, T7 `get_facts` Fernwärme); 1 Wiederholung (T1); alle Endgründe `answer`; kein Schritt-Text, kein Englisch; Prefill 73 %, Dekodieren 22 %. Der erste Modellaufruf je Frage dauert wie in run-027 rund 100 s (102 statt 106 s); die längere Zeit je Frage kommt aus den zusätzlichen Aufrufen.
+- **Lücken-Rückfrage einzeln (ISS-122):** 4-mal (T1, T3, T5, T7); 1-mal geholfen (T3: danach Suche und der richtige Preis; zum ersten Mal seit run-026), 3-mal ohne Wirkung (T1 +69 s, T5, T7 +37 s), 0-mal verschlechtert.
+- **Vergleich mit den Entwicklungsfragen (ISS-108):**
+
+| | Entwicklungsfragen | Zurückgehaltene Fragen (run-028) |
+|---|---|---|
+| B0 richtig laut Metrik | 4/21 (19 %, run-025) | 1/8 (12 %) |
+| P1 richtig laut Metrik / nach Handprüfung | 6/21 (29 %) / 6 + 2 Grenzfälle (run-025) | 3/8 (38 %) / 2 + 1 Grenzfall |
+| P2 richtig laut Metrik | 17/21 (81 %, run-027) | 5/8 (62 %) |
+| P2 nach Handprüfung | 16 + 1 Grenzfall (76 %, mit Grenzfall 81 %) | 4 + 2 Grenzfälle (50 %, mit Grenzfällen 75 %) |
+| P2 Fakten in der Antwort | 43/49 (88 %) | 6/11 (55 %) |
+| P2 Tool-Wahl korrekt | 19/21 | 5/8 |
+| P2 Sekunden je Frage | 172 | 195 |
+
+- **Deutung:** Die Reihenfolge B0 < P1 < P2 hält auch auf Fragen, an denen nicht entwickelt wurde, laut Metrik wie nach Handprüfung. Der Abstand von P2 zu den Entwicklungsfragen ist aber groß: nach Handprüfung 50 statt 76 %, Fakten in der Antwort 55 statt 88 %. Bei 8 Fragen macht eine Frage 12,5 Prozentpunkte aus; die Prozentwerte sind deshalb grob, die Ursachen dagegen eindeutig. Alle drei Ausfälle von P2 (T3, T5, T6) gehen auf Regeln zurück, die an den Entwicklungsfragen gebaut wurden (Wortliste für Prüffragen, Jahresreparatur, Pfad für leere Antworten), keiner auf das Retrieval. Der Endlauf bestätigt damit ISS-108: run-026 und run-027 überschätzen P2. Er bestätigt auch ISS-110 und ISS-111: Der Vorsprung entsteht im Code (Faktenspeicher, Werkzeuge) und hängt an Wortlisten. Fehlt das Werkzeug, liegt P2 auf dem Niveau von P1 oder darunter und erfindet in T6 eine Prüfung. „0 Fehlalarme“ ist für P2 deshalb nur formal. Nach einem eingebauten Fehler wurde in den zurückgehaltenen Fragen nicht direkt gefragt; den z-Zahl-Fehler der Gasabrechnung 2026 (T3) nennt keine Variante.
+- **Konsequenz:** Keine Nachbesserung an diesen Fragen (ISS-108); ISS-126 und ISS-127 bleiben Befunde. M8 wird mit diesen Zahlen abgeschlossen (Tag v2.0.0 im nächsten Arbeitspaket).

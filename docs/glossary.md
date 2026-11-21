@@ -156,7 +156,7 @@
 | Gegenstück | `include_counterpart` | Parameter von `search` für Prüffragen: ergänzt je bis zu 2 Treffer aus Vertrag/Preisschreiben bzw. Rechnung, falls die erste Suche nur eine Familie trifft | |
 | Bestandsmeldung | `ToolBox._inventory` | Text bei leerer Suche: nennt Sparten und Dokumentarten, zu denen Unterlagen vorliegen (ISS-051) | |
 | Wiederholungssperre | `_CallMemory`, `REPEAT_OBSERVATION`, `REPEAT_FAILED_OBSERVATION`, `ToolCallStep.is_repeat` | Ein Aufruf mit gleichem Werkzeug und gleichen (bereinigten) Argumenten wird in derselben Frage nicht erneut ausgeführt, ebenso ein schon fehlgeschlagener; das Modell bekommt einen Hinweis, der Aufruf zählt zum Limit (ADR-0015) | |
-| Prüffrage | `is_audit_question` | Frage, die eine Rechnung gegen Vertrag, Preisschreiben oder Zählerstände prüfen lässt; erkannt am Wortlaut (korrekt, stimmt, passt, …) | |
+| Prüffrage | `is_audit_question`, `AUDIT_PHRASES` | Frage, die eine Rechnung gegen Vertrag, Preisschreiben oder Zählerstände prüfen lässt; erkannt am Wortlaut (korrekt, stimmt, passt, …); die Wortliste stammt aus den Entwicklungsfragen und erkennt im Endlauf „berechnet“ und „in Ordnung“ nicht (ISS-126) | |
 | Rechennachfrage | `CALCULATE_BEFORE_ANSWER_MESSAGE`, `NudgeStep.reason` | Einmalige Rückfrage des Loops, wenn eine Prüffrage ohne `calculate` beantwortet werden soll (ISS-058, ADR-0015) | |
 | Reine Lückenantwort (v2) | `is_pure_gap_answer` | Lückenantwort ohne Zahl und ohne Belegnummer; nur sie löst in v2 die Lückenrückfrage aus, Mischantworten nicht (ISS-122) | |
 | Mischantwort | – | Antwort mit Fakten und zusätzlich einem Lückensatz („Dazu liegen … keine Angaben vor“); bekommt in v2 weder die Lücken- noch die Zitat-Rückfrage (ISS-125) | |
@@ -191,6 +191,8 @@
 | Selbstprüfung | `_self_check`, `NudgeReason` (`check`, `chart`, `overview`, `verdict`, `plan`, `language`, `numbers`) | Prüfung vor der Antwort: Prüffrage ohne `check_bill`, fehlende Grafik oder Übersicht, Urteil gegen `check_bill`, geplanter Schritt fehlt, Antwort nicht deutsch, Zahlen ohne Werkzeugergebnis; je Grund eine Rückfrage | |
 | Artefakt | `Artifact` | Tabelle oder Grafik eines Werkzeugs, die an die Antwort angehängt wird (Markdown, PNG, JSON) | |
 | Zurückgehaltene Fragen | `holdout_questions.yaml`, `--holdout` | 8 Testfragen (T1–T8), vor M8 geschrieben, nur für den Endlauf (ISS-108) | |
+| Endlauf | `scripts/m8_night.sh --holdout`, run-028 | Einmaliger Lauf von B0, P1 und P2 auf den zurückgehaltenen Fragen am Ende von M8; danach keine Nachbesserung an diesen Fragen (ISS-108) | |
+| Zufallstreffer (Fakten im Kontext) | `evidence.json`, `facts_in_context` | Die Sollzahl steht im Kontext, aber in einem anderen Dokument mit anderer Bedeutung (z. B. „1 Monat“ aus dem Lichtstrom- statt dem Heizstromvertrag); die Kennzahl zählt sie trotzdem mit (RUN-028) | |
 | Werkzeugauswahl nach Fragetyp | `route_tools`, `AgentSettings.route_tools` | Code bietet je Fragetyp (Prüffrage, Grafik, Übersicht, sonst) nur passende Werkzeuge an (ADR-0020) | |
 | Argument-Reparatur | `scope.repair_utility_arguments` | Korrigiert Sparte, Stromart und Jahr der Werkzeugargumente anhand der Frage; steht als „Hinweis: Argumente angepasst“ im Ergebnis (ISS-114) | |
 | Hinweis (Prüfung) | `CheckStatus.NOTICE` | Plausibilitätshinweis, z. B. Verbrauch über 25 % anders als im Vorjahr; kein Fehler | |

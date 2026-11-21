@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-21 – M8 Auswertung Endlauf run-028 (zurückgehaltene Fragen)
+**Ziel der Sitzung:** Den Endlauf B0/P1/P2 auf T1–T8 von Hand prüfen und mit den Entwicklungsfragen vergleichen; keine Nachbesserung an diesen Fragen (ISS-108).
+**Was wurde gemacht:**
+- Rohdaten von run-028 committet; `holdout_questions.yaml` erst jetzt gelesen
+- Alle 24 Antworten gegen Sollwerte geprüft, alle P2-Schrittprotokolle und die P1-Kontexte gelesen; Ollama-Journal auf 17:23–18:17 gefiltert
+- Ursachen im Code nachvollzogen und ohne Ollama nachgestellt: `route_tools`/`is_audit_question` für T1–T8, `is_pure_gap_answer` für T1, Pfad der leeren Antwort in `AgentLoop.run`
+**Ergebnis:** P2 laut Metrik 5/8, nach Handprüfung 4 + 2 Grenzfälle (Entwicklungsfragen: 16 + 1 von 21); P1 3/8 (2 + 1), B0 1/8. Reihenfolge B0 < P1 < P2 hält. Die P2-Ausfälle T3, T5, T6 kommen aus der Wortliste für Prüffragen, der Zeitraum-Reparatur und dem Antwortzwang nach leerer Antwort; T6 erfindet eine Prüfung mit erfundenen Belegen, zählt aber formal als richtiges Urteil ohne Fehlalarm.
+**Gelieferte Dateien / Funktionen:** `data/eval/run-028*`, RUN-028 in `evaluation-log.md`, ISS-126, ISS-127, Nachträge zu ISS-108 (jetzt akzeptiert), ISS-119, ISS-120, ISS-125, ADR-0020, ADR-0021, Glossar (Endlauf, Zufallstreffer, Prüffrage); kein Code geändert
+**Entscheidungen:** Keine neue ADR; Statusnachträge in ADR-0020 und ADR-0021. Nach ISS-108 keine Nachbesserung an T1–T8.
+**Probleme / Überraschungen:** ISS-126 (zwei von zwei Prüffragen nicht erkannt; leere Antworten erstmals, vermutlich Aufrufe nicht angebotener Werkzeuge, nicht geprüft; Antwortzwang ohne Ergebnisse, teils eigener Entwurfsfehler in ADR-0021), ISS-127. Die Lücken-Rückfrage half zum ersten Mal (T3). Das Home der VM-Shell war voll; `uv` installiert Python jetzt nach `/tmp/uv-python-*`.
+**Offen / unklar:** Ursache der leeren Antworten (Einzelaufruf mit Ollama nötig); RAGAS für M8
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `test(evaluation): add final run-028 data (M8, held-out questions, B0/P1/P2, qwen2.5:7b)`, `docs: record final run-028 evaluation, ISS-126 and ISS-127`
+
 ### 2026-11-21 – M8 Auswertung Kontrolllauf run-027
 **Ziel der Sitzung:** Prüfen, ob das Fix-Paket (ISS-121 bis ISS-123) im Kontrolllauf etwas schlechter gemacht hat als in run-026; keine Nachbesserung an den Entwicklungsfragen.
 **Was wurde gemacht:**
