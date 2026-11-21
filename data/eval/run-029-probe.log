@@ -1,0 +1,67 @@
+== qwen2.5:7b (completion, tools)
+  qwen2.5:7b F1 frame: 88.34 s, prefill 67.34 s, exact True, 
+  qwen2.5:7b F1 repeat: 10.23 s, prefill 0.18 s, exact True, 
+  qwen2.5:7b F2 frame: 12.17 s, prefill 1.83 s, exact True, 
+  qwen2.5:7b F3 frame: 10.45 s, prefill 1.81 s, exact False, 
+  qwen2.5:7b F4 frame: 13.69 s, prefill 3.03 s, exact True, 
+  qwen2.5:7b F5 frame: 10.63 s, prefill 1.61 s, exact True, 
+  qwen2.5:7b F6 frame: 12.55 s, prefill 1.74 s, exact True, 
+  qwen2.5:7b F7 frame: 17.62 s, prefill 1.74 s, exact True, 
+  qwen2.5:7b F8 frame: 15.71 s, prefill 5.65 s, exact True, 
+  qwen2.5:7b alt-separate 1: prefill 2.13 s
+  qwen2.5:7b alt-separate 2: prefill 16.07 s
+  qwen2.5:7b alt-separate 3: prefill 1.98 s
+  qwen2.5:7b alt-shared 1: prefill 79.63 s
+  qwen2.5:7b alt-shared 2: prefill 11.03 s
+  qwen2.5:7b alt-shared 3: prefill 3.32 s
+  ISS-126 chat: 64 Token, [{'name': 'plan', 'arguments': {'steps': ['check_bill Heizstrom 2024', 'get_facts verbrauch Heizstrom 2024', 'get_facts rechnungsbetrag Heizstrom 2024']}}]
+  ISS-126 raw: '<tool_call>\n{"name": "plan", "arguments": {"steps": ["check_bill Heizstrom 2024", "get_facts verbrauch 2024", "calculate 3100 * (0.395 - 0.382)"]}}\n</tool_call>'
+== qwen3:8b (completion, tools, thinking)
+  qwen3:8b F1 frame: 105.04 s, prefill 79.75 s, exact True, 
+  qwen3:8b F1 repeat: 12.51 s, prefill 0.21 s, exact True, 
+  qwen3:8b F2 frame: 18.87 s, prefill 4.21 s, exact True, 
+  qwen3:8b F3 frame: 15.62 s, prefill 4.37 s, exact False, 
+  qwen3:8b F4 frame: 16.97 s, prefill 4.47 s, exact True, 
+  qwen3:8b F5 frame: 14.93 s, prefill 3.89 s, exact True, 
+  qwen3:8b F6 frame: 17.56 s, prefill 4.03 s, exact True, 
+  qwen3:8b F7 frame: 23.45 s, prefill 3.72 s, exact True, 
+  qwen3:8b F8 frame: 21.22 s, prefill 6.91 s, exact True, 
+  qwen3:8b alt-separate 1: prefill 4.81 s
+  qwen3:8b alt-separate 2: prefill 18.06 s
+  qwen3:8b alt-separate 3: prefill 3.94 s
+  qwen3:8b alt-shared 1: prefill 87.74 s
+  qwen3:8b alt-shared 2: prefill 12.8 s
+  qwen3:8b alt-shared 3: prefill 6.76 s
+== qwen3.5:4b (completion, vision, tools, thinking)
+  qwen3.5:4b F1 frame: 53.97 s, prefill 39.01 s, exact True, 
+  qwen3.5:4b F1 repeat: 7.6 s, prefill 0.3 s, exact True, 
+  qwen3.5:4b F2 frame: 38.48 s, prefill 30.63 s, exact True, 
+  qwen3.5:4b F3 frame: 37.47 s, prefill 30.79 s, exact False, 
+  qwen3.5:4b F4 frame: 37.98 s, prefill 30.64 s, exact True, 
+  qwen3.5:4b F5 frame: 38.39 s, prefill 31.26 s, exact True, 
+  qwen3.5:4b F6 frame: 38.94 s, prefill 31.07 s, exact True, 
+  qwen3.5:4b F7 frame: 44.4 s, prefill 31.61 s, exact True, 
+  qwen3.5:4b F8 frame: 41.44 s, prefill 34.03 s, exact True, 
+  qwen3.5:4b alt-separate 1: prefill 29.47 s
+  qwen3.5:4b alt-separate 2: prefill 9.4 s
+  qwen3.5:4b alt-separate 3: prefill 29.22 s
+  qwen3.5:4b alt-shared 1: prefill 45.13 s
+  qwen3.5:4b alt-shared 2: prefill 35.18 s
+  qwen3.5:4b alt-shared 3: prefill 26.15 s
+== granite4:tiny-h (completion, tools)
+  granite4:tiny-h F1 frame: 32.3 s, prefill 19.83 s, exact True, 
+  granite4:tiny-h F1 repeat: 3.78 s, prefill 0.16 s, exact True, 
+  granite4:tiny-h F2 frame: 18.78 s, prefill 15.15 s, exact True, 
+  granite4:tiny-h F3 frame: 18.3 s, prefill 15.26 s, exact False, 
+  granite4:tiny-h F4 frame: 18.56 s, prefill 15.29 s, exact True, 
+  granite4:tiny-h F5 frame: 18.44 s, prefill 15.29 s, exact False, 
+  granite4:tiny-h F6 frame: 18.68 s, prefill 15.23 s, exact False, 
+  granite4:tiny-h F7 frame: 20.89 s, prefill 15.21 s, exact True, 
+  granite4:tiny-h F8 frame: 19.22 s, prefill 15.96 s, exact True, 
+  granite4:tiny-h alt-separate 1: prefill 14.1 s
+  granite4:tiny-h alt-separate 2: prefill 4.58 s
+  granite4:tiny-h alt-separate 3: prefill 13.99 s
+  granite4:tiny-h alt-shared 1: prefill 22.65 s
+  granite4:tiny-h alt-shared 2: prefill 16.91 s
+  granite4:tiny-h alt-shared 3: prefill 12.82 s
+probe: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-029-probe/m9-probe.md

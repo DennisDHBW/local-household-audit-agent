@@ -223,6 +223,8 @@
 | Machbarkeitsprobe | `scripts/m9_probe.py`, M9-0 | Kurzer Lauf je Kandidatenmodell vor dem Umbau: hält das Modell das JSON-Schema ein, wie schnell ist es, greift der Cache | |
 | Gold-Rahmen | `ProbeQuestion.gold_tasks` | Erwarteter Auftragsrahmen einer Frage; je Feld sind mehrere zulässige Werte möglich, nicht genannte Felder werden nicht bewertet | |
 | Stufenwechsel | `alt-separate`, `alt-shared` | Cache-Probe: Folge Rahmen → Antwort → Rahmen, einmal mit getrennten Systemprompts, einmal mit einem gemeinsamen; zeigt, ob der Wechsel den Präfix verdrängt | |
+| Hybridmodell | `qwen3.5:4b`, `granite4:tiny-h` | Sprachmodell, das Attention-Schichten mit rekurrenten Schichten mischt (lineare Attention, Mamba-2); nutzt in RUN-029 den Präfix-Cache nur bei völlig gleichem Prompt | |
+| Prompt-Cache (llama-server) | `prompt cache`, ISS-131 | Ablage früherer Cache-Stände im Arbeitsspeicher; holt einen alten Präfix nach einem Aufruf mit anderem Prompt zurück, darf bis 8 GiB belegen | |
 | Umformulierungs-Konsistenz | geplant in M9c | Anteil der Fragen, bei denen bedeutungsgleiche Umformulierungen dasselbe Ergebnis liefern (metamorphes Testen) | |
 | H2 | `dataset/holdout_h2.yaml`, IDs `U1`–`U24` | Neuer zurückgehaltener Fragesatz für den Endlauf von M9, von Claude vor dem Umbau geschrieben und per SHA-256 versiegelt (ISS-130); bis M9f nicht öffnen | |
 | Wilson-Intervall | geplant in M9c | Konfidenzintervall für eine Quote, auch bei kleinen Fragezahlen brauchbar | |

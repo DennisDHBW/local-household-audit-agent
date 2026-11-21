@@ -24,6 +24,16 @@
 
 ## Einträge
 
+### ISS-131 – Prompt-Cache des llama-servers darf bis 8 GiB Arbeitsspeicher belegen, Ollama läuft unter `MemoryMax=9G`
+- **Datum / Meilenstein:** 2026-11-21 / M9-0 (RUN-029)
+- **Kategorie:** hardware
+- **Status:** offen
+- **Symptom:** Das Ollama-Journal der Probe meldet bei jedem Modellstart `prompt cache is enabled, size limit: 8192 MiB` und `idle slots will be saved to prompt cache upon starting a new task`. Der Cache liegt im Arbeitsspeicher, zusätzlich zum Modell (3,1–6,2 GB) und unter derselben Grenze von 9 GB.
+- **Ursache:** Voreinstellung des llama-servers in Ollama 0.35.1. Der Cache ist zugleich der Grund, warum der Stufenwechsel in P3 nichts kostet (RUN-029). Plausible, nicht belegte Ursache für den OOM-Kill aus ISS-043: Damals wuchs der Cache mit den langen B0-Prompts.
+- **Lösung / Workaround:** Offen. Vor M9c klären, ob und wie Ollama das Limit einstellen lässt (der llama-server nennt `--cache-ram`; eine Ollama-Einstellung dafür ist nicht geprüft) und im Entwicklungslauf den Speicher von Ollama mitschreiben (`memory.peak` der systemd-Einheit). Erst dann auf das Entladen nach jeder Frage verzichten (ISS-128).
+- **Gelernt:** Eine Beschleunigung, die Speicher belegt, gehört unter einer festen Speichergrenze mitgemessen.
+- **Relevant für Ausarbeitung?** ja, kurz → Kapitel 3 (Modellbetrieb, Speichergrenze)
+
 ### ISS-130 – H2 von Claude statt von Dennis geschrieben: gleicher Autor wie Code und Regeln, Fehlerfälle aus der Entwicklung bekannt
 - **Datum / Meilenstein:** 2026-11-21 / M9-0
 - **Kategorie:** evaluation
@@ -54,6 +64,7 @@
 - **Gelernt:** Bei 18 Token/s Prefill entscheidet die Reihenfolge im Prompt über die Laufzeit mehr als die Zahl der Aufrufe.
 - **Relevant für Ausarbeitung?** ja → Kapitel 3 (Laufzeit, Modellbetrieb)
 - **Nachtrag 2026-11-21 (M9-0, eigener Fehler):** Die Ursache stand schon in ISS-057: `generate` entlädt nach jeder P1/P2-Frage beide Modelle (`unloads_after_each_question`, Schutz vor dem OOM-Kill aus ISS-043), jede P2-Frage beginnt also mit kaltem Modell und leerem Cache. Das Ollama-Journal von run-028 zeigt es ebenfalls: Der llama-server beginnt zu Beginn jeder P2-Frage wieder bei `task 0`, wird also neu gestartet. Bei der Planung von M9 wurde das ältere Issue nicht gelesen und die Ursache als ungeklärt eingetragen. Innerhalb einer Frage zeigen die Schrittprotokolle zusätzlich: Nach einem Aufruf ohne Werkzeuge muss der nächste Aufruf mit Werkzeugen den Werkzeugteil des Prompts neu berechnen (T3: 65 s statt 4–13 s), weil das Qwen-Template die Werkzeuge in den Systemblock schreibt. `prompt_eval_count` nennt auch bei Cache-Treffern die volle Prompt-Länge; ein Treffer zeigt sich nur in der Prefill-Zeit. Folge für M9: Die Probe misst, ob ein geladenes Modell den Präfix zwischen Fragen und zwischen den Stufen (Rahmen → Antwort → Rahmen) behält und wie viel RAM es belegt; ob die Auswertung für P3 auf das Entladen nach jeder Frage verzichten kann, entscheidet M9c mit Blick auf ISS-043.
+- **Nachtrag 2026-11-21 (RUN-029):** Gemessen: Bleibt `qwen2.5:7b` geladen, sinkt das Prefill des festen Prompt-Teils von 67 auf 1,8 s je Frage; nach einem Aufruf mit anderem Systemprompt holt der llama-server den alten Stand aus seinem Prompt-Cache (2,0 s). Hybridmodelle (`qwen3.5:4b`, `granite4:tiny-h`) profitieren nur bei völlig gleichem Prompt. Speicherfrage siehe ISS-131.
 
 ### ISS-127 – `make_chart` mit erfundenem Zeitraum: die Argument-Reparatur kennt nur `year`
 - **Datum / Meilenstein:** 2026-11-21 / M8
@@ -75,6 +86,7 @@
 - **Gelernt:** Ein Rettungspfad, den die Entwicklungsfragen nie auslösen, ist praktisch ungetestet, auch wenn ein Unit-Test ihn abdeckt.
 - **Relevant für Ausarbeitung?** ja → Kapitel 5 (Endlauf, Grenzen der Werkzeugauswahl und der Rückfragen)
 - **Nachtrag 2026-11-21 (M9-0, eigener Fehler in der Probe):** Der erste Probeaufruf (run-029-probe) prüfte nur den ersten P2-Aufruf. Der ist immer `plan` (in `ALWAYS_OFFERED`, Beschreibung „Zuerst aufrufen“); das Modell plante „check_bill Heizstrom 2024“, Chat und Rohausgabe stimmen überein. Leer kamen in run-028 aber die Aufrufe direkt nach der Plan-Beobachtung „Führe jetzt Schritt 1 aus.“ (T6: 30 erzeugte Token, kein Text, kein Werkzeugaufruf). Beim Entwurf der Probe nicht nachgesehen, welcher Aufruf leer war. Korrektur: Die Probe spielt jetzt auch diesen zweiten Aufruf nach (`--only-iss126`), als Chat und als Rohtext.
+- **Nachtrag 2026-11-21 (RUN-029, Ursache (2) geklärt):** Der nachgespielte zweite Aufruf liefert im Chat 32 erzeugte Token, keinen Text und keinen Werkzeugaufruf, wie T6 in run-028 (30 Token). Derselbe Verlauf als Rohtext (Template nachgebaut, 1.879 statt 1.817 Prompt-Token) zeigt, was das Modell schreibt: `<tool_call>{"name": "check_bill", "arguments": {"utility_type": "district_heating", "tariff_kind": "heating", "year": 2024}}</tool_call>`. Ollama 0.35.1 nimmt den Aufruf eines nicht angebotenen Werkzeugs also aus der Antwort heraus und gibt ihn nicht als Werkzeugaufruf zurück; übrig bleibt eine leere Antwort. Die Annahme aus ADR-0020 („das Modell kann ausgeblendete Werkzeuge trotzdem aufrufen“) war falsch. Nebenbefund: Das Modell hätte `check_bill` mit der Sparte Fernwärme statt Strom aufgerufen. Für P3 ohne Belang, weil P3 kein natives Tool-Calling nutzt (ADR-0022).
 
 ### ISS-125 – Nebenwirkungen der Lückenregel v2 in run-027: Mischantwort ohne Beleg, erfundene Belegnummer nach `repeat_limit`
 - **Datum / Meilenstein:** 2026-11-21 / M8
