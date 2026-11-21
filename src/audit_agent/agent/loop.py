@@ -35,21 +35,26 @@ from audit_agent.agent.prompts import (
     CHART_BEFORE_ANSWER_MESSAGE,
     CHECK_BEFORE_ANSWER_MESSAGE,
     CITE_BEFORE_ANSWER_MESSAGE,
+    EMPTY_ANSWER_MESSAGE,
     FORCED_ANSWER_MESSAGE,
+    LANGUAGE_MESSAGE,
     NUMBERS_BEFORE_ANSWER_MESSAGE,
     OVERVIEW_BEFORE_ANSWER_MESSAGE,
-    PLAN_HINT,
     PLAN_STEP_MISSING_MESSAGE,
     REPEAT_FAILED_OBSERVATION,
     REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
     RETRY_BEFORE_GAP_MESSAGE_V2,
+    STEP_TALK_MESSAGE,
     VERDICT_MISMATCH_MESSAGE,
     answer_says_correct,
     drop_trailing_gap,
     has_citation,
     is_audit_question,
+    is_english,
     is_gap_answer,
+    needs_citation,
+    strip_step_talk,
     system_prompt,
     system_prompt_v2,
     unsupported_numbers,
@@ -64,6 +69,14 @@ from audit_agent.config import Settings
 NANOSECONDS_PER_SECOND = 1_000_000_000
 HISTORY_TURNS = 2
 HISTORY_ANSWER_CHARS = 600
+REPEAT_LIMIT = 2
+"""Repeated calls of one question before the loop forces an answer (run-025 N1: ten calls that
+alternated between the same two failing calls; ISS-117)."""
+FALLBACK_REASONS: frozenset[str] = frozenset(
+    {"plan", "numbers", "cite", "language", "chart", "overview"}
+)
+"""Self-check questions after which the questioned answer stays the fallback: they ask to add
+or confirm something, not to correct the verdict (``verdict``) or to check first (``check``)."""
 CHARS_PER_TOKEN = 2.4
 """Characters per token of ``llama3.1:8b`` on our German texts, rounded down from measurements.
 
@@ -202,147 +215,196 @@ class AgentLoop:
         messages.append({"role": "user", "content": question})
         context_text = " ".join(q for q, _ in (history or [])[-HISTORY_TURNS:]) + " " + question
         question_token = CURRENT_QUESTION.set(context_text)
-        self._active_specs = self._specs
-        if is_v2 and agent.route_tools:
-            offered = route_tools(question, context_text)
-            self._active_specs = [
-                tool.spec() for name, tool in self._tools.items() if name in offered
-            ]
-        is_plan_hinted = not is_v2
+        try:
+            self._active_specs = self._specs
+            offered_names = set(self._tools)
+            if is_v2 and agent.route_tools:
+                offered_names = set(route_tools(question, context_text))
+                self._active_specs = [
+                    tool.spec() for name, tool in self._tools.items() if name in offered_names
+                ]
 
-        def emit(step: AgentStep) -> None:
-            steps.append(step)
-            if on_step is not None:
-                on_step(step, book)
+            def emit(step: AgentStep) -> None:
+                steps.append(step)
+                if on_step is not None:
+                    on_step(step, book)
 
-        def nudge(message: Any, reason: NudgeReason, text: str) -> None:
-            messages.extend([message, {"role": "user", "content": text}])
-            emit(NudgeStep(index=len(steps), message=text, reason=reason))
+            def nudge(message: Any, reason: NudgeReason, text: str) -> None:
+                messages.extend([message, {"role": "user", "content": text}])
+                emit(NudgeStep(index=len(steps), message=text, reason=reason))
 
-        tool_call_count = 0
-        forced: StopReason | None = None
-        is_gap_questioned = False
-        is_calculate_questioned = False
-        is_cite_questioned = False
-        is_calculated = False
-        is_audit = is_audit_question(question)
-        verify = is_v2 and agent.verify_answer
-        asked: set[NudgeReason] = set()
-        memory = _CallMemory()
-        answer = ""
-        stop_reason: StopReason = "answer"
+            tool_call_count = 0
+            repeat_count = 0
+            forced: StopReason | None = None
+            answer_now = False
+            is_gap_questioned = False
+            is_calculate_questioned = False
+            is_cite_questioned = False
+            is_calculated = False
+            is_audit = is_audit_question(question)
+            verify = is_v2 and agent.verify_answer
+            asked: set[NudgeReason] = set()
+            memory = _CallMemory()
+            answer = ""
+            fallback = ""
+            is_fallback_answer = False
 
-        if is_audit and agent.audit_flow_enabled:
-            is_calculated = self._run_audit_flow(
-                question, model, messages, book, memory, emit, lambda: len(steps)
-            )
+            if is_audit and agent.audit_flow_enabled:
+                is_calculated = self._run_audit_flow(
+                    question, model, messages, book, memory, emit, lambda: len(steps)
+                )
 
-        while True:
-            if forced is not None:
-                messages.append({"role": "user", "content": FORCED_ANSWER_MESSAGE})
-            response, model_step = self._call_model(
-                model, messages, len(steps), offer_tools=forced is None
-            )
-            emit(model_step)
-            message = response.message
-            calls = [] if forced is not None else _invocations(message)
-            is_text_call = False
-            if not calls and forced is None:
-                text_call = parse_text_call(message.content or "", self._tools)
-                if text_call is not None:
-                    calls, is_text_call = [_native_call(text_call)], True
-            if not calls:
-                answer = (message.content or "").strip()
-                if is_v2:
-                    answer = drop_trailing_gap(answer)
-                if (
-                    forced is None
-                    and not is_gap_questioned
-                    and tool_call_count < agent.min_searches_before_gap
-                    and is_gap_answer(answer)
-                ):
-                    is_gap_questioned = True
-                    nudge(
-                        message,
-                        "gap",
-                        RETRY_BEFORE_GAP_MESSAGE_V2 if is_v2 else RETRY_BEFORE_GAP_MESSAGE,
+            while True:
+                if forced is not None:
+                    messages.append({"role": "user", "content": FORCED_ANSWER_MESSAGE})
+                offer_tools = forced is None and not answer_now
+                answer_now = False
+                response, model_step = self._call_model(
+                    model, messages, len(steps), offer_tools=offer_tools
+                )
+                emit(model_step)
+                message = response.message
+                calls = _invocations(message) if offer_tools else []
+                is_text_call = False
+                if not calls and offer_tools:
+                    text_call = parse_text_call(message.content or "", self._tools)
+                    if text_call is not None:
+                        calls, is_text_call = [_native_call(text_call)], True
+                if not calls:
+                    raw = (message.content or "").strip()
+                    answer = drop_trailing_gap(strip_step_talk(raw)) if is_v2 else raw
+                    if is_v2 and fallback and (not answer or is_gap_answer(answer)):
+                        break  # a self-check question made it worse; the fallback is used below
+                    if is_v2 and not answer and forced is None:
+                        if raw and "steps" not in asked:
+                            asked.add("steps")
+                            nudge(message, "steps", STEP_TALK_MESSAGE)
+                            continue
+                        if "empty" not in asked:
+                            asked.add("empty")
+                            nudge(message, "empty", EMPTY_ANSWER_MESSAGE)
+                            answer_now = True
+                            continue
+                    searched = any(
+                        isinstance(s, ToolCallStep) and s.tool == "search" and s.is_valid
+                        for s in steps
                     )
-                    continue
-                if verify and forced is None and tool_call_count > 0:
-                    reason = self._self_check(question, context_text, answer, steps, asked)
-                    if reason is not None:
-                        asked.add(reason[0])
-                        nudge(message, reason[0], reason[1])
+                    if (
+                        forced is None
+                        and not is_gap_questioned
+                        and is_gap_answer(answer)
+                        and (
+                            tool_call_count < agent.min_searches_before_gap
+                            or (is_v2 and not searched and "search" in offered_names)
+                        )
+                    ):
+                        is_gap_questioned = True
+                        nudge(
+                            message,
+                            "gap",
+                            RETRY_BEFORE_GAP_MESSAGE_V2 if is_v2 else RETRY_BEFORE_GAP_MESSAGE,
+                        )
                         continue
-                if (
-                    not is_v2
-                    and forced is None
-                    and is_audit
-                    and not is_calculated
-                    and not is_calculate_questioned
-                    and tool_call_count > 0
-                    and answer
-                    and not is_gap_answer(answer)
-                ):
-                    is_calculate_questioned = True
-                    nudge(message, "calculate", CALCULATE_BEFORE_ANSWER_MESSAGE)
-                    continue
-                if (
-                    forced is None
-                    and agent.require_citation
-                    and not is_cite_questioned
-                    and tool_call_count > 0
-                    and any(char.isdigit() for char in answer)
-                    and not has_citation(answer)
-                    and not is_gap_answer(answer)
-                ):
-                    is_cite_questioned = True
-                    nudge(message, "cite", CITE_BEFORE_ANSWER_MESSAGE)
-                    continue
-                stop_reason = forced or ("answer" if answer else "empty_answer")
-                break
-
-            messages.append(message)
-            for call in calls:
-                if tool_call_count >= agent.max_tool_calls:
-                    observation = LIMIT_OBSERVATION
-                    messages.append(
-                        {"role": "tool", "tool_name": call.function.name, "content": observation}
+                    if verify and forced is None and tool_call_count > 0:
+                        reason = self._self_check(question, context_text, answer, steps, asked)
+                        if reason is not None:
+                            asked.add(reason[0])
+                            fallback = answer if reason[0] in FALLBACK_REASONS else ""
+                            nudge(message, reason[0], reason[1])
+                            continue
+                    if (
+                        not is_v2
+                        and forced is None
+                        and is_audit
+                        and not is_calculated
+                        and not is_calculate_questioned
+                        and tool_call_count > 0
+                        and answer
+                        and not is_gap_answer(answer)
+                    ):
+                        is_calculate_questioned = True
+                        nudge(message, "calculate", CALCULATE_BEFORE_ANSWER_MESSAGE)
+                        continue
+                    has_figures = (
+                        needs_citation(answer) if is_v2 else any(char.isdigit() for char in answer)
                     )
-                    continue
-                tool_call_count += 1
-                tool_step = self._execute(call, book, memory, len(steps), is_text_call)
-                emit(tool_step)
-                if tool_step.tool == "calculate" and tool_step.is_valid and not tool_step.is_repeat:
-                    is_calculated = True
-                content = tool_step.observation
-                if not is_plan_hinted and tool_step.tool != "plan":
-                    is_plan_hinted = True  # cheap: no extra model call (ISS-114)
-                    content += "\n" + PLAN_HINT
-                elif tool_step.tool == "plan":
-                    is_plan_hinted = True
-                messages.append({"role": "tool", "tool_name": tool_step.tool, "content": content})
-            if tool_call_count >= agent.max_tool_calls:
-                forced = "tool_limit"
-            elif self._is_context_full(messages):
-                forced = "context_limit"
+                    if (
+                        forced is None
+                        and agent.require_citation
+                        and not is_cite_questioned
+                        and tool_call_count > 0
+                        and has_figures
+                        and not has_citation(answer)
+                        and not is_gap_answer(answer)
+                    ):
+                        is_cite_questioned = True
+                        if is_v2:
+                            fallback = answer
+                        nudge(message, "cite", CITE_BEFORE_ANSWER_MESSAGE)
+                        continue
+                    break
 
-        CURRENT_QUESTION.reset(question_token)
-        self._active_specs = self._specs
-        artifacts = tuple(
-            a for s in steps if isinstance(s, ToolCallStep) and not s.is_repeat for a in s.artifacts
-        )
-        return AgentRun(
-            question=question,
-            model=model,
-            answer=answer,
-            stop_reason=stop_reason,
-            tool_call_count=tool_call_count,
-            seconds=round(time.perf_counter() - started, 1),
-            steps=tuple(steps),
-            sources=book.numbered_hits,
-            artifacts=artifacts,
-        )
+                messages.append(message)
+                for call in calls:
+                    if tool_call_count >= agent.max_tool_calls:
+                        observation = LIMIT_OBSERVATION
+                        messages.append(
+                            {
+                                "role": "tool",
+                                "tool_name": call.function.name,
+                                "content": observation,
+                            }
+                        )
+                        continue
+                    tool_call_count += 1
+                    tool_step = self._execute(call, book, memory, len(steps), is_text_call)
+                    emit(tool_step)
+                    if tool_step.is_repeat:
+                        repeat_count += 1
+                    if (
+                        tool_step.tool == "calculate"
+                        and tool_step.is_valid
+                        and not tool_step.is_repeat
+                    ):
+                        is_calculated = True
+                    messages.append(
+                        {
+                            "role": "tool",
+                            "tool_name": tool_step.tool,
+                            "content": tool_step.observation,
+                        }
+                    )
+                if tool_call_count >= agent.max_tool_calls:
+                    forced = "tool_limit"
+                elif is_v2 and repeat_count >= REPEAT_LIMIT:
+                    forced = "repeat_limit"
+                elif self._is_context_full(messages):
+                    forced = "context_limit"
+
+            if is_v2 and fallback and (not answer or is_gap_answer(answer)):
+                answer, is_fallback_answer = fallback, True
+            stop_reason: StopReason = forced or ("answer" if answer else "empty_answer")
+            artifacts = tuple(
+                a
+                for s in steps
+                if isinstance(s, ToolCallStep) and not s.is_repeat
+                for a in s.artifacts
+            )
+            return AgentRun(
+                question=question,
+                model=model,
+                answer=answer,
+                stop_reason=stop_reason,
+                tool_call_count=tool_call_count,
+                seconds=round(time.perf_counter() - started, 1),
+                steps=tuple(steps),
+                sources=book.numbered_hits,
+                artifacts=artifacts,
+                is_fallback_answer=is_fallback_answer,
+            )
+        finally:
+            CURRENT_QUESTION.reset(question_token)
+            self._active_specs = self._specs
 
     def _unplanned(self, steps: list[AgentStep], used: set[str]) -> list[str]:
         """Result tools named in the plan that never ran (search and lists are optional)."""
@@ -403,6 +465,8 @@ class AgentLoop:
             missing_steps = self._unplanned(steps, used)
             if missing_steps:
                 return "plan", PLAN_STEP_MISSING_MESSAGE.format(tools=", ".join(missing_steps))
+        if "language" not in asked and is_english(answer):
+            return "language", LANGUAGE_MESSAGE
         if "numbers" not in asked:
             sources = [s.observation for s in valid] + [context_text]
             missing = unsupported_numbers(answer, sources)

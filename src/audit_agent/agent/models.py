@@ -13,7 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from audit_agent.retrieval import SearchHit
 
-StopReason = Literal["answer", "tool_limit", "context_limit", "empty_answer"]
+StopReason = Literal["answer", "tool_limit", "context_limit", "empty_answer", "repeat_limit"]
 
 
 class _Frozen(BaseModel):
@@ -82,7 +82,18 @@ class ToolCallStep(_Frozen):
 
 
 NudgeReason = Literal[
-    "gap", "calculate", "cite", "check", "chart", "overview", "numbers", "plan", "verdict"
+    "gap",
+    "calculate",
+    "cite",
+    "check",
+    "chart",
+    "overview",
+    "numbers",
+    "plan",
+    "verdict",
+    "steps",
+    "empty",
+    "language",
 ]
 
 NUDGE_LABELS: dict[NudgeReason, str] = {
@@ -95,6 +106,9 @@ NUDGE_LABELS: dict[NudgeReason, str] = {
     "numbers": "Selbstprüfung: Zahlen ohne Werkzeugergebnis",
     "plan": "Selbstprüfung: geplanter Schritt nicht ausgeführt",
     "verdict": "Selbstprüfung: Urteil widerspricht check_bill",
+    "steps": "Rückfrage: nur Schritte angekündigt, kein Werkzeugaufruf",
+    "empty": "Rückfrage: leere Antwort",
+    "language": "Selbstprüfung: Antwort nicht auf Deutsch",
 }
 
 
@@ -182,6 +196,9 @@ class AgentRun(_Frozen):
     sources: tuple[NumberedHit, ...]
     artifacts: tuple[Artifact, ...] = ()
     """Tables and charts of the run, in the order they were made (ADR-0019)."""
+    is_fallback_answer: bool = False
+    """The last reply was empty, a gap or only announced steps, so the loop kept the last
+    real answer before a self-check question (ISS-117)."""
 
     @property
     def plan(self) -> tuple[str, ...]:
