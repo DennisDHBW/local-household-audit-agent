@@ -159,6 +159,8 @@
 | Prüffrage | `is_audit_question` | Frage, die eine Rechnung gegen Vertrag, Preisschreiben oder Zählerstände prüfen lässt; erkannt am Wortlaut (korrekt, stimmt, passt, …) | |
 | Rechennachfrage | `CALCULATE_BEFORE_ANSWER_MESSAGE`, `NudgeStep.reason` | Einmalige Rückfrage des Loops, wenn eine Prüffrage ohne `calculate` beantwortet werden soll (ISS-058, ADR-0015) | |
 | Reine Lückenantwort (v2) | `is_pure_gap_answer` | Lückenantwort ohne Zahl und ohne Belegnummer; nur sie löst in v2 die Lückenrückfrage aus, Mischantworten nicht (ISS-122) | |
+| Mischantwort | – | Antwort mit Fakten und zusätzlich einem Lückensatz („Dazu liegen … keine Angaben vor“); bekommt in v2 weder die Lücken- noch die Zitat-Rückfrage (ISS-125) | |
+| Kontrolllauf | `scripts/m8_night.sh` (ohne Option) | P2-Lauf auf den 21 Entwicklungsfragen nach einem Fix-Paket (run-027); prüft nur, ob etwas schlechter wurde | |
 | Lückenrückfrage | `RETRY_BEFORE_GAP_MESSAGE`, `RETRY_BEFORE_GAP_MESSAGE_V2`, `NudgeStep.reason="gap"`, `AgentSettings.min_searches_before_gap` | Einmalige Rückfrage des Loops, wenn das Modell nach weniger als 2 Werkzeugaufrufen „keine Angaben“ antwortet: noch einmal anders suchen und mit `list_documents` prüfen (ADR-0010, ISS-036) | |
 | Prüfablauf | `agent/audit_flow.py`, `run_audit_flow`, `AuditFlowStep` | Fester Ablauf für Prüffragen: Modell plant Prüfgrößen und Suchanfragen, Code sucht, Modell liest Soll- und Istzahl, Code prüft die Herkunft und rechnet die Differenz (ADR-0016) | |
 | Prüfgröße | `PlannedCheck`, `AuditCheckResult.quantity` | Eine Größe, die der Prüfablauf vergleicht (Arbeitspreis, Wohnfläche, z-Zahl, …) mit Sollwert (Vertrag, Preisschreiben) und Istwert (Rechnung) | |

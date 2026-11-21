@@ -23,6 +23,20 @@
 
 ## Einträge
 
+### 2026-11-21 – M8 Auswertung Kontrolllauf run-027
+**Ziel der Sitzung:** Prüfen, ob das Fix-Paket (ISS-121 bis ISS-123) im Kontrolllauf etwas schlechter gemacht hat als in run-026; keine Nachbesserung an den Entwicklungsfragen.
+**Was wurde gemacht:**
+- Rohdaten von run-027 committet; Kennzahlen aus `report.md`, `scores.json`, `evidence.json` und `agentics.json` mit run-026 verglichen
+- Antworten inhaltlich verglichen: 16 von 21 wortgleich (Temperatur 0), anders nur S1, S4, N1, Z2, Z3; diese fünf mit Schrittprotokoll, Sollwerten aus `ground_truth.yaml` und Code der Rückfragen (`loop.py`) geprüft
+- Ollama-Journal auf das Laufzeitfenster gefiltert (Datei enthält auch Einträge vom Vortag): höchstens 2.944 Token je Anfrage, keine Kontextverschiebung
+**Ergebnis:** laut Metrik 17/21 (run-026: 15), nach Handprüfung 16 + Grenzfall S1 (15); N1 und S1 besser, keine Frage im Ergebnis schlechter; kein `context_limit`, Lücken-Rückfrage 5 → 2, 172 statt 207 s je Frage; Präzision je Beleg 83 % (in Z2 nur formal); 5/5 Fehler, 0 Fehlalarme
+**Gelieferte Dateien / Funktionen:** `data/eval/run-027*`, Eintrag RUN-027 in `evaluation-log.md`, ISS-125, Nachträge zu ISS-121 und ISS-122; kein Code geändert
+**Entscheidungen:** Nutzer: unverändert in den Endlauf (run-028, `--holdout`); ISS-125 bleibt Befund. Keine ADR.
+**Probleme / Überraschungen:** ISS-125 (Mischantwort S1 ohne Beleg, weil die Zitat-Rückfrage Antworten mit Lückensatz überspringt; S4 nach `repeat_limit` mit erfundener Belegnummer). Die Rückfrage-Texte führen in N1 und S4 zuerst zu einem wiederholten `list_documents`. Der alte uv-Cache in `/tmp` gehört einem früheren Sitzungsnutzer; Prüfumgebung deshalb unter `/tmp/*-$(id -u)`.
+**Offen / unklar:** RAGAS für M8; wie stark der Gewinn auf den zurückgehaltenen Fragen hält (ISS-108)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `test(evaluation): add control run-027 data (M8, P2 only, qwen2.5:7b)`, `docs: record run-027 evaluation and ISS-125`
+
 ### 2026-11-21 – M8 Fix-Paket vor dem Endlauf (ISS-121 bis ISS-123)
 **Ziel der Sitzung:** Die drei offenen Befunde aus run-026 beheben, bevor der Kontrolllauf run-027 und der Endlauf laufen.
 **Was wurde gemacht:**
