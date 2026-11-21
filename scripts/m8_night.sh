@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-# M8 night run (ADR-0019): all 21 development questions with B0, P1 and P2 v2 (run-025).
-# The held-out questions run separately at the very end: scripts/m8_night.sh --holdout (run-026).
+# M8 night run (ADR-0019, ADR-0021).
+#   scripts/m8_night.sh            run-026: P2 on the 21 development questions (after ISS-117;
+#                                  B0 and P1 did not change, their numbers stay those of run-025)
+#   scripts/m8_night.sh --holdout  run-027: B0, P1 and P2 on the held-out questions, at the very end
 set -uo pipefail
 cd "$(dirname "$0")/.."
 HOST="${AUDIT_OLLAMA_HOST:-http://localhost:11434}"
-RUN=run-025
+RUN=run-026
+VARIANTS=(p2)
 SELECT=(--all)
-if [ "${1:-}" = "--holdout" ]; then RUN=run-026; SELECT=(--holdout); fi
+if [ "${1:-}" = "--holdout" ]; then RUN=run-027; VARIANTS=(b0 p1 p2); SELECT=(--holdout); fi
 LOG="data/eval/$RUN.log"
 
 wait_for_ollama() {
@@ -33,9 +36,10 @@ mkdir -p data/eval
     echo "== $RUN gestartet: $(date '+%F %T')"
     uv run python -m audit_agent.facts build || exit 1  # facts.json must match the code
     { date; uptime; free -h; } > "data/eval/$RUN-env.txt"
-    step generate --run-id "$RUN" --variants b0 p1 p2 "${SELECT[@]}"
+    step generate --run-id "$RUN" --variants "${VARIANTS[@]}" "${SELECT[@]}"
     uv run python -m audit_agent.evaluation score --run-id "$RUN"
     uv run python scripts/check_evidence.py --run-id "$RUN"
+    uv run python scripts/analyze_agentics.py --run-id "$RUN" --write
     echo "== $RUN beendet: $(date '+%F %T')"
 } 2>&1 | tee -a "$LOG"
 journalctl -u ollama --since "-14h" --no-pager | grep -iE "truncat|oom" > "data/eval/$RUN-journal.txt"
