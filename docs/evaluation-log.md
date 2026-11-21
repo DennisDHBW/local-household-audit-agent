@@ -686,3 +686,43 @@
 - **Deutung:** Die Fixes aus ADR-0021 wirken wie beabsichtigt: Schritt-Text, leere Antworten, erfundene Belege und Schleifen sind verschwunden, 6 Fragen wurden richtig, keine schlechter. Das Ergebnis ist zu günstig, weil die Fixes aus genau diesen Fragen stammen (ISS-108); unabhängig ist erst der Endlauf. Fast alle Sollfakten erreichen jetzt den Kontext (47 von 49); die übrigen Fehler liegen in der Lücken-Rückfrage und im Lesen des Modells, nur S4 im Retrieval. Die gemeldete Zitat-Präzision ist durch einen Messfehler zu niedrig (ISS-123); je Beleg nachgerechnet sinkt sie von 94 auf 76 %, vor allem durch S1, S2, N1 und Z2, die zusammen 12 Belege ohne erwartete Quelle zitieren.
 - **Entscheidung (Nutzer, 2026-11-21):** Vor dem Endlauf ein Fix-Paket (ISS-121, ISS-122, ISS-123) mit Kontrolllauf P2; B0 im Endlauf mit unverändertem Budget (ISS-120).
 - **Neubewertung (ISS-123, 2026-11-21, ohne Ollama):** Nach der Korrektur von `score_answer` (Zitate je Beleg) wurden run-020, 021, 025 und 026 mit `evaluation score` neu bewertet; `scores.json` und `report.md` im Repo enthalten die neuen Werte. Präzision je Beleg: run-020 P1 16/20 (80 %), run-021 P2 10/17 (59 %), run-025 B0 3/8 (38 %), P1 25/39 (64 %), P2 34/36 (94 %), run-026 P2 55/72 (76 %); alle stimmen mit der Nachrechnung in ISS-123 überein. Alle anderen Kennzahlen blieben gleich; die alten `scores.json` haben zusätzlich die Felder, die seit M8 dazugekommen sind (Artefakte, Werkzeugaufrufe, Plan).
+
+### RUN-027 – M8, Kontrolllauf P2 nach dem Fix-Paket ISS-121 bis ISS-123 (21 Entwicklungsfragen, `qwen2.5:7b`)
+- **Datum / Commit:** 2026-11-21, 10:32 bis 11:32 · Stand dccce67 (`./scripts/m8_night.sh`, nur P2)
+- **Konfiguration:** wie RUN-026, dazu Kontextschätzung aus den angebotenen Werkzeugschemas (ISS-121), Lücken-Rückfrage nur bei einer reinen Lückenantwort mit neutralem Text (ISS-122), Zitat-Präzision je Beleg (ISS-123); `num_ctx` 8192, Temperatur 0, max. 10 Werkzeugaufrufe
+- **Dauer:** 60 min (172 s je Frage, Median 167 s); im Laufzeitfenster ohne Kontextverschiebung, höchstens 2.944 Token je Anfrage (die Journal-Datei enthält zusätzlich Einträge vom 20.11., ISS-120)
+- **Rohdaten:** `data/eval/run-027/` (`report.md`, `scores.json`, `evidence.json`, `agentics.json`, `p2-*.jsonl`), `run-027.log`, `run-027-env.txt`, `run-027-journal.txt`
+
+| Metrik | P2 run-026 | P2 run-027 |
+|---|---|---|
+| Richtig laut Metrik (von 21) | 15 | 17 |
+| Richtig nach Handprüfung (von 21) | 15 | 16 + 1 Grenzfall (S1) |
+| Fakten in der Antwort (von 49) | 42 | 43 |
+| Fakten im Kontext (von 49) | 47 | 47 |
+| Erwartete Quellen zitiert (von 35) | 24 | 25 |
+| Zitat-Präzision je Beleg | 55/72 (76 %) | 57/69 (83 %) |
+| Erfundene Belegnummern | 0 | 1 (S4) |
+| Fehler erkannt (von 5) / Fehlalarme (von 4) | 5 / 0 | 5 / 0 |
+| Negativfragen erkannt (von 2) | 1 | 2 |
+| Tool-Wahl korrekt (von 21) | 19 | 19 (weiter falsch: S4 ohne `search`, N2 `search` statt `list_documents`) |
+| Endgrund `context_limit` | 2 (S1, Z2) | 0 |
+| Sekunden je Frage (Mittel) | 207 | 172 |
+| Prompt-Token je Frage (Mittel) | 8.069 | 5.838 |
+
+- **Je Frage gegenüber run-026:** Bei Temperatur 0 sind 16 von 21 Antworten wortgleich (gleiche Werkzeuge, gleiche Argumente, gleicher Text); die Handprüfung aus RUN-026 gilt für sie unverändert. Anders sind nur S1, S4, N1, Z2 und Z3, also genau die Fragen, in denen run-026 die Lücken-Rückfrage stellte. Diese fünf wurden mit Schrittprotokoll von Hand geprüft:
+
+| Frage | run-026 → run-027 | Handprüfung |
+|---|---|---|
+| S1 | Rückfrage, danach Heizstromvertrag, `context_limit` (446 s) → keine Rückfrage, die erste Antwort bleibt (167 s) | besser (falsch → Grenzfall): 6 Wochen, 31.12.2025 und danach 1 Monat stimmen, aber die Antwort beginnt mit „Dazu liegen in den Unterlagen keine Angaben vor.“ und hat keine Belegnummer (ISS-125) |
+| N1 | Rückfrage, danach Vermutung über die Höhe 2023 → Rückfrage bleibt (reine Lückenantwort ohne Suche), danach „für 2023 nicht in den Unterlagen“ und die Beträge 2024/2025 mit Beleg | besser (falsch → richtig); keine Vermutung mehr, die Rückfrage kostet aber 91 s ohne Nutzen |
+| S4 | Rückfrage, `get_facts` dreimal, Antwort ohne Lückensatz → Rückfrage, dasselbe `list_documents` zweimal wiederholt, `repeat_limit`, Antwort „keine Angaben [1]“ mit Fußnote „[1] Hinweis …“ | gleich falsch, Form schlechter: erfundene Belegnummer, weiterhin nie `search` (ISS-125) |
+| Z2 | Rückfrage nach Teil-Lückensatz, `context_limit` (425 s) → keine Rückfrage, Antwort direkt nach `get_facts` (156 s) | gleich falsch (115 statt 120 EUR, ISS-119); zitiert für die 115 EUR den Beleg [4], der 120 EUR nennt, und zählt dadurch formal als Zitat der erwarteten Quelle |
+| Z3 | Rückfrage ohne Wirkung (332 s) → keine Rückfrage (167 s), Antwort fast wortgleich | gleich: laut Metrik richtig, nach Handprüfung wie in RUN-026 nicht (vorangestellter Lückensatz, Ende der Erstlaufzeit fehlt) |
+
+- **Handprüfung P2 gesamt:** Richtig S3, S5, G1, G2, G3, G4, H1, H2, H3, W1, V1, V2, V3, N1, N2 und Z1 (16); Grenzfall S1; falsch S2, S4, Z2 und Z3. Laut Metrik richtig sind zusätzlich S1 und Z3, nicht dagegen Z1 (z-Zahl weggelassen, wie RUN-026).
+- **Agentik (`agentics.json`, run-026 → run-027):** Modellaufrufe je Frage 3,5 → 2,8, Werkzeugaufrufe 2,0 → 1,5; Rückfragen 11 → 7 (Lücke 5 → 2, Plan 3 → 2, Zitat 3 → 3); Argumentreparaturen 18 → 13; ungültige Aufrufe 5 → 3; Wiederholungen 2 → 3; Endgründe `context_limit` 2 → 0, neu `repeat_limit` 1 (S4); `search` 7 → 4, `list_documents` 10 → 5, `get_facts` 10 → 7 Aufrufe; durch Rückfrage verschlechtert 0; Prefill-Anteil 71 % wie zuvor.
+- **Lücken-Rückfrage einzeln (ISS-122):** 2-mal (N1, S4), beide reine Lückenantworten ohne vorherige Suche; 0-mal geholfen, 0-mal im Ergebnis verschlechtert, Mehrzeit 91 s (N1) und 74 s (S4). In beiden Fällen ruft das Modell danach zuerst dasselbe `list_documents` noch einmal auf, das der Text als Erstes nennt; in S4 zweimal, dann `repeat_limit` vor jeder Suche. Die Bedingung aus ISS-122 („Rückfrage abschalten, wenn N1 weiter schlechter wird“) ist nicht erfüllt.
+- **Kontext (ISS-121):** kein `context_limit`; die längste Anfrage hatte laut Journal 2.944 Token.
+- **Neue Nebenwirkungen (ISS-125):** (1) Eine Mischantwort mit Lückensatz bekommt weder die Lücken-Rückfrage (keine reine Lückenantwort) noch die Zitat-Rückfrage (Bedingung `not is_gap_answer`) und wird ohne Beleg angenommen (S1). (2) Die Abschlussantwort nach `repeat_limit` läuft ohne Werkzeuge und ohne Prüfung; das Modell setzt „[1]“ als Fußnote, ohne Treffer ist das eine erfundene Belegnummer (S4).
+- **Deutung:** Das Fix-Paket wirkt wie geplant: kein früher Abbruch mehr, keine Rückfrage auf Mischantworten, 36 s weniger je Frage, zwei Fragen besser, keine im Ergebnis schlechter. Der Gewinn kommt aus der Steuerung der Schleife, nicht aus dem Modell; die Lesefehler (S2, Z2) und S4 (Werte nur im Diagramm) bleiben. Präzision und Recall steigen teils nur formal: In Z2 zeigt das Zitat auf die richtige Seite, die Zahl daneben ist falsch, weil die Kennzahl die Quelle prüft, nicht die Aussage. Wie in RUN-026 ist das Ergebnis zu günstig, weil die Fixes aus denselben Fragen stammen (ISS-108); unabhängig ist erst der Endlauf auf den zurückgehaltenen Fragen.
+- **Entscheidung (Nutzer, 2026-11-21):** Unverändert in den Endlauf; ISS-125 bleibt als Befund ohne weitere Anpassung an den Entwicklungsfragen (ISS-108). Nächster Lauf: run-028 mit `--holdout` (B0, P1, P2).

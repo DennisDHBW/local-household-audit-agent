@@ -1,0 +1,172 @@
+== run-027 gestartet: 2026-11-21 10:32:04
+185 Fakten nach /home/usr0/PycharmProjects/local-household-audit-agent/data/processed/facts.json: {'advance': 17, 'advances_credited': 13, 'balance': 13, 'base_price': 18, 'calorific_value': 3, 'consumption': 12, 'cost_share': 3, 'energy_price': 17, 'gas_volume': 3, 'invoice_total': 11, 'living_area': 4, 'meter_reading': 26, 'position': 25, 'service_costs': 3, 'sewage_fee': 5, 'total_area': 4, 'water_price': 5, 'z_factor': 3}
+
+== P2 Agent S1: Welche Kündigungsfrist gilt für den Gasvertrag und bis wann läuft die Erstlaufzeit?
+   166.7 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+Die Kündigungsfrist für den Gasvertrag beträgt 6 Wochen zum Ablauf der Erstvertragslaufzeit, anschließend ist der Vertrag unbefristet mit einer Kündig
+
+== P2 Agent S2: Welcher Arbeits- und Grundpreis gelten laut Stromvertrag?
+   167.3 s: Der Arbeitspreis für den Strom (Lichtstrom) lautet 39,50 ct/kWh für das Jahr 2025 [6], basierend auf der Stromabrechnung. Der Grundpreis beträgt 12,90 EUR pro Monat für 2025 [8], ebenfalls aus der Str
+
+== P2 Agent S3: Wie hoch war der Wasserverbrauch 2025 laut Zählerständen?
+   122.8 s: Der Wasserverbrauch 2025 lautet auf 74 m³ [1].
+
+Zusammenfassend zeigt dies, dass der Soll-Wert von 74 m³ mit dem Ist-Wert von 74 m³ übereinstimmt. Es gibt keinen Unterschied, und somit hat das Urteil 
+
+== P2 Agent S4: Wie hoch war der Stromverbrauch 2022 und 2023?
+   204.5 s: Dazu liegen in den Unterlagen keine Angaben vor. [1]
+
+[1] Hinweis: Es gibt keine Unterlagen oder Informationen über den Stromverbrauch 2022 in den verfügbaren Unterlagen.
+
+== P2 Agent S5: Stimmt die Stromabrechnung 2024 mit den Vertragspreisen überein?
+   160.6 s: Ja, die Stromabrechnung 2024 stimmt mit den Vertragspreisen überein. [1] Der Arbeitspreis beträgt 34,80 ct/kWh, [2] der Grundpreis 11,50 EUR/Monat, [3] der Verbrauch 3.250 kWh, [4] der Rechnungsbetrag
+
+== P2 Agent G1: Wurde in der Stromabrechnung 2025 der angekündigte neue Arbeitspreis angewendet?
+   156.4 s: Nein, die Stromabrechnung 2025 stimmt nicht. Der Arbeitspreis wurde nicht auf den angekündigten 38,20 ct/kWh angepasst, sondern auf 39,50 ct/kWh. Dies führt zu einem zusätzlichen Betrag von 40,30 EUR 
+
+== P2 Agent G2: Ist mein Anteil an den Betriebskosten 2025 korrekt berechnet?
+   184.1 s: Ja, die Betriebskosten-Rechnung 2025 stimmt mit Vertrag, Preisschreiben und Zählerständen überein. Ihr Anteil beträgt 25,00 % der Wohnfläche, was 78,00 m² entspricht [2]. Der berechnete Betrag lautet 
+
+== P2 Agent G3: Ist die Gasabrechnung 2026 korrekt?
+   224.7 s: Nein, die Gasabrechnung 2026 stimmt nicht. Es gibt eine Abweichung in der z-Zahl. Sollte die z-Zahl 0,9560 betragen (wie in den anderen Gasrechnungen), ist sie jedoch auf 1,0000 festgelegt [6]. Dies f
+
+== P2 Agent G4: Ist mein Anteil an den Betriebskosten 2026 korrekt berechnet?
+   214.6 s: Nein, die Betriebskosten-Rechnung 2026 stimmt nicht. Wohnfläche: Soll 78,00 m² laut Mietvertrag (25,00 % Anteil), Ist 82,00 m², 95,78 EUR (richtiger Anteil 78,00 m² / 312,00 m² = 25,00 %, also 1.867,5
+
+== P2 Agent N1: Wie hoch war meine Stromrechnung 2023?
+   198.8 s: Die Stromrechnung für 2023 ist nicht direkt in den Unterlagen enthalten. Allerdings finden wir Hinweise auf die Rechnungen für 2024 und 2025:
+
+- Die Stromrechnung für 2024 betrugen [2] 1.189,00 EUR (i
+
+== P2 Agent N2: Welchen Grundpreis zahle ich für Fernwärme?
+   132.5 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent Z1: Passt der abgerechnete Gasverbrauch 2025 zu den Zählerständen?
+   165.8 s: Ja, die abgerechnete Gasverbrauch 2025 stimmt mit den Zählerständen [5]. Der Verbrauch von 1.200 m³ wurde korrekt in 12.791 kWh umgerechnet [5], und der Rechnungsbetrag von 1.555,43 EUR [7] entspricht
+
+== P2 Agent Z2: Wie hoch ist mein aktueller monatlicher Stromabschlag?
+   155.6 s: Der aktuelle monatliche Stromabschlag beträgt 115,00 EUR [4]. Dieser Wert gilt ab 15.02.2025 und basiert auf den neuesten vertraglichen Angaben [3] und [4].
+
+Zur Übersicht:
+- Der Abschlag wurde in den
+
+== P2 Agent Z3: Mit welcher Frist kann ich meinen Stromvertrag kündigen?
+   166.7 s: Dazu liegen in den Unterlagen keine Angaben vor, die eine genaue Kündigungsfrist für Ihren Stromvertrag nennen. Allerdings finden wir in der Vertragsbestätigung von 2024 [3] die Angabe, dass die Kündi
+
+== P2 Agent H1: Welche HT- und NT-Arbeitspreise gelten 2025 für den Heizstrom?
+   144.6 s: Die HT- und NT-Arbeitspreise für 2025 gelten wie folgt:
+
+- **Heizstrom Arbeitspreis HT**: 33,50 ct/kWh [2]
+- **Heizstrom Arbeitspreis NT**: 24,10 ct/kWh [4]
+
+Diese Preise werden in den Rechnungen für 
+
+== P2 Agent H2: Ist die Heizstromabrechnung 2025 korrekt?
+   189.9 s: Nein, die Heizstrom-Rechnung 2025 stimmt nicht. Es gibt eine Abweichung im Verbrauch NT aus Zählerständen: Soll 3.420 kWh, Ist abgerechnet 3.920 kWh [10], was zu einem zusätzlichen Betrag von 120,50 E
+
+== P2 Agent H3: Stimmt die Heizstromabrechnung 2024?
+   205.0 s: Ja, die Heizstrom-Rechnung 2024 stimmt. Hier sind die Details:
+
+- Arbeitspreis HT: Soll 31,90 ct/kWh, Ist 31,90 ct/kWh [1] [2]
+- Arbeitspreis NT: Soll 22,40 ct/kWh, Ist 22,40 ct/kWh [3] [4]
+- Grundpre
+
+== P2 Agent W1: Ist der Wasserbescheid 2026 korrekt?
+   185.8 s: Nein, die Wasserbescheid-Rechnung 2026 stimmt nicht. Die angerechneten Abschläge sind niedriger als vereinbart: Soll 4 × 125,00 EUR = 500,00 EUR [11], Ist 4 × 120,00 EUR = 480,00 EUR [11], was 20,00 E
+
+== P2 Agent V1: Erstelle eine Grafik zum Stromverbrauch 2024 und 2025, getrennt nach Licht- und Heizstrom.
+   157.5 s: Die Grafik zeigt den Stromverbrauch für Licht- und Heizstrom im Jahr 2024 und 2025.
+
+- Heizstrom HT: 2024: 620 kWh [1], 2025: 580 kWh [5]
+- Heizstrom NT: 2024: 3.180 kWh [3], 2025: 3.420 kWh [7]
+- Lic
+
+== P2 Agent V2: Gib mir eine Übersicht über alle Kosten 2025.
+   151.2 s: Hier ist eine Übersicht über alle Kosten für das Jahr 2025:
+
+- Betriebskosten: 1.830,00 EUR (Ihr Anteil vor Abzug der Vorauszahlungen) [1]
+- Gas: 1.555,43 EUR [2]
+- Heizstrom: 1.257,82 EUR [3]
+- Licht
+
+== P2 Agent V3: Wie haben sich die Gaspreise seit 2024 entwickelt? Zeig das als Grafik.
+   151.1 s: Die Grafik zeigt die Entwicklung der Gaspreise seit 2024. Es gibt zwei Grundpreise und zwei Arbeitspreise, die sich ab 2026 ändern:
+
+1. Der Grundpreis steigt von 14,50 EUR/Monat ab 1. Januar 2024 auf 
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-027/report.md
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-027/report.md
+{
+  "recall_agrees": 0,
+  "recall_high_without_facts": 0,
+  "recall_low_with_facts": 0,
+  "gap_only_faithfulness": {
+    "None": 2
+  }
+}
+evidence: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-027/evidence.json
+== run-027
+{
+  "questions": 21,
+  "stop_reasons": {
+    "answer": 20,
+    "repeat_limit": 1
+  },
+  "model_calls_mean": 2.8,
+  "tool_calls_mean": 1.5,
+  "tool_use": {
+    "check_bill": 9,
+    "get_facts": 7,
+    "list_documents": 5,
+    "search": 4,
+    "plan": 3,
+    "make_chart": 2,
+    "make_overview": 1
+  },
+  "invalid_calls": 3,
+  "repeats": 3,
+  "text_calls": 0,
+  "repaired_calls": 13,
+  "plan_called": [
+    "G2",
+    "G4",
+    "S4"
+  ],
+  "plan_first": [
+    "G2",
+    "G4",
+    "S4"
+  ],
+  "nudges": {
+    "cite": 3,
+    "gap": 2,
+    "plan": 2
+  },
+  "questions_with_nudge": [
+    "G2",
+    "G3",
+    "G4",
+    "H2",
+    "N1",
+    "S4",
+    "W1"
+  ],
+  "final_has_step_talk": [],
+  "final_only_steps": [],
+  "final_english": [],
+  "worse_after_question": [],
+  "invented_citations": {
+    "S4": [
+      1
+    ]
+  },
+  "artifacts": {
+    "chart": 2,
+    "table": 1
+  },
+  "seconds_mean": 171.7,
+  "prefill_share": 0.71,
+  "decode_share": 0.23
+}
+geschrieben: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-027/agentics.json
+== run-027 beendet: 2026-11-21 11:32:30
