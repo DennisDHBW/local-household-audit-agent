@@ -28,7 +28,7 @@ from audit_agent.corpus import (
     load_question_set,
 )
 from audit_agent.enrichment.llm import installed_models
-from audit_agent.evaluation.metrics import score_answer, summarize
+from audit_agent.evaluation.metrics import score_answer, summarize, uses_tool_set_v2
 from audit_agent.evaluation.models import (
     VARIANT_LABELS,
     VARIANT_NAMES,
@@ -185,7 +185,8 @@ def _score(settings: Settings, run_id: str) -> int:
     unknown = sorted({a.question_id for a in answers} - by_id.keys())
     if unknown:
         raise EvaluationError(f"answers for unknown questions: {unknown}")
-    scores = [score_answer(by_id[a.question_id], a, catalog) for a in answers]
+    is_v2 = uses_tool_set_v2(answers)
+    scores = [score_answer(by_id[a.question_id], a, catalog, is_v2) for a in answers]
     summaries = summarize(scores)
     ragas = load_ragas_scores(ragas_path(run_dir))
     payload = {

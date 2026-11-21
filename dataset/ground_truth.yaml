@@ -1,6 +1,7 @@
 # Ground Truth: 14-Fragen-Katalog (concept.md, Abschnitt 11.2), eingebaute Fehler und erwartete Prüfurteile.
 # Struktur siehe audit_agent.corpus.models. Beträge in EUR brutto, Preise in ct/kWh, falls nicht anders angegeben.
 # Dateipfade relativ zu dataset/, Seiten ab 1.
+# expected_tools_v2: erwartete Werkzeuge im Werkzeugsatz v2 (M8), wo sie von expected_tools abweichen (ISS-118).
 
 questions:
   - id: S1
@@ -27,6 +28,7 @@ questions:
     sources:
       - { file: 01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, page: 1 }
     expected_tools: [search]
+    expected_tools_v2: [get_facts]
     tests: search (Tabellen), Metadatenfilter
 
   - id: S3
@@ -38,6 +40,7 @@ questions:
     sources:
       - { file: 03_water_stadtwerke_mosbach/15_Wasser_Jahresbescheid_2025_SWM.pdf, page: 1 }
     expected_tools: [search]
+    expected_tools_v2: [get_facts]
     tests: Tabellenzeilen, richtiges Jahr
 
   - id: S4
@@ -50,6 +53,7 @@ questions:
     sources:
       - { file: 01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, page: 2 }
     expected_tools: [search_images]
+    expected_tools_v2: [search]
     tests: search_images, Vision-Caption
 
   - id: S5
@@ -63,6 +67,7 @@ questions:
       - { file: 01_electricity_suedvolt/01_Strom_Vertragsbestaetigung_SuedVolt_2024.pdf, page: 1 }
       - { file: 01_electricity_suedvolt/04_Strom_Jahresabrechnung_2024_SuedVolt.pdf, page: 1 }
     expected_tools: [search, calculate]
+    expected_tools_v2: [check_bill]
     tests: ReAct, calculate, keine Fehlalarme
 
   - id: G1
@@ -77,6 +82,7 @@ questions:
       - { file: 01_electricity_suedvolt/03_Strom_Preisanpassung_SuedVolt_2025.pdf, page: 1 }
       - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
     expected_tools: [search, calculate]
+    expected_tools_v2: [check_bill]
     planted_error: E1
     tests: Multi-Hop über zwei Dokumente, Fehlererkennung
 
@@ -92,6 +98,7 @@ questions:
       - { file: 04_housing_utilities_contractors/16_Mietvertrag_Hauptstrasse42_2023.pdf, page: 1 }
       - { file: 04_housing_utilities_contractors/19_Nebenkostenabrechnung_2025_Hausverwaltung.pdf, page: 1 }
     expected_tools: [search, calculate]
+    expected_tools_v2: [check_bill]
     tests: Mietvertrag gegen Abrechnung, keine Fehlalarme
 
   - id: G3
@@ -106,6 +113,7 @@ questions:
       - { file: 02_gas_neckarenergie/29_Gas_Jahresabrechnung_2026_NeckarEnergie.pdf, page: 1 }
       - { file: 02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf, page: 1 }
     expected_tools: [search, calculate]
+    expected_tools_v2: [check_bill]
     planted_error: E2
     tests: Fehlererkennung durch Vergleich mit dem Vorjahr, Rechnen mit Umrechnungsfaktoren
 
@@ -121,6 +129,7 @@ questions:
       - { file: 04_housing_utilities_contractors/16_Mietvertrag_Hauptstrasse42_2023.pdf, page: 1 }
       - { file: 04_housing_utilities_contractors/30_Nebenkostenabrechnung_2026_Hausverwaltung.pdf, page: 1 }
     expected_tools: [search, calculate]
+    expected_tools_v2: [check_bill]
     planted_error: E3
     tests: Mietvertrag gegen Abrechnung, Fehlererkennung
 
@@ -151,6 +160,7 @@ questions:
     sources:
       - { file: 02_gas_neckarenergie/10_Gas_Jahresabrechnung_2025_NeckarEnergie.pdf, page: 1 }
     expected_tools: [search, calculate]
+    expected_tools_v2: [check_bill]
     tests: Rechnen mit Umrechnungsfaktoren
 
   - id: Z2
@@ -162,6 +172,7 @@ questions:
     sources:
       - { file: 01_electricity_suedvolt/06_Strom_Jahresabrechnung_2025_SuedVolt.pdf, page: 1 }
     expected_tools: [list_documents, search]
+    expected_tools_v2: [get_facts]
     tests: neuestes Dokument wählen
 
   - id: Z3

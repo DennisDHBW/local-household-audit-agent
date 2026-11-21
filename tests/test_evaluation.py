@@ -256,6 +256,25 @@ def test_negative_question_is_correct_only_with_an_honest_gap():
     assert invented.is_correct is False
 
 
+def test_v2_runs_are_scored_against_the_v2_tools():
+    # Arrange: G1 with check_bill is right for tool set v2, not for v1 (ISS-118)
+    from audit_agent.evaluation.metrics import uses_tool_set_v2
+
+    question = _audit_question(expected_tools_v2=("check_bill",))
+    check = ToolUse(name="check_bill", arguments={"year": 2025}, is_valid=True)
+    v2 = _answer("Nein, 39,50 ct [1].", variant="p2", tool_uses=(check,))
+    v1 = _answer("Nein, 39,50 ct [1].", variant="p2", tool_uses=())
+
+    # Act
+    v2_score = score_answer(question, v2, make_catalog(), uses_tool_set_v2([v2]))
+    v1_score = score_answer(question, v1, make_catalog(), uses_tool_set_v2([v1]))
+
+    # Assert
+    assert uses_tool_set_v2([v2]) and not uses_tool_set_v2([v1])
+    assert v2_score.are_tools_ok is True
+    assert v1_score.expected_tools == ("search", "calculate") and v1_score.are_tools_ok is False
+
+
 def test_summary_counts_per_variant_in_fixed_order():
     # Arrange
     catalog = _catalog_with_noise()

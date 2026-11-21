@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-21 – M8 Auswertung run-024-smoke und Nachtlauf run-025, Nachbesserung
+**Ziel der Sitzung:** Smoke-Test und Nachtlauf auswerten (Handprüfung, Kennzahlen Agentik) und die Fehler an den Entwicklungsfragen beheben.
+**Was wurde gemacht:**
+- Handprüfung aller 21 P2-Verläufe (Schrittprotokolle) und Durchsicht von B0 und P1: P2 9 von 21 (+2 Grenzfälle), P1 6, B0 4; P2 5 von 5 eingebauten Fehlern, 0 Fehlalarme; 41 von 49 Sollfakten im Kontext, aber nur 27 in der Antwort
+- Ursachen: 8 von 12 Fehlschlägen in der Steuerung (Plan als Text, leere Antworten, Verschlechterung durch Rückfragen, Schleife), 3 in Argumenten, 1 Synthese
+- Fixes (ADR-0021): Plan-Hinweis entfernt, Schritt-Text bereinigt, Rückfrage bei reiner Ankündigung und leerer Antwort, Rückfall auf die frühere Antwort, Wiederholungsgrenze, Lücke erst nach Volltextsuche, Sprach-Rückfrage, Reparatur von Jahr, Fernwärme und Umfang von Übersicht/Grafik
+- Messfehler gefunden und behoben: Tool-Wahl prüfte v2 gegen v1-Werkzeuge (11/21 → 19/21, ISS-118); run-024/025 neu bewertet
+- 22 Regressionstests mit echten Ausgaben aus run-025 (21 schlagen auf dem alten Code fehl); 437 Tests grün; Trockenlauf ohne Absturz, Orakel-Obergrenze unverändert 17/21
+**Gelieferte Dateien / Funktionen:** `strip_step_talk`, `is_english`, `needs_citation`, `REPEAT_LIMIT`, `AgentRun.is_fallback_answer` (`loop.py`, `prompts.py`, `models.py`, `scope.py`), `expected_tools_v2`/`uses_tool_set_v2` (Bewertung), `scripts/analyze_agentics.py`, `m8_night.sh` (run-026 nur P2, Endlauf run-027), `tests/test_agent_run025.py`
+**Entscheidungen:** ADR-0021, Nachtrag ADR-0020
+**Probleme / Überraschungen:** ISS-117, ISS-118, ISS-119, ISS-120; eigene Fehler: Fußnoten-Fehler in `drop_trailing_gap` und zu breite Fernwärme-Umdeutung aus der letzten Sitzung, Tool-Wahl-Kennzahl nicht an v2 angepasst, Journal-Kürzung zuerst falsch zugeordnet (UTC/MEZ)
+**Offen / unklar:** Wirkung erst in run-026; Fixes sind aus den Entwicklungsfragen abgeleitet (ISS-108); Mischantworten und „stimmt“ ohne Zahlen offen (ISS-119)
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1,5 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `test(evaluation)` ×2, `fix(agent)` ×2, `test(agent)`, `fix(evaluation)`, `feat(evaluation)`, `docs` ×2
+
 ### 2026-11-20 – M8 letzte Runde vor dem Nachtlauf
 **Ziel der Sitzung:** Ein letztes Mal so viel wie möglich verbessern, ohne Ollama.
 **Was wurde gemacht:**

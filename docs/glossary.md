@@ -185,10 +185,16 @@
 | Prüfregel | `check_bill`, `Check`, `CheckStatus` | Vergleich im Code: Preis, Zählerstände, Umrechnung und z-Zahl, Rechenweg, Abschläge, Wohnfläche; Ergebnis stimmt / ABWEICHUNG / nicht prüfbar mit Auswirkung in EUR | |
 | Werkzeugsatz v1 / v2 | `AgentSettings.tool_set` | v1: Suchwerkzeuge aus M5/M6; v2: plan, list_documents, check_bill, get_facts, search, make_overview, make_chart, calculate (ADR-0019) | |
 | Plan-Schritt | `plan`, `AgentRun.plan` | Erster Werkzeugaufruf des Agenten v2: 2–5 Schritte mit Werkzeug und Ziel | |
-| Selbstprüfung | `_self_check`, `NudgeReason` (`check`, `chart`, `overview`, `numbers`) | Prüfung vor der Antwort: Prüffrage ohne `check_bill`, fehlende Grafik oder Übersicht, Zahlen ohne Werkzeugergebnis; je Grund eine Rückfrage | |
+| Selbstprüfung | `_self_check`, `NudgeReason` (`check`, `chart`, `overview`, `verdict`, `plan`, `language`, `numbers`) | Prüfung vor der Antwort: Prüffrage ohne `check_bill`, fehlende Grafik oder Übersicht, Urteil gegen `check_bill`, geplanter Schritt fehlt, Antwort nicht deutsch, Zahlen ohne Werkzeugergebnis; je Grund eine Rückfrage | |
 | Artefakt | `Artifact` | Tabelle oder Grafik eines Werkzeugs, die an die Antwort angehängt wird (Markdown, PNG, JSON) | |
 | Zurückgehaltene Fragen | `holdout_questions.yaml`, `--holdout` | 8 Testfragen (T1–T8), vor M8 geschrieben, nur für den Endlauf (ISS-108) | |
 | Werkzeugauswahl nach Fragetyp | `route_tools`, `AgentSettings.route_tools` | Code bietet je Fragetyp (Prüffrage, Grafik, Übersicht, sonst) nur passende Werkzeuge an (ADR-0020) | |
 | Argument-Reparatur | `scope.repair_utility_arguments` | Korrigiert Sparte, Stromart und Jahr der Werkzeugargumente anhand der Frage; steht als „Hinweis: Argumente angepasst“ im Ergebnis (ISS-114) | |
 | Hinweis (Prüfung) | `CheckStatus.NOTICE` | Plausibilitätshinweis, z. B. Verbrauch über 25 % anders als im Vorjahr; kein Fehler | |
 | Trockenlauf / Orakel | `scripts/dry_run.py`, `FakeOllama` | Nachtlauf ohne Ollama in einem Temp-Ordner; ein regelbasiertes Orakel wählt Werkzeuge statt des Modells; zeigt Abstürze und die Obergrenze der Werkzeuge (ISS-116) | |
+| Schritt-Text | `strip_step_talk`, `NudgeReason` `steps` | Angekündigte Schritte und Pläne in einer Antwort („Plan: 1. check_bill …“, „Lassen Sie uns …“); werden entfernt, eine reine Ankündigung wird einmal nachgefragt (ADR-0021) | |
+| Leere Antwort | `EMPTY_ANSWER_MESSAGE`, `NudgeReason` `empty` | Einmaliger Antwortaufruf ohne Werkzeuge, wenn das Modell nichts geschrieben hat (ADR-0021) | |
+| Rückfall-Antwort | `AgentRun.is_fallback_answer`, `FALLBACK_REASONS` | Die letzte echte Antwort vor einer Rückfrage gilt, wenn die Antwort danach leer, eine Lücke oder nur Schritt-Text ist (ADR-0021) | |
+| Wiederholungsgrenze | `REPEAT_LIMIT`, `StopReason` `repeat_limit` | Nach 2 wiederholten Werkzeugaufrufen erzwingt die Schleife eine Antwort (ADR-0021) | |
+| Erwartete Werkzeuge v2 | `expected_tools_v2`, `uses_tool_set_v2` | Erwartete Werkzeuge einer Frage im Werkzeugsatz v2, wo sie von v1 abweichen; ob ein Lauf v2 ist, erkennt die Bewertung an v2-Werkzeugen im Lauf (ISS-118) | |
+| Kennzahlen Agentik | `scripts/analyze_agentics.py`, `agentics.json` | Wie der Agent arbeitete: Stoppgründe, Werkzeuge, Plan, Rückfragen, Wiederholungen, Schritt-Text, durch Rückfrage verschlechterte Antworten (ISS-117) | |

@@ -1,0 +1,222 @@
+{
+  "summaries": [
+    {
+      "variant": "p2",
+      "question_count": 5,
+      "correct_count": 3,
+      "facts_found": 11,
+      "facts_total": 14,
+      "cited_count": 10,
+      "invalid_citations": 0,
+      "cited_expected": 6,
+      "expected_count": 10,
+      "expected_cited": 6,
+      "cited_distractors": 0,
+      "shown_count": 36,
+      "shown_distractors": 0,
+      "tools_ok_count": 4,
+      "filtered_searches": 0,
+      "filter_misses": 0,
+      "negatives_detected": 0,
+      "negative_count": 0,
+      "errors_detected": 2,
+      "error_count": 2,
+      "false_alarms": 0,
+      "correct_bill_count": 1,
+      "seconds_mean": 218.2,
+      "seconds_median": 215.7,
+      "prompt_tokens_mean": 7461.0,
+      "artifact_ok_count": 1,
+      "artifact_count": 1,
+      "tool_calls_mean": 1.0,
+      "distinct_tools_mean": 1.0,
+      "plan_count": 1
+    }
+  ],
+  "ragas": [],
+  "scores": [
+    {
+      "variant": "p2",
+      "question_id": "H2",
+      "category": "edge_case",
+      "is_answerable": true,
+      "facts_total": 3,
+      "missing_facts": [],
+      "cited_count": 1,
+      "invalid_citations": 0,
+      "cited_expected": 1,
+      "expected_count": 1,
+      "expected_cited": 1,
+      "cited_distractors": 0,
+      "shown_count": 14,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "check_bill"
+      ],
+      "called_tools": [
+        "check_bill"
+      ],
+      "filtered_searches": 0,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": "nein",
+      "answer_verdict": "nein",
+      "stop_reason": "answer",
+      "seconds": 215.0,
+      "prompt_tokens": 7288,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": 1,
+      "distinct_tools": 1,
+      "has_plan": false
+    },
+    {
+      "variant": "p2",
+      "question_id": "V1",
+      "category": "visual",
+      "is_answerable": true,
+      "facts_total": 4,
+      "missing_facts": [
+        "Heizstrom NT 2024",
+        "Heizstrom NT 2025"
+      ],
+      "cited_count": 4,
+      "invalid_citations": 0,
+      "cited_expected": 2,
+      "expected_count": 4,
+      "expected_cited": 2,
+      "cited_distractors": 0,
+      "shown_count": 4,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "make_chart"
+      ],
+      "called_tools": [
+        "make_chart"
+      ],
+      "filtered_searches": 0,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": null,
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 305.0,
+      "prompt_tokens": 6172,
+      "expected_artifact": "chart",
+      "artifact_kinds": [
+        "chart"
+      ],
+      "tool_call_count": 1,
+      "distinct_tools": 1,
+      "has_plan": false
+    },
+    {
+      "variant": "p2",
+      "question_id": "W1",
+      "category": "edge_case",
+      "is_answerable": true,
+      "facts_total": 3,
+      "missing_facts": [],
+      "cited_count": 2,
+      "invalid_citations": 0,
+      "cited_expected": 2,
+      "expected_count": 2,
+      "expected_cited": 2,
+      "cited_distractors": 0,
+      "shown_count": 12,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "check_bill"
+      ],
+      "called_tools": [
+        "check_bill"
+      ],
+      "filtered_searches": 0,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": "nein",
+      "answer_verdict": "nein",
+      "stop_reason": "answer",
+      "seconds": 215.7,
+      "prompt_tokens": 7075,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": 1,
+      "distinct_tools": 1,
+      "has_plan": false
+    },
+    {
+      "variant": "p2",
+      "question_id": "G2",
+      "category": "edge_case",
+      "is_answerable": true,
+      "facts_total": 3,
+      "missing_facts": [],
+      "cited_count": 3,
+      "invalid_citations": 0,
+      "cited_expected": 1,
+      "expected_count": 2,
+      "expected_cited": 1,
+      "cited_distractors": 0,
+      "shown_count": 6,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "check_bill"
+      ],
+      "called_tools": [
+        "plan",
+        "check_bill"
+      ],
+      "filtered_searches": 0,
+      "filter_misses": 0,
+      "admits_gap": false,
+      "expected_verdict": "ja",
+      "answer_verdict": "ja",
+      "stop_reason": "answer",
+      "seconds": 217.4,
+      "prompt_tokens": 11446,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": 1,
+      "distinct_tools": 1,
+      "has_plan": true
+    },
+    {
+      "variant": "p2",
+      "question_id": "Z2",
+      "category": "additional",
+      "is_answerable": true,
+      "facts_total": 1,
+      "missing_facts": [
+        "Aktueller Abschlag"
+      ],
+      "cited_count": 0,
+      "invalid_citations": 0,
+      "cited_expected": 0,
+      "expected_count": 1,
+      "expected_cited": 0,
+      "cited_distractors": 0,
+      "shown_count": 0,
+      "shown_distractors": 0,
+      "expected_tools": [
+        "get_facts"
+      ],
+      "called_tools": [
+        "list_documents"
+      ],
+      "filtered_searches": 0,
+      "filter_misses": 0,
+      "admits_gap": true,
+      "expected_verdict": null,
+      "answer_verdict": null,
+      "stop_reason": "answer",
+      "seconds": 137.9,
+      "prompt_tokens": 5322,
+      "expected_artifact": null,
+      "artifact_kinds": [],
+      "tool_call_count": 1,
+      "distinct_tools": 1,
+      "has_plan": false
+    }
+  ]
+}

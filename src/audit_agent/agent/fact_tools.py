@@ -123,7 +123,7 @@ class ViewArguments(_Arguments):
     @model_validator(mode="before")
     @classmethod
     def _repair(cls, data: object) -> object:
-        return repair_utility_arguments(data)
+        return repair_utility_arguments(data, is_view=True)
 
     topic: Topic = Field(
         description="verbrauch = Verbrauch je Jahr, kosten = Rechnungsbeträge je Jahr, "

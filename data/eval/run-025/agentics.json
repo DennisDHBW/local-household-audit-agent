@@ -1,0 +1,673 @@
+{
+  "summary": {
+    "questions": 21,
+    "stop_reasons": {
+      "empty_answer": 2,
+      "answer": 18,
+      "tool_limit": 1
+    },
+    "model_calls_mean": 3.9,
+    "tool_calls_mean": 2.0,
+    "tool_use": {
+      "get_facts": 13,
+      "list_documents": 11,
+      "check_bill": 9,
+      "plan": 4,
+      "search": 3,
+      "make_chart": 2,
+      "make_overview": 1
+    },
+    "invalid_calls": 4,
+    "repeats": 8,
+    "text_calls": 0,
+    "repaired_calls": 10,
+    "plan_called": [
+      "G2",
+      "G4",
+      "S1",
+      "S4"
+    ],
+    "plan_first": [
+      "G2",
+      "G4",
+      "S4"
+    ],
+    "nudges": {
+      "cite": 9,
+      "plan": 3,
+      "gap": 3,
+      "numbers": 2
+    },
+    "questions_with_nudge": [
+      "G1",
+      "G2",
+      "G3",
+      "G4",
+      "H1",
+      "H2",
+      "H3",
+      "N1",
+      "N2",
+      "S1",
+      "S2",
+      "V1",
+      "W1",
+      "Z3"
+    ],
+    "final_has_step_talk": [
+      "G1",
+      "G3",
+      "H1",
+      "H3",
+      "N1",
+      "S2",
+      "S3",
+      "V1",
+      "Z1",
+      "Z2"
+    ],
+    "final_only_steps": [
+      "H1",
+      "N1",
+      "S2"
+    ],
+    "final_english": [
+      "H1"
+    ],
+    "worse_after_question": [
+      "G4",
+      "H1",
+      "S2"
+    ],
+    "invented_citations": {
+      "N1": [
+        1
+      ],
+      "H3": [
+        15,
+        16,
+        17,
+        18
+      ]
+    },
+    "artifacts": {
+      "chart": 2,
+      "table": 1
+    },
+    "seconds_mean": 223.9,
+    "prefill_share": 0.63,
+    "decode_share": 0.33
+  },
+  "questions": {
+    "S1": {
+      "stop_reason": "empty_answer",
+      "model_calls": 6,
+      "tool_calls": 4,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 2,
+      "tools": [
+        "search",
+        "plan",
+        "search",
+        "get_facts"
+      ],
+      "plan_called": true,
+      "plan_first": false,
+      "nudges": [
+        "plan"
+      ],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 315.2,
+      "prefill_seconds": 237.146734999,
+      "decode_seconds": 67.75325000000001
+    },
+    "S2": {
+      "stop_reason": "answer",
+      "model_calls": 4,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "get_facts"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "numbers",
+        "cite"
+      ],
+      "final_has_step_talk": true,
+      "final_only_steps": true,
+      "final_english": false,
+      "worse_after_question": true,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 238.2,
+      "prefill_seconds": 126.525448,
+      "decode_seconds": 101.987177
+    },
+    "S3": {
+      "stop_reason": "answer",
+      "model_calls": 2,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 1,
+      "tools": [
+        "get_facts"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [],
+      "final_has_step_talk": true,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 131.9,
+      "prefill_seconds": 93.885115,
+      "decode_seconds": 28.125494999
+    },
+    "S4": {
+      "stop_reason": "answer",
+      "model_calls": 4,
+      "tool_calls": 3,
+      "invalid_calls": 1,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 1,
+      "tools": [
+        "plan",
+        "get_facts",
+        "list_documents"
+      ],
+      "plan_called": true,
+      "plan_first": true,
+      "nudges": [],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 138.1,
+      "prefill_seconds": 100.030747,
+      "decode_seconds": 28.096297
+    },
+    "S5": {
+      "stop_reason": "answer",
+      "model_calls": 2,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 1,
+      "tools": [
+        "check_bill"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 197.8,
+      "prefill_seconds": 131.845711,
+      "decode_seconds": 56.316896
+    },
+    "G1": {
+      "stop_reason": "answer",
+      "model_calls": 3,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "check_bill"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "cite"
+      ],
+      "final_has_step_talk": true,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 240.9,
+      "prefill_seconds": 140.443782,
+      "decode_seconds": 90.81066
+    },
+    "G2": {
+      "stop_reason": "answer",
+      "model_calls": 5,
+      "tool_calls": 2,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "plan",
+        "check_bill"
+      ],
+      "plan_called": true,
+      "plan_first": true,
+      "nudges": [
+        "plan",
+        "cite"
+      ],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 215.4,
+      "prefill_seconds": 138.63718500000002,
+      "decode_seconds": 67.022279
+    },
+    "G3": {
+      "stop_reason": "answer",
+      "model_calls": 3,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "check_bill"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "cite"
+      ],
+      "final_has_step_talk": true,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 267.1,
+      "prefill_seconds": 149.551588,
+      "decode_seconds": 107.883194
+    },
+    "G4": {
+      "stop_reason": "answer",
+      "model_calls": 5,
+      "tool_calls": 3,
+      "invalid_calls": 1,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "plan",
+        "check_bill",
+        "get_facts"
+      ],
+      "plan_called": true,
+      "plan_first": true,
+      "nudges": [
+        "plan"
+      ],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": true,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 221.2,
+      "prefill_seconds": 147.588122,
+      "decode_seconds": 63.925038
+    },
+    "N1": {
+      "stop_reason": "tool_limit",
+      "model_calls": 12,
+      "tool_calls": 10,
+      "invalid_calls": 1,
+      "repeats": 8,
+      "text_calls": 0,
+      "repaired_calls": 1,
+      "tools": [
+        "list_documents",
+        "list_documents",
+        "get_facts",
+        "list_documents",
+        "get_facts",
+        "list_documents",
+        "get_facts",
+        "list_documents",
+        "get_facts",
+        "list_documents"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "gap"
+      ],
+      "final_has_step_talk": true,
+      "final_only_steps": true,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [
+        1
+      ],
+      "artifacts": [],
+      "seconds": 434.7,
+      "prefill_seconds": 221.415014999,
+      "decode_seconds": 203.315948999
+    },
+    "N2": {
+      "stop_reason": "answer",
+      "model_calls": 5,
+      "tool_calls": 3,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 1,
+      "tools": [
+        "get_facts",
+        "list_documents",
+        "get_facts"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "gap"
+      ],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 230.6,
+      "prefill_seconds": 171.255594,
+      "decode_seconds": 49.589475
+    },
+    "Z1": {
+      "stop_reason": "answer",
+      "model_calls": 2,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "check_bill"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [],
+      "final_has_step_talk": true,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 183.1,
+      "prefill_seconds": 139.363575,
+      "decode_seconds": 34.113547000000004
+    },
+    "Z2": {
+      "stop_reason": "answer",
+      "model_calls": 3,
+      "tool_calls": 2,
+      "invalid_calls": 1,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 1,
+      "tools": [
+        "get_facts",
+        "list_documents"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [],
+      "final_has_step_talk": true,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 139.0,
+      "prefill_seconds": 99.557446,
+      "decode_seconds": 29.800694
+    },
+    "Z3": {
+      "stop_reason": "empty_answer",
+      "model_calls": 5,
+      "tool_calls": 3,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "search",
+        "list_documents",
+        "list_documents"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "gap"
+      ],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 237.3,
+      "prefill_seconds": 163.947305,
+      "decode_seconds": 62.766574
+    },
+    "H1": {
+      "stop_reason": "answer",
+      "model_calls": 4,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "get_facts"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "numbers",
+        "cite"
+      ],
+      "final_has_step_talk": true,
+      "final_only_steps": true,
+      "final_english": true,
+      "worse_after_question": true,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 226.6,
+      "prefill_seconds": 129.948867,
+      "decode_seconds": 86.193449
+    },
+    "H2": {
+      "stop_reason": "answer",
+      "model_calls": 3,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 1,
+      "tools": [
+        "check_bill"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "cite"
+      ],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 217.0,
+      "prefill_seconds": 146.754547,
+      "decode_seconds": 60.534044
+    },
+    "H3": {
+      "stop_reason": "answer",
+      "model_calls": 3,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "check_bill"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "cite"
+      ],
+      "final_has_step_talk": true,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [
+        15,
+        16,
+        17,
+        18
+      ],
+      "artifacts": [],
+      "seconds": 233.1,
+      "prefill_seconds": 148.678253,
+      "decode_seconds": 75.28973
+    },
+    "W1": {
+      "stop_reason": "answer",
+      "model_calls": 3,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "check_bill"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "cite"
+      ],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [],
+      "seconds": 217.3,
+      "prefill_seconds": 139.901874999,
+      "decode_seconds": 68.187015
+    },
+    "V1": {
+      "stop_reason": "answer",
+      "model_calls": 3,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "make_chart"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [
+        "cite"
+      ],
+      "final_has_step_talk": true,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [
+        "chart"
+      ],
+      "seconds": 312.6,
+      "prefill_seconds": 109.141664,
+      "decode_seconds": 193.781967
+    },
+    "V2": {
+      "stop_reason": "answer",
+      "model_calls": 2,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 0,
+      "tools": [
+        "make_overview"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [
+        "table"
+      ],
+      "seconds": 137.9,
+      "prefill_seconds": 107.827076,
+      "decode_seconds": 20.96547
+    },
+    "V3": {
+      "stop_reason": "answer",
+      "model_calls": 2,
+      "tool_calls": 1,
+      "invalid_calls": 0,
+      "repeats": 0,
+      "text_calls": 0,
+      "repaired_calls": 1,
+      "tools": [
+        "make_chart"
+      ],
+      "plan_called": false,
+      "plan_first": false,
+      "nudges": [],
+      "final_has_step_talk": false,
+      "final_only_steps": false,
+      "final_english": false,
+      "worse_after_question": false,
+      "invented_citations": [],
+      "artifacts": [
+        "chart"
+      ],
+      "seconds": 167.8,
+      "prefill_seconds": 105.409398,
+      "decode_seconds": 53.138172
+    }
+  }
+}

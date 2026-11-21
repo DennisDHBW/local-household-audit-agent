@@ -213,6 +213,8 @@ CHART_PHRASES = ("grafik", "diagramm", "chart", "visualis", "schaubild", "plot")
 OVERVIEW_PHRASES = ("uebersicht", "tabelle", "aufstellung", "auflistung", "gegenueberstell")
 _NUMBER = re.compile(r"(?<![\d.,])-?\d{1,3}(?:\.\d{3})+(?:,\d+)?|(?<![\d.,])-?\d+(?:,\d+)?")
 _DATE = re.compile(r"\d{1,2}\.\d{1,2}\.\d{2,4}")
+_DOT_DECIMAL = re.compile(r"(?<![\d.,])(\d+)\.(\d{1,2})(?![\d.,])")
+"""``24.10`` (English decimal point, run-025 H1); German thousands always have three digits."""
 
 
 def system_prompt_v2(max_tool_calls: int) -> str:
@@ -232,6 +234,7 @@ def wants_overview(question: str) -> bool:
 def _numbers(text: str) -> set[str]:
     """Normalized numbers of a text: ``1.234,50`` -> ``1234.5``; dates and citations dropped."""
     text = _CITATION.sub(" ", _DATE.sub(" ", text))
+    text = _DOT_DECIMAL.sub(r"\1,\2", text)
     values = set()
     for token in _NUMBER.findall(text):
         plain = token.replace(".", "").replace(",", ".")
@@ -270,10 +273,101 @@ def unsupported_numbers(answer: str, sources: list[str]) -> list[str]:
 
 RETRY_BEFORE_GAP_MESSAGE_V2 = (
     "Bevor du sagst, dass Angaben fehlen: Prüfe mit list_documents, welche Unterlagen es gibt "
-    "(Heizstrom und Lichtstrom sind Sparte electricity), und versuche get_facts, check_bill "
-    "oder search mit anderen Argumenten."
+    "(Heizstrom und Lichtstrom sind Sparte electricity), und suche mit search im Volltext. "
+    "Verbräuche früherer Jahre stehen oft nur im Vergleichsdiagramm einer Rechnung."
 )
-PLAN_HINT = "Hinweis: Lege jetzt mit plan die weiteren Schritte fest (2 bis 4 Schritte)."
+STEP_TALK_MESSAGE = (
+    "Du hast nur Schritte angekündigt. Führe den nächsten Schritt jetzt mit einem "
+    "Werkzeugaufruf aus oder beantworte die Frage, wenn die Ergebnisse reichen."
+)
+EMPTY_ANSWER_MESSAGE = (
+    "Deine Antwort war leer. Beantworte jetzt die Frage mit den Ergebnissen oben: Deutsch, "
+    "kurz, jede Zahl mit Treffernummer. Fehlt ein Beleg, sage das."
+)
+LANGUAGE_MESSAGE = (
+    "Selbstprüfung: Antworte auf Deutsch, Zahlen im deutschen Format (z. B. 24,10 ct/kWh), "
+    "und sonst unverändert."
+)
+
+_STEP_START = re.compile(
+    r"^(?:plan\b|schritt\b|naechste[rnms]? schritt|zum naechsten schritt|zur weiteren pruefung|"
+    r"weitere schritte|zurueck zum plan|zur ueberpruefung gehe ich|zur verbesserung|"
+    r"lass uns|lassen sie uns|ich werde|ich fuehre|wir koennten|wir werden|"
+    r"now,? i will|let'?s|to continue|next step)"
+)
+_TOOL_NAME = re.compile(
+    r"\b(?:check_bill|get_facts|make_overview|make_chart|list_documents|calculate|search|plan)\b"
+)
+_LIST_ITEM = re.compile(r"^\s*(?:\d+[.)]|[-*•])\s")
+_SENTENCE_END = re.compile(r"(?<=[.!?])\s+")
+_LEADING_CITATION = re.compile(r"^\s*\[\d+(?:\s*[,;]\s*\d+)*\]")
+
+
+def _is_step_paragraph(paragraph: str) -> bool:
+    """A paragraph that announces work instead of answering (run-025: 9 of 21 answers).
+
+    Either it starts like "Plan:", "Nächster Schritt:", "Lass uns …", "Now, I will …", its
+    first line ends with ":" and names a "Schritt", or it is a list whose items name tools.
+    """
+    lines = [line for line in paragraph.splitlines() if line.strip()]
+    if not lines:
+        return False
+    if "argumente angepasst" in fold(paragraph):
+        return True  # the model repeated a repair note of a tool result (run-025 N1)
+    first = fold(lines[0]).strip().lstrip("*#>-• ").replace("*", "").strip()
+    if _STEP_START.match(first) or (first.endswith(":") and "schritt" in first):
+        return True
+    items = [line for line in lines if _LIST_ITEM.match(line)]
+    return (
+        len(items) == len(lines)
+        and any(_TOOL_NAME.search(line) for line in items)
+        and not any(has_citation(line) and not _TOOL_NAME.search(line) for line in items)
+    )
+
+
+def strip_step_talk(answer: str) -> str:
+    """The answer without announced steps and plans (ISS-117).
+
+    ``qwen2.5:7b`` often wrote its plan as text ("Plan: 1. check_bill …", "Nächster Schritt:")
+    instead of calling a tool; the loop took that text as the answer. Whole paragraphs of this
+    kind are removed, and so are trailing sentences such as "Lassen Sie uns …" after a real
+    first sentence. An answer that consists only of such talk becomes empty.
+    """
+    kept: list[str] = []
+    for paragraph in re.split(r"\n\s*\n", answer.strip()):
+        if _is_step_paragraph(paragraph):
+            continue
+        sentences = _SENTENCE_END.split(paragraph.strip())
+        for index, sentence in enumerate(sentences[1:], start=1):
+            if _STEP_START.match(fold(sentence).strip()):
+                paragraph = " ".join(sentences[:index])
+                break
+        kept.append(paragraph.strip())
+    return "\n\n".join(p for p in kept if p).strip()
+
+
+_ENGLISH = frozenset(
+    ("the", "is", "are", "based", "provided", "following", "these", "this", "with", "of", "to")
+    + ("for", "and", "price", "prices", "working", "basic", "valid", "according", "will", "step")
+)
+
+
+def is_english(answer: str) -> bool:
+    """True if the answer is mostly English (run-025 S2, H1; the prompt asks for German)."""
+    words = re.findall(r"[a-z']+", answer.lower())
+    hits = sum(1 for word in words if word in _ENGLISH)
+    return hits >= 4 and hits >= 0.15 * len(words)
+
+
+def needs_citation(answer: str) -> bool:
+    """True if the answer has a figure that needs a hit number (years and counts up to 12 do
+    not; run-025 H3: a year alone made the model invent the numbers [15] to [18])."""
+    for value in _numbers(answer):
+        number = float(value)
+        if number.is_integer() and (abs(number) <= 12 or 1990 <= number <= 2100):
+            continue
+        return True
+    return False
 
 
 def drop_trailing_gap(answer: str) -> str:
@@ -285,7 +379,13 @@ def drop_trailing_gap(answer: str) -> str:
     if GAP_ANSWER not in answer:
         return answer
     rest = answer.replace(GAP_ANSWER, "").strip()
-    return rest if rest and has_citation(rest) else answer
+    return rest if rest and _has_inline_citation(rest) else answer
+
+
+def _has_inline_citation(text: str) -> bool:
+    """A hit number behind text on the same line ("74 m³ [1]"), not a footnote line that only
+    starts with one ("[1] Hinweis: …", run-025 N1)."""
+    return any(_CITATION.search(_LEADING_CITATION.sub("", line)) for line in text.splitlines())
 
 
 PLAN_STEP_MISSING_MESSAGE = (
