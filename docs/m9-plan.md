@@ -1,6 +1,6 @@
 # M9 – Plan: Agent v3 „Verstehen – Ausführen – Prüfen“
 
-**Stand:** 2026-11-21 · **Status:** Vorschlag, wartet auf Freigabe durch den Nutzer · **Bezug:** RUN-028, ISS-108, ISS-110 bis ISS-112, ISS-125 bis ISS-128, ADR-0022 (vorgeschlagen)
+**Stand:** 2026-11-21 · **Status:** freigegeben am 2026-11-21 (Entscheidungen in Abschnitt 10) · **Bezug:** RUN-028, ISS-108, ISS-110 bis ISS-112, ISS-125 bis ISS-128, ADR-0022 (vorgeschlagen)
 
 > Ziel von M9 ist eine deutlich bessere Qualität durch eine andere Architektur, nicht durch weitere Regeln. Gemessen wird auf Fragen, an denen nicht entwickelt wurde.
 
@@ -255,6 +255,8 @@ Mischung für H2 (Vorschlag): 6 Wertfragen, 5 Prüffragen (davon 2 mit eingebaut
 ---
 
 ## 10. Entscheidungen, die Dennis treffen muss
+
+**Getroffen am 2026-11-21:** (1) H2 schreibt Claude jetzt und versiegelt die Datei per Hash (nicht die empfohlene Variante; ISS-112 bleibt damit bestehen, siehe Nachtrag dort); (2) alle drei Modelle werden für M9-0 geladen; (3) P2 v2 läuft im Endlauf auf H2 mit.
 
 1. **H2-Fragen:** selbst schreiben (empfohlen, ca. 30 min, verringert ISS-112) oder Claude schreibt sie jetzt versiegelt
 2. **Modelle laden:** `qwen3:8b`, `qwen3.5:4b`, `granite4:tiny-h` für M9-0 (zusammen ca. 12–14 GB Download und Plattenplatz)
