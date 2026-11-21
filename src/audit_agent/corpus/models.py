@@ -145,6 +145,9 @@ class Question(_Frozen):
     facts: tuple[ExpectedFact, ...] = ()
     sources: tuple[SourceRef, ...] = ()
     expected_tools: tuple[str, ...] = ()
+    expected_tools_v2: tuple[str, ...] = ()
+    """Expected tools of the v2 tool set (ADR-0019) where they differ from ``expected_tools``,
+    e.g. ``check_bill`` instead of ``search`` and ``calculate`` (ISS-118)."""
     is_answerable: bool = True
     planted_error: str | None = None
     """Id of the built-in error this question should uncover (``E1`` …), if any."""

@@ -138,8 +138,24 @@ def filter_excludes(arguments: Mapping[str, object], document: DocumentMeta) -> 
     return False
 
 
+V2_ONLY_TOOLS = frozenset({"plan", "check_bill", "get_facts", "make_overview", "make_chart"})
+"""Tools that exist only in tool set v2; a run that used one of them is a v2 run."""
+
+
+def uses_tool_set_v2(answers: Iterable[VariantAnswer]) -> bool:
+    """True if any agent answer of the run called a v2-only tool (ISS-118).
+
+    Decided per run, not per answer: a v2 answer may use only ``search`` (S4), which is also a
+    v1 tool. Runs before M8 never called a v2-only tool, so their scores do not change.
+    """
+    return any(t.name in V2_ONLY_TOOLS for a in answers if a.variant == "p2" for t in a.tool_uses)
+
+
 def score_answer(
-    question: Question, answer: VariantAnswer, catalog: DocumentCatalog
+    question: Question,
+    answer: VariantAnswer,
+    catalog: DocumentCatalog,
+    is_tool_set_v2: bool = False,
 ) -> AnswerScore:
     """Compare one answer with the ground truth of its question."""
     documents = {document.file: document for document in catalog.documents}
@@ -174,7 +190,11 @@ def score_answer(
         cited_distractors=sum(1 for source in cited if source.filename in noise),
         shown_count=len(answer.sources),
         shown_distractors=sum(1 for source in answer.sources if source.filename in noise),
-        expected_tools=question.expected_tools,
+        expected_tools=(
+            question.expected_tools_v2
+            if is_tool_set_v2 and question.expected_tools_v2
+            else question.expected_tools
+        ),
         called_tools=(tuple(t.name for t in answer.tool_uses if t.is_valid) if is_agent else None),
         filtered_searches=sum(1 for t in searches if has_filter(t.arguments)),
         filter_misses=sum(
