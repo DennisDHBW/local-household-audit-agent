@@ -645,3 +645,43 @@
 - **Agentik (`agentics.json`):** 3,9 Modell- und 2,0 Werkzeugaufrufe je Frage; `plan` in 4 von 21 Fragen (3-mal als erster Schritt); Rückfragen 17 (Zitat 9, Plan 3, Lücke 3, Zahlen 2); 10 Argumentreparaturen; 8 Wiederholungen (davon 7 in N1); Schritt-Text in 10 Endantworten, in 3 ausschließlich; 3 Antworten durch eine Rückfrage verschlechtert (G4, H1, S2). Zeitanteile: Prefill 63 %, Dekodieren 33 %.
 - **B0 und P1 (alle Antworten überflogen):** B0 antwortet bei den meisten Nicht-Strom-Fragen „keine Angaben“, weil nur Strom in den Kontext passt, oder deutet Strom-Angaben um (G2, G4: Netzentgelte als Betriebskosten); seine 2 von 2 Negativfragen und 0 Fehlalarme sind deshalb kein Verdienst (ISS-039). P1 erkennt keinen eingebauten Fehler (G1, G4, H2 als korrekt bewertet, G3 und W1 ohne tragfähiges Urteil), nennt für Fernwärme einen Heizstrom-Preis (N2) und für Z2 den alten Abschlag 115 EUR.
 - **Deutung:** P2 v2 liegt klar vor P1 und B0 und erkennt alle eingebauten Fehler ohne Fehlalarm; das kommt aus dem Code (`check_bill`), nicht aus dem Modell (ISS-110, ISS-112). Die verbleibenden Fehler liegen in der Schleife, die gute Zwischenantworten verschenkt. Die Gegenmaßnahmen (ADR-0021, ISS-117) sind aus genau diesen Fragen abgeleitet; ein besseres Ergebnis in run-026 ist deshalb zu günstig, aussagekräftig ist erst der Endlauf run-027 (ISS-108).
+
+### RUN-026 – M8, Nachtlauf P2 nach ADR-0021 (21 Entwicklungsfragen, `qwen2.5:7b`)
+- **Datum / Commit:** 2026-11-21, 08:04 bis 09:17 · Stand 9c6c665 (`./scripts/m8_night.sh`, nur P2)
+- **Konfiguration:** wie RUN-025, P2 mit den Fixes aus ADR-0021 (Schritt-Text, Rückfall-Antwort, `REPEAT_LIMIT`, Lücke erst nach Suche, Argumente aus der Frage); `num_ctx` 8192, Temperatur 0, max. 10 Werkzeugaufrufe
+- **Dauer:** 73 min (207 s je Frage, Median 181 s); Journal ohne Kontextverschiebung, höchstens 4.376 Token je Anfrage
+- **Rohdaten:** `data/eval/run-026/` (`report.md`, `scores.json`, `evidence.json`, `agentics.json`, `p2-*.jsonl`), `run-026.log`, `run-026-env.txt`, `run-026-journal.txt`
+
+| Metrik | P2 run-025 | P2 run-026 |
+|---|---|---|
+| Richtig laut Metrik (von 21) | 9 | 15 |
+| Richtig nach Handprüfung (von 21) | 9 + 2 Grenzfälle | 15 (Z1 statt Z3, siehe unten) |
+| Fakten in der Antwort (von 49) | 27 | 42 |
+| Fakten im Kontext (von 49) | 41 | 47 |
+| Erwartete Quellen zitiert (von 35) | 18 | 24 |
+| Zitat-Präzision wie gemeldet | 18/36 (50 %) | 24/72 (33 %) |
+| Zitat-Präzision je Beleg, nachgerechnet (ISS-123) | 34/36 (94 %) | 55/72 (76 %) |
+| Erfundene Belegnummern | 5 | 0 |
+| Fehler erkannt (von 5) / Fehlalarme (von 4) | 5 / 0 | 5 / 0 |
+| Negativfragen erkannt (von 2) | 1 | 1 |
+| Tool-Wahl korrekt (von 21) | 19 | 19 (falsch: S4 ohne `search`, N2 `search` statt `list_documents`) |
+| Sekunden je Frage (Mittel) | 224 | 207 |
+
+- **Je Frage gegenüber run-025:** 6 besser (G4, Z3, H1, H3, V1, V2), keine schlechter; S1 bleibt falsch (0/3 → 2/3 Fakten).
+- **Handprüfung P2 (alle 21 Antworten und Schrittprotokolle gelesen):** Richtig S3, S5, G1, G2, G3, G4, H1, H2, H3, W1, V1, V2, V3, N2 und Z1. Z1 gilt laut Metrik als falsch: Urteil, 1.200 m³ und 12.791 kWh stimmen, die z-Zahl stand in der Kurzfassung von `check_bill`, das Modell hat sie weggelassen. Z3 gilt laut Metrik als richtig, nach Handprüfung nicht: Die Antwort beginnt mit „Dazu liegen … keine Angaben vor“ und nennt dann doch die richtige Frist (1 Monat); das Ende der Erstlaufzeit fehlt. Schwächen in richtigen Antworten: G4 ohne Belegnummern, S3 mit Füllsätzen („keine weiteren Grafiken“), V3 belegt die Preise ab 2026 nur mit den Belegen für 2024, N2 ohne Hinweis auf die Gasetagenheizung.
+- **Ursachen der Fehlschläge:**
+
+| Frage | Was passierte | Ursache |
+|---|---|---|
+| S1 | Erste Antwort inhaltlich richtig (6 Wochen, danach 1 Monat, Erstlaufzeit bis 31.12.2025), aber mit vorangestelltem Lückensatz; die Lücken-Rückfrage verweist auf Strom, danach Heizstromvertrag und Jahr 2024; Abbruch `context_limit` | Steuerung (ISS-122, ISS-121) |
+| S2 | `get_facts` trennt Vereinbartes und Abgerechnetes; das Modell nennt den abgerechneten, falschen Arbeitspreis 39,50 ct/kWh und 12,90 EUR | Modell liest falsch; Frage mehrdeutig (ISS-119) |
+| S4 | Kein `search`; `list_documents` mit Jahr 2022 meldet „liegen nicht vor“, die Werte stehen nur im Diagramm der Rechnung 2024 | Werkzeugwahl; einzige Frage, deren Sollfakten nie im Kontext waren |
+| N1 | Erste Antwort „keine Angaben“ war richtig; nach der Lücken-Rückfrage Suche und Vermutung über die Höhe der Rechnung 2023 | Steuerung (ISS-122) |
+| Z1 | z-Zahl aus der Kurzfassung weggelassen | Formulierung; nach Handprüfung richtig |
+| Z2 | `get_facts` markiert 120,00 EUR als „neuester Stand“, das Modell nennt 115,00 EUR; ein Teil-Lückensatz löst die Lücken-Rückfrage aus (+270 s), Abbruch `context_limit` | Modell liest falsch; Steuerung |
+
+- **Agentik (`agentics.json`, run-025 → run-026):** Modellaufrufe je Frage 3,9 → 3,5, Werkzeugaufrufe 2,0 → 2,0; Schritt-Text in Endantworten 10 → 0, reine Ankündigungen 3 → 0, Englisch 1 → 0; erfundene Belegnummern 5 → 0; durch Rückfrage verschlechtert (Kennzahl) 3 → 0; Wiederholungen 8 → 2; Rückfragen 17 → 11 (Zitat 9 → 3, Lücke 3 → 5, Plan 3 → 3, Zahlen 2 → 0); Argumentreparaturen 10 → 18; Endgründe `empty_answer` 2 und `tool_limit` 1 → 0, neu `context_limit` 2 (S1, Z2); `search` 3 → 7 Aufrufe; `plan` in 3 Fragen; Prefill-Anteil 63 → 71 %.
+- **Lücken-Rückfrage einzeln (ISS-122):** 5-mal (N1, S1, S4, Z2, Z3), 0-mal geholfen, 2-mal verschlechtert (N1, S1), 3-mal ohne Wirkung bei 120 bis 270 s Mehrzeit (Schritte nach der Rückfrage). Die Kennzahl „durch Rückfrage verschlechtert“ erfasst die Lücken-Rückfrage nicht, weil dort keine Rückfall-Antwort gemerkt wird.
+- **Kontext (ISS-121):** `context_limit` in S1 und Z2 bei real höchstens 3.737 bzw. 3.654 Token (frei wären 6.392); der Code schätzt die Schemas aller 8 Werkzeuge statt der angebotenen.
+- **Deutung:** Die Fixes aus ADR-0021 wirken wie beabsichtigt: Schritt-Text, leere Antworten, erfundene Belege und Schleifen sind verschwunden, 6 Fragen wurden richtig, keine schlechter. Das Ergebnis ist zu günstig, weil die Fixes aus genau diesen Fragen stammen (ISS-108); unabhängig ist erst der Endlauf. Fast alle Sollfakten erreichen jetzt den Kontext (47 von 49); die übrigen Fehler liegen in der Lücken-Rückfrage und im Lesen des Modells, nur S4 im Retrieval. Die gemeldete Zitat-Präzision ist durch einen Messfehler zu niedrig (ISS-123); je Beleg nachgerechnet sinkt sie von 94 auf 76 %, vor allem durch S1, S2, N1 und Z2, die zusammen 12 Belege ohne erwartete Quelle zitieren.
+- **Entscheidung (Nutzer, 2026-11-21):** Vor dem Endlauf ein Fix-Paket (ISS-121, ISS-122, ISS-123) mit Kontrolllauf P2; B0 im Endlauf mit unverändertem Budget (ISS-120).

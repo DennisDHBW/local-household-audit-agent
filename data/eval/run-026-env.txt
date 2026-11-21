@@ -1,0 +1,5 @@
+Sa 21. Nov 08:04:40 CET 2026
+ 08:04:40 up 23:53,  1 user,  load average: 0,84, 1,02, 1,06
+               gesamt       benutzt     frei      gemns.  Puffer/Cache verfügbar
+Speicher:       14Gi       4,6Gi       2,8Gi       1,1Gi       8,4Gi       9,8Gi
+Auslager:      4,0Gi       2,0Gi       2,0Gi

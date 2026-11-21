@@ -110,7 +110,7 @@
 | Belegnummer | `EvidenceBook` | Laufende Nummer `[n]` je gefundenem Chunk in einem Lauf; das Modell zitiert sie, die Oberfläche zeigt sie | |
 | Schritt | `ModelCallStep`, `ToolCallStep` | Ein Modellaufruf (mit Token und Zeiten) oder ein Tool-Aufruf (mit Argumenten und Beobachtung) im Log | |
 | Lauf | `AgentRun` | Frage, Antwort, Endgrund, alle Schritte und die nummerierten Quellen einer Frage | |
-| Endgrund | `stop_reason` | `answer`, `tool_limit`, `context_limit` oder `empty_answer` | |
+| Endgrund | `stop_reason` | `answer`, `tool_limit`, `context_limit`, `repeat_limit` oder `empty_answer` | |
 | Werkzeuglimit | `max_tool_calls` | Höchstens 6 Tool-Aufrufe je Frage, gültige und ungültige | |
 | Kontextwächter | `context_reserve_tokens` | Beendet die Suche, wenn Prompt und Beobachtungen den Platz für die Antwort aufbrauchen würden | |
 | Rechner | `calculate` | Rechnet Ausdrücke über den Syntaxbaum (`ast`) mit `Decimal`, ohne `eval` | |
@@ -131,7 +131,7 @@
 | Generieren / Bewerten | `generate`, `score` | Getrennte Schritte: Antworten erzeugen (Ollama, langsam) und deterministisch bewerten (ohne Ollama) | |
 | Bewertung einer Antwort | `AnswerScore`, `score_answer` | Alle eigenen Metriken einer Antwort gegen die Ground Truth | |
 | Zusammenfassung je Variante | `VariantSummary`, `summarize` | Summen und Quoten einer Variante über alle Fragen (Tabelle Variante × Metrik) | |
-| Quellen-Präzision | `cited_expected / cited_count` | Anteil der zitierten Belege, deren Datei und Seite erwartet sind | |
+| Quellen-Präzision | `cited_expected / cited_count` | Anteil der zitierten Belege, deren Datei und Seite erwartet sind (der Code zählt bis zur Korrektur im Zähler Seiten statt Belege, ISS-123) | |
 | Quellen-Recall | `expected_cited / expected_count` | Anteil der erwarteten Quellen, die die Antwort zitiert | |
 | Erfundene Belegnummer | `invalid_citations` | Zitierte `[n]`, die das Modell nie gesehen hat | |
 | Ablenkerquote | `cited_distractors`, `shown_distractors` | Anteil von Ablenkungsdokumenten (`is_noise_document`) in den Zitaten bzw. im Kontext | |
