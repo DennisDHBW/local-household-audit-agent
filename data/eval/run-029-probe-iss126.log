@@ -1,0 +1,5 @@
+  ISS-126 first chat: 64 Token, [{'name': 'plan', 'arguments': {'steps': ['check_bill Heizstrom 2024', 'get_facts verbrauch Heizstrom 2024', 'get_facts rechnungsbetrag Heizstrom 2024']}}], ''
+  ISS-126 first raw: 65 Token, [], '<tool_call>\n{"name": "plan", "arguments": {"steps": ["check_bill Heizstrom 2024", "get_facts verbrauch 2024", "calculate 3100 * (0.395 - 0.382)"]}}\n</tool_call>'
+  ISS-126 after_plan chat: 32 Token, [], ''
+  ISS-126 after_plan raw: 41 Token, [], '<tool_call>\n{"name": "check_bill", "arguments": {"utility_type": "district_heating", "tariff_kind": "heating", "year": 2024}}\n</tool_call>'
+probe: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-029-probe/m9-probe.md

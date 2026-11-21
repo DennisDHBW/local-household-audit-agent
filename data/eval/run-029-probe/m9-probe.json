@@ -1,0 +1,1583 @@
+{
+  "run_id": "run-029-probe",
+  "started": "2026-11-21 20:08",
+  "ollama_version": "0.35.1",
+  "num_ctx": 8192,
+  "frame_prompt_chars": 4556,
+  "frame_schema": {
+    "$defs": {
+      "DocType": {
+        "description": "Dokumentart (filter value).",
+        "enum": [
+          "contract",
+          "payment_plan",
+          "price_adjustment",
+          "bill",
+          "notice",
+          "handover_protocol",
+          "policy"
+        ],
+        "title": "DocType",
+        "type": "string"
+      },
+      "FactName": {
+        "enum": [
+          "preise",
+          "arbeitspreis",
+          "grundpreis",
+          "wasserpreis",
+          "schmutzwassergebuehr",
+          "abschlag",
+          "verbrauch",
+          "zaehlerstand",
+          "rechnungsbetrag",
+          "z_zahl",
+          "wohnflaeche"
+        ],
+        "title": "FactName",
+        "type": "string"
+      },
+      "Intent": {
+        "enum": [
+          "fact",
+          "check",
+          "overview",
+          "chart",
+          "clause",
+          "other"
+        ],
+        "title": "Intent",
+        "type": "string"
+      },
+      "Period": {
+        "enum": [
+          "years",
+          "since",
+          "latest",
+          "all",
+          "none"
+        ],
+        "title": "Period",
+        "type": "string"
+      },
+      "SubTask": {
+        "additionalProperties": false,
+        "properties": {
+          "intent": {
+            "$ref": "#/$defs/Intent"
+          },
+          "utility": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/UtilityType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tariff_kind": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/TariffKind"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "period": {
+            "$ref": "#/$defs/Period"
+          },
+          "years": {
+            "items": {
+              "type": "integer"
+            },
+            "maxItems": 6,
+            "title": "Years",
+            "type": "array"
+          },
+          "metric": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/FactName"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "doc_type": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DocType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "intent",
+          "utility",
+          "tariff_kind",
+          "period",
+          "years",
+          "metric",
+          "doc_type"
+        ],
+        "title": "SubTask",
+        "type": "object"
+      },
+      "TariffKind": {
+        "description": "Kind of electricity supply; only set for electricity documents (ADR-0018).",
+        "enum": [
+          "household",
+          "heating"
+        ],
+        "title": "TariffKind",
+        "type": "string"
+      },
+      "UtilityType": {
+        "description": "Sparte of a document (filter value).",
+        "enum": [
+          "electricity",
+          "gas",
+          "district_heating",
+          "water",
+          "service_charges",
+          "rent",
+          "telecom",
+          "insurance",
+          "other"
+        ],
+        "title": "UtilityType",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "tasks": {
+        "items": {
+          "$ref": "#/$defs/SubTask"
+        },
+        "maxItems": 3,
+        "minItems": 1,
+        "title": "Tasks",
+        "type": "array"
+      },
+      "search_query": {
+        "title": "Search Query",
+        "type": "string"
+      },
+      "is_follow_up": {
+        "title": "Is Follow Up",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "tasks",
+      "search_query",
+      "is_follow_up"
+    ],
+    "title": "QueryFrame",
+    "type": "object"
+  },
+  "models": {
+    "qwen2.5:7b": {
+      "capabilities": [
+        "completion",
+        "tools"
+      ],
+      "calls": [
+        {
+          "wall_seconds": 88.34,
+          "load_seconds": 10.85,
+          "prompt_tokens": 1438,
+          "prefill_seconds": 67.34,
+          "generated_tokens": 60,
+          "decode_seconds": 10.12,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"preise\",\"doc_type\":null}],\"search_query\":\"Trinkwasser Preis 2025\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F1",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 10.23,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1438,
+          "prefill_seconds": 0.18,
+          "generated_tokens": 60,
+          "decode_seconds": 10.03,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"preise\",\"doc_type\":null}],\"search_query\":\"Trinkwasser Preis 2025\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "repeat",
+          "question_id": "F1",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 12.17,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1439,
+          "prefill_seconds": 1.83,
+          "generated_tokens": 63,
+          "decode_seconds": 10.33,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"check\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2024],\"metric\":null,\"doc_type\":\"bill\"}],\"search_query\":\"SüdVolt Stromrechnung 2024\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F2",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 10.45,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1437,
+          "prefill_seconds": 1.81,
+          "generated_tokens": 51,
+          "decode_seconds": 8.63,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"overview\",\"utility\":\"other\",\"tariff_kind\":null,\"period\":\"latest\",\"years\":[],\"metric\":null,\"doc_type\":null}],\"search_query\":\"Abschläge Tabelle\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F3",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 3,
+          "total": 4,
+          "exact": false,
+          "mismatches": [
+            "utility='other'"
+          ]
+        },
+        {
+          "wall_seconds": 13.69,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1439,
+          "prefill_seconds": 3.03,
+          "generated_tokens": 62,
+          "decode_seconds": 10.64,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"chart\",\"utility\":\"gas\",\"tariff_kind\":null,\"period\":\"since\",\"years\":[2024],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Gasverbrauch Diagramm 2024\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F4",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 10.63,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1435,
+          "prefill_seconds": 1.61,
+          "generated_tokens": 55,
+          "decode_seconds": 9.01,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"clause\",\"utility\":\"telecom\",\"tariff_kind\":null,\"period\":\"none\",\"years\":[],\"metric\":null,\"doc_type\":\"contract\"}],\"search_query\":\"Glasfaservertrag Bindungsfrist\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F5",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 4,
+          "total": 4,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 12.55,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1439,
+          "prefill_seconds": 1.74,
+          "generated_tokens": 66,
+          "decode_seconds": 10.79,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"electricity\",\"tariff_kind\":\"heating\",\"period\":\"years\",\"years\":[2024],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Nachtstrom Speicherheizung 2024\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F6",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 6,
+          "total": 6,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 17.62,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1433,
+          "prefill_seconds": 1.74,
+          "generated_tokens": 94,
+          "decode_seconds": 15.86,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":null,\"doc_type\":null},{\"intent\":\"fact\",\"utility\":\"gas\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":null,\"doc_type\":null}],\"search_query\":\"Strom teurer Gas 2025\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F7",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 9,
+          "total": 9,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 15.71,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1509,
+          "prefill_seconds": 5.65,
+          "generated_tokens": 61,
+          "decode_seconds": 10.04,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Wasserverbrauch 2025\",\"is_follow_up\":true}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F8",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 3.33,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1438,
+          "prefill_seconds": 2.13,
+          "generated_tokens": 8,
+          "decode_seconds": 1.19,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C1"
+        },
+        {
+          "wall_seconds": 17.19,
+          "load_seconds": 0.0,
+          "prompt_tokens": 337,
+          "prefill_seconds": 16.07,
+          "generated_tokens": 8,
+          "decode_seconds": 1.06,
+          "done_reason": "length",
+          "content": "[\n    {\"text\": \"Das Gas",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C2"
+        },
+        {
+          "wall_seconds": 3.25,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1438,
+          "prefill_seconds": 1.98,
+          "generated_tokens": 8,
+          "decode_seconds": 1.21,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C3"
+        },
+        {
+          "wall_seconds": 80.88,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1607,
+          "prefill_seconds": 79.63,
+          "generated_tokens": 8,
+          "decode_seconds": 1.18,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C1"
+        },
+        {
+          "wall_seconds": 12.22,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1768,
+          "prefill_seconds": 11.03,
+          "generated_tokens": 8,
+          "decode_seconds": 1.18,
+          "done_reason": "length",
+          "content": "{\"sentences\":[{\"text\":\"Das Gas",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C2"
+        },
+        {
+          "wall_seconds": 4.54,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1607,
+          "prefill_seconds": 3.32,
+          "generated_tokens": 8,
+          "decode_seconds": 1.2,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C3"
+        }
+      ],
+      "summary": {
+        "calls": 9,
+        "errors": 0,
+        "json_valid": 9,
+        "schema_valid": 9,
+        "thinking_leaks": 0,
+        "exact_frames": 7,
+        "questions": 8,
+        "field_matches": 42,
+        "field_total": 43,
+        "load_seconds": 10.85,
+        "cold_prompt_tokens": 1438,
+        "cold_prefill_seconds": 67.34,
+        "cold_prefill_tps": 21.4,
+        "warm_prefill_median_seconds": 1.81,
+        "repeat_prefill_seconds": 0.18,
+        "decode_tps_median": 6.0,
+        "frame_wall_median_seconds": 13.12,
+        "alt_separate_third_prefill_seconds": 1.98,
+        "alt_shared_third_prefill_seconds": 3.32
+      },
+      "loaded": [
+        {
+          "model": "qwen2.5:7b",
+          "name": "qwen2.5:7b",
+          "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+          "expires_at": "2026-11-21T20:23:25.438575+01:00",
+          "size": 5455793356,
+          "size_vram": 0,
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "qwen2",
+            "families": [
+              "qwen2"
+            ],
+            "parameter_size": "7.6B",
+            "quantization_level": "Q4_K_M"
+          },
+          "context_length": 8192
+        }
+      ],
+      "memory_mb": 5911
+    },
+    "qwen3:8b": {
+      "capabilities": [
+        "completion",
+        "tools",
+        "thinking"
+      ],
+      "calls": [
+        {
+          "wall_seconds": 105.04,
+          "load_seconds": 13.13,
+          "prompt_tokens": 1446,
+          "prefill_seconds": 79.75,
+          "generated_tokens": 60,
+          "decode_seconds": 12.15,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"preise\",\"doc_type\":null}],\"search_query\":\"Trinkwasser Preis 2025\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F1",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 12.51,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1446,
+          "prefill_seconds": 0.21,
+          "generated_tokens": 60,
+          "decode_seconds": 12.28,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"preise\",\"doc_type\":null}],\"search_query\":\"Trinkwasser Preis 2025\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "repeat",
+          "question_id": "F1",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 18.87,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1447,
+          "prefill_seconds": 4.21,
+          "generated_tokens": 67,
+          "decode_seconds": 14.64,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"check\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2024],\"metric\":null,\"doc_type\":\"bill\"}],\"search_query\":\"SüdVolt Stromrechnung 2024 Abrechnung\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F2",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 15.62,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1445,
+          "prefill_seconds": 4.37,
+          "generated_tokens": 55,
+          "decode_seconds": 11.23,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"overview\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"latest\",\"years\":[],\"metric\":\"abschlag\",\"doc_type\":null}],\"search_query\":\"Strom Abschlag Tabelle\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F3",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 3,
+          "total": 4,
+          "exact": false,
+          "mismatches": [
+            "utility='electricity'"
+          ]
+        },
+        {
+          "wall_seconds": 16.97,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1447,
+          "prefill_seconds": 4.47,
+          "generated_tokens": 61,
+          "decode_seconds": 12.48,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"chart\",\"utility\":\"gas\",\"tariff_kind\":null,\"period\":\"since\",\"years\":[2024],\"metric\":null,\"doc_type\":null}],\"search_query\":\"Gasverbrauch Diagramm seit 2024\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F4",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 14.93,
+          "load_seconds": 0.01,
+          "prompt_tokens": 1443,
+          "prefill_seconds": 3.89,
+          "generated_tokens": 54,
+          "decode_seconds": 11.03,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"clause\",\"utility\":\"telecom\",\"tariff_kind\":null,\"period\":\"none\",\"years\":[],\"metric\":null,\"doc_type\":\"contract\"}],\"search_query\":\"Glasfaservertrag Laufzeit\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F5",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 4,
+          "total": 4,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 17.56,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1447,
+          "prefill_seconds": 4.03,
+          "generated_tokens": 66,
+          "decode_seconds": 13.51,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"electricity\",\"tariff_kind\":\"heating\",\"period\":\"years\",\"years\":[2024],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Nachtstrom Speicherheizung 2024\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F6",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 6,
+          "total": 6,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 23.45,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1441,
+          "prefill_seconds": 3.72,
+          "generated_tokens": 94,
+          "decode_seconds": 19.71,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"overview\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":null,\"doc_type\":null},{\"intent\":\"overview\",\"utility\":\"gas\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":null,\"doc_type\":null}],\"search_query\":\"Strom Gas Vergleich 2025\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F7",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 9,
+          "total": 9,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 21.22,
+          "load_seconds": 0.01,
+          "prompt_tokens": 1517,
+          "prefill_seconds": 6.91,
+          "generated_tokens": 61,
+          "decode_seconds": 14.29,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Wasserverbrauch 2025\",\"is_follow_up\":true}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F8",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 6.3,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1446,
+          "prefill_seconds": 4.81,
+          "generated_tokens": 8,
+          "decode_seconds": 1.48,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C1"
+        },
+        {
+          "wall_seconds": 19.45,
+          "load_seconds": 0.0,
+          "prompt_tokens": 345,
+          "prefill_seconds": 18.06,
+          "generated_tokens": 8,
+          "decode_seconds": 1.23,
+          "done_reason": "length",
+          "content": "{\n  \"antwort\": \"Das Gas",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C2"
+        },
+        {
+          "wall_seconds": 5.48,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1446,
+          "prefill_seconds": 3.94,
+          "generated_tokens": 8,
+          "decode_seconds": 1.44,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C3"
+        },
+        {
+          "wall_seconds": 89.44,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1615,
+          "prefill_seconds": 87.74,
+          "generated_tokens": 8,
+          "decode_seconds": 1.54,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C1"
+        },
+        {
+          "wall_seconds": 14.58,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1776,
+          "prefill_seconds": 12.8,
+          "generated_tokens": 8,
+          "decode_seconds": 1.77,
+          "done_reason": "length",
+          "content": "{\"answer\":[{\"sentence\":\"Der Grundpre",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C2"
+        },
+        {
+          "wall_seconds": 8.32,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1615,
+          "prefill_seconds": 6.76,
+          "generated_tokens": 8,
+          "decode_seconds": 1.55,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C3"
+        }
+      ],
+      "summary": {
+        "calls": 9,
+        "errors": 0,
+        "json_valid": 9,
+        "schema_valid": 9,
+        "thinking_leaks": 0,
+        "exact_frames": 7,
+        "questions": 8,
+        "field_matches": 42,
+        "field_total": 43,
+        "load_seconds": 13.13,
+        "cold_prompt_tokens": 1446,
+        "cold_prefill_seconds": 79.75,
+        "cold_prefill_tps": 18.1,
+        "warm_prefill_median_seconds": 4.21,
+        "repeat_prefill_seconds": 0.21,
+        "decode_tps_median": 4.9,
+        "frame_wall_median_seconds": 18.21,
+        "alt_separate_third_prefill_seconds": 3.94,
+        "alt_shared_third_prefill_seconds": 6.76
+      },
+      "loaded": [
+        {
+          "model": "qwen3:8b",
+          "name": "qwen3:8b",
+          "digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+          "expires_at": "2026-11-21T20:32:52.374947+01:00",
+          "size": 6662882590,
+          "size_vram": 0,
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "qwen3",
+            "families": [
+              "qwen3"
+            ],
+            "parameter_size": "8.2B",
+            "quantization_level": "Q4_K_M"
+          },
+          "context_length": 8192
+        }
+      ],
+      "memory_mb": 6773
+    },
+    "qwen3.5:4b": {
+      "capabilities": [
+        "completion",
+        "vision",
+        "tools",
+        "thinking"
+      ],
+      "calls": [
+        {
+          "wall_seconds": 53.97,
+          "load_seconds": 7.46,
+          "prompt_tokens": 1328,
+          "prefill_seconds": 39.01,
+          "generated_tokens": 58,
+          "decode_seconds": 7.49,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"preise\",\"doc_type\":null}],\"search_query\":\"Trinkwasser Preis 2025\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F1",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 7.6,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1328,
+          "prefill_seconds": 0.3,
+          "generated_tokens": 58,
+          "decode_seconds": 7.29,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"preise\",\"doc_type\":null}],\"search_query\":\"Trinkwasser Preis 2025\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "repeat",
+          "question_id": "F1",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 38.48,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1328,
+          "prefill_seconds": 30.63,
+          "generated_tokens": 62,
+          "decode_seconds": 7.84,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"check\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2024],\"metric\":null,\"doc_type\":\"bill\"}],\"search_query\":\"SüdVolt Stromrechnung 2024 Abrechnung\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F2",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 37.47,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1325,
+          "prefill_seconds": 30.79,
+          "generated_tokens": 53,
+          "decode_seconds": 6.67,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"overview\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"latest\",\"years\":[],\"metric\":\"abschlag\",\"doc_type\":null}],\"search_query\":\"Strom Abschlage Tabelle\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F3",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 3,
+          "total": 4,
+          "exact": false,
+          "mismatches": [
+            "utility='electricity'"
+          ]
+        },
+        {
+          "wall_seconds": 37.98,
+          "load_seconds": 0.01,
+          "prompt_tokens": 1328,
+          "prefill_seconds": 30.64,
+          "generated_tokens": 58,
+          "decode_seconds": 7.31,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"chart\",\"utility\":\"gas\",\"tariff_kind\":null,\"period\":\"since\",\"years\":[2024],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Gasverbrauch Diagramm 2024\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F4",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 38.39,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1325,
+          "prefill_seconds": 31.26,
+          "generated_tokens": 55,
+          "decode_seconds": 7.11,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"clause\",\"utility\":\"telecom\",\"tariff_kind\":null,\"period\":\"none\",\"years\":[],\"metric\":null,\"doc_type\":\"contract\"}],\"search_query\":\"Glasfaser Vertrag Kündigungsfrist\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F5",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 4,
+          "total": 4,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 38.94,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1327,
+          "prefill_seconds": 31.07,
+          "generated_tokens": 62,
+          "decode_seconds": 7.85,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"electricity\",\"tariff_kind\":\"heating\",\"period\":\"years\",\"years\":[2024],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Nachtstrom Speicherheizung Verbrauch 2024\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F6",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 6,
+          "total": 6,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 44.4,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1325,
+          "prefill_seconds": 31.61,
+          "generated_tokens": 100,
+          "decode_seconds": 12.77,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"rechnungsbetrag\",\"doc_type\":null},{\"intent\":\"fact\",\"utility\":\"gas\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"rechnungsbetrag\",\"doc_type\":null}],\"search_query\":\"Strom Gas Vergleich 2025 Kosten\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F7",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 9,
+          "total": 9,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 41.44,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1397,
+          "prefill_seconds": 34.03,
+          "generated_tokens": 58,
+          "decode_seconds": 7.4,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Wasserverbrauch 2025\",\"is_follow_up\":true}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F8",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 30.39,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1330,
+          "prefill_seconds": 29.47,
+          "generated_tokens": 8,
+          "decode_seconds": 0.91,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C1"
+        },
+        {
+          "wall_seconds": 10.43,
+          "load_seconds": 0.0,
+          "prompt_tokens": 309,
+          "prefill_seconds": 9.4,
+          "generated_tokens": 8,
+          "decode_seconds": 0.86,
+          "done_reason": "length",
+          "content": "{\n  \"antwort\": \"Der",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C2"
+        },
+        {
+          "wall_seconds": 30.24,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1328,
+          "prefill_seconds": 29.22,
+          "generated_tokens": 8,
+          "decode_seconds": 0.9,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C3"
+        },
+        {
+          "wall_seconds": 46.22,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1477,
+          "prefill_seconds": 45.13,
+          "generated_tokens": 8,
+          "decode_seconds": 0.91,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C1"
+        },
+        {
+          "wall_seconds": 36.14,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1627,
+          "prefill_seconds": 35.18,
+          "generated_tokens": 8,
+          "decode_seconds": 0.94,
+          "done_reason": "length",
+          "content": "{\n  \"answer\": \"Das",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C2"
+        },
+        {
+          "wall_seconds": 27.1,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1475,
+          "prefill_seconds": 26.15,
+          "generated_tokens": 8,
+          "decode_seconds": 0.93,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C3"
+        }
+      ],
+      "summary": {
+        "calls": 9,
+        "errors": 0,
+        "json_valid": 9,
+        "schema_valid": 9,
+        "thinking_leaks": 0,
+        "exact_frames": 7,
+        "questions": 8,
+        "field_matches": 42,
+        "field_total": 43,
+        "load_seconds": 7.46,
+        "cold_prompt_tokens": 1328,
+        "cold_prefill_seconds": 39.01,
+        "cold_prefill_tps": 34.0,
+        "warm_prefill_median_seconds": 31.07,
+        "repeat_prefill_seconds": 0.3,
+        "decode_tps_median": 7.9,
+        "frame_wall_median_seconds": 38.71,
+        "alt_separate_third_prefill_seconds": 29.22,
+        "alt_shared_third_prefill_seconds": 26.15
+      },
+      "loaded": [
+        {
+          "model": "qwen3.5:4b",
+          "name": "qwen3.5:4b",
+          "digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+          "expires_at": "2026-11-21T20:41:31.647667+01:00",
+          "size": 3355422227,
+          "size_vram": 0,
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "qwen35",
+            "families": [
+              "qwen35"
+            ],
+            "parameter_size": "4.2B",
+            "quantization_level": "Q4_K_M"
+          },
+          "context_length": 8192
+        }
+      ],
+      "memory_mb": 7574
+    },
+    "granite4:tiny-h": {
+      "capabilities": [
+        "completion",
+        "tools"
+      ],
+      "calls": [
+        {
+          "wall_seconds": 32.3,
+          "load_seconds": 9.1,
+          "prompt_tokens": 1386,
+          "prefill_seconds": 19.83,
+          "generated_tokens": 59,
+          "decode_seconds": 3.37,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"preise\",\"doc_type\":null}],\"search_query\":\"Trinkwasser Preis Kubikmeter 2025\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F1",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 3.78,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1386,
+          "prefill_seconds": 0.16,
+          "generated_tokens": 59,
+          "decode_seconds": 3.61,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"preise\",\"doc_type\":null}],\"search_query\":\"Trinkwasser Preis Kubikmeter 2025\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "repeat",
+          "question_id": "F1",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 18.78,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1388,
+          "prefill_seconds": 15.15,
+          "generated_tokens": 63,
+          "decode_seconds": 3.61,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"check\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2024],\"metric\":null,\"doc_type\":\"bill\"}],\"search_query\":\"SüdVolt Stromrechnung 2024 Abrechnung\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F2",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 18.3,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1387,
+          "prefill_seconds": 15.26,
+          "generated_tokens": 53,
+          "decode_seconds": 3.03,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"overview\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"latest\",\"years\":[],\"metric\":\"abschlag\",\"doc_type\":null}],\"search_query\":\"Strom Abschlag\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F3",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 3,
+          "total": 4,
+          "exact": false,
+          "mismatches": [
+            "utility='electricity'"
+          ]
+        },
+        {
+          "wall_seconds": 18.56,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1387,
+          "prefill_seconds": 15.29,
+          "generated_tokens": 57,
+          "decode_seconds": 3.25,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"chart\",\"utility\":\"gas\",\"tariff_kind\":null,\"period\":\"since\",\"years\":[2024],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Gasverbrauch seit 2024\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F4",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 18.44,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1385,
+          "prefill_seconds": 15.29,
+          "generated_tokens": 55,
+          "decode_seconds": 3.14,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"clause\",\"utility\":\"other\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[],\"metric\":null,\"doc_type\":\"contract\"}],\"search_query\":\"Glasfaservertrag Mindestbindungsdauer\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F5",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 2,
+          "total": 4,
+          "exact": false,
+          "mismatches": [
+            "utility='other'",
+            "period='years'"
+          ]
+        },
+        {
+          "wall_seconds": 18.68,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1387,
+          "prefill_seconds": 15.23,
+          "generated_tokens": 60,
+          "decode_seconds": 3.43,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"other\",\"tariff_kind\":\"heating\",\"period\":\"years\",\"years\":[2024],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Speicherheizung Nachtstrom 2024\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F6",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 6,
+          "exact": false,
+          "mismatches": [
+            "utility='other'"
+          ]
+        },
+        {
+          "wall_seconds": 20.89,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1381,
+          "prefill_seconds": 15.21,
+          "generated_tokens": 98,
+          "decode_seconds": 5.66,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"electricity\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"rechnungsbetrag\",\"doc_type\":null},{\"intent\":\"fact\",\"utility\":\"gas\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"rechnungsbetrag\",\"doc_type\":null}],\"search_query\":\"Strom vs Gas 2025 Kosten\",\"is_follow_up\":false}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F7",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 9,
+          "total": 9,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 19.22,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1453,
+          "prefill_seconds": 15.96,
+          "generated_tokens": 57,
+          "decode_seconds": 3.24,
+          "done_reason": "stop",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility\":\"water\",\"tariff_kind\":null,\"period\":\"years\",\"years\":[2025],\"metric\":\"verbrauch\",\"doc_type\":null}],\"search_query\":\"Wasserverbrauch 2025\",\"is_follow_up\":true}",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "frame",
+          "question_id": "F8",
+          "json_ok": true,
+          "schema_ok": true,
+          "parse_error": null,
+          "matched": 5,
+          "total": 5,
+          "exact": true,
+          "mismatches": []
+        },
+        {
+          "wall_seconds": 14.52,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1386,
+          "prefill_seconds": 14.1,
+          "generated_tokens": 8,
+          "decode_seconds": 0.41,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C1"
+        },
+        {
+          "wall_seconds": 5.18,
+          "load_seconds": 0.0,
+          "prompt_tokens": 311,
+          "prefill_seconds": 4.58,
+          "generated_tokens": 8,
+          "decode_seconds": 0.4,
+          "done_reason": "length",
+          "content": "{\n  \"Antwort\": \"Das",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C2"
+        },
+        {
+          "wall_seconds": 14.51,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1386,
+          "prefill_seconds": 13.99,
+          "generated_tokens": 8,
+          "decode_seconds": 0.41,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-separate",
+          "question_id": "C3"
+        },
+        {
+          "wall_seconds": 23.24,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1555,
+          "prefill_seconds": 22.65,
+          "generated_tokens": 8,
+          "decode_seconds": 0.4,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C1"
+        },
+        {
+          "wall_seconds": 17.33,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1696,
+          "prefill_seconds": 16.91,
+          "generated_tokens": 8,
+          "decode_seconds": 0.41,
+          "done_reason": "length",
+          "content": "JSON: {\"tasks\": [{\"intent\":",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C2"
+        },
+        {
+          "wall_seconds": 13.24,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1555,
+          "prefill_seconds": 12.82,
+          "generated_tokens": 8,
+          "decode_seconds": 0.4,
+          "done_reason": "length",
+          "content": "{\"tasks\":[{\"intent\":\"fact\",\"utility",
+          "thinking": "",
+          "tool_calls": [],
+          "part": "alt-shared",
+          "question_id": "C3"
+        }
+      ],
+      "summary": {
+        "calls": 9,
+        "errors": 0,
+        "json_valid": 9,
+        "schema_valid": 9,
+        "thinking_leaks": 0,
+        "exact_frames": 5,
+        "questions": 8,
+        "field_matches": 39,
+        "field_total": 43,
+        "load_seconds": 9.1,
+        "cold_prompt_tokens": 1386,
+        "cold_prefill_seconds": 19.83,
+        "cold_prefill_tps": 69.9,
+        "warm_prefill_median_seconds": 15.26,
+        "repeat_prefill_seconds": 0.16,
+        "decode_tps_median": 17.5,
+        "frame_wall_median_seconds": 18.73,
+        "alt_separate_third_prefill_seconds": 13.99,
+        "alt_shared_third_prefill_seconds": 12.82
+      },
+      "loaded": [
+        {
+          "model": "granite4:tiny-h",
+          "name": "granite4:tiny-h",
+          "digest": "566b725534ea0e9824f844abe6a78e1ab6f7357f1efb549be94908cb681513bb",
+          "expires_at": "2026-11-21T20:45:48.701749+01:00",
+          "size": 4476706485,
+          "size_vram": 0,
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "granitehybrid",
+            "families": [
+              "granitehybrid"
+            ],
+            "parameter_size": "6.9B",
+            "quantization_level": "Q4_K_M"
+          },
+          "context_length": 8192
+        }
+      ],
+      "memory_mb": 7867
+    }
+  },
+  "iss126": {
+    "question": "Wurde die Heizstromrechnung 2024 richtig berechnet?",
+    "offered_tools": [
+      "calculate",
+      "get_facts",
+      "list_documents",
+      "plan",
+      "search"
+    ],
+    "plan_steps": [
+      "check_bill Heizstrom 2024",
+      "get_facts verbrauch Heizstrom 2024",
+      "get_facts rechnungsbetrag Heizstrom 2024"
+    ],
+    "cases": {
+      "first": {
+        "chat": {
+          "wall_seconds": 102.61,
+          "load_seconds": 10.1,
+          "prompt_tokens": 1672,
+          "prefill_seconds": 81.76,
+          "generated_tokens": 64,
+          "decode_seconds": 10.73,
+          "done_reason": "stop",
+          "content": "",
+          "thinking": "",
+          "tool_calls": [
+            {
+              "name": "plan",
+              "arguments": {
+                "steps": [
+                  "check_bill Heizstrom 2024",
+                  "get_facts verbrauch Heizstrom 2024",
+                  "get_facts rechnungsbetrag Heizstrom 2024"
+                ]
+              }
+            }
+          ]
+        },
+        "raw": {
+          "wall_seconds": 70.97,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1734,
+          "prefill_seconds": 59.67,
+          "generated_tokens": 65,
+          "decode_seconds": 11.22,
+          "done_reason": "stop",
+          "content": "<tool_call>\n{\"name\": \"plan\", \"arguments\": {\"steps\": [\"check_bill Heizstrom 2024\", \"get_facts verbrauch 2024\", \"calculate 3100 * (0.395 - 0.382)\"]}}\n</tool_call>",
+          "thinking": "",
+          "tool_calls": []
+        }
+      },
+      "after_plan": {
+        "chat": {
+          "wall_seconds": 12.67,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1817,
+          "prefill_seconds": 7.31,
+          "generated_tokens": 32,
+          "decode_seconds": 5.34,
+          "done_reason": "stop",
+          "content": "",
+          "thinking": "",
+          "tool_calls": []
+        },
+        "raw": {
+          "wall_seconds": 14.28,
+          "load_seconds": 0.0,
+          "prompt_tokens": 1879,
+          "prefill_seconds": 7.36,
+          "generated_tokens": 41,
+          "decode_seconds": 6.91,
+          "done_reason": "stop",
+          "content": "<tool_call>\n{\"name\": \"check_bill\", \"arguments\": {\"utility_type\": \"district_heating\", \"tariff_kind\": \"heating\", \"year\": 2024}}\n</tool_call>",
+          "thinking": "",
+          "tool_calls": []
+        }
+      }
+    },
+    "template": "{{- if .Messages }}\n{{- if or .System .Tools }}<|im_start|>system\n{{- if .System }}\n{{ .System }}\n{{- end }}\n{{- if .Tools }}\n\n# Tools\n\nYou may call one or more functions to assist with the user query.\n\nYou are provided with function signatures within <tools></tools> XML tags:\n<tools>\n{{- range .Tools }}\n{\"type\": \"function\", \"function\": {{ .Function }}}\n{{- end }}\n</tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\n<tool_call>\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\n</tool_call>\n{{- end }}<|im_end|>\n{{ end }}\n{{- range $i, $_ := .Messages }}\n{{- $last := eq (len (slice $.Messages $i)) 1 -}}\n{{- if eq .Role \"user\" }}<|im_start|>user\n{{ .Content }}<|im_end|>\n{{ else if eq .Role \"assistant\" }}<|im_start|>assistant\n{{ if .Content }}{{ .Content }}\n{{- else if .ToolCalls }}<tool_call>\n{{ range .ToolCalls }}{\"name\": \"{{ .Function.Name }}\", \"arguments\": {{ .Function.Arguments }}}\n{{ end }}</tool_call>\n{{- end }}{{ if not $last }}<|im_end|>\n{{ end }}\n{{- else if eq .Role \"tool\" }}<|im_start|>user\n<tool_response>\n{{ .Content }}\n</tool_response><|im_end|>\n{{ end }}\n{{- if and (ne .Role \"assistant\") $last }}<|im_start|>assistant\n{{ end }}\n{{- end }}\n{{- else }}\n{{- if .System }}<|im_start|>system\n{{ .System }}<|im_end|>\n{{ end }}{{ if .Prompt }}<|im_start|>user\n{{ .Prompt }}<|im_end|>\n{{ end }}<|im_start|>assistant\n{{ end }}{{ .Response }}{{ if .Response }}<|im_end|>{{ end }}",
+    "started": "2026-11-21 20:43"
+  }
+}
