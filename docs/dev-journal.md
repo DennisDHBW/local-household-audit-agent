@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-21 – M8-Abschluss und Plan M9 (Agent v3, Recherche)
+**Ziel der Sitzung:** Stand und Fortschritt einschätzen; auf Wunsch des Nutzers (Weg B) recherchieren, wie sich die Qualität durch eine bessere Architektur statt durch weitere Regeln deutlich steigern lässt, und daraus einen Plan machen; M8 abschließen.
+**Was wurde gemacht:**
+- Stand erklärt: Fortschritt echt (Faktenspeicher, Werkzeuge v2, B0 < P1 < P2 auch zurückgehalten), aber P2 auf T1–T8 nach Handprüfung 50 % statt 76 %; die Fix-Runden seit run-025 verbesserten vor allem die Entwicklungszahlen
+- Code der Schleife (`AgentLoop.run`, `route_tools`, Rückfragen) und die Schrittprotokolle von run-028 analysiert: erster Aufruf jeder P2-Frage 79–97 s Prefill, Cache greift zwischen Fragen nicht (ISS-128)
+- Recherche (ca. 20 Quellen): ReWOO, α-UMi, StateFlow, Robustheit von Function Calling, Less-is-More, JSONSchemaBench, Constrained Decoding bei kleinen Modellen (2026), Let Me Speak Freely, CRITIC, CRAG, ALCE, Binder, TallyMem (2026), Plan-then-Execute, KATE, Fehlerbalken für Evals, metamorphes Testen; aktuelle kleine Modelle (Qwen3.5, Granite 4) und Ollama-Fehler dazu
+- Plan `docs/m9-plan.md`: P3 als Zustandsautomat (Verstehen per JSON-Schema → deterministische Skills → Evidenzprüfung → Neuplanung → Antwortentwurf mit Beleg-`enum` → Verifikation → Renderer), Modell-Probe, neue Evaluation mit H2 von Dennis, vorab festgelegte Ziele und Stoppregel, 8 Arbeitspakete
+- M8 gegen `requirements.md` geprüft, Tag v2.0.0
+**Gelieferte Dateien / Funktionen:** `docs/m9-plan.md`, ADR-0022 (vorgeschlagen), `reverse-engineering/m8-abgleich-requirements.md`, `sources.md` (18 neue geprüfte Quellen), Glossar M9, ISS-128, ISS-129; kein Code geändert
+**Entscheidungen:** Weg B (Nutzer): erst Architektur verbessern, dann Ausarbeitung. ADR-0022 vorgeschlagen, wartet auf Freigabe. Reverse Engineering M8 wird mit M9 zusammengelegt.
+**Probleme / Überraschungen:** ISS-128 (Präfix-Cache), ISS-129 (Quellenaussage zuerst nach dem Abstract überzogen, vor dem Commit korrigiert). `/tmp` der VM-Shell voll; Tests liefen mit dem venv einer früheren Sitzung und `PYTHONPATH=src`. Meine erste Schätzung in dieser Sitzung (5 Sitzungen) galt für die kleine Lösung; der echte Umbau braucht 7–8.
+**Offen / unklar:** Freigabe des Plans; wer H2 schreibt; Modell-Downloads; Ursache von ISS-128
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1,5 h · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `docs(plan): …`, `docs: close M8 …`
+
 ### 2026-11-21 – M8 Auswertung Endlauf run-028 (zurückgehaltene Fragen)
 **Ziel der Sitzung:** Den Endlauf B0/P1/P2 auf T1–T8 von Hand prüfen und mit den Entwicklungsfragen vergleichen; keine Nachbesserung an diesen Fragen (ISS-108).
 **Was wurde gemacht:**
