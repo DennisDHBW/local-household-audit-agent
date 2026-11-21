@@ -1,0 +1,168 @@
+== run-028 gestartet: 2026-11-21 17:23:38
+185 Fakten nach /home/usr0/PycharmProjects/local-household-audit-agent/data/processed/facts.json: {'advance': 17, 'advances_credited': 13, 'balance': 13, 'base_price': 18, 'calorific_value': 3, 'consumption': 12, 'cost_share': 3, 'energy_price': 17, 'gas_volume': 3, 'invoice_total': 11, 'living_area': 4, 'meter_reading': 26, 'position': 25, 'service_costs': 3, 'sewage_fee': 5, 'total_area': 4, 'water_price': 5, 'z_factor': 3}
+
+== B0 Volltext T1: Welche Kündigungsfrist gilt für den Heizstromvertrag?
+   476.8 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext T2: Wie viel Wasser wurde 2026 verbraucht?
+   12.5 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext T3: Wurde in der Gasabrechnung 2026 der neue Arbeitspreis berechnet?
+   16.0 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext T4: Wie hoch ist der monatliche Heizstromabschlag ab Februar 2026?
+   29.7 s: Der monatliche Heizstromabschlag ab Februar 2026 beträgt 120,00 EUR brutto, wie in Auszug [7] angegeben.
+
+== B0 Volltext T5: Zeig mir den Wasserverbrauch der letzten Jahre als Diagramm.
+   12.9 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext T6: Ist die Wasserabrechnung 2025 in Ordnung?
+   14.1 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext T7: Was kostet bei mir die Kilowattstunde Fernwärme?
+   13.4 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== B0 Volltext T8: Stelle die Stromkosten 2024 für Licht- und Heizstrom in einer Tabelle gegenüber.
+   309.9 s: | Monat | Abrechnungsmonat | Nettobetrag | USt. (19%) | Bruttobetrag |
+|-------|------------------|-------------|------------|--------------|
+| 02    | Abschlag 01 / 2024 | 88,24 EUR    | 16,76 EUR  |
+
+== P1 Pipeline T1: Welche Kündigungsfrist gilt für den Heizstromvertrag?
+   85.6 s: Die Kündigungsfrist für den Heizstromvertrag beträgt 1 Monat zum Ablauf der Erstvertragslaufzeit in Textform; danach unbefristet mit 1 Monat Frist kündbar. Dies ist aus dem Auszug [1] ersichtlich.
+
+== P1 Pipeline T2: Wie viel Wasser wurde 2026 verbraucht?
+   67.3 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline T3: Wurde in der Gasabrechnung 2026 der neue Arbeitspreis berechnet?
+   83.5 s: Ja, in der Gasabrechnung 2026 wird der neue Arbeitspreis berechnet. Dies ist belegt durch den Abschlagsplan für das Lieferjahr 2026 in [4], der den neuen Arbeitspreis von 9,95 ct/kWh brutto verwendet.
+
+== P1 Pipeline T4: Wie hoch ist der monatliche Heizstromabschlag ab Februar 2026?
+   91.5 s: Der monatliche Heizstromabschlag ab Februar 2026 beträgt 105,00 EUR brutto (inkl. 19 % USt.), wie aus [1] ersichtlich ist.
+
+== P1 Pipeline T5: Zeig mir den Wasserverbrauch der letzten Jahre als Diagramm.
+   98.3 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P1 Pipeline T6: Ist die Wasserabrechnung 2025 in Ordnung?
+   156.1 s: Zur Wasserabrechnung 2025 finden wir zwei relevante Auszüge:
+
+[2] 15_Wasser_Jahresbescheid_2025_SWM.pdf, S. 1, Tabellenzeile
+Abzüglich geleistete Quartals-Vorauszahlungen (4 × 120,00 EUR in 2025): -48
+
+== P1 Pipeline T7: Was kostet bei mir die Kilowattstunde Fernwärme?
+   76.4 s: Der Preis für die Kilowattstunde Fernwärme lautet 24,10 ct/kWh [2]. Dies basiert auf der Abrechnung für den Zeitraum 01.01.2025 bis 31.12.2025.
+
+== P1 Pipeline T8: Stelle die Stromkosten 2024 für Licht- und Heizstrom in einer Tabelle gegenüber.
+   83.3 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent T1: Welche Kündigungsfrist gilt für den Heizstromvertrag?
+   240.7 s: Dazu liegen in den Unterlagen keine Angaben vor. Es gibt Hinweise darauf, dass die Kündigungsfrist 1 Monat beträgt, wenn zum Ablauf der Erstvertragslaufzeit gekündigt wird, danach ist der Vertrag unbe
+
+== P2 Agent T2: Wie viel Wasser wurde 2026 verbraucht?
+   117.0 s: Der Wasserverbrauch im Jahr 2026 betrug 72 m³ [1]. Dies wird in der Jahresbescheidung der Wasserabrechnung 2026 auf Seite 1 vermerkt.
+
+== P2 Agent T3: Wurde in der Gasabrechnung 2026 der neue Arbeitspreis berechnet?
+   270.4 s: Durch die Preisanpassung wurde der neue Arbeitspreis für 2026 berechnet. [3] Der neue netto Arbeitspreis beträgt 8,36 ct/kWh [3], inklusive USt. 9,95 ct/kWh [3]. Dieser Wert wurde in der Gasabrechnung
+
+== P2 Agent T4: Wie hoch ist der monatliche Heizstromabschlag ab Februar 2026?
+   179.7 s: Der monatliche Heizstromabschlag ab Februar 2026 beträgt 105,00 EUR [3].
+
+Soll: 105,00 EUR/Monat
+Ist: 105,00 EUR/Monat
+Unterschied: 0,00 EUR
+Auswirkung: 0,00 EUR
+
+== P2 Agent T5: Zeig mir den Wasserverbrauch der letzten Jahre als Diagramm.
+   178.2 s: Dazu liegen in den Unterlagen keine Angaben vor. [1-5]
+
+== P2 Agent T6: Ist die Wasserabrechnung 2025 in Ordnung?
+   263.7 s: Die Wasserabrechnung 2025 stimmt [1]. Der Soll-Verbrauch beträgt 1200 Liter, der Ist-Verbrauch 1150 Liter. Der Unterschied von 100 Liter hat keine finanziellen Auswirkungen, da der Preis von 0,02 EUR 
+
+== P2 Agent T7: Was kostet bei mir die Kilowattstunde Fernwärme?
+   158.7 s: Dazu liegen in den Unterlagen keine Angaben vor.
+
+== P2 Agent T8: Stelle die Stromkosten 2024 für Licht- und Heizstrom in einer Tabelle gegenüber.
+   148.2 s: Die Stromkosten für 2024 sind in der folgenden Tabelle dargestellt:
+
+| Stromart | 2024 | Wert |
+|---|---|---|
+| Heizstrom | [2024] | 1.016,90 EUR [1] |
+| Lichtstrom | [2024] | 1.189,00 EUR [2] |
+
+Die 
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-028/report.md
+report: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-028/report.md
+{
+  "recall_agrees": 0,
+  "recall_high_without_facts": 0,
+  "recall_low_with_facts": 0,
+  "gap_only_faithfulness": {
+    "None": 11
+  }
+}
+evidence: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-028/evidence.json
+== run-028
+{
+  "questions": 8,
+  "stop_reasons": {
+    "answer": 8
+  },
+  "model_calls_mean": 4.2,
+  "tool_calls_mean": 2.0,
+  "tool_use": {
+    "search": 4,
+    "list_documents": 4,
+    "get_facts": 3,
+    "plan": 3,
+    "make_chart": 1,
+    "make_overview": 1
+  },
+  "invalid_calls": 2,
+  "repeats": 1,
+  "text_calls": 0,
+  "repaired_calls": 5,
+  "plan_called": [
+    "T4",
+    "T6",
+    "T7"
+  ],
+  "plan_first": [
+    "T4",
+    "T6",
+    "T7"
+  ],
+  "nudges": {
+    "gap": 4,
+    "empty": 3,
+    "plan": 2,
+    "numbers": 1
+  },
+  "questions_with_nudge": [
+    "T1",
+    "T3",
+    "T4",
+    "T5",
+    "T6",
+    "T7"
+  ],
+  "final_has_step_talk": [],
+  "final_only_steps": [],
+  "final_english": [],
+  "worse_after_question": [],
+  "invented_citations": {
+    "T6": [
+      1,
+      2
+    ],
+    "T8": [
+      2024
+    ]
+  },
+  "artifacts": {
+    "table": 1
+  },
+  "seconds_mean": 194.6,
+  "prefill_share": 0.73,
+  "decode_share": 0.22
+}
+geschrieben: /home/usr0/PycharmProjects/local-household-audit-agent/data/eval/run-028/agentics.json
+== run-028 beendet: 2026-11-21 18:16:58

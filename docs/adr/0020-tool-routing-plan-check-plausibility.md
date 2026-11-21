@@ -1,6 +1,6 @@
 # ADR-0020: Werkzeugauswahl nach Fragetyp, Planprüfung und Plausibilitätsregeln
 
-- **Status:** akzeptiert, gemessen in run-024/run-025 (Nachtrag 2026-11-21, ADR-0021)
+- **Status:** akzeptiert, gemessen in run-024/run-025 (Nachtrag 2026-11-21, ADR-0021); im Endlauf run-028 als Schwachstelle bestätigt (Nachtrag unten, ISS-126)
 - **Datum:** 2026-11-20
 - **Meilenstein:** M8
 
@@ -39,3 +39,8 @@ run-023-smoke, ISS-112, ISS-114, ADR-0019.
 - Plan-Nachfrage: 3-mal ausgelöst (S1, G2, G4); zweimal danach eine schlechtere Antwort (S1 leer, G4 Lückenantwort statt des richtigen Urteils). Bleibt, aber mit Rückfall auf die frühere Antwort (ADR-0021).
 - `plan` selbst wurde nur in 4 von 21 Fragen aufgerufen. Der Plan-Hinweis aus ISS-114 führte eher dazu, dass das Modell den Plan als Text schrieb; er entfällt (ADR-0021).
 - Plausibilitätsregeln: griffen im Korpus wie erwartet nicht.
+
+## Nachtrag 2026-11-21 (Endlauf run-028, zurückgehaltene Fragen)
+- Die Wortliste der Prüffragen erkennt 0 von 2 Prüffragen der zurückgehaltenen Fragen („berechnet“ in T3, „in Ordnung“ in T6). `check_bill` wird nicht angeboten und läuft im ganzen Endlauf 0-mal.
+- Die Annahme „das Modell kann ausgeblendete Werkzeuge trotzdem aufrufen“ hat sich nicht bestätigt: In T3 und T6 (`check_bill`) und T5 (`search` bei einer Grafikfrage) folgt auf die Aufforderung eine leere Antwort, danach keine Prüfung (ISS-126). Die Ursache der leeren Antworten ist nicht geprüft.
+- Die Entscheidung bleibt für M8 unverändert (keine Nachbesserung an den zurückgehaltenen Fragen, ISS-108). Die negative Konsequenz oben ist damit gemessen: Ein falsch erkannter Fragetyp kostet hier zwei von acht Antworten.
