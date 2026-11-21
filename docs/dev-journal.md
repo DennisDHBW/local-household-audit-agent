@@ -23,6 +23,21 @@
 
 ## Einträge
 
+### 2026-11-21 – M9-0: Machbarkeitsprobe, Freigabe M9, H2 versiegelt
+**Ziel der Sitzung:** Freigabe des M9-Plans und der drei offenen Entscheidungen einholen; Machbarkeitsprobe bauen und auswerten (Schema-Treue, Tempo, Cache je Kandidatenmodell, ISS-126).
+**Was wurde gemacht:**
+- Freigabe: Plan und ADR-0022 angenommen; H2 schreibt Claude (statt Dennis), alle drei Modelle geladen, P2 v2 im Endlauf auf H2
+- `scripts/m9_probe.py`: Entwurf `QueryFrame` mit vorhandenen Enums, Prompt mit 7 Beispielen, 8 neutrale Fragen mit Gold-Rahmen, Stufenwechsel-Probe, ISS-126-Nachspiel als Chat und Rohtext; Unit-Tests mit Fake-Client
+- RUN-029 (Ollama 0.35.1): 36/36 gültige JSON-Ausgaben, Rahmen 7/8 bei den Qwen-Modellen, 5/8 bei granite; Cache bei geladenem Transformer-Modell 1,8 statt 67 s; Hybridmodelle ohne Präfix-Nutzung; getrennte Prompts je Stufe kosten dank Prompt-Cache nichts
+- ISS-128 geklärt (Ursache stand in ISS-057), ISS-126 geklärt (Ollama entfernt Aufrufe nicht angebotener Werkzeuge), neues Risiko ISS-131 (Prompt-Cache bis 8 GiB)
+- H2: 24 Fragen U1–U24 geschrieben, SHA-256-Siegel und Test
+**Gelieferte Dateien / Funktionen:** `scripts/m9_probe.py`, `tests/test_m9_probe.py`, `dataset/holdout_h2.yaml`, `dataset/holdout_h2.sha256`, `tests/test_holdout_h2.py`; Doku: ADR-0022 (angenommen), ADR-0020 (Nachtrag), `m9-plan.md`, evaluation-log RUN-029, issues-log, Glossar, README
+**Entscheidungen:** ADR-0022 angenommen. Empfehlung für M9d: `qwen2.5:7b` + `qwen3.5:4b` (noch nicht entschieden)
+**Probleme / Überraschungen:** ISS-128 (Ursache übersehen, eigener Fehler), ISS-126 (erster Probeaufruf traf nur den Plan-Schritt, eigener Fehler, mit `--only-iss126` nachgeholt), ISS-130 (H2 vom selben Autor), ISS-131 (Prompt-Cache und Speichergrenze). Überraschend: Die Hybridmodelle sind beim ersten Aufruf schnell, nutzen den gemeinsamen Präfix aber nicht.
+**Offen / unklar:** Modelle für M9d; Limit des Prompt-Caches in Ollama einstellbar?; Sparte „alle“ im Schema
+**O-Ton (von mir):** (nicht geliefert, ISS-087)
+**Zeitaufwand:** ca. 1 h (plus ca. 35 min Ollama-Laufzeit) · **Modell/Effort:** Opus 5.5 / High · **Commit(s):** `feat(evaluation): add M9-0 feasibility probe …`, `fix(evaluation): replay P2's call after the plan step …`, `test(evaluation): add sealed held-out question set H2 …`, `docs: …`
+
 ### 2026-11-21 – M8-Abschluss und Plan M9 (Agent v3, Recherche)
 **Ziel der Sitzung:** Stand und Fortschritt einschätzen; auf Wunsch des Nutzers (Weg B) recherchieren, wie sich die Qualität durch eine bessere Architektur statt durch weitere Regeln deutlich steigern lässt, und daraus einen Plan machen; M8 abschließen.
 **Was wurde gemacht:**
