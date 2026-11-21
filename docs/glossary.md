@@ -203,3 +203,23 @@
 | Wiederholungsgrenze | `REPEAT_LIMIT`, `StopReason` `repeat_limit` | Nach 2 wiederholten Werkzeugaufrufen erzwingt die Schleife eine Antwort (ADR-0021) | |
 | Erwartete Werkzeuge v2 | `expected_tools_v2`, `uses_tool_set_v2` | Erwartete Werkzeuge einer Frage im Werkzeugsatz v2, wo sie von v1 abweichen; ob ein Lauf v2 ist, erkennt die Bewertung an v2-Werkzeugen im Lauf (ISS-118) | |
 | Kennzahlen Agentik | `scripts/analyze_agentics.py`, `agentics.json` | Wie der Agent arbeitete: Stoppgründe, Werkzeuge, Plan, Rückfragen, Wiederholungen, Schritt-Text, durch Rückfrage verschlechterte Antworten (ISS-117) | |
+
+## M9: Agent v3 (geplant, `docs/m9-plan.md`, ADR-0022 vorgeschlagen)
+
+| Deutsch | Code (EN) | Kurzdefinition | In meinen Worten |
+|---|---|---|---|
+| Variante P3 | `P3`, `audit_agent.orchestrator` (geplant) | Agent v3: Verstehen → Ausführen → Evidenz prüfen → (neu planen) → Formulieren → Verifizieren → Ausgeben, als Zustandsautomat | |
+| Auftragsrahmen | `QueryFrame`, `SubTask`, `Intent`, `Period` (geplant) | Strukturierte Fassung der Frage (Absicht, Sparte, Stromart, Zeitraum, Größe, Darstellung), vom Modell per JSON-Schema gefüllt | |
+| Eingeschränkte Dekodierung | constrained decoding, Ollama `format` | Das Modell darf nur Token erzeugen, die zum vorgegebenen JSON-Schema passen; ungültige Struktur ist ausgeschlossen | |
+| Skill | `skills.py` (geplant) | Deterministischer Ausführungsschritt je Absicht (Werte nachschlagen, Rechnung prüfen, Tabelle, Grafik, Volltextsuche) | |
+| Beleg (E1…En) | `EvidenceItem`, `EvidenceId` (geplant) | Ein Ergebnis eines Skills mit Wert, Quelle und Zeitraum; nur diese IDs darf der Antwortentwurf zitieren | |
+| Evidenzprüfung | `evidence.py` (geplant) | Code bewertet die Belege als vollständig, lückenhaft oder leer und nennt den Grund | |
+| Neuplanung | `ReplanDecision` (geplant) | Modellentscheidung nach lückenhafter Evidenz: andere Suche, anderer Zeitraum, andere Sparte oder aufgeben; höchstens 2 Runden | |
+| Antwortentwurf | `AnswerDraft`, `Sentence` (geplant) | Antworttyp, Urteil und Sätze mit Beleg-IDs, vom Modell per JSON-Schema | |
+| Verifikation | `verify.py` (geplant) | Code prüft Zahlen gegen die zitierten Belege, das Urteil gegen `check_bill` und ob jede Aussage belegt ist | |
+| Renderer | `render.py` (geplant) | Code setzt aus dem Antwortentwurf den Antworttext mit [n]-Verweisen, Tabellen und Grafiken zusammen | |
+| Plan-then-Execute | – | Muster: erst den Plan festlegen, dann ausführen; Werkzeugausgaben können die Wahl der Aktionen nicht ändern | |
+| Präfix-Cache | Ollama KV-Cache, ISS-128 | Gleicher Prompt-Anfang wird nicht neu berechnet; spart bei 18 Token/s Prefill viel Zeit | |
+| Umformulierungs-Konsistenz | geplant in M9c | Anteil der Fragen, bei denen bedeutungsgleiche Umformulierungen dasselbe Ergebnis liefern (metamorphes Testen) | |
+| H2 | `dataset/holdout_h2.yaml` (geplant) | Neuer zurückgehaltener Fragesatz für den Endlauf von M9, von Dennis geschrieben und per Hash versiegelt | |
+| Wilson-Intervall | geplant in M9c | Konfidenzintervall für eine Quote, auch bei kleinen Fragezahlen brauchbar | |

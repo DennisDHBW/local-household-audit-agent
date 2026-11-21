@@ -24,6 +24,26 @@
 
 ## Einträge
 
+### ISS-129 – Quellenaussage im M9-Plan zuerst nach dem Abstract überzogen (eigener Fehler, vor dem Commit korrigiert)
+- **Datum / Meilenstein:** 2026-11-21 / M9-Plan
+- **Kategorie:** ki-assistent
+- **Status:** gelöst
+- **Symptom:** Im ersten Entwurf von `m9-plan.md` stand, Function Calling sei laut Rabinovich und Anaby-Tavor (2025) „anfällig für umformulierte Anfragen“. Die Ergebnisse des Papers sagen etwas anderes: Der Rückgang um 8–19 % geht laut den Autoren zu 70–90 % auf die starre Bewertung der Parameterwerte zurück, nicht auf die Modelle.
+- **Ursache:** Aussage aus Abstract und Suchtreffer abgeleitet, ohne den Ergebnisteil zu lesen.
+- **Lösung / Workaround:** Ergebnisteil gelesen, Zeile im Plan und in `sources.md` korrigiert. Die korrigierte Aussage stützt den Plan sogar besser (starrer Wortabgleich ist die Schwachstelle).
+- **Gelernt:** Eine Quelle erst nach dem Ergebnisteil zitieren, nicht nach dem Abstract.
+- **Relevant für Ausarbeitung?** nein (nur Arbeitsweise)
+
+### ISS-128 – Präfix-Cache greift zwischen den P2-Fragen nicht: erster Aufruf jeder Frage 79–97 s
+- **Datum / Meilenstein:** 2026-11-21 / M8 (gefunden bei der Planung von M9)
+- **Kategorie:** llm
+- **Status:** offen
+- **Symptom:** In run-028 braucht der erste Modellaufruf jeder P2-Frage 79–97 s Prefill für ca. 1.670 Token (T1–T8, auch T2 → T3 mit gleichem Werkzeugsatz). Spätere Aufrufe derselben Frage brauchen 4–17 s, weil der Anfang wiederverwendet wird. Bei B0 klappt die Wiederverwendung zwischen den Fragen (RUN-028: erste Frage 477 s, danach Median 15 s). Der erste Aufruf macht damit rund 40 % der 195 s je P2-Frage aus.
+- **Ursache:** Nicht geprüft. Möglich: Systemprompt oder Werkzeugschemas unterscheiden sich früh im Prompt; ein Zwischenaufruf mit anderem Präfix (Antwortaufruf ohne Werkzeuge) überschreibt den Cache; Verhalten der Ollama-Engine bei Anfragen mit Werkzeugen.
+- **Lösung / Workaround:** In M9-0 mit einer Cache-Probe messen (zwei Fragen mit gleichem Präfix, mit und ohne Werkzeuge); in P3 den festen Teil des Prompts vorne und gleich halten.
+- **Gelernt:** Bei 18 Token/s Prefill entscheidet die Reihenfolge im Prompt über die Laufzeit mehr als die Zahl der Aufrufe.
+- **Relevant für Ausarbeitung?** ja → Kapitel 3 (Laufzeit, Modellbetrieb)
+
 ### ISS-127 – `make_chart` mit erfundenem Zeitraum: die Argument-Reparatur kennt nur `year`
 - **Datum / Meilenstein:** 2026-11-21 / M8
 - **Kategorie:** agent

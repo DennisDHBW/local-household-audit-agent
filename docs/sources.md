@@ -40,12 +40,31 @@
 | Correctness is not Faithfulness in RAG Attributions | Wallat et al., 2025 | arXiv 2412.18004 | verworfen | „Faithfulness“ heißt dort, dass das Modell sich wirklich auf die zitierten Dokumente stützt; anderer Begriff als bei RAGAS |
 | Toolformer: Language Models Can Teach Themselves to Use Tools | Schick et al., 2023 | arXiv 2302.04761 | offen | Training für Tool-Nutzung; Prototyp nutzt natives Tool-Calling |
 | Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks | Lewis et al., 2020 | arXiv 2005.11401 | offen | RAG-Grundidee; im Text nicht nötig |
+| ReWOO: Decoupling Reasoning from Observations for Efficient Augmented Language Models | Xu et al., 2023 | arXiv 2305.18323 | überflogen (M9-Plan) | Planer, Ausführer, Löser getrennt; weniger Token, robuster bei Werkzeugfehlern. Grundlage für P3; Kandidat für die Ausarbeitung (Kapitel 3), falls eine der fünf Quellen weicht |
+| Small LLMs Are Weak Tool Learners: A Multi-LLM Agent | Shen et al., EMNLP 2024 | arXiv 2401.07324 | überflogen (M9-Plan) | Aufteilung in Planer, Aufrufer, Zusammenfasser hilft kleinen Modellen (dort feinabgestimmt; in P3 ein Modell mit getrennten Prompts) |
+| StateFlow: Enhancing LLM Task-Solving through State-Driven Workflows | Wu et al., COLM 2024 | arXiv 2403.11322 | überflogen (M9-Plan) | Ablauf als Zustandsautomat; höhere Erfolgsquote als ReAct bei geringeren Kosten (InterCode SQL, ALFWorld) |
+| On the Robustness of Agentic Function Calling | Rabinovich, Anaby-Tavor, TrustNLP@NAACL 2025 | arXiv 2504.00914 | gelesen: Ergebnisse (M9-Plan) | Umformulierte Anfragen: AST-Genauigkeit −8 bis −19 %, laut Autoren zu 70–90 % durch starre Bewertung der Parameterwerte; erweiterter Werkzeugsatz −1 bis −8 %. Gegen Wortabgleich im Code (ISS-126), für Vergleich auf Ebene der Schema-Werte |
+| Less is More: Optimizing Function Calling for LLM Execution on Edge Devices | Paramanayakam et al., DATE 2025 | arXiv 2411.15399 | überflogen (M9-Plan) | Weniger angebotene Werkzeuge verbessern kleine Modelle und sparen Zeit; Hintergrund für ADR-0020 und P3 |
+| JSONSchemaBench: A Rigorous Benchmark of Structured Outputs for Language Models | Geng et al., 2025 | arXiv 2501.10868 | überflogen (M9-Plan) | Constrained Decoding mit JSON-Schema, sechs Frameworks verglichen (u. a. llama.cpp) |
+| Constrained Decoding Eliminates Structural Failures in Small LLMs but Reveals a Scale-Dependent Semantic Gap | Chavan, 2026 (Preprint, Einzelautor) | arXiv 2609.23742 | überflogen (M9-Plan) | Modelle 0,6B–4B: Strukturfehler mit Constrained Decoding vollständig weg, Inhaltsfehler bleiben |
+| Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models | Tam et al., EMNLP 2024 Industry | arXiv 2408.02442 | überflogen (M9-Plan) | Formatvorgaben schwächen Schlussfolgern; Gegenargument zu P3, deshalb Rechnen im Code |
+| CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing | Gou et al., ICLR 2024 | arXiv 2305.11738 | überflogen (M9-Plan) | Korrektur mit Rückmeldung aus Werkzeugen wirkt; Gegenstück zu Huang et al. |
+| Corrective Retrieval Augmented Generation | Yan et al., 2024 | arXiv 2401.15884 | überflogen (M9-Plan) | Prüfschritt bewertet Belege als richtig/unklar/falsch und löst je nachdem eine Aktion aus |
+| Enabling Large Language Models to Generate Text with Citations (ALCE) | Gao, Yen, Yu, Chen, EMNLP 2023 | arXiv 2305.14627 | überflogen (M9-Plan) | Zitierqualität als eigene Messgröße; Achtung: anderer „Gao et al. 2023“ als der zitierte RAG-Survey |
+| Binding Language Models in Symbolic Languages (Binder) | Cheng et al., ICLR 2023 | arXiv 2210.02875 | überflogen (M9-Plan) | Frage → ausführbares Programm, Modell parst, Ausführung symbolisch |
+| When Agent Memory Needs to Compute: Evidence Access and Executable Aggregation | Yang et al., 2026 (Preprint) | arXiv 2610.19474 | überflogen (M9-Plan) | Modell erzeugt Spezifikation, Ausführung deterministisch; deutlich bessere Aggregationsfragen |
+| Design Patterns for Securing LLM Agents against Prompt Injections | Beurer-Kellner et al., 2025 | arXiv 2506.08837 | überflogen (M9-Plan) | Plan-then-Execute: Werkzeugausgaben beeinflussen die Wahl der Aktionen nicht |
+| What Makes Good In-Context Examples for GPT-3? (KATE) | Liu et al., DeeLIO 2022 | arXiv 2101.06804 | überflogen (M9-Plan) | Beispiele nach semantischer Ähnlichkeit auswählen schlägt Zufallsauswahl |
+| Adding Error Bars to Evals: A Statistical Approach to Language Model Evaluations | Miller, 2024 | arXiv 2411.00640 | überflogen (M9-Plan) | Konfidenzintervalle, gepaarte Vergleiche je Frage, Planung des Testumfangs |
+| Adaptive-RAG: Learning to Adapt Retrieval-Augmented LLMs through Question Complexity | Jeong et al., NAACL 2024 | arXiv 2403.14403 | überflogen (M9-Plan) | Klassifikator wählt die Strategie je Frage; Routing-Hintergrund |
+| Semantic Invariance in Agentic AI | 2026 (Preprint) | arXiv 2603.13173 | überflogen (M9-Plan) | Metamorphes Testen mit bedeutungsgleichen Umformulierungen; Grundlage für die Umformulierungs-Kennzahl |
 
 ## Technische Dokumentation (nicht wissenschaftlich, aber zitierbar)
 
 | Quelle | Wofür |
 |---|---|
 | Ollama-Dokumentation (Tool-Calling, `num_ctx`, `keep_alive`) | Modellbetrieb |
+| Ollama-Dokumentation „Structured Outputs“ (`format` mit JSON-Schema); Issues #14493 und #14645 zu Qwen3.5 (besucht 2026-11-21) | P3 (M9), Modellwahl |
 | ChromaDB-Dokumentation (Metadatenfilter `where`) | Retrieval |
 | PyMuPDF-Dokumentation (`find_tables`) | Parser |
 | nomic-embed-text Model Card (Präfixe `search_document:` / `search_query:`) | Embeddings |
