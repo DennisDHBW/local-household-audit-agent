@@ -1,4 +1,4 @@
-# Evaluation run-024-smoke (2026-11-20)
+# Evaluation run-024-smoke (2026-11-21)
 
 Modell: `qwen2.5:7b`. Metriken deterministisch (concept.md 11.3, ADR-0011); Urteil ja/nein und Fakten sind Heuristiken (ISS-038).
 
@@ -11,7 +11,7 @@ Modell: `qwen2.5:7b`. Metriken deterministisch (concept.md 11.3, ADR-0011); Urte
 | Erfundene Belegnummern | 0 |
 | Ablenker in Zitaten | 0/10 (0 %) |
 | Ablenker im Kontext | 0/36 (0 %) |
-| Tool-Wahl korrekt | 3/5 (60 %) |
+| Tool-Wahl korrekt | 4/5 (80 %) |
 | Suchen mit eigenem Filter / davon schließen Quelle aus | 0 / 0 |
 | Negativfragen erkannt | - |
 | Fehler erkannt | 2/2 (100 %) |

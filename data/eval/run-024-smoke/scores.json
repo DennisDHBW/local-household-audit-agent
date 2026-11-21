@@ -14,7 +14,7 @@
       "cited_distractors": 0,
       "shown_count": 36,
       "shown_distractors": 0,
-      "tools_ok_count": 3,
+      "tools_ok_count": 4,
       "filtered_searches": 0,
       "filter_misses": 0,
       "negatives_detected": 0,
@@ -161,8 +161,7 @@
       "shown_count": 6,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": [
         "plan",
@@ -200,8 +199,7 @@
       "shown_count": 0,
       "shown_distractors": 0,
       "expected_tools": [
-        "list_documents",
-        "search"
+        "get_facts"
       ],
       "called_tools": [
         "list_documents"

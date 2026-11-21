@@ -78,7 +78,7 @@
       "cited_distractors": 0,
       "shown_count": 144,
       "shown_distractors": 0,
-      "tools_ok_count": 11,
+      "tools_ok_count": 19,
       "filtered_searches": 3,
       "filter_misses": 0,
       "negatives_detected": 1,
@@ -154,7 +154,7 @@
       "shown_count": 8,
       "shown_distractors": 0,
       "expected_tools": [
-        "search"
+        "get_facts"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -189,7 +189,7 @@
       "shown_count": 8,
       "shown_distractors": 0,
       "expected_tools": [
-        "search"
+        "get_facts"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -225,7 +225,7 @@
       "shown_count": 8,
       "shown_distractors": 0,
       "expected_tools": [
-        "search_images"
+        "search"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -258,8 +258,7 @@
       "shown_count": 8,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -294,8 +293,7 @@
       "shown_count": 8,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -332,8 +330,7 @@
       "shown_count": 8,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -370,8 +367,7 @@
       "shown_count": 8,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -408,8 +404,7 @@
       "shown_count": 8,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -512,8 +507,7 @@
       "shown_count": 8,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -548,8 +542,7 @@
       "shown_count": 8,
       "shown_distractors": 0,
       "expected_tools": [
-        "list_documents",
-        "search"
+        "get_facts"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -909,7 +902,7 @@
       "shown_count": 7,
       "shown_distractors": 0,
       "expected_tools": [
-        "search"
+        "get_facts"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -942,7 +935,7 @@
       "shown_count": 7,
       "shown_distractors": 0,
       "expected_tools": [
-        "search"
+        "get_facts"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -978,7 +971,7 @@
       "shown_count": 7,
       "shown_distractors": 0,
       "expected_tools": [
-        "search_images"
+        "search"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -1013,8 +1006,7 @@
       "shown_count": 7,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -1050,8 +1042,7 @@
       "shown_count": 7,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -1086,8 +1077,7 @@
       "shown_count": 7,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -1124,8 +1114,7 @@
       "shown_count": 5,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -1162,8 +1151,7 @@
       "shown_count": 7,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -1265,8 +1253,7 @@
       "shown_count": 7,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -1301,8 +1288,7 @@
       "shown_count": 7,
       "shown_distractors": 0,
       "expected_tools": [
-        "list_documents",
-        "search"
+        "get_facts"
       ],
       "called_tools": null,
       "filtered_searches": 0,
@@ -1666,7 +1652,7 @@
       "shown_count": 6,
       "shown_distractors": 0,
       "expected_tools": [
-        "search"
+        "get_facts"
       ],
       "called_tools": [
         "get_facts"
@@ -1701,7 +1687,7 @@
       "shown_count": 1,
       "shown_distractors": 0,
       "expected_tools": [
-        "search"
+        "get_facts"
       ],
       "called_tools": [
         "get_facts"
@@ -1739,7 +1725,7 @@
       "shown_count": 0,
       "shown_distractors": 0,
       "expected_tools": [
-        "search_images"
+        "search"
       ],
       "called_tools": [
         "plan",
@@ -1775,8 +1761,7 @@
       "shown_count": 10,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": [
         "check_bill"
@@ -1811,8 +1796,7 @@
       "shown_count": 10,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": [
         "check_bill"
@@ -1847,8 +1831,7 @@
       "shown_count": 6,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": [
         "plan",
@@ -1884,8 +1867,7 @@
       "shown_count": 10,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": [
         "check_bill"
@@ -1924,8 +1906,7 @@
       "shown_count": 6,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": [
         "plan",
@@ -2040,8 +2021,7 @@
       "shown_count": 10,
       "shown_distractors": 0,
       "expected_tools": [
-        "search",
-        "calculate"
+        "check_bill"
       ],
       "called_tools": [
         "check_bill"
@@ -2078,8 +2058,7 @@
       "shown_count": 0,
       "shown_distractors": 0,
       "expected_tools": [
-        "list_documents",
-        "search"
+        "get_facts"
       ],
       "called_tools": [
         "list_documents"

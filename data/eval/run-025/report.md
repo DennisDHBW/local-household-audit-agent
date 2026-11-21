@@ -13,7 +13,7 @@ B0-Kontext: 6 Dateien vollständig, teilweise: -, fehlend: 29; ca. 6727 von 6961
 | Erfundene Belegnummern | 0 | 0 | 5 |
 | Ablenker in Zitaten | 0/8 (0 %) | 0/39 (0 %) | 0/36 (0 %) |
 | Ablenker im Kontext | 0/168 (0 %) | 3/137 (2 %) | 0/144 (0 %) |
-| Tool-Wahl korrekt | - | - | 11/21 (52 %) |
+| Tool-Wahl korrekt | - | - | 19/21 (90 %) |
 | Suchen mit eigenem Filter / davon schließen Quelle aus | - | - | 3 / 0 |
 | Negativfragen erkannt | 2/2 (100 %) | 1/2 (50 %) | 1/2 (50 %) |
 | Fehler erkannt | 0/5 (0 %) | 0/5 (0 %) | 5/5 (100 %) |
