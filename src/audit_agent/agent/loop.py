@@ -53,6 +53,7 @@ from audit_agent.agent.prompts import (
     is_audit_question,
     is_english,
     is_gap_answer,
+    is_pure_gap_answer,
     needs_citation,
     strip_step_talk,
     system_prompt,
@@ -291,7 +292,7 @@ class AgentLoop:
                     if (
                         forced is None
                         and not is_gap_questioned
-                        and is_gap_answer(answer)
+                        and (is_pure_gap_answer(answer) if is_v2 else is_gap_answer(answer))
                         and (
                             tool_call_count < agent.min_searches_before_gap
                             or (is_v2 and not searched and "search" in offered_names)

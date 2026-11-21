@@ -133,6 +133,15 @@ def is_gap_answer(answer: str) -> bool:
     return any(phrase in folded for phrase in GAP_PHRASES)
 
 
+def is_pure_gap_answer(answer: str) -> bool:
+    """True if the answer only says that the information is missing (ISS-122).
+
+    A mixed answer ("Gas 2025: 14.200 kWh [1]. Für 2023 liegen keine Angaben vor.") has facts
+    and is not questioned again: in run-026 the question after such answers never helped.
+    """
+    return is_gap_answer(answer) and not needs_citation(answer) and not has_citation(answer)
+
+
 def has_citation(answer: str) -> bool:
     """True if the answer names a hit number such as ``[2]`` or ``[1, 4]``."""
     return _CITATION.search(answer) is not None
@@ -272,9 +281,9 @@ def unsupported_numbers(answer: str, sources: list[str]) -> list[str]:
 
 
 RETRY_BEFORE_GAP_MESSAGE_V2 = (
-    "Bevor du sagst, dass Angaben fehlen: Prüfe mit list_documents, welche Unterlagen es gibt "
-    "(Heizstrom und Lichtstrom sind Sparte electricity), und suche mit search im Volltext. "
-    "Verbräuche früherer Jahre stehen oft nur im Vergleichsdiagramm einer Rechnung."
+    "Bevor du sagst, dass Angaben fehlen: Prüfe mit list_documents, welche Unterlagen es gibt, "
+    "und suche mit search im Volltext. Findest du nichts, bleibt deine Antwort unverändert; "
+    "rate nicht."
 )
 STEP_TALK_MESSAGE = (
     "Du hast nur Schritte angekündigt. Führe den nächsten Schritt jetzt mit einem "

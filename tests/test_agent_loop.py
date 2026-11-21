@@ -27,8 +27,10 @@ from audit_agent.agent.prompts import (
     REPEAT_FAILED_OBSERVATION,
     REPEAT_OBSERVATION,
     RETRY_BEFORE_GAP_MESSAGE,
+    RETRY_BEFORE_GAP_MESSAGE_V2,
     is_audit_question,
     is_gap_answer,
+    is_pure_gap_answer,
     system_prompt,
 )
 from audit_agent.agent.report import evaluate_run, render_markdown
@@ -254,6 +256,52 @@ def test_gap_answer_is_accepted_after_enough_searches_and_not_questioned_twice()
     assert after_two_calls.answer == GAP_ANSWER
     assert [step.kind for step in questioned_once.steps].count("nudge") == 1
     assert questioned_once.answer == GAP_ANSWER
+
+
+V2 = {"agent": AgentSettings(tool_set="v2")}
+MIXED_ANSWER = "Gasverbrauch 2025: 14.200 kWh [1]. Für 2023 liegen keine Angaben vor."
+
+
+def test_pure_gap_answer_needs_no_figure_and_no_hit_number():
+    # Arrange / Act / Assert
+    assert is_pure_gap_answer(GAP_ANSWER)
+    assert is_pure_gap_answer("Zu 2023 liegen keine Angaben vor.")
+    assert not is_pure_gap_answer(MIXED_ANSWER)
+    assert not is_pure_gap_answer("Laut [1] liegen keine Angaben vor.")
+    assert not is_pure_gap_answer("Der Arbeitspreis beträgt 34,80 ct/kWh.")
+
+
+def test_v2_questions_a_pure_gap_answer_once_with_a_neutral_message():
+    # Arrange
+    replies = [tool_reply(SEARCH), answer_reply(GAP_ANSWER), answer_reply(GAP_ANSWER)]
+    loop, chat = _loop(replies, **V2)
+
+    # Act
+    run = loop.run("Frage?")
+
+    # Assert
+    nudges = [step for step in run.steps if step.kind == "nudge"]
+    assert [step.reason for step in nudges] == ["gap"]
+    assert nudges[0].message == RETRY_BEFORE_GAP_MESSAGE_V2
+    assert run.answer == GAP_ANSWER
+
+
+def test_v2_does_not_question_a_mixed_answer_that_admits_a_gap():
+    # Arrange: run-026 S1, Z2, Z3: a real answer with a gap sentence was sent back (ISS-122)
+    loop, chat = _loop([tool_reply(SEARCH), answer_reply(MIXED_ANSWER)], **V2)
+
+    # Act
+    run = loop.run("Frage?")
+
+    # Assert
+    assert run.answer == MIXED_ANSWER
+    assert "gap" not in [getattr(step, "reason", None) for step in run.steps]
+
+
+def test_gap_retry_message_v2_names_no_documents_of_the_corpus():
+    folded = RETRY_BEFORE_GAP_MESSAGE_V2.lower()
+    for word in ("heizstrom", "lichtstrom", "diagramm", "rechnung", "electricity"):
+        assert word not in folded
 
 
 AUDIT_QUESTION = "Ist die Gasabrechnung 2026 korrekt?"
